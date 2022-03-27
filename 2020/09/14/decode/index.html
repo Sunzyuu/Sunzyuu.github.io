@@ -1,0 +1,1014 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>bugku代码审计 - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-09-14 21:01" pubdate>
+        2020年9月14日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">bugku代码审计</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="简单的代码审计"><a href="#简单的代码审计" class="headerlink" title="简单的代码审计"></a>简单的代码审计</h1><span id="more"></span>
+
+<h2 id="extract变量覆盖"><a href="#extract变量覆盖" class="headerlink" title="extract变量覆盖"></a>extract变量覆盖</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$flag</span>=<span class="hljs-string">&#x27;xxx&#x27;</span>;  <span class="hljs-comment">//新建变量</span>
+extract(<span class="hljs-variable">$_GET</span>);  <span class="hljs-comment">// 变量覆盖</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$shiyan</span>))   <span class="hljs-comment">//判断是否存在</span>
+&#123;
+<span class="hljs-variable">$content</span>=trim(file_get_contents(<span class="hljs-variable">$flag</span>));<span class="hljs-comment">//把文件读入字符串</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$shiyan</span>==<span class="hljs-variable">$content</span>)  <span class="hljs-comment">//判断两变量是否相等</span>
+&#123;
+<span class="hljs-keyword">echo</span><span class="hljs-string">&#x27;flag&#123;xxx&#125;&#x27;</span>;
+&#125;
+<span class="hljs-keyword">else</span>
+&#123;
+<span class="hljs-keyword">echo</span><span class="hljs-string">&#x27;Oh.no&#x27;</span>;
+&#125;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>extract()函数</p>
+<p><img src="https://i.loli.net/2020/11/28/z6p1eRwBdhAiJFK.png" srcset="/img/loading.gif" alt="extrct.png"></p>
+<p><strong>isset()函数</strong><br>isset() 函数用于检测变量是否已设置并且非 NULL。</p>
+<p>如果已经使用 unset() 释放了一个变量之后，再通过 isset() 判断将返回 FALSE。</p>
+<p>若使用 isset() 测试一个被设置成 NULL 的变量，将返回 FALSE。</p>
+<p>同时要注意的是 null 字符（”\0”）并不等同于 PHP 的 NULL 常量。</p>
+<p>Tips:isset()函数如果一次传入多个参数，只有参数全被设置且非空的情况下才返回TRUE，isset()函数对数组中的元素同样适用。</p>
+<p>file_get_contents() </p>
+<p><img src="https://i.loli.net/2020/11/28/2TUeHbzKjo3v9WL.png" srcset="/img/loading.gif" alt="file.png"></p>
+<p>变量覆盖的意思就是让自己上传的变量值覆盖原有的变量值</p>
+<p>这里值得注意的是 <code>$shiyan</code>==<code>$content</code>,而content的值来自于函数自己建的$flag变量，所以这题目的变量覆盖实际是覆盖$flag的值，让flag的值和shiyan的值相同</p>
+<p>可以用空值的方法使二者想等即</p>
+<p><code>?shiyan=&amp;flag=</code></p>
+<h2 id="strcmp比较字符串"><a href="#strcmp比较字符串" class="headerlink" title="strcmp比较字符串"></a>strcmp比较字符串</h2><p><a target="_blank" rel="noopener" href="http://123.206.87.240:9009/6.php">http://123.206.87.240:9009/6.php</a></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&quot;flag&#123;xxxxx&#125;&quot;</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>])) &#123;
+<span class="hljs-keyword">if</span> (strcmp(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>], <span class="hljs-variable">$flag</span>) == <span class="hljs-number">0</span>) <span class="hljs-comment">//如果 str1 小于 str2 返回 &lt; 0； 如果 str1大于 str2返回 &gt; 0；如果两者相等，返回 0。</span>
+<span class="hljs-comment">//比较两个字符串（区分大小写）</span>
+<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;No&#x27;</span>;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>题目给的注释很清楚的给出了获得flag的条件。。。</p>
+<p>先了解一下</p>
+<p><img src="https://i.loli.net/2020/11/28/HzFDTPCwtU1rkf2.png" srcset="/img/loading.gif" alt="strcmp.png"></p>
+<p>strcmp()的两个参数都必须是字符串类型的，但是如果传递一个非字符穿类型的参数进去，例如数组，则函数就会报错，其返回值就为0。满足 <code>if (strcmp($_GET[&#39;a&#39;], $flag) == 0)</code>  即可获得flag</p>
+<p><strong>url:<code>http://123.206.87.240:9009/6.php?a[]=</code></strong></p>
+<h2 id="urldecode二次编码绕过"><a href="#urldecode二次编码绕过" class="headerlink" title="urldecode二次编码绕过"></a>urldecode二次编码绕过</h2><p>题目说的很清楚了，二次编码绕过</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-keyword">if</span>(eregi(<span class="hljs-string">&quot;hackerDJ&quot;</span>,<span class="hljs-variable">$_GET</span>[id])) &#123;
+<span class="hljs-built_in">echo</span>(<span class="hljs-string">&quot;</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">not allowed!</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">&quot;</span>);</code></pre></div>
+
+
+
+<blockquote>
+<p>PHP 函数 eregi()</p>
+<p>语法<br> int eregi(string pattern, string string, [array regs]);<br> 定义和用法<br> eregi()函数在一个字符串搜索指定的模式的字符串。搜索不区分大小写。Eregi()可以特别有用的检查有效性字符串,如密码。</p>
+<p>可选的输入参数规则包含一个数组的所有匹配表达式,他们被正则表达式的括号分组。</p>
+<p>返回值<br> 如果匹配成功返回true,否则,则返回false</p>
+</blockquote>
+<p>这里进行了过滤，传的值不能为hackerDJ</p>
+<div class="hljs"><pre><code class="hljs php">
+<span class="hljs-variable">$_GET</span>[id] = urldecode(<span class="hljs-variable">$_GET</span>[id]);
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$_GET</span>[id] == <span class="hljs-string">&quot;hackerDJ&quot;</span>) <span class="hljs-comment">//要编码的字符串hackerDJ</span></code></pre></div>
+
+<p>GET会提交时进行一次urlencode</p>
+<p>urldecode()于urlencode()是一对想反作用的函数，一个解码一个编码。</p>
+<p><code>$_GET[id] = urldecode($_GET[id])</code>     urldecode后的<strong>$_GET[id]</strong> 复制给自己等于hackerDJ</p>
+<p>所以对hackerDJ 进行两次urlencode, 为了绕过过滤；进行一次urldecode后其值和hackerDJ相等，得到flag</p>
+<p><code>?id=%25%36%38%25%36%31%25%36%33%25%36%42%25%36%35%25%37%32%25%34%34%25%34%41</code></p>
+<h2 id="md5-函数"><a href="#md5-函数" class="headerlink" title="md5()函数"></a>md5()函数</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;flag&#123;test&#125;&#x27;</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;username&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>])) &#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;username&#x27;</span>] == <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>])
+<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;Your password can not be your username.&#x27;</span>;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;username&#x27;</span>]) === md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]))
+<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;Invalid password&#x27;</span>;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>利用md5不能处理数组的特性绕过</p>
+<p><a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_md5.asp">md5()</a></p>
+<p>md5函数遇到数组类型的参数时，返回值为null，null===null,所以满足<code>md5($_GET[&#39;username&#39;]) === md5($_GET[&#39;password&#39;]</code></p>
+<div class="hljs"><pre><code class="hljs dts"><span class="hljs-symbol">GET:</span>
+/?username[]=<span class="hljs-number">1</span><span class="hljs-variable">&amp;password</span>[]=<span class="hljs-number">2</span></code></pre></div>
+
+
+
+<h2 id="数组返回NULL绕过"><a href="#数组返回NULL绕过" class="headerlink" title="数组返回NULL绕过"></a>数组返回NULL绕过</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&quot;flag&quot;</span>;
+
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>])) &#123;
+<span class="hljs-keyword">if</span> (ereg (<span class="hljs-string">&quot;^[a-zA-Z0-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]) === <span class="hljs-literal">FALSE</span>) <span class="hljs-comment">//进行过滤，password必须包含字母和数字</span>
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;You password must be alphanumeric&#x27;</span>;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>], <span class="hljs-string">&#x27;--&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)
+<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span> . <span class="hljs-variable">$flag</span>);
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Invalid password&#x27;</span>;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>提示是数组返回NULL</p>
+<p>直接尝试提交<code>?password[]=</code>，flag就出来了</p>
+<p>了解一下原理，</p>
+<blockquote>
+<p>代码相关知识点链接如下：</p>
+<p>isset函数：<a target="_blank" rel="noopener" href="http://php.net/manual/zh/function.isset.php">http://php.net/manual/zh/function.isset.php</a></p>
+<p>ereg函数：<a target="_blank" rel="noopener" href="http://www.php.net/manual/zh/function.ereg.php">http://www.php.net/manual/zh/function.ereg.php</a></p>
+<p>strpos函数：<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/php/func_string_strpos.asp">http://www.w3school.com.cn/php/func_string_strpos.asp</a></p>
+<p>“[A-Za-z0-9]”<br>方括号表示字符集，[A-Za-z0-9]匹配大小写字母和数字其中一个字符</p>
+<p>“^[A-Za-z0-9]$”<br>^表示字符串开始，$表示字符串结束 ，这个匹配只有一个大小写字母和数字字符的字符串</p>
+<p>“^[A-Za-z0-9]+$”<br>+号表示重复1到多次，匹配由多个数字大小字母组成的字符串</p>
+</blockquote>
+<p><img src="https://i.loli.net/2020/11/28/2EjrzqhlvA4pcRg.png" srcset="/img/loading.gif" alt="ereg.png"></p>
+<p><img src="https://i.loli.net/2020/11/28/yMSHUw8EcGd9izo.png" srcset="/img/loading.gif" alt="strpos.png"></p>
+<p>值得注意的是这两个函数能处理的参数都是string类型</p>
+<div class="hljs"><pre><code class="hljs php">ereg只能处理字符，r如果数组，则返回的是<span class="hljs-literal">null</span>，三个等号的时候不会进行类型转换。所以<span class="hljs-literal">null</span>不等于<span class="hljs-literal">false</span>。
+
+strpos的参数同样不能够是数组，所以返回的依旧是<span class="hljs-literal">null</span>，<span class="hljs-literal">null</span>不等于<span class="hljs-literal">false</span>也是正确。</code></pre></div>
+
+<p>故?password[]=可以绕过。</p>
+<p>但是还有一种为%00截断</p>
+<p><code>?password=d%00--</code></p>
+<h2 id="弱类型整数大小比较绕过"><a href="#弱类型整数大小比较绕过" class="headerlink" title="弱类型整数大小比较绕过"></a>弱类型整数大小比较绕过</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$temp</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>];
+is_numeric(<span class="hljs-variable">$temp</span>)?<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;no numeric&quot;</span>):<span class="hljs-literal">NULL</span>;
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$temp</span>&gt;<span class="hljs-number">1336</span>)&#123;
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;</code></pre></div>
+
+<p>题目说了弱类型比较绕过</p>
+<p>payload：</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">password</span>=<span class="hljs-number">1444</span>b</code></pre></div>
+
+<p>首先在is_numeric()检查时，因为1444b中包含了字母b所以不会认为是数字类型</p>
+<p>在判断是否大于1336时，php默认1444b是数字类型，所以大于1336</p>
+<h2 id="sha-函数比较绕过"><a href="#sha-函数比较绕过" class="headerlink" title="sha()函数比较绕过"></a>sha()函数比较绕过</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&quot;flag&quot;</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;name&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]))
+&#123;
+   var_dump(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;name&#x27;</span>]);
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&quot;</span>;
+   var_dump(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]);
+   var_dump(sha1(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;name&#x27;</span>]));
+   var_dump(sha1(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]));
+    
+   <span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;name&#x27;</span>] == <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>])
+		<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Your password can not be your name!&#x27;</span>;
+   <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sha1(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;name&#x27;</span>]) === sha1(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]))
+	    <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+   <span class="hljs-keyword">else</span>
+	    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Invalid password.&#x27;</span>;
+&#125;
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Login first!&#x27;</span>;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>代码逻辑很简单，首先判断是否get方式传递name和password参数</p>
+<p>var_dump，输出参数类型和值</p>
+<p>之后如果通过if判断则可以拿到flag</p>
+<p>if判断的条件</p>
+<blockquote>
+<p>name和password不能相同</p>
+<p>但是sha1(name)===sha1(password)</p>
+</blockquote>
+<p>这里可以使用sha1函数无法处理数组的漏洞绕过，sha1遇到参数为数组类型时返回值为0</p>
+<p>payload：</p>
+<div class="hljs"><pre><code class="hljs dts"><span class="hljs-symbol">GET:</span>
+?name[]=<span class="hljs-number">1</span><span class="hljs-variable">&amp;password</span>[]=<span class="hljs-number">2</span></code></pre></div>
+
+
+
+<h2 id="md5加密相等绕过"><a href="#md5加密相等绕过" class="headerlink" title="md5加密相等绕过"></a>md5加密相等绕过</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$md51</span> = md5(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
+<span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
+<span class="hljs-variable">$md52</span> = @md5(<span class="hljs-variable">$a</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$a</span>))&#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-variable">$md51</span> == <span class="hljs-variable">$md52</span>) &#123;
+	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;flag&#123;*&#125;&quot;</span>;
+&#125; 
+<span class="hljs-keyword">else</span> &#123;
+	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;false!!!&quot;</span>;
+&#125;
+&#125;
+<span class="hljs-keyword">else</span>
+&#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;please input a&quot;</span>;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>即使用get方式传递一个参数a,使得a的值不等于<code>QNKCDZO</code>但是二者的md5值相同</p>
+<p>PHP在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
+<p>常见的payload有</p>
+<div class="hljs"><pre><code class="hljs stylus">QNKCDZO
+<span class="hljs-number">240610708</span>
+s878926199a
+s155964671a
+s214587387a
+s214587387a
+
+
+<span class="hljs-comment">//下面是sha1()加密后 ==相等的字符串</span>
+ sha1(str)
+<span class="hljs-function"><span class="hljs-title">sha1</span><span class="hljs-params">(<span class="hljs-string">&#x27;aaroZmOk&#x27;</span>)</span></span>  
+<span class="hljs-function"><span class="hljs-title">sha1</span><span class="hljs-params">(<span class="hljs-string">&#x27;aaK1STfY&#x27;</span>)</span></span>
+<span class="hljs-function"><span class="hljs-title">sha1</span><span class="hljs-params">(<span class="hljs-string">&#x27;aaO8zKZF&#x27;</span>)</span></span>
+<span class="hljs-function"><span class="hljs-title">sha1</span><span class="hljs-params">(<span class="hljs-string">&#x27;aa3OFF9m&#x27;</span>)</span></span></code></pre></div>
+
+<p>payload:</p>
+<div class="hljs"><pre><code class="hljs routeros">GET:
+?<span class="hljs-attribute">a</span>=240610708</code></pre></div>
+
+
+
+<h2 id="十六进制与数字比较"><a href="#十六进制与数字比较" class="headerlink" title="十六进制与数字比较"></a>十六进制与数字比较</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">noother_says_correct</span>(<span class="hljs-params"><span class="hljs-variable">$temp</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;flag&#123;test&#125;&#x27;</span>;
+<span class="hljs-variable">$one</span> = ord(<span class="hljs-string">&#x27;1&#x27;</span>); <span class="hljs-comment">//ord — 返回字符的 ASCII 码值</span>
+<span class="hljs-variable">$nine</span> = ord(<span class="hljs-string">&#x27;9&#x27;</span>); <span class="hljs-comment">//ord — 返回字符的 ASCII 码值</span>
+<span class="hljs-variable">$number</span> = <span class="hljs-string">&#x27;3735929054&#x27;</span>;
+<span class="hljs-comment">// Check all the input characters!</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> &lt; strlen(<span class="hljs-variable">$number</span>); <span class="hljs-variable">$i</span>++)
+&#123;
+<span class="hljs-comment">// Disallow all the digits!</span>
+<span class="hljs-variable">$digit</span> = ord(<span class="hljs-variable">$temp</span>&#123;<span class="hljs-variable">$i</span>&#125;);
+<span class="hljs-keyword">if</span> ( (<span class="hljs-variable">$digit</span> &gt;= <span class="hljs-variable">$one</span>) &amp;&amp; (<span class="hljs-variable">$digit</span> &lt;= <span class="hljs-variable">$nine</span>) )
+&#123;
+<span class="hljs-comment">// Aha, digit not allowed!</span>
+<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;flase&quot;</span>;
+&#125;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$number</span> == <span class="hljs-variable">$temp</span>)
+<span class="hljs-keyword">return</span> <span class="hljs-variable">$flag</span>;
+&#125;
+<span class="hljs-variable">$temp</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>];
+<span class="hljs-keyword">echo</span> noother_says_correct(<span class="hljs-variable">$temp</span>);
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>重点在这段代码</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span> ( (<span class="hljs-variable">$digit</span> &gt;= <span class="hljs-variable">$one</span>) &amp;&amp; (<span class="hljs-variable">$digit</span> &lt;= <span class="hljs-variable">$nine</span>) )
+&#123;
+<span class="hljs-comment">// Aha, digit not allowed!</span>
+<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;flase&quot;</span>;
+&#125;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$number</span> == <span class="hljs-variable">$temp</span>)
+<span class="hljs-keyword">return</span> <span class="hljs-variable">$flag</span>;
+&#125;</code></pre></div>
+
+<p>输入的数字中不能包含1-9的数字</p>
+<p>如果输入的数字和相等则拿到flag</p>
+<p>可以想到的是将这段数字转换为十六进制</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">hex</span>(<span class="hljs-number">3735929054</span>)=<span class="hljs-number">0</span>xdeadc<span class="hljs-number">0</span>de
+
+<span class="hljs-attribute">GET</span>:
+<span class="hljs-attribute">password</span>=<span class="hljs-number">0</span>xdeadc<span class="hljs-number">0</span>de</code></pre></div>
+
+<h2 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h2><p>网址打不开</p>
+<h2 id="ereg正则-00截断"><a href="#ereg正则-00截断" class="headerlink" title="ereg正则%00截断"></a>ereg正则%00截断</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&quot;xxx&quot;</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]))
+&#123;
+	<span class="hljs-keyword">if</span> (ereg (<span class="hljs-string">&quot;^[a-zA-Z0-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)
+	&#123;
+	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;You password must be alphanumeric&#x27;</span>;
+	&#125;
+	<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]) &lt; <span class="hljs-number">8</span> &amp;&amp; <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>] &gt; <span class="hljs-number">9999999</span>)
+	&#123;
+		<span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>], <span class="hljs-string">&#x27;-&#x27;</span>) !== <span class="hljs-literal">FALSE</span>) <span class="hljs-comment">//strpos — 查找字符串首次出现的位置</span>
+		&#123;
+			<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span> . <span class="hljs-variable">$flag</span>);
+		&#125;
+	<span class="hljs-keyword">else</span>
+	&#123;
+		<span class="hljs-keyword">echo</span>(<span class="hljs-string">&#x27;- have not been found&#x27;</span>);
+	&#125;
+&#125;
+<span class="hljs-keyword">else</span>
+&#123;
+	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Invalid password&#x27;</span>;
+&#125;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>绕过三个if语句即可拿到flag</p>
+<p>第一个</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span> (ereg (<span class="hljs-string">&quot;^[a-zA-Z0-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)</code></pre></div>
+
+<p>这个比较常见的正则表达式，也很容易理解</p>
+<p><code>[a-zA-Z0-9]+</code>包含大小写字符和数字，^是匹配开始标志，$是匹配结束标志</p>
+<p>第二个</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span> (strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]) &lt; <span class="hljs-number">8</span> &amp;&amp; <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>] &gt; <span class="hljs-number">9999999</span>)</code></pre></div>
+
+<p>password字段长度小于8，但是大于9999999，可以使用科学计数法</p>
+<p>第三个</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>], <span class="hljs-string">&#x27;-&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)</code></pre></div>
+
+<p>password要包含 <code>-</code>（做题的时候会发现应该是<code>*-*</code>）</p>
+<p>payload</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">GET</span>:
+<span class="hljs-attribute">password</span>=<span class="hljs-number">1</span>e<span class="hljs-number">9</span>%<span class="hljs-number">00</span>*-*</code></pre></div>
+
+<p><img src="https://i.loli.net/2020/11/28/xcjep86YFtWgXMk.png" srcset="/img/loading.gif" alt="zhengze.png"></p>
+<h2 id="strpos数组绕过"><a href="#strpos数组绕过" class="headerlink" title="strpos数组绕过"></a>strpos数组绕过</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&quot;flag&quot;</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;ctf&#x27;</span>])) &#123;
+<span class="hljs-keyword">if</span> (@ereg (<span class="hljs-string">&quot;^[1-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;ctf&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;必须输入数字才行&#x27;</span>;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;ctf&#x27;</span>], <span class="hljs-string">&#x27;#biubiubiu&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)
+<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;骚年，继续努力吧啊~&#x27;</span>;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>直接利用ereg和strpos函数不能处理数组的特性绕过</p>
+<p>当输入ctf[]=11时，ereg返回值null!==FALSE</p>
+<p>strpos返回值也为null!=FALSE</p>
+<p>拿到flag</p>
+<p>payload：</p>
+<div class="hljs"><pre><code class="hljs mel">GET:
+?ctf[]=<span class="hljs-number">111</span>
+<span class="hljs-comment">//正常做法</span>
+?nctf=<span class="hljs-number">1</span>%00%23biubiubiu</code></pre></div>
+
+<h2 id="数字验证正则绕过"><a href="#数字验证正则绕过" class="headerlink" title="数字验证正则绕过"></a>数字验证正则绕过</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;flag&#123;test&#125;&#x27;</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;POST&quot;</span> == <span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_METHOD&#x27;</span>])
+&#123;
+<span class="hljs-variable">$password</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>];
+<span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &gt;= preg_match(<span class="hljs-string">&#x27;/^[[:graph:]]&#123;12,&#125;$/&#x27;</span>, <span class="hljs-variable">$password</span>)) <span class="hljs-comment">//preg_match — 执行一个正则表达式匹配 长度大于12</span>
+&#123;
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;flag&#x27;</span>;<span class="hljs-comment">//这里输出的是假flag 真的在下面</span>
+<span class="hljs-keyword">exit</span>;
+&#125;
+<span class="hljs-keyword">while</span> (<span class="hljs-literal">TRUE</span>)
+&#123;
+<span class="hljs-variable">$reg</span> = <span class="hljs-string">&#x27;/([[:punct:]]+|[[:digit:]]+|[[:upper:]]+|[[:lower:]]+)/&#x27;</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-number">6</span> &gt; preg_match_all(<span class="hljs-variable">$reg</span>, <span class="hljs-variable">$password</span>, <span class="hljs-variable">$arr</span>))
+<span class="hljs-keyword">break</span>;
+<span class="hljs-variable">$c</span> = <span class="hljs-number">0</span>;
+<span class="hljs-variable">$ps</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;punct&#x27;</span>, <span class="hljs-string">&#x27;digit&#x27;</span>, <span class="hljs-string">&#x27;upper&#x27;</span>, <span class="hljs-string">&#x27;lower&#x27;</span>); 
+  <span class="hljs-comment">//[[:punct:]] 任何标点符号 [[:digit:]] 任何数字 [[:upper:]] 任何大写字母 [[:lower:]] 任何小写字母</span>
+<span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$ps</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$pt</span>)
+&#123;
+<span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/[[:<span class="hljs-subst">$pt</span>:]]+/&quot;</span>, <span class="hljs-variable">$password</span>))
+<span class="hljs-variable">$c</span> += <span class="hljs-number">1</span>;
+&#125;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$c</span> &lt; <span class="hljs-number">3</span>) <span class="hljs-keyword">break</span>;
+<span class="hljs-comment">//&gt;=3，必须包含四种类型三种与三种以上</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;42&quot;</span> == <span class="hljs-variable">$password</span>) <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Wrong password&#x27;</span>;
+<span class="hljs-keyword">exit</span>;
+&#125;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+
+
+<p>代码还挺长，但是直接抓住重点</p>
+<div class="hljs"><pre><code class="hljs lisp">if (<span class="hljs-number">0</span> &gt;= preg_match(&#x27;/^[[<span class="hljs-symbol">:graph</span>:]]&#123;<span class="hljs-number">12</span>,&#125;$/&#x27;, $password))</code></pre></div>
+
+<p>[:graph]是所有可打印的字符,{12,},是在password中匹配12次以上，即password的长度大于12</p>
+<p>下面的正则</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$ps</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;punct&#x27;</span>, <span class="hljs-string">&#x27;digit&#x27;</span>, <span class="hljs-string">&#x27;upper&#x27;</span>, <span class="hljs-string">&#x27;lower&#x27;</span>); 
+  <span class="hljs-comment">//[[:punct:]] 任何标点符号 [[:digit:]] 任何数字 [[:upper:]] 任何大写字母 [[:lower:]] 任何小写字母</span>
+<span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$ps</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$pt</span>)
+&#123;
+<span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/[[:<span class="hljs-subst">$pt</span>:]]+/&quot;</span>, <span class="hljs-variable">$password</span>))
+<span class="hljs-variable">$c</span> += <span class="hljs-number">1</span>;
+&#125;</code></pre></div>
+
+<p>要求password中必须包含三种以上的类型的字符，于是正常构造如下的payload</p>
+<div class="hljs"><pre><code class="hljs llvm">POST:
+password<span class="hljs-operator">=</span><span class="hljs-number">42</span>adad<span class="hljs-comment">;d;;a</span>
+
+//非正常的
+password<span class="hljs-operator">=</span><span class="hljs-number">42</span><span class="hljs-variable">%00</span>
+或者POST一个任意不等于password的字符
+暂时不知道什么原因导致的</code></pre></div>
+
+<p><img src="https://i.loli.net/2020/11/28/euJc6DPKCZ4a5bY.png" srcset="/img/loading.gif" alt="shuzi2.png"></p>
+<p><img src="https://i.loli.net/2020/11/28/HwsChaXMRFWmjeA.png" srcset="/img/loading.gif" alt="shuzi1.png"></p>
+<h2 id="简单waf"><a href="#简单waf" class="headerlink" title="简单waf"></a>简单waf</h2><p>网址打不开</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96/">变量覆盖</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%87%BD%E6%95%B0%E6%BC%8F%E6%B4%9E/">函数漏洞</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E7%BB%95%E8%BF%87/">绕过</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/16/uploads/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">uploads-labs</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/10/bugku1/">
+                        <span class="hidden-mobile">bugku刷题记录2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "bugku代码审计&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

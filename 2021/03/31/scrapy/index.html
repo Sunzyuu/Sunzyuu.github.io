@@ -1,0 +1,771 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>scrapy - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-31 22:30" pubdate>
+        2021年3月31日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">scrapy</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="学习分布式爬虫第一天"><a href="#学习分布式爬虫第一天" class="headerlink" title="学习分布式爬虫第一天"></a>学习分布式爬虫第一天</h1><h2 id="xpath编写"><a href="#xpath编写" class="headerlink" title="xpath编写"></a>xpath编写</h2><p>xpath学习，谷歌商店下载<code>xpath helper</code>，可以大大提高效率</p>
+<p>jd也买你获取今日秒杀的商品信息</p>
+<div class="hljs"><pre><code class="hljs css">//<span class="hljs-selector-tag">div</span><span class="hljs-selector-attr">[@class=<span class="hljs-string">&quot;slider_wrapper&quot;</span>]</span>/<span class="hljs-selector-tag">a</span><span class="hljs-selector-attr">[position()&lt;5]</span><span class="hljs-selector-attr">[@title]</span></code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs dns">三星Galaxy Note20 Ultra <span class="hljs-number">5</span>G(SM-N9860)S Pen&amp;三星笔记 <span class="hljs-number">120</span>Hz自适应屏幕 <span class="hljs-number">5</span>G手机 游戏手机 <span class="hljs-number">12</span>GB+<span class="hljs-number">512</span>GB 迷雾金¥<span class="hljs-number">9899</span>.<span class="hljs-number">00¥9999.00</span>
+清风抽纸纸巾整箱<span class="hljs-number">24</span>包金装原木<span class="hljs-number">3</span>层<span class="hljs-number">130</span>抽婴儿适用卫生纸餐巾纸抽¥<span class="hljs-number">57.90¥169.00</span>
+vivo Y3s <span class="hljs-number">5000m</span>Ah大电池长续航 <span class="hljs-number">128</span>GB大内存 AI智慧摄影 全网通新品手机 海风青 <span class="hljs-number">4</span>GB+<span class="hljs-number">64</span>GB¥<span class="hljs-number">999</span>.<span class="hljs-number">00¥1098.00</span></code></pre></div>
+
+
+
+<h2 id="一些tip"><a href="#一些tip" class="headerlink" title="一些tip"></a>一些tip</h2><ul>
+<li>关闭配置信息显示</li>
+</ul>
+<p>在setting.py添加<code>LOG_LEVEL = &quot;WARNING&quot;</code></p>
+<ul>
+<li>爬虫运行</li>
+</ul>
+<p>在pycharm中运行爬虫项目，需要在爬虫项目所在路径下建立一个py文件(与cfg文件同目录)</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">from</span> scrapy <span class="hljs-keyword">import</span> cmdline
+cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;</span>.split())</code></pre></div>
+
+<ul>
+<li>小知识</li>
+</ul>
+<p>将爬取到数据返回使用的时yield而不是return，返回给pipeline，pioeline中可以自定义方法</p>
+<p>使用pipeline之前需要到seting.py中开启，就是将注释删除</p>
+<h2 id="爬取腾讯招聘信息的scrapy爬虫"><a href="#爬取腾讯招聘信息的scrapy爬虫" class="headerlink" title="爬取腾讯招聘信息的scrapy爬虫"></a>爬取腾讯招聘信息的scrapy爬虫</h2><h3 id="1-首先创一个项目"><a href="#1-首先创一个项目" class="headerlink" title="1.首先创一个项目"></a>1.首先创一个项目</h3><p>创建项目的命令如下</p>
+<div class="hljs"><pre><code class="hljs ebnf"><span class="hljs-attribute">scrapy startproject tencent</span></code></pre></div>
+
+<p>在进入项目创建一个爬虫</p>
+<div class="hljs"><pre><code class="hljs awk">scrapy genspider hr careers.tencent.com
+ <span class="hljs-regexp">//</span> hr 为爬虫的网站
+ <span class="hljs-regexp">//</span> careers.tencent.com这个是爬虫允许爬取的地址</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210331215742791.png" srcset="/img/loading.gif" alt="image-20210331215742791" style="zoom:67%;">
+
+
+
+<h3 id="2-分析网页结构和url组成"><a href="#2-分析网页结构和url组成" class="headerlink" title="2.分析网页结构和url组成"></a>2.分析网页结构和url组成</h3><p>进入<code>https://careers.tencent.com/search.html</code>.</p>
+<p>要爬取的内容为</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210331215908145.png" srcset="/img/loading.gif" alt="image-20210331215908145"></p>
+<p>查看源码可以发现并没有上面的字段，只有一些js代码，这就说明<code>https://careers.tencent.com/search.html</code>，并不是我们爬虫的start_url，所以第一步需要在该页面中找到我们的start_url</p>
+<p>F12查看元素，并刷新网页，检查network中的XHR，很容易看到主页面显示的字段，说明我们的start_url，在这里，再查看headers获取到url</p>
+<div class="hljs"><pre><code class="hljs sas">https://careers.tencent.com/tencentcareer/api/post/Query?timestamp=1617199191983<span class="hljs-variable">&amp;countryId</span>=<span class="hljs-variable">&amp;cityId</span>=<span class="hljs-variable">&amp;bgIds</span>=<span class="hljs-variable">&amp;productId</span>=<span class="hljs-variable">&amp;categoryId</span>=<span class="hljs-variable">&amp;parentCategoryId</span>=<span class="hljs-variable">&amp;attrId</span>=<span class="hljs-variable">&amp;keyword</span>=<span class="hljs-variable">&amp;pageIndex</span>=1<span class="hljs-variable">&amp;pageSize</span>=10<span class="hljs-variable">&amp;language</span>=zh-cn<span class="hljs-variable">&amp;area</span>=cn</code></pre></div>
+
+
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210331220441969.png" srcset="/img/loading.gif" alt="image-20210331220441969"></p>
+<p>接下来就是查看url的变化规则，让爬虫实现自动翻页，点击第二页再次查看上面的url</p>
+<div class="hljs"><pre><code class="hljs sas">https://careers.tencent.com/tencentcareer/api/post/Query?timestamp=1617199575064<span class="hljs-variable">&amp;countryId</span>=<span class="hljs-variable">&amp;cityId</span>=<span class="hljs-variable">&amp;bgIds</span>=<span class="hljs-variable">&amp;productId</span>=<span class="hljs-variable">&amp;categoryId</span>=<span class="hljs-variable">&amp;parentCategoryId</span>=<span class="hljs-variable">&amp;attrId</span>=<span class="hljs-variable">&amp;keyword</span>=<span class="hljs-variable">&amp;pageIndex</span>=2<span class="hljs-variable">&amp;pageSize</span>=10<span class="hljs-variable">&amp;language</span>=zh-cn<span class="hljs-variable">&amp;area</span>=cn</code></pre></div>
+
+<p>很容易发现规律，就是pageIndex的值发生了变化</p>
+<p>接下来就是工作的详情页的url</p>
+<p>进入工作详情页，查看源码依然只有js，所以继续使用上面的方法查看url和内容</p>
+<div class="hljs"><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>careers.tencent.com<span class="hljs-regexp">/tencentcareer/</span>api<span class="hljs-regexp">/post/</span>ByPostId?timestamp=<span class="hljs-number">1617199879005</span>&amp;postId=<span class="hljs-number">1377253503910551552</span>&amp;language=zh-cn</code></pre></div>
+
+<p>其中改变的参数是<code>postId</code>，与priview中的值对应</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210331221442816.png" srcset="/img/loading.gif" alt="image-20210331221442816"></p>
+<h3 id="3-编写爬虫"><a href="#3-编写爬虫" class="headerlink" title="3.编写爬虫"></a>3.编写爬虫</h3><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy
+<span class="hljs-keyword">import</span> json
+
+<span class="hljs-string">&#x27;&#x27;&#x27;</span>
+<span class="hljs-string">https://careers.tencent.com/tencentcareer/api/post/Query?timestamp=1617180957390&amp;countryId=&amp;cityId=&amp;bgIds=&amp;productId=&amp;categoryId=&amp;parentCategoryId=&amp;attrId=&amp;keyword=&amp;pageIndex=1&amp;pageSize=10&amp;language=zh-cn&amp;area=cn</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">https://careers.tencent.com/tencentcareer/api/post/ByPostId?timestamp=1617181089850&amp;postId=1123175628615454720&amp;language=zh-cn</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">https://careers.tencent.com/tencentcareer/api/post/Query?timestamp=1617181122812&amp;countryId=&amp;cityId=&amp;bgIds=&amp;productId=&amp;categoryId=&amp;parentCategoryId=&amp;attrId=&amp;keyword=&amp;pageIndex=2&amp;pageSize=10&amp;language=zh-cn&amp;area=cn</span>
+<span class="hljs-string">&#x27;&#x27;&#x27;</span>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HrSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span>
+    name = <span class="hljs-string">&#x27;hr&#x27;</span>
+    allowed_domains = [<span class="hljs-string">&#x27;careers.tencent.com&#x27;</span>]
+    <span class="hljs-comment"># start_urls = [&#x27;http://careers.tencent.com/&#x27;]</span>
+    first_url = <span class="hljs-string">&quot;https://careers.tencent.com/tencentcareer/api/post/Query?timestamp=1617180957390&amp;countryId=&amp;cityId=&amp;bgIds=&amp;productId=&amp;categoryId=&amp;parentCategoryId=&amp;attrId=&amp;keyword=&amp;pageIndex=&#123;&#125;&amp;pageSize=10&amp;language=zh-cn&amp;area=cn&quot;</span>
+    <span class="hljs-comment"># firsturl的pageindex改变</span>
+    <span class="hljs-comment"># 职位详情页的url</span>
+    detial_url = <span class="hljs-string">&quot;https://careers.tencent.com/tencentcareer/api/post/ByPostId?timestamp=1617181089850&amp;postId=&#123;&#125;&amp;language=zh-cn&quot;</span>
+    start_urls = [first_url.<span class="hljs-built_in">format</span>(<span class="hljs-number">1</span>)]
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span>
+        <span class="hljs-keyword">for</span> page <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>):
+            url = self.first_url.<span class="hljs-built_in">format</span>(page)
+            <span class="hljs-comment"># 将url发送给parse_one继续处理</span>
+            <span class="hljs-comment"># 这里也是分布式爬虫与普通爬虫的最大的地方</span>
+            <span class="hljs-keyword">yield</span> scrapy.Request(
+                url=url,
+                callback=self.parse_one
+            )
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_one</span>(<span class="hljs-params">self, response</span>):</span>
+        <span class="hljs-comment"># 将网页的数据json格式化，方便获取数据</span>
+        data = json.loads(response.text)
+        <span class="hljs-comment"># print(data)</span>
+        <span class="hljs-keyword">for</span> job <span class="hljs-keyword">in</span> data[<span class="hljs-string">&#x27;Data&#x27;</span>][<span class="hljs-string">&#x27;Posts&#x27;</span>]:
+            item = &#123;&#125;
+            <span class="hljs-comment"># 获取json格式中的数据</span>
+            item[<span class="hljs-string">&#x27;job_name&#x27;</span>] = job[<span class="hljs-string">&#x27;RecruitPostName&#x27;</span>]
+            item[<span class="hljs-string">&#x27;job_type&#x27;</span>] = job[<span class="hljs-string">&#x27;CategoryName&#x27;</span>]
+            postid = job[<span class="hljs-string">&#x27;PostId&#x27;</span>]
+            detial_url = self.detial_url.<span class="hljs-built_in">format</span>(postid)
+            <span class="hljs-comment"># 将详情也的url交给另外一个parse_two处理</span>
+          
+            <span class="hljs-keyword">yield</span> scrapy.Request(
+                url=detial_url,
+                meta=&#123;<span class="hljs-string">&#x27;item&#x27;</span>: item&#125;, <span class="hljs-comment">#这里下面会有解释 &#x27;item&#x27;可以任意取名 item则是上面的item=&#123;&#125;</span>
+                callback=self.parse_two
+            )
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_two</span>(<span class="hljs-params">self, response</span>):</span>
+        item = response.meta.get(<span class="hljs-string">&#x27;item&#x27;</span>) <span class="hljs-comment"># 这里是上面的&#x27;item&#x27;</span>
+        data = json.loads(response.text)
+        <span class="hljs-comment"># print(data)</span>
+        item[<span class="hljs-string">&#x27;job_duty&#x27;</span>] = data[<span class="hljs-string">&#x27;Data&#x27;</span>][<span class="hljs-string">&#x27;Responsibility&#x27;</span>]
+        item[<span class="hljs-string">&#x27;job_require&#x27;</span>] = data[<span class="hljs-string">&#x27;Data&#x27;</span>][<span class="hljs-string">&#x27;Requirement&#x27;</span>]
+        <span class="hljs-keyword">yield</span> item
+</code></pre></div>
+
+
+
+<p>request类</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Request</span>(<span class="hljs-params">object_ref</span>):</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, url, callback=<span class="hljs-literal">None</span>, method=<span class="hljs-string">&#x27;GET&#x27;</span>, headers=<span class="hljs-literal">None</span>, body=<span class="hljs-literal">None</span>,</span></span>
+<span class="hljs-function"><span class="hljs-params">                 cookies=<span class="hljs-literal">None</span>, meta=<span class="hljs-literal">None</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>, priority=<span class="hljs-number">0</span>,</span></span>
+<span class="hljs-function"><span class="hljs-params">                 dont_filter=<span class="hljs-literal">False</span>, errback=<span class="hljs-literal">None</span>, flags=<span class="hljs-literal">None</span>, cb_kwargs=<span class="hljs-literal">None</span></span>):</span>
+        self._encoding = encoding  <span class="hljs-comment"># this one has to be set first</span>
+        self.method = <span class="hljs-built_in">str</span>(method).upper()
+        self._set_url(url)
+        self._set_body(body)
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(priority, <span class="hljs-built_in">int</span>):
+            <span class="hljs-keyword">raise</span> TypeError(<span class="hljs-string">f&quot;Request priority not an integer: <span class="hljs-subst">&#123;priority!r&#125;</span>&quot;</span>)
+        self.priority = priority
+
+        <span class="hljs-keyword">if</span> callback <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">callable</span>(callback):
+            <span class="hljs-keyword">raise</span> TypeError(<span class="hljs-string">f&#x27;callback must be a callable, got <span class="hljs-subst">&#123;<span class="hljs-built_in">type</span>(callback).__name__&#125;</span>&#x27;</span>)
+        <span class="hljs-keyword">if</span> errback <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">callable</span>(errback):
+            <span class="hljs-keyword">raise</span> TypeError(<span class="hljs-string">f&#x27;errback must be a callable, got <span class="hljs-subst">&#123;<span class="hljs-built_in">type</span>(errback).__name__&#125;</span>&#x27;</span>)
+        self.callback = callback
+        self.errback = errback
+
+        self.cookies = cookies <span class="hljs-keyword">or</span> &#123;&#125;
+        self.headers = Headers(headers <span class="hljs-keyword">or</span> &#123;&#125;, encoding=encoding)
+        self.dont_filter = dont_filter
+
+        self._meta = <span class="hljs-built_in">dict</span>(meta) <span class="hljs-keyword">if</span> meta <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+        self._cb_kwargs = <span class="hljs-built_in">dict</span>(cb_kwargs) <span class="hljs-keyword">if</span> cb_kwargs <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+        self.flags = [] <span class="hljs-keyword">if</span> flags <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-built_in">list</span>(flags)
+</code></pre></div>
+
+<p>可以看到其中的参数很多，常用的是<code>url,cookie,meta</code></p>
+<p>其中meta为字典类型</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/spider/">spider</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/04/14/redis/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">redis</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/21/mycms/">
+                        <span class="hidden-mobile">mycms</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "scrapy&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

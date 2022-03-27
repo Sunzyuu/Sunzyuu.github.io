@@ -1,0 +1,884 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>IDscan - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-28 15:34" pubdate>
+        2021年7月28日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      28
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">IDscan</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：8 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>一个针对URL的简单敏感信息扫描器</p>
+<p>此工具可以类似于dirsearch，如果字典足够大，完全可以达到相同的效果</p>
+<span id="more"></span>
+
+<h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><blockquote>
+<p>python3</p>
+<p>使用的库： threadpool</p>
+<p>pip install requests threadpool</p>
+</blockquote>
+<p>主要文件</p>
+<ul>
+<li>IDscan<ul>
+<li>get_ip_list.py<ul>
+<li>讲IP段转换成ip列表，再进行扫描</li>
+</ul>
+</li>
+<li>IDscan.py<ul>
+<li>threadpool  使用多线程加快扫描速度</li>
+<li>random User-Agent   随机使用代理防止被封</li>
+</ul>
+</li>
+<li>rules.txt<ul>
+<li>漏洞规则</li>
+</ul>
+</li>
+<li>url_list.txt<ul>
+<li>将被检测内容填入其中</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="技术实现"><a href="#技术实现" class="headerlink" title="技术实现"></a>技术实现</h1><p>该脚本可以实现三种类型的扫描，关键在于网端测试，将网端转换为ip列表，再对每一个ip进行扫描</p>
+<ul>
+<li>网段</li>
+<li>单个或多个网址</li>
+<li>某个网站的特殊端口</li>
+</ul>
+<h2 id="探测原理"><a href="#探测原理" class="headerlink" title="探测原理"></a>探测原理</h2><p>将rule.txt中可能存在泄露的url与待检测的网址拼接后，进行访问，之后查看状态码，若为200则可能存在敏感信息泄露。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">verify</span>(<span class="hljs-params">target</span>):</span>
+    headers_list = [
+    <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36&#x27;</span>,
+    <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:54.0) Gecko/20100101 Firefox/54.0&#x27;</span>,
+    <span class="hljs-string">&#x27;Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_0 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Version/4.0 Mobile/7A341 Safari/528.16&#x27;</span>,
+    <span class="hljs-string">&#x27;Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X) AppleWebKit/602.4.6 (KHTML, like Gecko) Version/10.0 Mobile/14D27 Safari/602.1&#x27;</span>,
+    <span class="hljs-string">&#x27;Mozilla/5.0 (iPhone; CPU iPhone OS 10_2_1 like Mac OS X; zh-CN) AppleWebKit/537.51.1 (KHTML, like Gecko) Mobile/14D27 UCBrowser/11.6.1.1003 Mobile  AliApp(TUnionSDK/0.1.20)&#x27;</span>,
+    <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1062.0 Safari/536.3&quot;</span>,
+    <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 6.2) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3&quot;</span>,
+    <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.3 (KHTML, like Gecko) Chrome/19.0.1061.1 Safari/536.3&quot;</span>,
+    <span class="hljs-string">&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24&quot;</span>,
+    <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/535.24 (KHTML, like Gecko) Chrome/19.0.1055.1 Safari/535.24&quot;</span>
+    ]
+    headers = &#123; <span class="hljs-string">&#x27;User-Agent&#x27;</span>: random.choice(headers_list) &#125;
+    f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;rules.txt&#x27;</span>,<span class="hljs-string">&#x27;r&#x27;</span>,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>)
+    txt = f.readlines()
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> txt:
+        u,j,w = x.strip().split(<span class="hljs-string">&#x27;|&#x27;</span>)
+        url = target + u
+        <span class="hljs-keyword">try</span>:
+            r = requests.get(url,headers=headers,timeout=<span class="hljs-number">3</span>,verify=<span class="hljs-literal">False</span>) <span class="hljs-comment"># http</span>
+            html = r.text
+            <span class="hljs-keyword">if</span> r.status_code == <span class="hljs-number">200</span>:
+                <span class="hljs-keyword">if</span> j <span class="hljs-keyword">in</span> html:
+                    print(<span class="hljs-string">&#x27;Find: &#x27;</span> + url +<span class="hljs-string">&#x27; is Leak !!! Leak is &#x27;</span>+ w)
+                <span class="hljs-keyword">else</span>:
+                    print(<span class="hljs-string">&#x27;Find: &#x27;</span> + url +<span class="hljs-string">&#x27; is Exist !!!&#x27;</span>)
+        <span class="hljs-keyword">except</span> Exception <span class="hljs-keyword">as</span> e:
+            <span class="hljs-keyword">pass</span></code></pre></div>
+
+
+
+<h2 id="网端测试"><a href="#网端测试" class="headerlink" title="网端测试"></a>网端测试</h2><p>将ip网端转换为ip列表 </p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> os,sys
+
+base = [<span class="hljs-built_in">str</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>)] + [ <span class="hljs-built_in">chr</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;A&#x27;</span>),<span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;A&#x27;</span>)+<span class="hljs-number">6</span>)]
+
+<span class="hljs-comment">#十进制0~255转化为二进制,补0到8位</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dec2bin80</span>(<span class="hljs-params">string_num</span>):</span>
+    num = <span class="hljs-built_in">int</span>(string_num)
+    mid = []
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>: <span class="hljs-keyword">break</span>
+        num,rem = <span class="hljs-built_in">divmod</span>(num, <span class="hljs-number">2</span>)
+        mid.append(base[rem])
+
+    result = <span class="hljs-string">&#x27;&#x27;</span>.join([<span class="hljs-built_in">str</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> mid[::-<span class="hljs-number">1</span>]])
+    length = <span class="hljs-built_in">len</span>(result)
+    <span class="hljs-keyword">if</span> length &lt; <span class="hljs-number">8</span>:
+        result = <span class="hljs-string">&#x27;0&#x27;</span> * (<span class="hljs-number">8</span> - length) + result
+    <span class="hljs-keyword">return</span> result
+
+
+<span class="hljs-comment">#十进制0~255转化为二进制,补0到32位</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dec2bin320</span>(<span class="hljs-params">string_num</span>):</span>
+    num = <span class="hljs-built_in">int</span>(string_num)
+    mid = []
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>: <span class="hljs-keyword">break</span>
+        num,rem = <span class="hljs-built_in">divmod</span>(num, <span class="hljs-number">2</span>)
+        mid.append(base[rem])
+
+    result = <span class="hljs-string">&#x27;&#x27;</span>.join([<span class="hljs-built_in">str</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> mid[::-<span class="hljs-number">1</span>]])
+    length = <span class="hljs-built_in">len</span>(result)
+    <span class="hljs-keyword">if</span> length &lt; <span class="hljs-number">32</span>:
+        result = <span class="hljs-string">&#x27;0&#x27;</span> * (<span class="hljs-number">32</span> - length) + result
+    <span class="hljs-keyword">return</span> result
+
+
+<span class="hljs-comment">#十进制0~255转化为二进制，不补零</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dec2bin</span>(<span class="hljs-params">string_num</span>):</span>
+    num = <span class="hljs-built_in">int</span>(string_num)
+    mid = []
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>: <span class="hljs-keyword">break</span>
+        num,rem = <span class="hljs-built_in">divmod</span>(num, <span class="hljs-number">2</span>)
+        mid.append(base[rem])
+
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join([<span class="hljs-built_in">str</span>(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> mid[::-<span class="hljs-number">1</span>]])
+
+
+<span class="hljs-comment">#二进制转换为十进制</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bin2dec</span>(<span class="hljs-params">string_num</span>):</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(string_num, <span class="hljs-number">2</span>))
+
+<span class="hljs-comment">#ip列表生成</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">iplist</span>(<span class="hljs-params">string_startip,string_endip</span>):</span>
+
+    <span class="hljs-comment">#分割IP，然后将其转化为8位的二进制代码</span>
+    start = string_startip.split(<span class="hljs-string">&#x27;.&#x27;</span>)
+    start_a = dec2bin80(start[<span class="hljs-number">0</span>])
+    start_b = dec2bin80(start[<span class="hljs-number">1</span>])
+    start_c = dec2bin80(start[<span class="hljs-number">2</span>])
+    start_d = dec2bin80(start[<span class="hljs-number">3</span>])
+    start_bin = start_a + start_b + start_c + start_d
+    <span class="hljs-comment">#将二进制代码转化为十进制</span>
+    start_dec = bin2dec(start_bin)
+
+    end = string_endip.split(<span class="hljs-string">&#x27;.&#x27;</span>)
+    end_a = dec2bin80(end[<span class="hljs-number">0</span>])
+    end_b = dec2bin80(end[<span class="hljs-number">1</span>])
+    end_c = dec2bin80(end[<span class="hljs-number">2</span>])
+    end_d = dec2bin80(end[<span class="hljs-number">3</span>])
+    end_bin = end_a + end_b + end_c + end_d
+    <span class="hljs-comment">#将二进制代码转化为十进制</span>
+    end_dec = bin2dec(end_bin)
+
+    <span class="hljs-comment">#十进制相减，获取两个IP之间有多少个IP</span>
+    count = <span class="hljs-built_in">int</span>(end_dec) - <span class="hljs-built_in">int</span>(start_dec)
+
+    ip_list = []
+    <span class="hljs-comment">#生成IP列表</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,count + <span class="hljs-number">1</span>):
+        <span class="hljs-comment">#将十进制IP加一，再转化为二进制（32位补齐）</span>
+        plusone_dec = <span class="hljs-built_in">int</span>(start_dec) + i
+        plusone_dec = <span class="hljs-built_in">str</span>(plusone_dec)
+        address_bin = dec2bin320(plusone_dec)
+        <span class="hljs-comment">#分割IP，转化为十进制</span>
+        address_a = bin2dec(address_bin[<span class="hljs-number">0</span>:<span class="hljs-number">8</span>])
+        address_b = bin2dec(address_bin[<span class="hljs-number">8</span>:<span class="hljs-number">16</span>])
+        address_c = bin2dec(address_bin[<span class="hljs-number">16</span>:<span class="hljs-number">24</span>])
+        address_d = bin2dec(address_bin[<span class="hljs-number">24</span>:<span class="hljs-number">32</span>])
+        address = address_a + <span class="hljs-string">&#x27;.&#x27;</span>+ address_b +<span class="hljs-string">&#x27;.&#x27;</span>+ address_c +<span class="hljs-string">&#x27;.&#x27;</span>+ address_d
+        ip_list.append(address)
+    <span class="hljs-keyword">return</span> ip_list</code></pre></div>
+
+
+
+<h2 id="扫描规则"><a href="#扫描规则" class="headerlink" title="扫描规则"></a>扫描规则</h2><p>这里定义了一些常见的敏感信息的url，主函数通过一行一行读取该文件中的内容，然后与网址拼接后访问</p>
+<div class="hljs"><pre><code class="hljs coq">/.svn/entries|<span class="hljs-type">dir</span>|<span class="hljs-type">SVN</span>信息泄露
+/.git/config|<span class="hljs-type">[core</span>]|<span class="hljs-type">Git</span>信息泄露
+/.git/config|<span class="hljs-type">repositoryformatversion</span>|<span class="hljs-type">Git</span>信息泄露
+.git/refs/stash|<span class="hljs-type">|git</span> stash 泄露
+/CVS/Root|<span class="hljs-type">|cvs</span>信息泄露
+/CVS/Entries|<span class="hljs-type">|cvs</span>信息泄露
+/.hg/|<span class="hljs-type">|.hg</span>源码泄漏
+/.bzr/|<span class="hljs-type">|.bzr</span>信息泄露
+/.DS_Store|<span class="hljs-type">|DS_Store</span>文件泄露
+/htaccess.txt|<span class="hljs-type">|访问控制文件泄露</span>
+<span class="hljs-type">/.index</span>.php.swp|<span class="hljs-type">|vim</span>交换文件名
+/.index.php.swn|<span class="hljs-type">|vim</span>交换文件名
+/.index.php.swo|<span class="hljs-type">|vim</span>交换文件名
+/WEB-INF/web.xml|<span class="hljs-type">&lt;?xml</span> version=|<span class="hljs-type">初始化工程配置信息泄露</span>
+<span class="hljs-type">/WEB</span>-INF/web.xml|<span class="hljs-type">&lt;web</span>-app|<span class="hljs-type">初始化工程配置信息泄露</span>
+<span class="hljs-type">/crossdomin</span>.xml|<span class="hljs-type">cross</span>-domain-policy|<span class="hljs-type">跨域策略文件</span>
+<span class="hljs-type">/icons</span>/|<span class="hljs-type">Index</span> of|<span class="hljs-type">目录遍历路径</span>
+<span class="hljs-type">/robots</span>.txt|<span class="hljs-type">Disallow</span>|<span class="hljs-type">爬虫配置文件</span>
+<span class="hljs-type">/uddiexplorer</span>/SearchPublicRegistries.jsp|<span class="hljs-type">Search</span> public registries|<span class="hljs-type">Weblogic</span> 服务器请求伪造漏洞
+/ws_utc/config.<span class="hljs-built_in">do</span>|<span class="hljs-type">tc_container</span>|<span class="hljs-type">Oracle</span> WebLogic ws-utc 任意文件上传漏洞
+:<span class="hljs-number">8080</span>/manage|<span class="hljs-type">|Jenkins</span>未授权访问可执行命令
+:<span class="hljs-number">8080</span>/script|<span class="hljs-type">|Jenkins</span>未授权访问可执行命令
+:<span class="hljs-number">9200</span>/|<span class="hljs-type">|build_hashElasticsearch</span>未授权访问
+:<span class="hljs-number">9200</span>/_cat/indices|<span class="hljs-type">_river</span>|<span class="hljs-type">Elasticsearch</span>未授权访问
+:<span class="hljs-number">9200</span>/_river/_search|<span class="hljs-type">node</span>|<span class="hljs-type">Elasticsearch</span>未授权访问
+:<span class="hljs-number">5984</span>/_config/|<span class="hljs-type">httpd_design_handlers</span>|<span class="hljs-type">CouchDB</span>未授权访问
+:<span class="hljs-number">2375</span>/containers/json|<span class="hljs-type">[|Docker</span>未授权访问
+:<span class="hljs-number">8161</span>/admin/|<span class="hljs-type">|ActiveMQ</span>未授权访问
+:<span class="hljs-number">7001</span>/_async/AsyncResponseService|<span class="hljs-type">|AsyncResponseService</span> RCE
+/test.php|<span class="hljs-type">|测试页面</span>
+<span class="hljs-type">/test</span>.cgi|<span class="hljs-type">|测试页面</span>
+<span class="hljs-type">/info</span>.php|<span class="hljs-type">|测试页面</span>
+<span class="hljs-type">/login</span>.php|<span class="hljs-type">|管理后台地址泄露</span>
+<span class="hljs-type">/admin</span>.php|<span class="hljs-type">|管理后台地址泄露</span>
+<span class="hljs-type">/manager</span>.php|<span class="hljs-type">|管理后台地址泄露</span>
+<span class="hljs-type">/admin_login</span>.php|<span class="hljs-type">|管理后台地址泄露</span>
+<span class="hljs-type">/.test</span>.php.swp|<span class="hljs-type">|编辑器备份文件泄露</span>
+<span class="hljs-type">/test</span>.php.bak|<span class="hljs-type">|编辑器备份文件泄露</span>
+<span class="hljs-type">/test</span>.jsp.old|<span class="hljs-type">|编辑器备份文件泄露</span>
+<span class="hljs-type">/cgi</span>~|<span class="hljs-type">|编辑器备份文件泄露</span>
+<span class="hljs-type">/phpmyadmin</span>|<span class="hljs-type">|phpmyadmin</span>后台泄露
+/phpinfo.php|<span class="hljs-type">|phpinfo</span>页面泄露
+/basic/index.php|<span class="hljs-type">|HTTP</span>认证泄露漏洞
+/www.rar|<span class="hljs-type">|网站备份文件</span>
+<span class="hljs-type">/web</span>.zip|<span class="hljs-type">|网站备份文件</span>
+<span class="hljs-type">/www</span>.zip|<span class="hljs-type">|网站备份文件 </span>
+<span class="hljs-type">/sitename</span>.tar.gz|<span class="hljs-type">|网站备份文件</span>
+<span class="hljs-type">/_vti_inf</span>.html|<span class="hljs-type">|Frontpage</span> 信息泄漏
+/_vti_pvt/service.pwd|<span class="hljs-type">|FrontPage</span> pwd 文件可读
+/.bashrc|<span class="hljs-type">|bashrc</span> 信息泄漏
+/.bash_profile|<span class="hljs-type">|profile</span> 信息泄露
+/.zshrc|<span class="hljs-type">|zsh</span> 信息泄露</code></pre></div>
+
+<h2 id="主函数"><a href="#主函数" class="headerlink" title="主函数"></a>主函数</h2><div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+    print(<span class="hljs-string">&#x27;*&#x27;</span>*<span class="hljs-number">35</span>+<span class="hljs-string">&#x27;&#x27;&#x27;\nIDscan V3.0\n</span>
+<span class="hljs-string">Information disclosure Check.\n&#x27;&#x27;&#x27;</span>+<span class="hljs-string">&#x27;*&#x27;</span>*<span class="hljs-number">35</span>)
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;url_list.txt&#x27;</span>,<span class="hljs-string">&#x27;r&#x27;</span>,encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+        url_l = f.readlines()
+    pool = threadpool.ThreadPool(<span class="hljs-number">255</span>)
+    ipl = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> url_l:
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;http&#x27;</span> <span class="hljs-keyword">in</span> i: <span class="hljs-comment"># website url</span>
+            ipl.append(i.strip())
+        <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;-&#x27;</span> <span class="hljs-keyword">in</span> i: <span class="hljs-comment"># network segment</span>
+            start_ip,end_ip = i.split(<span class="hljs-string">&#x27;-&#x27;</span>)
+            ipl.extend(get_ip_list.iplist(start_ip,end_ip))
+        <span class="hljs-keyword">elif</span> checkip(i):
+            ipl.append(i.strip())
+        <span class="hljs-keyword">else</span>:
+            print(<span class="hljs-string">&#x27;Unknown form IP：&#x27;</span>+i)
+    print(<span class="hljs-string">&#x27;Start...&#x27;</span>)
+    
+    rethr = threadpool.makeRequests(verify, ipl) <span class="hljs-comment"># connect rules</span>
+    [pool.putRequest(req) <span class="hljs-keyword">for</span> req <span class="hljs-keyword">in</span> rethr]
+    pool.wait()
+
+    print(<span class="hljs-string">&#x27;End...&#x27;</span>)</code></pre></div>
+
+<h1 id="url-list-txt-使用方法"><a href="#url-list-txt-使用方法" class="headerlink" title="url_list.txt 使用方法"></a>url_list.txt 使用方法</h1><ul>
+<li><p><strong>如果你想扫描网段</strong></p>
+<div class="hljs"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.0.0</span>-<span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">0</span>.<span class="hljs-number">255</span>
+<span class="hljs-number">192.167.36.24</span>-<span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">39</span>.<span class="hljs-number">255</span></code></pre></div>
+</li>
+<li><p><strong>if you want to scan special port | 如果你想扫描特殊端口</strong></p>
+<div class="hljs"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.0.1:8081</span></code></pre></div>
+</li>
+<li><p><strong>if you wang to scan website url| 如果你想扫描网站地址</strong></p>
+<div class="hljs"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span>www.baidu.com
+https:<span class="hljs-regexp">//</span>www.baidu.com
+http:<span class="hljs-regexp">//</span>www.baidu.com:<span class="hljs-number">81</span></code></pre></div>
+
+</li>
+</ul>
+<p>扫描百度的结果</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210728175634955.png" srcset="/img/loading.gif" alt="image-20210728175634955"></p>
+<blockquote>
+<p>参考:</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/zhaijiahui/IDscan">https://github.com/zhaijiahui/IDscan</a></p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/scan/">scan</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/06/maliciousUrls/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">商品评价情感分析</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/21/VPN/">
+                        <span class="hidden-mobile">VPN</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "IDscan&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

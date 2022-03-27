@@ -1,0 +1,1169 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>商品评价情感分析 - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-08-06 15:26" pubdate>
+        2021年8月6日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">商品评价情感分析</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：8 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="项目综述"><a href="#项目综述" class="headerlink" title="项目综述"></a>项目综述</h1><ul>
+<li><p>对给定的文本进行自动分类，对评价分成好评和差评</p>
+</li>
+<li><p>支持批量检测，并进行可视化展示</p>
+</li>
+<li><p>对所有评价进行词云展示</p>
+</li>
+</ul>
+<h1 id="数据获取"><a href="#数据获取" class="headerlink" title="数据获取"></a>数据获取</h1><p>爬虫获取JD的商品评价，这里主要针对智能手机的评价</p>
+<ul>
+<li><p>首先是分析如何获取到商品的评价</p>
+</li>
+<li><p>对商品评价进行提取</p>
+</li>
+<li><p>对获取的数据进行分类保存</p>
+</li>
+</ul>
+<h2 id="获取评价"><a href="#获取评价" class="headerlink" title="获取评价"></a>获取评价</h2><p>首先进行搜索，比如关键词 为手机</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">self.startUrl</span> = <span class="hljs-string">&quot;https://search.jd.com/Search?keyword=%s&amp;enc=utf-8&quot;</span> % (quote(<span class="hljs-string">&#x27;手机&#x27;</span>))  <span class="hljs-comment"># jD起始搜索页面</span></code></pre></div>
+
+<p>之后获取商品的ID，可以在网页源码中提取<code>//li[@class=&quot;gl-item&quot;]/@data-sku</code>，具体的节点信息如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210807164810298.png" srcset="/img/loading.gif" alt="image-20210807164810298"></p>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210807164417239.png" srcset="/img/loading.gif" alt="image-20210807164417239" style="zoom:80%;">
+
+<p>获得商品ID后可以利用JD提供的评价API获取评论页面，如图</p>
+<p>api接口如下</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">https</span>://sclub.jd.com/comment/productPageComments.action?productId=<span class="hljs-number">100020210392</span>&amp;score=<span class="hljs-number">3</span>&amp;sortType=<span class="hljs-number">5</span>&amp;page=<span class="hljs-number">2</span>&amp;pageSize=<span class="hljs-number">10</span>&amp;isShadowSku=<span class="hljs-number">0</span>&amp;rid=<span class="hljs-number">0</span>&amp;fold=<span class="hljs-number">1</span></code></pre></div>
+
+<p>其中需要改变的参数为</p>
+<ul>
+<li><p>productId  商品ID</p>
+</li>
+<li><p>score 评论的分类 1为差评 2为中评 3为好评</p>
+</li>
+<li><p>page 评论的页数</p>
+</li>
+</ul>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210807164923145.png" srcset="/img/loading.gif" alt="image-20210807164923145" style="zoom:80%;">
+
+<p>获取这个页面后就是对数据进行提取</p>
+<h2 id="数据提取"><a href="#数据提取" class="headerlink" title="数据提取"></a>数据提取</h2><blockquote>
+<p> 这里为了方便，先将提取到的数据保存在csv文件中，之后再写入到数据库中</p>
+</blockquote>
+<p>上图中我们需要提取的数据只有评价部分的内容和打分数，也就是，content和socore的数据</p>
+<p>这里可以将网页数据转换成json数据后提取，很方便</p>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210807165659199.png" srcset="/img/loading.gif" alt="image-20210807165659199" style="zoom:80%;">
+
+<div class="hljs"><pre><code class="hljs python">res_json = json.loads(response.text)
+<span class="hljs-keyword">for</span> cdit <span class="hljs-keyword">in</span> res_json[<span class="hljs-string">&#x27;comments&#x27;</span>]:
+	<span class="hljs-comment"># comment = cdit[&#x27;content &#x27;].replace(&quot;\n&quot;, &#x27; &#x27;)</span>
+	comment = cdit[<span class="hljs-string">&#x27;content&#x27;</span>].replace(<span class="hljs-string">&quot;\n&quot;</span>, <span class="hljs-string">&#x27; &#x27;</span>).replace(<span class="hljs-string">&#x27;\r&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>)
+	comments.append(comment)
+	scores.append(cdit[<span class="hljs-string">&#x27;score&#x27;</span>])
+	print(comment)</code></pre></div>
+
+<h2 id="数据保存"><a href="#数据保存" class="headerlink" title="数据保存"></a>数据保存</h2><div class="hljs"><pre><code class="hljs python">savepath = <span class="hljs-string">&#x27;./&#x27;</span> + self.categlory + <span class="hljs-string">&#x27;_&#x27;</span> + self.comtype[score] + <span class="hljs-string">&#x27;.csv&#x27;</span>
+logging.warning(<span class="hljs-string">&quot;已爬取%d 条 %s 评价信息&quot;</span> % (<span class="hljs-built_in">len</span>(comments), self.comtype[score]))
+<span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(savepath, <span class="hljs-string">&#x27;a+&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(comments)):
+	    f.write(<span class="hljs-string">&quot;%d\t%s\t%s\n&quot;</span> % (i, scores[i], comments[i]))
+logging.warning(<span class="hljs-string">&quot;数据已保存在 %s&quot;</span> % (savepath))</code></pre></div>
+
+<h1 id="贝叶斯分类"><a href="#贝叶斯分类" class="headerlink" title="贝叶斯分类"></a>贝叶斯分类</h1><blockquote>
+<p>1.加载语料，打乱语料顺序，将语料分为评论和好评/差评<br>2.去除评论中的英文、停用词<br>3.将全部语料按1:4分为测试集与训练集<br>4.使用CountVectorize构造词袋模型<br>5.使用TfidfTransformer计算tf-idf值作为特征                                                                                                                                                6.选择多个分类器进行分类(也可以只用一个，这里只用了多项式)<br>7.选择合适的模型并保存</p>
+</blockquote>
+<h2 id="加载语料"><a href="#加载语料" class="headerlink" title="加载语料"></a>加载语料</h2><div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_corpus</span>(<span class="hljs-params">file_path_pos,file_path_nag</span>):</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path_pos, <span class="hljs-string">&#x27;r&#x27;</span>,encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+        reader = csv.reader(f)
+        rows = [row <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> reader]
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path_nag, <span class="hljs-string">&#x27;r&#x27;</span>,encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+        reader = csv.reader(f)
+        rows_2 = [row <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> reader]
+    rows.extend(rows_2)
+    <span class="hljs-comment"># 将读取出来的语料转为list</span>
+    review_data = np.array(rows).tolist()
+    <span class="hljs-comment"># 打乱语料的顺序</span>
+    random.shuffle(review_data)
+    review_list = []
+    sentiment_list = []
+    <span class="hljs-comment"># 第一列为差评/好评， 第二列为评论</span>
+    <span class="hljs-keyword">for</span> words <span class="hljs-keyword">in</span> review_data:
+        review_list.append(words[<span class="hljs-number">0</span>].split(<span class="hljs-string">&quot;\t&quot;</span>)[<span class="hljs-number">2</span>])
+        <span class="hljs-keyword">if</span>(words[<span class="hljs-number">0</span>].split(<span class="hljs-string">&quot;\t&quot;</span>)[<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;5&#x27;</span>):
+            sentiment_list.append(<span class="hljs-number">1</span>)
+        <span class="hljs-keyword">else</span>:
+            sentiment_list.append(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> review_list, sentiment_list</code></pre></div>
+
+<p>生成的数据如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808144639597.png" srcset="/img/loading.gif" alt="image-20210808144639597"></p>
+<h2 id="去除评论中的英文、停用词"><a href="#去除评论中的英文、停用词" class="headerlink" title="去除评论中的英文、停用词"></a>去除评论中的英文、停用词</h2><p>这一步的目的是方便后面的词频统计</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_stopwords</span>(<span class="hljs-params">file_path</span>):</span>  <span class="hljs-comment"># 加载停顿词</span>
+    stop_words = []
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path, encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> words:
+       stop_words.extend([i.strip() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> words.readlines()])
+    <span class="hljs-keyword">return</span> stop_words
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">review_to_text</span>(<span class="hljs-params">review</span>):</span>
+    stop_words = load_stopwords(stopword_path)
+    <span class="hljs-comment"># 去除英文</span>
+    review = re.sub(<span class="hljs-string">&quot;[^\u4e00-\u9fa5^a-z^A-Z]&quot;</span>, <span class="hljs-string">&#x27;&#x27;</span>, review)
+    <span class="hljs-comment"># print(review)</span>
+    review = jieba.cut(review)
+    <span class="hljs-comment"># 去掉停用词，将句子划分成一个个的单词 例如：[&#x27;赞赞赞&#x27;, &#x27;不错&#x27;, &#x27;很漂亮&#x27;, &#x27;外壳&#x27;]</span>
+    words = []
+    <span class="hljs-keyword">if</span> stop_words:
+        all_stop_words = <span class="hljs-built_in">set</span>(stop_words)
+        words = [w <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> review <span class="hljs-keyword">if</span> w <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> all_stop_words]
+    print(words[:<span class="hljs-number">4</span>])
+    <span class="hljs-keyword">return</span> words</code></pre></div>
+
+<p>最后经过处理</p>
+<div class="hljs"><pre><code class="hljs python">review_train = [<span class="hljs-string">&#x27; &#x27;</span>.join(review_to_text(review)) <span class="hljs-keyword">for</span> review <span class="hljs-keyword">in</span> train_review_list]
+review_test = [<span class="hljs-string">&#x27; &#x27;</span>.join(review_to_text(review)) <span class="hljs-keyword">for</span> review <span class="hljs-keyword">in</span> test_review_list]</code></pre></div>
+
+<p>呈现如下的效果</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808144300246.png" srcset="/img/loading.gif" alt="image-20210808144300246"></p>
+<h2 id="训练模型"><a href="#训练模型" class="headerlink" title="训练模型"></a>训练模型</h2><div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 加载语料</span>
+review_list, sentiment_list = load_corpus(file_path_pos,file_path_nag)
+
+<span class="hljs-comment"># 将全部语料按1:4分为测试集与训练集</span>
+n = <span class="hljs-built_in">len</span>(review_list) // <span class="hljs-number">5</span>
+train_review_list, train_sentiment_list = review_list[n:], sentiment_list[n:]
+test_review_list, test_sentiment_list = review_list[:n], sentiment_list[:n]
+
+print(<span class="hljs-string">&#x27;训练集数量： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(train_review_list))))
+print(<span class="hljs-string">&#x27;测试集数量： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(test_review_list))))
+
+<span class="hljs-comment"># 用于训练的评论</span>
+review_train = [<span class="hljs-string">&#x27; &#x27;</span>.join(review_to_text(review)) <span class="hljs-keyword">for</span> review <span class="hljs-keyword">in</span> train_review_list] <span class="hljs-comment"># 将句子中的单词重新拼接，形成无停顿词的句子</span>
+<span class="hljs-comment"># 对于训练评论对应的好评/差评</span>
+sentiment_train = train_sentiment_list
+
+<span class="hljs-comment"># 用于测试的评论</span>
+review_test = [<span class="hljs-string">&#x27; &#x27;</span>.join(review_to_text(review)) <span class="hljs-keyword">for</span> review <span class="hljs-keyword">in</span> test_review_list]
+print(review_test[:<span class="hljs-number">3</span>])
+<span class="hljs-comment"># 对于测试评论对应的好评/差评</span>
+sentiment_test = test_sentiment_list
+
+vectorizer = CountVectorizer(max_df=<span class="hljs-number">0.8</span>, min_df=<span class="hljs-number">3</span>)
+tfidftransformer = TfidfTransformer()
+
+<span class="hljs-comment"># 先转换成词频矩阵，再计算TFIDF值</span>
+tfidf = tfidftransformer.fit_transform(vectorizer.fit_transform(review_train))
+<span class="hljs-comment"># 朴素贝叶斯中的多项式分类器，训练模型</span>
+clf = MultinomialNB().fit(tfidf, sentiment_train)
+
+<span class="hljs-comment"># 将模型保存pickle文件</span>
+<span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(model_export_path, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> file:
+    d = &#123;
+        <span class="hljs-string">&quot;clf&quot;</span>: clf,
+        <span class="hljs-string">&quot;vectorizer&quot;</span>: vectorizer,
+        <span class="hljs-string">&quot;tfidftransformer&quot;</span>: tfidftransformer,
+    &#125;
+    pickle.dump(d, file)
+
+print(<span class="hljs-string">&quot;训练完成&quot;</span>)</code></pre></div>
+
+
+
+<p>使用测试数据集验证该模型的准确性</p>
+<div class="hljs"><pre><code class="hljs python">count_vec = CountVectorizer(max_df=<span class="hljs-number">0.8</span>, min_df=<span class="hljs-number">3</span>)
+tfidf_vec = TfidfTransformer()
+<span class="hljs-comment"># 定义Pipeline对全部步骤的流式化封装和管理，可以很方便地使参数集在新数据集（比如测试集）上被重复使用。</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">MNB_Classifier</span>():</span>
+    <span class="hljs-keyword">return</span> Pipeline([
+        (<span class="hljs-string">&#x27;count_vec&#x27;</span>, count_vec),
+        (<span class="hljs-string">&#x27;tfidf_vec&#x27;</span>, tfidf_vec),
+        (<span class="hljs-string">&#x27;mnb&#x27;</span>, MultinomialNB())
+    ])
+mnbc_clf = MNB_Classifier()
+<span class="hljs-comment"># 进行训练</span>
+mnbc_clf.fit(review_train, sentiment_train)
+<span class="hljs-comment"># 测试集准确率</span>
+print(<span class="hljs-string">&#x27;测试集准确率： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(mnbc_clf.score(review_test, sentiment_test)))</code></pre></div>
+
+<p>准确性可以达到88%，是一个不错的结果</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808154411255.png" srcset="/img/loading.gif" alt="image-20210808154411255"></p>
+<h1 id="可视化网页"><a href="#可视化网页" class="headerlink" title="可视化网页"></a>可视化网页</h1><h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>将爬取的评论写入数据库，将网页中输入的检测数据和结果写入数据库，以及用户登录账号密码</p>
+<p>所以需要三个数据表保存上面提到的三种数据</p>
+<p>这里使用脚本一键完成</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-comment">#@Time : 2021/8/6 22:35</span>
+<span class="hljs-comment">#@Author : sunzy</span>
+<span class="hljs-comment">#@File : db_helper.py</span>
+
+<span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> csv
+<span class="hljs-keyword">import</span> random
+<span class="hljs-keyword">import</span> pymysql
+conn = pymysql.connect(host=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, user=<span class="hljs-string">&#x27;root&#x27;</span>, password=<span class="hljs-string">&#x27;root&#x27;</span>, port=<span class="hljs-number">3306</span>, db=<span class="hljs-string">&#x27;goods&#x27;</span>,
+                       charset=<span class="hljs-string">&#x27;utf8mb4&#x27;</span>)
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable</span>():</span>
+    sql = <span class="hljs-string">&quot;create table comment(id int primary key auto_increment,comment varchar(800) CHARACTER SET &#x27;utf8&#x27;,type varchar(200) CHARACTER SET &#x27;utf8&#x27;)&quot;</span>
+    cur = conn.cursor()
+    cur.execute(sql)
+    cur.close()
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable1</span>():</span>
+    sql = <span class="hljs-string">&quot;create table user(id int primary key auto_increment,username varchar(80),password varchar(200))&quot;</span>
+    cur = conn.cursor()
+    cur.execute(sql)
+    cur.close()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable2</span>():</span>
+    sql = <span class="hljs-string">&quot;create table result(id int primary key auto_increment,comment varchar(800) CHARACTER SET &#x27;utf8&#x27;,type varchar(200) CHARACTER SET &#x27;utf8&#x27;)&quot;</span>
+    cur = conn.cursor()
+    cur.execute(sql)
+    cur.close()
+
+createTable()
+createTable1()
+createTable2()
+
+<span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;手机_nagetive.csv&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+    reader = csv.reader(f)
+    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> reader:
+        r = <span class="hljs-string">&#x27;&#x27;</span>.join(row)
+        cursor = conn.cursor()
+        cursor.execute(<span class="hljs-string">&quot;insert into `comment` values(null, %s, &#x27;差评&#x27;)&quot;</span>,
+                       (r.split()[<span class="hljs-number">2</span>]));
+        conn.commit()
+        cursor.close()
+<span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;手机_positive.csv&#x27;</span>, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+    reader = csv.reader(f)
+    <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> reader:
+        r = <span class="hljs-string">&#x27;&#x27;</span>.join(row)
+        cursor = conn.cursor()
+        cursor.execute(<span class="hljs-string">&quot;insert into `comment` values(null, %s, &#x27;好评&#x27;)&quot;</span>,
+                       (r.split()[<span class="hljs-number">2</span>]));
+
+        conn.commit()
+        cursor.close()</code></pre></div>
+
+<h2 id="用户注册和登录"><a href="#用户注册和登录" class="headerlink" title="用户注册和登录"></a>用户注册和登录</h2><p>用户的注册和登录逻辑很简单，就是与数据库进行交互</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/addUser&#x27;</span>,methods=[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addUser</span>():</span>
+    get_json = request.get_json()
+    name = get_json[<span class="hljs-string">&#x27;name&#x27;</span>]
+    password = get_json[<span class="hljs-string">&#x27;password&#x27;</span>]
+    conn = pymysql.connect(host=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, user=<span class="hljs-string">&#x27;root&#x27;</span>, password=<span class="hljs-string">&#x27;root&#x27;</span>, port=<span class="hljs-number">3306</span>, db=<span class="hljs-string">&#x27;goods&#x27;</span>,
+                           charset=<span class="hljs-string">&#x27;utf8mb4&#x27;</span>)
+    cursor = conn.cursor()
+    sql = <span class="hljs-string">&quot;insert into `user` values(null,&#x27;&quot;</span>+name+<span class="hljs-string">&quot;&#x27;,&#x27;&quot;</span>+password+<span class="hljs-string">&quot;&#x27;,&#x27;user&#x27;)&quot;</span>
+    cursor.execute(sql);
+    conn.commit()
+    table_result = &#123;<span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>, <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-string">&quot;成功&quot;</span>&#125;
+    cursor.close()
+    conn.close()
+    <span class="hljs-keyword">return</span> jsonify(table_result)
+
+<span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/loginByPassword&#x27;</span>,methods=[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">loginByPassword</span>():</span>
+    get_json = request.get_json()
+    name = get_json[<span class="hljs-string">&#x27;name&#x27;</span>]
+    password = get_json[<span class="hljs-string">&#x27;password&#x27;</span>]
+    conn = pymysql.connect(host=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, user=<span class="hljs-string">&#x27;root&#x27;</span>, password=<span class="hljs-string">&#x27;root&#x27;</span>, port=<span class="hljs-number">3306</span>, db=<span class="hljs-string">&#x27;goods&#x27;</span>,
+                           charset=<span class="hljs-string">&#x27;utf8mb4&#x27;</span>)
+    cursor = conn.cursor()
+    cursor.execute(<span class="hljs-string">&quot;select count(*) from `user` where `username` = &#x27;&quot;</span> + name +<span class="hljs-string">&quot;&#x27; and password = &#x27;&quot;</span> + password+<span class="hljs-string">&quot;&#x27;&quot;</span>);
+    count = cursor.fetchall()
+    <span class="hljs-keyword">if</span>(count[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] != <span class="hljs-number">0</span>):
+        table_result = &#123;<span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">200</span>, <span class="hljs-string">&quot;msg&quot;</span>: name&#125;
+    <span class="hljs-keyword">else</span>:
+        table_result = &#123;<span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">500</span>, <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-string">&quot;失败&quot;</span>&#125;
+    cursor.close()
+    conn.close()
+    <span class="hljs-keyword">return</span> jsonify(table_result)</code></pre></div>
+
+<p>用户成功登录后，js脚本会重定向到index.html页面，进入系统主页</p>
+<div class="hljs"><pre><code class="hljs js">form.on(<span class="hljs-string">&#x27;submit(login-submit)&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>&#123;
+            $.ajax(&#123;
+                type: <span class="hljs-string">&quot;post&quot;</span>,
+                contentType: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+                url: <span class="hljs-string">&quot;http://127.0.0.1:5000/loginByPassword&quot;</span>,
+                data: <span class="hljs-built_in">JSON</span>.stringify(obj.field),
+                dataType: <span class="hljs-string">&#x27;json&#x27;</span>,
+                success: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>&#123;
+                    <span class="hljs-keyword">if</span> (data.code == <span class="hljs-string">&#x27;200&#x27;</span>) &#123;
+                        layer.msg(<span class="hljs-string">&#x27;登录成功&#x27;</span>,
+                            &#123;
+                                icon: <span class="hljs-number">1</span>,
+                                time: <span class="hljs-number">1500</span>
+                            &#125;, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+                                location.replace(<span class="hljs-string">&#x27;../../index.html&#x27;</span>) <span class="hljs-comment">//重定向到index.html</span>
+                            &#125;)
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        layer.alert(data.msg, &#123;<span class="hljs-attr">icon</span>: <span class="hljs-number">2</span>&#125;, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index</span>) </span>&#123;
+                            layer.close(index);
+                        &#125;);
+                    &#125;
+                &#125;
+            &#125;)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;);</code></pre></div>
+
+<h2 id="词云展示"><a href="#词云展示" class="headerlink" title="词云展示"></a>词云展示</h2><p>使用echarts生成词云</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/top&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">top</span>():</span>
+    jsondata = &#123;&#125;
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">len</span>(request.args)!=<span class="hljs-number">0</span>):
+        <span class="hljs-keyword">if</span>(request.args[<span class="hljs-string">&#x27;category&#x27;</span>]==<span class="hljs-string">&#x27;good&#x27;</span>):
+            jsondata[<span class="hljs-string">&#x27;data&#x27;</span>] = good_datas
+        <span class="hljs-keyword">else</span>:
+            jsondata[<span class="hljs-string">&#x27;data&#x27;</span>] = bad_datas
+    <span class="hljs-keyword">else</span>:
+        jsondata[<span class="hljs-string">&#x27;data&#x27;</span>] = all_datas
+    j = jsonify(jsondata)
+    print(j)
+    <span class="hljs-keyword">return</span> j</code></pre></div>
+
+<p>数据获取</p>
+<div class="hljs"><pre><code class="hljs python">cursor.execute(<span class="hljs-string">&quot;select comment from `comment`&quot;</span>);
+data_dict = []
+result = cursor.fetchall()
+<span class="hljs-keyword">for</span> field <span class="hljs-keyword">in</span> result:
+    data_dict.append(field[<span class="hljs-string">&#x27;comment&#x27;</span>])
+content = <span class="hljs-string">&#x27;&#x27;</span>.join(data_dict)
+all_datas = []
+jieba.analyse.set_stop_words(<span class="hljs-string">&#x27;./stopwords.txt&#x27;</span>)
+tags = jieba.analyse.extract_tags(content, topK=<span class="hljs-number">100</span>, withWeight=<span class="hljs-literal">True</span>)
+<span class="hljs-keyword">for</span> v, n <span class="hljs-keyword">in</span> tags:
+    mydict = &#123;&#125;
+    mydict[<span class="hljs-string">&quot;name&quot;</span>] = v
+    mydict[<span class="hljs-string">&quot;value&quot;</span>] = <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(n * <span class="hljs-number">10000</span>))
+    all_datas.append(mydict)
+cursor.close()</code></pre></div>
+
+<p>js脚本</p>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">init</span>(<span class="hljs-params"></span>) </span>&#123;
+					form.render();
+					$.ajax(&#123;
+						type: <span class="hljs-string">&#x27;GET&#x27;</span>,
+						url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/top&#x27;</span>,
+						beforeSend: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">XMLHttpRequest</span>) </span>&#123;
+							<span class="hljs-comment">//注意，layer.msg默认3秒自动关闭，如果数据加载耗时比较长，需要设置time</span>
+							loadingFlag = layer.msg(<span class="hljs-string">&#x27;正在读取数据，请稍候……&#x27;</span>, &#123;
+								icon: <span class="hljs-number">16</span>,
+								shade: <span class="hljs-number">0.01</span>,
+								shadeClose: <span class="hljs-literal">false</span>,
+								time: <span class="hljs-number">60000</span>
+							&#125;);
+						&#125;,
+						success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>&#123;
+							<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;初始化&#x27;</span>)
+							layer.close(loadingFlag);
+							myCharts2.setOption(&#123;
+								tooltip: &#123;
+									show: <span class="hljs-literal">true</span>
+								&#125;,
+								series: [&#123;
+									type: <span class="hljs-string">&quot;wordCloud&quot;</span>,
+									gridSize: <span class="hljs-number">6</span>,
+									shape: <span class="hljs-string">&#x27;diamond&#x27;</span>,
+									sizeRange: [<span class="hljs-number">12</span>, <span class="hljs-number">50</span>],
+									width: <span class="hljs-number">800</span>,
+									height: <span class="hljs-number">500</span>,
+									textStyle: &#123;
+										normal: &#123;
+											color: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+												<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;rgb(&#x27;</span> + [
+													<span class="hljs-built_in">Math</span>.round(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">160</span>),
+													<span class="hljs-built_in">Math</span>.round(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">160</span>),
+													<span class="hljs-built_in">Math</span>.round(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">160</span>)
+												].join(<span class="hljs-string">&#x27;,&#x27;</span>) + <span class="hljs-string">&#x27;)&#x27;</span>;
+											&#125;
+										&#125;,
+										emphasis: &#123;
+											shadowBlur: <span class="hljs-number">10</span>,
+											shadowColor: <span class="hljs-string">&#x27;#333&#x27;</span>
+										&#125;
+									&#125;,
+									data: res.data,
+								&#125;]
+							&#125;);</code></pre></div>
+
+
+
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808174107761.png" srcset="/img/loading.gif" alt="image-20210808174107761" style="zoom: 67%;">
+
+<h2 id="评论检测"><a href="#评论检测" class="headerlink" title="评论检测"></a>评论检测</h2><p>当用户输入检测文本，系统会调用训练好的模型对文本进行情感分析，并将得到的结果写入数据库，之后在页面中显示</p>
+<p>python代码</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/data1&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">data1</span>():</span>
+    path = <span class="hljs-built_in">str</span>(request.args[<span class="hljs-string">&#x27;path&#x27;</span>])
+    data = []
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">len</span>(path)==<span class="hljs-number">0</span>):
+        table_result = &#123;<span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&quot;count&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;data&quot;</span>: data&#125;
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(path, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+            reader = f.readlines()
+            rows = [row <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> reader]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> rows:
+            result = analyzer.analyze(i)  // 调用已经封装好的模型对提交的文本进行检测，返回结果
+            d = &#123;<span class="hljs-string">&quot;content&quot;</span>:i,<span class="hljs-string">&quot;result&quot;</span>:result&#125;
+            data.append(d)
+        table_result = &#123;<span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&quot;count&quot;</span>: <span class="hljs-number">10</span>, <span class="hljs-string">&quot;data&quot;</span>: data&#125;
+    <span class="hljs-keyword">return</span> jsonify(table_result)
+
+<span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/ksh&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ksh</span>():</span>
+    path = <span class="hljs-built_in">str</span>(request.args[<span class="hljs-string">&#x27;path&#x27;</span>])
+    good = <span class="hljs-number">0</span>
+    bad = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">len</span>(path)==<span class="hljs-number">0</span>):
+        table_result = &#123;<span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&quot;count&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;data&quot;</span>: data&#125;
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(path, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
+            reader = f.readlines()
+            rows = [row <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> reader]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> rows:
+            result = analyzer.analyze(i)
+            <span class="hljs-keyword">if</span>(result == <span class="hljs-string">&quot;好评&quot;</span>):
+                good+=<span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                bad+=<span class="hljs-number">1</span>
+        table_result = &#123;<span class="hljs-string">&quot;good&quot;</span>: good, <span class="hljs-string">&quot;bad&quot;</span>: bad&#125;
+    <span class="hljs-keyword">return</span> jsonify(table_result)
+</code></pre></div>
+
+<p>js脚本</p>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">var</span> insTb = table.render(&#123;
+	elem: <span class="hljs-string">&#x27;#tableUser&#x27;</span>,
+	url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/data&#x27;</span>,
+	height: <span class="hljs-string">&#x27;full-250&#x27;</span>,
+	page: <span class="hljs-literal">true</span>,
+	toolbar: <span class="hljs-literal">true</span>,
+	cellMinWidth: <span class="hljs-number">100</span>,
+	cols: [
+		[&#123;
+				type: <span class="hljs-string">&#x27;numbers&#x27;</span>,
+				title: <span class="hljs-string">&#x27;#&#x27;</span>
+			&#125;,
+
+			&#123;
+				field: <span class="hljs-string">&#x27;content&#x27;</span>,
+				sort: <span class="hljs-literal">true</span>,
+				title: <span class="hljs-string">&#x27;内容&#x27;</span>
+			&#125;,
+			&#123;
+				field: <span class="hljs-string">&#x27;type&#x27;</span>,
+				sort: <span class="hljs-literal">true</span>,
+				title: <span class="hljs-string">&#x27;分类&#x27;</span>,
+				width:<span class="hljs-number">200</span>,
+				templet: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>)</span>&#123;
+					<span class="hljs-keyword">if</span>(d.TYPE == <span class="hljs-number">1</span>)&#123;
+						<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;好评&#x27;</span>
+					&#125;<span class="hljs-keyword">else</span>&#123;
+						<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;差评&#x27;</span>
+					&#125;
+  							&#125;
+			&#125;
+		]
+	]
+&#125;);</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808175218340.png" srcset="/img/loading.gif" alt="image-20210808175218340"></p>
+<h2 id="批量检测"><a href="#批量检测" class="headerlink" title="批量检测"></a>批量检测</h2><p>批量检测是将多条评论写入txt文件中，实现一次检测多条评论，然后将数据显示在页面中，并呈现可视化结果</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/data&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">data</span>():</span>
+    limit = <span class="hljs-built_in">int</span>(request.args[<span class="hljs-string">&#x27;limit&#x27;</span>])
+    page = <span class="hljs-built_in">int</span>(request.args[<span class="hljs-string">&#x27;page&#x27;</span>])
+    page = (page-<span class="hljs-number">1</span>)*limit
+    conn = pymysql.connect(host=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, user=<span class="hljs-string">&#x27;root&#x27;</span>, password=<span class="hljs-string">&#x27;root&#x27;</span>, port=<span class="hljs-number">3306</span>, db=<span class="hljs-string">&#x27;goods&#x27;</span>,
+                           charset=<span class="hljs-string">&#x27;utf8mb4&#x27;</span>)
+    cursor = conn.cursor()
+    cursor.execute(<span class="hljs-string">&quot;select count(*) from `result`&quot;</span>);
+    count = cursor.fetchall()
+    cursor = conn.cursor(cursor=pymysql.cursors.DictCursor)
+    cursor.execute(<span class="hljs-string">&quot;select * from `result` limit &quot;</span>+<span class="hljs-built_in">str</span>(page)+<span class="hljs-string">&quot;,&quot;</span>+<span class="hljs-built_in">str</span>(limit));
+    data_dict = []
+    result = cursor.fetchall()
+    <span class="hljs-keyword">for</span> field <span class="hljs-keyword">in</span> result:
+        data_dict.append(field)
+    table_result = &#123;<span class="hljs-string">&quot;code&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;msg&quot;</span>: <span class="hljs-literal">None</span>, <span class="hljs-string">&quot;count&quot;</span>: count[<span class="hljs-number">0</span>], <span class="hljs-string">&quot;data&quot;</span>: data_dict&#125;
+    cursor.close()
+    conn.close()
+    <span class="hljs-keyword">return</span> jsonify(table_result)</code></pre></div>
+
+<p>js脚本</p>
+<div class="hljs"><pre><code class="hljs js">upload.render(&#123; <span class="hljs-comment">//允许上传的文件后缀</span>
+					elem: <span class="hljs-string">&#x27;#test_upload&#x27;</span>,
+					url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/upload&#x27;</span>,
+					field: <span class="hljs-string">&#x27;myfile&#x27;</span>,
+					accept: <span class="hljs-string">&#x27;file&#x27;</span>, <span class="hljs-comment">//普通文件		</span>
+					exts: <span class="hljs-string">&#x27;txt&#x27;</span>, <span class="hljs-comment">//只允许上传txt文件	</span>
+					before: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>) </span>&#123; <span class="hljs-comment">//obj参数包含的信息，跟 choose回调完全一致，可参见上文。</span>
+						layer.load(); <span class="hljs-comment">//上传loading</span>
+					&#125;,
+					done: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>&#123;
+						layer.closeAll(<span class="hljs-string">&#x27;loading&#x27;</span>);
+						layer.msg(<span class="hljs-string">&#x27;上传成功&#x27;</span>);
+						<span class="hljs-built_in">console</span>.log(res)
+						path = res.path
+						insTb.reload(&#123;
+							where: &#123;
+								<span class="hljs-string">&#x27;path&#x27;</span>: path
+							&#125;
+						&#125;);
+						$.ajax(&#123;
+							type: <span class="hljs-string">&#x27;GET&#x27;</span>,
+							url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/ksh&#x27;</span>,
+							data: &#123;
+								<span class="hljs-string">&#x27;path&#x27;</span>: path
+							&#125;,
+							success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>&#123;
+								<span class="hljs-keyword">var</span> option = &#123;
+									tooltip: &#123;
+										trigger: <span class="hljs-string">&#x27;item&#x27;</span>,
+										formatter: <span class="hljs-string">&#x27;&#123;a&#125; &lt;br/&gt;&#123;b&#125; : &#123;c&#125; (&#123;d&#125;%)&#x27;</span>
+									&#125;,
+									legend: &#123;
+										orient: <span class="hljs-string">&#x27;vertical&#x27;</span>,
+										left: <span class="hljs-string">&#x27;left&#x27;</span>,
+										data: [<span class="hljs-string">&#x27;有效评论&#x27;</span>, <span class="hljs-string">&#x27;垃圾评论&#x27;</span>]
+									&#125;,
+									series: [&#123;
+										name: <span class="hljs-string">&#x27;评论比例&#x27;</span>,
+										type: <span class="hljs-string">&#x27;pie&#x27;</span>,
+										radius: <span class="hljs-string">&#x27;55%&#x27;</span>,
+										center: [<span class="hljs-string">&#x27;50%&#x27;</span>, <span class="hljs-string">&#x27;60%&#x27;</span>],
+										data: [&#123;
+												value: result.good,
+												name: <span class="hljs-string">&#x27;有效评论&#x27;</span>
+											&#125;,
+											&#123;
+												value: result.bad,
+												name: <span class="hljs-string">&#x27;垃圾评论&#x27;</span>
+											&#125;
+										],
+										emphasis: &#123;
+											itemStyle: &#123;
+												shadowBlur: <span class="hljs-number">10</span>,
+												shadowOffsetX: <span class="hljs-number">0</span>,
+												shadowColor: <span class="hljs-string">&#x27;rgba(0, 0, 0, 0.5)&#x27;</span>
+											&#125;
+										&#125;
+									&#125;]
+								&#125;;
+								myCharts.setOption(option)
+							&#125;
+						&#125;);</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808175245654.png" srcset="/img/loading.gif" alt="image-20210808175245654"></p>
+<p>最后呈现的效果</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808175722246.png" srcset="/img/loading.gif" alt="image-20210808175722246"></p>
+<p>参考：</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/NTDXYG/ProjectsForChineseGraduates">https://github.com/NTDXYG/ProjectsForChineseGraduates</a></p>
+</blockquote>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">朴素贝叶斯</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python安全攻防</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/07/28/IDscan/">
+                        <span class="hidden-mobile">IDscan</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "商品评价情感分析&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

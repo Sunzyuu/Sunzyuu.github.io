@@ -1,0 +1,751 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>nctf - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-08-29 22:38" pubdate>
+        2020年8月29日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      20
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">nctf</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="nctf-1"><a href="#nctf-1" class="headerlink" title="nctf-1"></a>nctf-1</h1><span id="more"></span>
+
+<h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h2><p>查看源码即可看到flag</p>
+<h2 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h2><p>一道简单的md5漏洞题目</p>
+<p><strong>md5函数漏洞</strong></p>
+<p>源码</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$md51</span> = md5(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
+<span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
+<span class="hljs-variable">$md52</span> = @md5(<span class="hljs-variable">$a</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$a</span>))&#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-variable">$md51</span> == <span class="hljs-variable">$md52</span>) &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;nctf&#123;*****************&#125;&quot;</span>;
+&#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;false!!!&quot;</span>;
+&#125;&#125;
+<span class="hljs-keyword">else</span>&#123;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;please input a&quot;</span>;&#125;</code></pre></div>
+
+<p>即使用get方式传递一个参数a,使得a的值不等于<code>QNKCDZO</code>但是二者的md5值相同</p>
+<p>PHP在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
+<p>常见的payload有</p>
+<div class="hljs"><pre><code class="hljs c++">QNKCDZO
+<span class="hljs-number">240610708</span>
+s878926199a
+s155964671a
+s214587387a
+s214587387a
+ sha1(str)
+sha1(&#x27;aaroZmOk&#x27;)  
+sha1(&#x27;aaK1STfY&#x27;)
+sha1(&#x27;aaO8zKZF&#x27;)
+sha1(&#x27;aa3OFF9m&#x27;)</code></pre></div>
+
+<h2 id="签到2"><a href="#签到2" class="headerlink" title="签到2"></a>签到2</h2><p>提示输入口令，尝试输入发现只能输入十个字母，但是口令有11个字母</p>
+<p>F12审查元素，修改输入框的<code>maxlength</code>值，大于11即可</p>
+<p>再次输入口令即可。</p>
+<p>考点为前端代码修改</p>
+<h2 id="这题不是WEB"><a href="#这题不是WEB" class="headerlink" title="这题不是WEB"></a>这题不是WEB</h2><p>这道题还真不是web</p>
+<p>进入题目链接，发现一张动图，本能的将其拖入动图查看器种，结果什么都没发现，于是打开winhex</p>
+<p>在最后发现flag</p>
+<h2 id="层层递进"><a href="#层层递进" class="headerlink" title="层层递进"></a>层层递进</h2><p> 题目为层层递进，通过<strong>F12</strong>中<strong>Sources</strong>功能，查看网站的包含情况，发现到可疑地址：<code>SO.html</code>，查看发现相似可以地址，最后在<code>404.html</code>源码中得到<strong>flag</strong>（竖排插入在标签中）： </p>
+<p><img src="https://i.loli.net/2020/11/30/4W9UOAMgLTohsJP.png" srcset="/img/loading.gif" alt></p>
+<h2 id="单身二十年"><a href="#单身二十年" class="headerlink" title="单身二十年"></a>单身二十年</h2><p><strong>tip:在这里找key</strong></p>
+<p>点击发现url改变，跳转到了另一个页面</p>
+<p>bp抓包试试，go一下，相应包中出现flag</p>
+<p><img src="/2020/08/29/nctf/ds1.png" srcset="/img/loading.gif" alt></p>
+<h2 id="phpencode"><a href="#phpencode" class="headerlink" title="phpencode"></a>phpencode</h2><p>一开始以为是解码，结果发现代码逻辑不对，直接运行php代码，出错</p>
+<p>将最后的<code>eval</code>改为<code>echo</code>,提交运行即可</p>
+<p><img src="https://i.loli.net/2020/11/30/iXYv8R4MDTfr1ul.png" srcset="/img/loading.gif" alt></p>
+<h2 id="LFI"><a href="#LFI" class="headerlink" title="LFI"></a>LFI</h2><p> <strong>黑盒判断方法：<br>单纯的从URL判断的话，URL中path、dir、file、pag、page、archive、p、eng、语言文件等相关关键字眼的时候,可能存在文件包含漏洞。</strong> </p>
+<p> 根据<strong>PHP伪协议</strong>尝试构造如下<strong>Payload：</strong><code>?file=php://filter/read=convert.base64-encode/resource=index.php</code>，将<strong>index.php</strong>的源码经过<strong>Base64编码</strong>输出 </p>
+<p><code>PGh0bWw+CiAgICA8dGl0bGU+YXNkZjwvdGl0bGU+CiAgICAKPD9waHAKCWVycm9yX3JlcG9ydGluZygwKTsKCWlmKCEkX0dFVFtmaWxlXSl7ZWNobyAnPGEgaHJlZj0iLi9pbmRleC5waHA/ZmlsZT1zaG93LnBocCI+Y2xpY2sgbWU/IG5vPC9hPic7fQoJJGZpbGU9JF9HRVRbJ2ZpbGUnXTsKCWlmKHN0cnN0cigkZmlsZSwiLi4vIil8fHN0cmlzdHIoJGZpbGUsICJ0cCIpfHxzdHJpc3RyKCRmaWxlLCJpbnB1dCIpfHxzdHJpc3RyKCRmaWxlLCJkYXRhIikpewoJCWVjaG8gIk9oIG5vISI7CgkJZXhpdCgpOwoJfQoJaW5jbHVkZSgkZmlsZSk7IAovL2ZsYWc6bmN0ZntlZHVsY25pX2VsaWZfbGFjb2xfc2lfc2lodH0KCj8+CjwvaHRtbD4=</code></p>
+<p>base64解码</p>
+<div class="hljs"><pre><code class="hljs php+HTML">&lt;html&gt;
+    &lt;title&gt;asdf&lt;&#x2F;title&gt;
+&lt;?php
+	error_reporting(0);
+	if(!$_GET[file])&#123;echo &#39;&lt;a href&#x3D;&quot;.&#x2F;index.php?file&#x3D;show.php&quot;&gt;click me? no&lt;&#x2F;a&gt;&#39;;&#125;
+	$file&#x3D;$_GET[&#39;file&#39;];
+	if(strstr($file,&quot;..&#x2F;&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;
+		echo &quot;Oh no!&quot;;
+		exit();
+	&#125;
+	include($file); 
+&#x2F;&#x2F;flag:nctf&#123;edulcni_elif_lacol_si_siht&#125;
+?&gt;
+&lt;&#x2F;html&gt;</code></pre></div>
+
+<h2 id="单身一百年也没用"><a href="#单身一百年也没用" class="headerlink" title="单身一百年也没用"></a>单身一百年也没用</h2><p>与单身二十年一样，抓包即可</p>
+<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p> <strong>Cookie，有时也用其复数形式 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Cookies/187064">Cookies</a>。类型为“</strong>小型文本文件<strong>”，是某些网站为了辨别用户身份，进行<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Session/479100">Session</a>跟踪而储存在用户本地终端上的数据（通常经过加密），由用户<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/客户端/101081">客户端</a>计算机暂时或永久保存的信息 。</strong></p>
+<p> <strong>TIP: 0==not</strong> </p>
+<p>bp抓包，将<code>cookie:login = 0</code>改<code>cookie:login=1</code>   go</p>
+<h2 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h2><p>进入题目，提示robots协议</p>
+<p><strong>robots协议也叫robots.txt（统一小写）是一种存放于<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/网站">网站</a>根目录下的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/ASCII">ASCII</a>编码的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/文本文件">文本文件</a>，它通常告诉网络<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/搜索引擎">搜索引擎</a>的漫游器（又称<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/网络蜘蛛">网络蜘蛛</a>），此网站中的哪些内容是不应被搜索引擎的漫游器获取的，哪些是可以被漫游器获取的。因为一些系统中的URL是大小写敏感的，所以robots.txt的文件名应统一为小写。robots.txt应放置于网站的根目录下。如果想单独定义搜索引擎的漫游器访问子目录时的行为，那么可以将自定的设置合并到根目录下的robots.txt，或者使用robots<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/元数据">元数据</a>（Metadata，又称元数据）。</strong></p>
+<p><strong>robots协议并不是一个规范，而只是约定俗成的，所以并不能保证网站的隐私。</strong></p>
+<p>查看robots.txt</p>
+<p>url:<code>http://chinalover.sinaapp.com/web11/robots.txt</code></p>
+<div class="hljs"><pre><code class="hljs php">TIP:sql.php
+<span class="hljs-comment">//这里提示sql.php的源码如下</span></code></pre></div>
+
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$_GET</span>[id]) &#123;
+   mysql_connect(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
+  mysql_select_db(SAE_MYSQL_DB);
+  <span class="hljs-variable">$id</span> = intval(<span class="hljs-variable">$_GET</span>[id]);
+  <span class="hljs-variable">$query</span> = @mysql_fetch_array(mysql_query(<span class="hljs-string">&quot;select content from ctf2 where id=&#x27;<span class="hljs-subst">$id</span>&#x27;&quot;</span>));
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[id]==<span class="hljs-number">1024</span>) &#123;
+      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;no! try again&lt;/p&gt;&quot;</span>;
+  &#125;
+  <span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$query</span>[content]);
+  &#125;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>大致意思：get方式传递一个id的参数,创建一个新的参数id存放取整后的值（intval()函数将参数变为整形）</p>
+<p>之后将新的$id带入sql语句中查询。if语句中说明，get方式传递的值不能为1024。</p>
+<p> <a target="_blank" rel="noopener" href="http://chinalover.sinaapp.com/web11/sql.php?id=10">http://chinalover.sinaapp.com/web11/sql.php?id=10</a> 尝试id=10，无结果</p>
+<p>id=1024出现 no! try again，说明只有id=1024的时候才会执行if语句</p>
+<p>想到了intval()函数的作用，尝试id=1024.1</p>
+<h2 id="GBK-Injection"><a href="#GBK-Injection" class="headerlink" title="GBK Injection"></a>GBK Injection</h2><p>宽字节注入，之前写过。</p>
+<h2 id="x00"><a href="#x00" class="headerlink" title="/x00"></a>/x00</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>])) &#123;
+       <span class="hljs-keyword">if</span> (@ereg (<span class="hljs-string">&quot;^[1-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)
+           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;必须输入数字才行&#x27;</span>;
+       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>], <span class="hljs-string">&#x27;#biubiubiu&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)   
+           <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+       <span class="hljs-keyword">else</span>
+           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;骚年，继续努力吧啊~&#x27;</span>;
+   &#125;</code></pre></div>
+
+<p>试了试<code>?nctf[]=1</code>,出现了报错但是答案真就出来了</p>
+<p>正儿八经的做法是<code>?nctf=1%00%23biubiubiu</code>，简单的代码审计</p>
+<h2 id="bypass-again"><a href="#bypass-again" class="headerlink" title="bypass again"></a>bypass again</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
+&#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>] != <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) == md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
+<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;Wrong.&#x27;</span>;
+&#125; 
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>代码审计，get方式传递参数a和b,二者的值不同，但是md5值不同，此处又利用md5()漏洞</p>
+<p> <strong>在PHP中，MD5是不能处理数组的，md5(数组)会返回null，所以md5(a[])null,md5(b[])null，md5(a[])=md5(b[])=null,这样就得到答案了。</strong> </p>
+<p>payload:</p>
+<p> <code>http://chinalover.sinaapp.com/web17/index.php?a[]=1&amp;b[]=3</code> </p>
+<h2 id="伪装者"><a href="#伪装者" class="headerlink" title="伪装者"></a>伪装者</h2><p>bp抓包，添加<code>X-Forwarded-For=127.0.0.1</code>,发包即可</p>
+<p> <strong>X-Forwarded-For（XFF）是用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段</strong> </p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/ctf/">ctf</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/md5/">md5</a>
+                    
+                      <a class="hover-with-bg" href="/tags/sql/">sql</a>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+                    
+                      <a class="hover-with-bg" href="/tags/bypass/">bypass</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/09/02/nctf-2/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nctf-2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/16/SSTI/">
+                        <span class="hidden-mobile">SSTI</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "nctf&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

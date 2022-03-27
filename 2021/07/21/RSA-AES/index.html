@@ -1,0 +1,1164 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>RSA_AES - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-07-21 15:57" pubdate>
+        2021年7月21日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      7.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      91
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">RSA_AES</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：8 个月前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>西北工业大学夏令营考核项目</p>
+<span id="more"></span>
+
+<h1 id="一、实验要求"><a href="#一、实验要求" class="headerlink" title="一、实验要求"></a>一、实验要求</h1><blockquote>
+<p>（ 1） 用 RSA 算法实现两个主机之间的密钥分发， 分发的密钥为 0x 01 23 45 67 或 0x 01 23 45 67 89 AB CD EF；<br>（ 2） 用分发的密钥和 AES 加密算法， 实现两个主机之间的加密数据传输， 测试数据是“NPU-SCS” 和其他自己构造的 7 条消息；<br>（ 3） 以上 2 个步骤在程序中自动执行完， 无手动参与； 程序可以在同一台主机上完成， 但数据必须经过网络传输（ 可以本地发送， 本地接收）；<br>（ 4） 密码算法必须是源码编译得到， 不能直接用编译过的库文件；RSA 和 AES 算法的源码可以来自于网络或其他任意渠道；<br>（ 5） 以上算法选择国密算法实现更佳；<br>（ 6） 用 Python 或 C/C++语言实现程序， 写出技术开发文档， 录制一段不超过 8 分钟的演示视频。 提交技术开发文档、 演示视频。     </p>
+</blockquote>
+<h1 id="二、需求分析"><a href="#二、需求分析" class="headerlink" title="二、需求分析"></a>二、需求分析</h1><p>设传输文件的双方分别为Alice和Bob，Alice为传输文件的一方，Bob作为接收文件的一方。</p>
+<p>首先确定使用Windows的socket套接字实现网络通信，Bob作为服务器一方，等待Alice的连接，然后Alice向Bob发送数据。</p>
+<p>安全需求如下:</p>
+<ul>
+<li><p>使用RSA算法生成Alice和Bob使用的公钥，并计算出私钥后分发，为后续的数字签名（MD5）和对称加密密钥（AES）的加解密做准备。</p>
+</li>
+<li><p>因为是在公共信道中传输数据，所以可能存在攻击者冒充bob接收文件，所以Alice在与传输文件之前需要对bob的身份进行认证，而且bob防止被欺骗也需要对Alice的身份进行认证，这里可以采用第二类签名算法。</p>
+</li>
+<li><p>在确认彼此身份后需要将文件通过公共信道传输，但是可能存在数据，所以需要对文件内容加密，考虑到加密速度问题，所以采用对称加密算法（AES）。</p>
+</li>
+<li><p>采用对称加密算法需要密钥，而这里使用的密钥的为<code>0x12345678</code>。并且这个密钥也需要传给bob用于解密，但是公共信道不安全，所以也需要对该密钥进行加密。考虑到密钥长度不是很大，所以可以采用公钥加密算法，而且公钥加密算法可以不传输此次加密使用的密钥，提高安全性和效率。</p>
+</li>
+<li><p>当Bob收到对应的密钥并解密密文后，需要向Alice发送一个确认收到的消息，防止截断攻击，确认消息也要使用到第一步使用的签名算法。</p>
+</li>
+</ul>
+<h1 id="三、设计原理"><a href="#三、设计原理" class="headerlink" title="三、设计原理"></a>三、设计原理</h1><p>从上面的需求分析可以知道，整个程序需要用的MD5，RSA，AES算法，最后使用socket编程实现通信。</p>
+<h2 id="3-1-MD5"><a href="#3-1-MD5" class="headerlink" title="3.1 MD5"></a>3.1 MD5</h2><p>​        MD5是hash函数的一种，而 Hash，一般翻译做散列、杂凑，或音译为哈希，是把任意长度的输入(又叫做预映射)通过散列算法变换成固定长度的输出，该输出就是散列值。这种转换是一种压缩映射，也就是说，散列值的空间通常远小于输入的空间，不同的输入可能会散列成相同的输出，所以不可能从散列值来确定唯一的输入值。简单的说就是是将任意长度的输入变换为固定长度的输出的不可逆的单向密码体制。</p>
+<p>​        MD5(Message-Digest Algorithm,信息摘要算法)，是由美国著名密码学家Rivest设计的一种密码散列函数，可以将长度小于264比特的消息，按512比特的分组单位进行处理，输出一个128比特的消息摘要。</p>
+<p>MD5 算法输入不定长度信息，输出固定长度 128-bits 的算法。经过程序流程，生成四个 32位数据，最后联合起来成为一个 128-bits 散列。基本方式有求余、取余、调整长度、与链接变量进行循环运算， 得出结果。基本流程如下图所示：  </p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714095352078.png" srcset="/img/loading.gif" alt="image-20210714095352078"></p>
+<h3 id="3-1-1-消息填充"><a href="#3-1-1-消息填充" class="headerlink" title="3.1.1 消息填充"></a>3.1.1 消息填充</h3><ul>
+<li>使消息长度模512=448如果消息长度模512恰等于448，增加512个填充比特。即填充的个数为1~512，填充方法：第1比特为1，其余全部为0</li>
+<li>将消息长度转换为64比特的数值，如果长度超过64比特所能表示的数据长度，值保留最后64比特添加到填充数据后面，使数据为512比特的整数倍</li>
+<li>512比特按32比特分为16组</li>
+</ul>
+<p>处理过程如下</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714095700191.png" srcset="/img/loading.gif" alt="image-20210714095700191" style="zoom: 80%;">
+
+<h3 id="3-1-2-初始化链接变量"><a href="#3-1-2-初始化链接变量" class="headerlink" title="3.1.2 初始化链接变量"></a>3.1.2 初始化链接变量</h3><p>使用4个32位的寄存器A， B，C， D存放4个固定的32位整型参数，用于第一轮迭代，这里需要注意的是，寄存器的值要转化为小端序。</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">A</span>=<span class="hljs-number">0</span>x<span class="hljs-number">1234567</span>
+<span class="hljs-attribute">B</span>=<span class="hljs-number">0</span>x<span class="hljs-number">89</span>ABCDEF
+<span class="hljs-attribute">C</span>=<span class="hljs-number">0</span>xFEDCBA<span class="hljs-number">98</span>
+<span class="hljs-attribute">D</span>=<span class="hljs-number">0</span>x<span class="hljs-number">76543210</span></code></pre></div>
+
+<h3 id="3-1-3-分组处理"><a href="#3-1-3-分组处理" class="headerlink" title="3.1.3 分组处理"></a>3.1.3 分组处理</h3><ul>
+<li>由4轮组成，521bit的消息分组Mi被均分为16个分组，参与每轮16步函数运算，即每轮包括16个步骤。每步的输入是4个32bit的链接变量和1个32bit的消息子分组，输出为32位值</li>
+<li>经过4轮共64步后，得到的4个寄存器值分别与输入链接变量进行模加，即得到此次分组处理的输出链接变量</li>
+<li>4轮操作之前，先将前一分组的链接变量(A、B、C、D的值)复制到备用记录单元，以便执行最后的模加操作</li>
+</ul>
+<p>处理过程如下图</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714095845995.png" srcset="/img/loading.gif" alt="image-20210714095845995" style="zoom:80%;">
+
+<h3 id="3-1-4-步函数"><a href="#3-1-4-步函数" class="headerlink" title="3.1.4  步函数"></a>3.1.4  步函数</h3><p>MD5每轮包含16步，每轮的步函数相同，即使用同一个非线性函数，而不同轮的步函数使用的非线性函数是不同的，即四轮使用4个不同的非线性函数。设X、Y、Z是3个32比特的输入变量，输出是一个32比特变量，则这4个非线性函数F、G、H和I定义为：</p>
+<div class="hljs"><pre><code class="hljs tp">F(<span class="hljs-keyword">X</span>,<span class="hljs-keyword">Y</span>,<span class="hljs-keyword">Z</span>)=(<span class="hljs-keyword">X</span>&amp;<span class="hljs-keyword">Y</span>)|((~<span class="hljs-keyword">X</span>)&amp;<span class="hljs-keyword">Z</span>)
+G(<span class="hljs-keyword">X</span>,<span class="hljs-keyword">Y</span>,<span class="hljs-keyword">Z</span>)=(<span class="hljs-keyword">X</span>&amp;<span class="hljs-keyword">Z</span>)|(<span class="hljs-keyword">Y</span>&amp;(~<span class="hljs-keyword">Z</span>))
+H(<span class="hljs-keyword">X</span>,<span class="hljs-keyword">Y</span>,<span class="hljs-keyword">Z</span>)=<span class="hljs-keyword">X</span>^<span class="hljs-keyword">Y</span>^<span class="hljs-keyword">Z</span>
+I(<span class="hljs-keyword">X</span>,<span class="hljs-keyword">Y</span>,<span class="hljs-keyword">Z</span>)=<span class="hljs-keyword">Y</span>^(<span class="hljs-keyword">X</span>|(~<span class="hljs-keyword">Z</span>))</code></pre></div>
+
+<p>MD5步函数的执行过程：</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714100312140.png" srcset="/img/loading.gif" alt="image-20210714100312140" style="zoom: 67%;">
+
+<p>伪随机常数 T[ i ]，可以消除输入数据的规律性，i为弧度，1 ≤ i ≤ 64，方框代表取整数部分</p>
+<p><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210714100450860.png" srcset="/img/loading.gif" alt="image-20210714100450860"></p>
+<p>轮函数先取向量(A、B、C、D)中的后3个作一次非线性函数运算，所得的结果一次加上第1个变量，32bit消息子分组和1个伪随机常数，再将所得的结果循环左移指定位数，并加上(A、B、C、D)的第二个变量，最后把新值赋给向量中的第1个变量。</p>
+<h3 id="3-1-5-主循环"><a href="#3-1-5-主循环" class="headerlink" title="3.1.5 主循环"></a>3.1.5 主循环</h3><p>​    算法具体步骤如图</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714100555756.png" srcset="/img/loading.gif" alt="image-20210714100555756"></p>
+<h3 id="正确性验证"><a href="#正确性验证" class="headerlink" title="正确性验证"></a>正确性验证</h3><blockquote>
+<p><strong>在线网站</strong>：<a target="_blank" rel="noopener" href="https://md5jiami.bmcx.com/">https://md5jiami.bmcx.com/</a></p>
+<p><strong>处理字符串:</strong> I love cumt very much           </p>
+</blockquote>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714100739874.png" srcset="/img/loading.gif" alt="image-20210714100739874"></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714100744577.png" srcset="/img/loading.gif" alt="image-20210714100744577"></p>
+<h2 id="3-2-RSA"><a href="#3-2-RSA" class="headerlink" title="3.2 RSA"></a>3.2 RSA</h2><p>​        在Diffie和Hellman提出公钥密码体制的设想后，Merkle和Hellman首先共同提出MH背包公钥加密体制，随后Rivest、Shamir、Adleman联合提出RSA公钥加密体制。RSA虽晚于MH背包公钥加密体制，但它是第一个安全、实用的公钥加密算法，已成为国际标准。</p>
+<div class="hljs"><pre><code>RSA的基础是数论的欧拉定理，它的安全性依赖于大整数因子分解的困难性。且因为加解密次序可换，RSA公钥佳美体制既可用于加密，也可用于设计数字签名体制。</code></pre></div><p><strong>RSA算法原理</strong></p>
+<p>​    安全性基于大素数因子分解的困难问题，整体算法流程简单清晰，分为如下三个部分：</p>
+<p>（1）密钥生成算法： </p>
+<p>​    ① 选取两个保密的大素数𝑝和𝑞，满足𝑝 ≠ 𝑞，计算𝑛 = 𝑝 × 𝑞, 𝜑(𝑛) = (𝑝 − 1)(𝑞 − 1), 𝜑(𝑛) 为𝑛的欧拉函数。 </p>
+<p>​    ② 随机选取整数𝑒, 满足1 &lt; 𝑒 &lt; 𝜑(𝑛)且gcd(𝑒, 𝜑(𝑛)) = 1，即𝑒与𝜑(𝑛)互素。 </p>
+<p>​    ③ 计算𝑑, 满足𝑒𝑑 ≡ 1(𝑚𝑜𝑑 (𝑛))，则公钥为(𝑒, 𝑛), 私钥为𝑑。 </p>
+<p>（2）加密 对明文进行比特串分组，使每个分组十进制小于𝑛 , 然后对每个分组𝑚(0 ≤ 𝑚 &lt; 𝑛),计算 𝑐 = 𝑚𝑒 (𝑚𝑜𝑑 𝑛)，则得到密文 c。 </p>
+<p>（3）解密  对于密文𝑐(0 ≤ c &lt; n), 有𝑚 = 𝑐𝑑 (𝑚𝑜𝑑 𝑛)， 即可得到明文m。</p>
+<h3 id="3-2-1-大素数生成"><a href="#3-2-1-大素数生成" class="headerlink" title="3.2.1 大素数生成"></a>3.2.1 大素数生成</h3><p>要去寻找一个任意的大素数是很困难的事,但是可是先随机生成一个大奇数,再通过多次素性检验检测是否为宿舍,如果多次检测都为素数则可确定为素数.</p>
+<h4 id="随机生成大奇数"><a href="#随机生成大奇数" class="headerlink" title="随机生成大奇数"></a>随机生成大奇数</h4><p>此算法可以根据需要生成固定位数的数,当生成奇数后,会通过素性检验,如果通过检查,则素数生成成功</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 生成素数 先生成1024位的奇数，再进行素性检验，通过则生成该素数</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">genPrime</span>(<span class="hljs-params">b=<span class="hljs-number">1024</span></span>):</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:                             <span class="hljs-comment"># 设置死循环直到生成素数才退出</span>
+        res = <span class="hljs-string">&quot;1&quot;</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(b-<span class="hljs-number">2</span>):
+            res += <span class="hljs-built_in">str</span>(random.randint(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>))
+        res += <span class="hljs-string">&quot;1&quot;</span>                              <span class="hljs-comment"># 最后一位为1保证为奇数</span>
+        res = <span class="hljs-built_in">int</span>(res,<span class="hljs-number">2</span>)
+        <span class="hljs-keyword">if</span> miller_rabin(res):
+            <span class="hljs-keyword">return</span> res                          <span class="hljs-comment"># 直到该数通过素数检验才推出循环</span></code></pre></div>
+
+
+
+<h4 id="Miller-Rabin素性检验"><a href="#Miller-Rabin素性检验" class="headerlink" title="Miller-Rabin素性检验"></a>Miller-Rabin素性检验</h4><p>​    在本实验中，我使用了 Miller-Rabin 素性检验结合随机数的生成来得到所需要的大素数， 它是一个基于概率的算法，是费马小定理的一个改进。  简单来说， 要测试𝑛是否为素数，首先将𝑛 - 1分解为2𝑠𝑑。 在每次测试开始时，先随机选一个介于[1, 𝑛 - 1]的整数𝑎，之后如果对所有的𝑟 ∈ [0, 𝑠 - 1]， 若𝑎𝑑 ≠ 1(𝑚𝑜𝑑 𝑛)且𝑎^((2^𝑟)*𝑑) ≠-1(𝑚𝑜𝑑 𝑛)，则𝑛是合数。否则， 𝑛有3/4的概率为素数，随着增加测试的次数，是素数的概率会越来越高，当达到某一次数时，为素数的概率可以接近100%。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">miller_rabin</span>(<span class="hljs-params">n</span>):</span>
+    s = n - <span class="hljs-number">1</span>
+    t = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> s % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:  <span class="hljs-comment"># n,s,t之间的关系为 n = 2^s * t</span>
+        s = s // <span class="hljs-number">2</span>
+        t += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> trials <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):   <span class="hljs-comment"># 可以多增加几轮保证大概率为素数</span>
+        a = random.randrange(<span class="hljs-number">2</span>, n - <span class="hljs-number">1</span>) <span class="hljs-comment"># 随机生成a</span>
+        v = <span class="hljs-built_in">pow</span>(a, s, n)               <span class="hljs-comment"># 验证 a^(n-1) mod n</span>
+        <span class="hljs-keyword">if</span> v != <span class="hljs-number">1</span>:
+            i = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">while</span> v != (n - <span class="hljs-number">1</span>):
+                <span class="hljs-keyword">if</span> i == t - <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+                <span class="hljs-keyword">else</span>:
+                    i = i + <span class="hljs-number">1</span>
+                    v = (v ** <span class="hljs-number">2</span>) % n
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></code></pre></div>
+
+<h3 id="3-2-2-生成公钥e"><a href="#3-2-2-生成公钥e" class="headerlink" title="3.2.2 生成公钥e"></a>3.2.2 生成公钥e</h3><p>𝑒需要满足1 &lt; 𝑒 &lt; 𝜑(𝑛)且gcd(𝑒, 𝜑(𝑛)) = 1，即𝑒与𝜑(𝑛)互素。 </p>
+<p>这里为了保证安全性，设置了e的值不能小于2000。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">genE</span>(<span class="hljs-params">phi_n</span>):</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        e = genPrime(b=random.randint(<span class="hljs-number">3</span>,<span class="hljs-number">13</span>))  <span class="hljs-comment">#随机生成e</span>
+        <span class="hljs-keyword">if</span> e &lt; <span class="hljs-number">2000</span> :                  <span class="hljs-comment"># e不能太小</span>
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">if</span> phi_n%e != <span class="hljs-number">0</span>:               <span class="hljs-comment"># 保证e不能被phi整除</span>
+            <span class="hljs-keyword">return</span> e</code></pre></div>
+
+<h3 id="3-2-3-计算私钥d"><a href="#3-2-3-计算私钥d" class="headerlink" title="3.2.3 计算私钥d"></a>3.2.3 计算私钥d</h3><h4 id="模重复平方法"><a href="#模重复平方法" class="headerlink" title="模重复平方法"></a>模重复平方法</h4><p>为了提高大数模时的计算速度，这里采用的时模重复平方法。</p>
+<p>算法伪代码如图</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714111320464.png" srcset="/img/loading.gif" alt="image-20210714111320464" style="zoom:67%;">
+
+<h4 id="计算私钥d"><a href="#计算私钥d" class="headerlink" title="计算私钥d"></a>计算私钥d</h4><p>在RSA算法中求私钥中的整数d时，需要使得 (e * d ) % m = 1，该方程等价于 e * d = 1 + y * m ，也等价于 e * d - y * m = 1。（都为整数）</p>
+<p>因此求解d的过程就是求解该二元一次方程组（e和m已知，求解d），即求e模m的逆元。</p>
+<p>使用欧几里得扩展算法求逆元(辗转相除法)</p>
+<blockquote>
+<p>给定模数m，求a的逆相当于求解ax=1(mod m)<br>这个方程可以转化为ax-my=1<br>然后套用求二元一次方程的方法，用扩展欧几里得算法求得一组x0,y0和gcd<br>检查gcd是否为1<br>gcd不为1则说明逆元不存在<br>若为1，则调整x0到0~m-1的范围中即可</p>
+</blockquote>
+<p>具体代码如下</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">caculateD</span>(<span class="hljs-params">a, m</span>):</span>
+    u1,u2,u3 = <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,a
+    v1,v2,v3 = <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,m
+    <span class="hljs-keyword">while</span> v3!=<span class="hljs-number">0</span>:
+        q = u3//v3
+        v1,v2,v3,u1,u2,u3 = (u1-q*v1),(u2-q*v2),(u3-q*v3),v1,v2,v3
+    <span class="hljs-keyword">return</span> u1%m</code></pre></div>
+
+<h3 id="3-2-4加解密过程"><a href="#3-2-4加解密过程" class="headerlink" title="3.2.4加解密过程"></a>3.2.4加解密过程</h3><p>有了以上的基础，RSA的加解密就很简单了，直接套用公式即可。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">RSAEncode</span>(<span class="hljs-params">m, e, n</span>):</span>               <span class="hljs-comment"># 加密公式 m^e mod n</span>
+    m = <span class="hljs-built_in">int</span>(str2Hex(m), <span class="hljs-number">16</span>)           <span class="hljs-comment"># 将字符转换为二进制</span>
+    c = fast_mod(m, e, n)
+    <span class="hljs-keyword">return</span> c
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">RSADecode</span>(<span class="hljs-params">c, d, n</span>):</span>                 <span class="hljs-comment"># 加密公式 c^d mod n</span>
+    plaintext = fast_mod(c,d,n)
+    plaintext = <span class="hljs-built_in">str</span>(long_to_bytes(plaintext).decode()) <span class="hljs-comment"># 将数字转换为字符</span>
+    <span class="hljs-keyword">return</span> plaintext</code></pre></div>
+
+<h3 id="3-2-5-正确性验证"><a href="#3-2-5-正确性验证" class="headerlink" title="3.2.5 正确性验证"></a>3.2.5 正确性验证</h3><p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714112147375.png" srcset="/img/loading.gif" alt="image-20210714112147375"></p>
+<h2 id="3-3-AES"><a href="#3-3-AES" class="headerlink" title="3.3 AES"></a>3.3 AES</h2><p>AES加密算法同DES相同都是分组加密算法，AES是对128位数据进行加密，密钥也是128位，加密后产生128位的密文，AES的加密轮数为10轮，明文和密钥都被分为4组，每组32bit。</p>
+<p>AES为分组密码，每组长度相等，每次加密一组数据，直到加密完整个明文。 在AES标准规范中，分组长度只能是128位，也就是说，每个分组为16个字节（每个字节8位）。 密钥的长度可以使用128位、192位或256位甚至更多，密钥的长度不同，加密轮数也不同，如下表所示：</p>
+<img src="https://f5.pm/img.php?ref=https%3A%2F%2Fsec.thief.one%2Farticle_content%3Fa_id%3Deaf09e3255e31d63a513b1ba70ea4a5e&f=https://mmbiz.qpic.cn/mmbiz_png/kVCSSCFiaG8ImxH14jS3OWGOJ4SmKhUBH6RhpI7rCO40v6jTJQXokGB0JSjuEreiaDBQiaE3PhUjALYSd8iaaa6Ppg/640?wx_fmt=png" srcset="/img/loading.gif" alt="img" style="zoom:67%;">
+
+
+
+<p>以下以AES-128为例进行阐述，AES的加密公式为C = E(K,P)，在加密函数E中，会执行一个轮函数，并且执行10次这个轮函数，这个轮函数的前9次执行的操作是完全一样的，只有第10次略有不同，即每个明文分组会进行10轮加密。</p>
+<p>AES的处理单位是字节，128位的输入明文分组P和输入密钥K都被分成16个字节，分别记为P = P0 P1 … P15 和 K = K0 K1 … K15。明文分组用字节为单位的正方形矩阵描述，称为状态矩阵。在算法的每一轮中，状态矩阵的内容不断发生变化，最后的结果作为密文输出。</p>
+<p>该矩阵中字节的排列顺序为从上到下、从左至右依次排列，如下图所示：</p>
+<img src="https://f5.pm/img.php?ref=https%3A%2F%2Fsec.thief.one%2Farticle_content%3Fa_id%3Deaf09e3255e31d63a513b1ba70ea4a5e&f=https://mmbiz.qpic.cn/mmbiz_png/kVCSSCFiaG8ImxH14jS3OWGOJ4SmKhUBHF1pHbI1nHibCjVCkiaABCdlYBgwBeRYIESbGfNzXNaOWsBvib8O9Wfqfw/640?wx_fmt=png" srcset="/img/loading.gif" alt="img" style="zoom:67%;">
+
+<p>同样，128位密钥也是用字节为单位的矩阵表示，矩阵的每一列被称为1个32位比特字。通过密钥编排函数该密钥矩阵被扩展成一个44个字组成的序列W[0],W[1], … ,W[43],该序列的前4个元素W[0],W[1],W[2],W[3]是原始密钥，用于加密运算中的初始轮密钥加（下面介绍）;后面40个字分为10组，每组4个字（128比特）分别用于10轮加密运算中的轮密钥加，如下图所示：</p>
+<img src="https://f5.pm/img.php?ref=https%3A%2F%2Fsec.thief.one%2Farticle_content%3Fa_id%3Deaf09e3255e31d63a513b1ba70ea4a5e&f=https://mmbiz.qpic.cn/mmbiz_png/kVCSSCFiaG8ImxH14jS3OWGOJ4SmKhUBHQeib23GZYgQZIqx0Iy86MBjEWsJia4m5ggOUwoOLBQsic3nJKGicHdIicUQ/640?wx_fmt=png" srcset="/img/loading.gif" alt="img" style="zoom:67%;">
+
+<p>上图中，W[0] = K0 K1 K2 K3 。</p>
+<p>AES加密算法主要步骤有：</p>
+<ul>
+<li>轮密钥加：AddRoundKey</li>
+<li>字节替代：ByteSub</li>
+<li>行移位： ShiftRow</li>
+<li>列混肴： MixColumns</li>
+</ul>
+<p>AES的整体结构如下图所示，其中的W[0,3]是指W[0]、W[1]、W[2]和W[3]串联组成的128位密钥。加密的第1轮到第9轮的轮函数一样，包括4个操作：字节代换、行位移、列混合和轮密钥加。最后一轮迭代不执行列混合。另外，在第一轮迭代之前，先将明文和原始密钥进行一次异或加密操作。</p>
+<img src="https://f5.pm/img.php?ref=https%3A%2F%2Fsec.thief.one%2Farticle_content%3Fa_id%3Deaf09e3255e31d63a513b1ba70ea4a5e&f=https://mmbiz.qpic.cn/mmbiz_png/kVCSSCFiaG8ImxH14jS3OWGOJ4SmKhUBHDcPhfyYMVWsnJsXicITn1hcicXblmtgmrqOZLwYGWpgetngmZM3vI4cQ/640?wx_fmt=png" srcset="/img/loading.gif" alt="img" style="zoom:67%;">
+
+
+
+<p>下面分别介绍AES中一轮的操作阶段，这些操作阶段使输入位得到充分的混淆。</p>
+<h3 id="3-3-1-字节代换"><a href="#3-3-1-字节代换" class="headerlink" title="3.3.1 字节代换"></a>3.3.1 字节代换</h3><p>​        AES的字节替换，本质上和DES的S盒替换是一样的，都是根据输入字节查表来获得对应的输出字节，不同的是，AES的S盒规格是16*16的字节矩阵。因此，字节替换步骤也是AES算法轮函数的关键，相较于其他运算步骤的线性特征而易于分析，S盒的非线性提供了更好的安全性。<br>​        字节替换的规则是，将状态矩阵中的每个字节的高4位作为行值，低4位作为列值，取出S盒中对应的矩阵字节元素作为替换字节。例如状态矩阵中某个输入字节值为0x6b（01101011），那么行值为6（0110），列值为b（1011），查询如表4.1所示S盒，得到的输出字节为0x7f(01111111)</p>
+<p>​        经过该步骤的字节替换之后，输入的4*4字节状态矩阵中的每个字节元素都被新字节替代，得到的新状态矩阵将作为下一步行移位的输入。</p>
+<h3 id="3-3-2-行移位"><a href="#3-3-2-行移位" class="headerlink" title="3.3.2 行移位"></a>3.3.2 行移位</h3><p>行移位步骤对输入的状态矩阵进行简单的行循环移位操作（不同行的移位数不同，具体移位数由算法输入决定），本文以第几行左移几个字节为例，行移位过程如图5.1所示，移位完成之后得到的新状态矩阵将作为下一步列混合的输入。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714114322729.png" srcset="/img/loading.gif" alt="image-20210714114322729" style="zoom:67%;">
+
+<h3 id="3-3-3-列混淆"><a href="#3-3-3-列混淆" class="headerlink" title="3.3.3 列混淆"></a>3.3.3 列混淆</h3><p>列混合基于矩阵乘法实现，使得状态矩阵中的每一列的各个元素之间按照预先定义的列混合加密矩阵的权重来产生相互混淆的影响，产生列元素互相之间被混合的新状态矩阵。<br>例如，根据公式6.1进行列混合加密，第0行第0列元素的输出计算表示为：</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714114422682.png" srcset="/img/loading.gif" alt="image-20210714114422682" style="zoom: 80%;">
+
+<p>该元素将第0列所有元素按预设权重混合起来。</p>
+<p><strong>[注意]</strong>：该公式中的乘法和加法不是普通数学意义的乘和加，而是有限域GF(2^8)四则运算中的乘和加，加法即是按位异或，乘法较为复杂，此处不做赘述，有兴趣的同学可以进一步了解有限域的相关知识。</p>
+<p>其他行列的计算公式</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714114520386.png" srcset="/img/loading.gif" alt="image-20210714114520386" style="zoom:80%;">
+
+<p>AES轮函数中的所有四个步骤都是可逆变换，那么列混合公式如下</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714114616930.png" srcset="/img/loading.gif" alt="image-20210714114616930" style="zoom:80%;">
+
+
+
+<h3 id="3-3-4-轮密钥加"><a href="#3-3-4-轮密钥加" class="headerlink" title="3.3.4 轮密钥加"></a>3.3.4 轮密钥加</h3><p>轮密钥加的过程十分简单，就是将列混合输出的状态矩阵（共128位）和密钥扩展得到的本轮轮密钥（共128位）进行按位异或，得到最终的本轮状态矩阵输出。</p>
+<h3 id="3-3-5-密钥扩展"><a href="#3-3-5-密钥扩展" class="headerlink" title="3.3.5 密钥扩展"></a>3.3.5 密钥扩展</h3><p>与明文分组矩阵一样，密钥扩展也是以8比特字节作为单位对主密钥进行处理，128位主密钥可以表示为K=[K0,K1,…,K15]的4*4字节矩阵。经过密钥扩展函数，K扩展为44列的轮密钥字矩阵（其中一个字为4字节32位），表示为W=[W0,W1,…W43]。每一轮依次取出前4个字（128位）作为本轮轮密钥，如初始轮轮密钥为W[0,3]=[W0,W1,W2,W3]。密钥扩展的过程如图</p>
+<h3 id="3-3-6-正确性验证"><a href="#3-3-6-正确性验证" class="headerlink" title="3.3.6 正确性验证"></a>3.3.6 正确性验证</h3><p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714121451444.png" srcset="/img/loading.gif" alt="image-20210714121451444"></p>
+<h2 id="3-4-socket通信"><a href="#3-4-socket通信" class="headerlink" title="3.4 socket通信"></a>3.4 socket通信</h2><p>Socket又称”套接字”，应用程序通常通过”套接字”向网络发出请求或者应答网络请求，使主机间或者一台计算机上的进程间可以通讯。</p>
+<p>该项目中的通信流程：</p>
+<img src="/2021/07/21/RSA-AES/Sunzh/%E4%BF%9D%E7%A0%94%E7%9B%B8%E5%85%B3/%E8%A5%BF%E5%B7%A5/%E8%80%83%E6%A0%B8/%E7%BB%98%E5%9B%BE1.png" srcset="/img/loading.gif" alt="绘图1" style="zoom:67%;">
+
+<p>server绑定ip和端口</p>
+<div class="hljs"><pre><code class="hljs python">server = socket.socket() <span class="hljs-comment">#创建对象server.bind((&quot;localhost&quot;,8888))#绑定 ip和端口server.listen()  #监听con,addr = server.accept()</span></code></pre></div>
+
+<p>client创建socket连接server</p>
+<div class="hljs"><pre><code class="hljs python">client = socket.socket()client.connect((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>,<span class="hljs-number">8888</span>))  <span class="hljs-comment"># 服务器IP地址和端口</span></code></pre></div>
+
+<h2 id="3-5-数字签名"><a href="#3-5-数字签名" class="headerlink" title="3.5 数字签名"></a>3.5 数字签名</h2><p>​        数字签名（又称公钥数字签名）是只有信息的发送者才能产生的别人无法伪造的一段数字串，这段数字串同时也是对信息的发送者发送信息真实性的一个有效证明。它是一种类似写在纸上的普通的物理签名，但是使用了公钥加密领域的技术来实现的，用于鉴别数字信息的方法。一套数字签名通常定义两种互补的运算，一个用于签名，另一个用于验证。数字签名是非对称密钥加密技术与数字摘要技术的应用。</p>
+<p>实现原理如图：</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D.png" srcset="/img/loading.gif" alt="数字签名"></p>
+<h1 id="四、程序实现"><a href="#四、程序实现" class="headerlink" title="四、程序实现"></a>四、程序实现</h1><p>***加密算法的代码放在另外的文件中</p>
+<p>有了上面的原理支撑，整个系统就可以完成了，首先看下整个传输系统的工作过程。</p>
+<p>程序整体流程如下图：</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714213527284.png" srcset="/img/loading.gif" alt="image-20210714213527284" style="zoom:80%;">
+
+<p>具体实现，所有文件如下</p>
+<div class="hljs"><pre><code class="hljs reasonml">├── <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">AES</span>.</span></span>py    
+├── alice_Client.py  <span class="hljs-comment">//数据发送方</span>
+├── bob_Server.py    <span class="hljs-comment">//数据接收方</span>
+├── data     <span class="hljs-comment">// 需要传输的八条数据，这里使用文件存储</span>
+│   ├── test0.txt│   
+	├── test1.txt│   
+	├── test2.txt│   
+	├── test3.txt│   
+	├── test4.txt│   
+	├── test5.txt│   
+	├── test6.txt│   
+	└── test7.txt
+├── file_decode.py   <span class="hljs-comment">// RSA公私钥生成和文件读取</span>
+├── <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">MD5</span>.</span></span>py			 
+└── <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">RSA</span>.</span></span>py</code></pre></div>
+
+<h2 id="file-decode-py"><a href="#file-decode-py" class="headerlink" title="file_decode.py"></a>file_decode.py</h2><p>该函数主要作用有两个</p>
+<ul>
+<li>读取文件内容</li>
+<li>生成RSA算法的n，并计算出d（每次传输时，使用的n都不一样，算是一种一次一密机制，可以提高安全性）</li>
+</ul>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> randomimport refrom RSA <span class="hljs-keyword">import</span> *<span class="hljs-keyword">from</span> MD5 <span class="hljs-keyword">import</span> *<span class="hljs-keyword">from</span> AES <span class="hljs-keyword">import</span> *e = 65537def read_file(num):    path = <span class="hljs-string">&#x27;.\data\\test&#x27;</span>+<span class="hljs-built_in">str</span>(num)+<span class="hljs-string">&#x27;.txt&#x27;</span>    <span class="hljs-keyword">try</span>:        f = <span class="hljs-built_in">open</span>(path, <span class="hljs-string">&#x27;r&#x27;</span>, encoding = <span class="hljs-string">&#x27;utf-8&#x27;</span>)        text = f.read()        f.close()        print(<span class="hljs-string">&quot;读取成功!&quot;</span>)        <span class="hljs-keyword">return</span> text    <span class="hljs-keyword">except</span> IOError:        print(<span class="hljs-string">&quot;读取错误!&quot;</span>)<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">n_and_d</span>():</span>    p = genPrime(<span class="hljs-number">128</span>)    q = genPrime(<span class="hljs-number">128</span>)    phi = (p-<span class="hljs-number">1</span>)*(q-<span class="hljs-number">1</span>)    n = p*q    d = caculateD(e,phi)    print(<span class="hljs-string">&quot;生成的p:&quot;</span>,p)    print(<span class="hljs-string">&quot;生成的q:&quot;</span>,q)    <span class="hljs-keyword">return</span> n,d</code></pre></div>
+
+<h2 id="bob-server-py"><a href="#bob-server-py" class="headerlink" title="bob_server.py"></a>bob_server.py</h2><div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-comment">#@Time : 2021/7/10 23:17</span>
+<span class="hljs-comment">#@Author : sunzy</span>
+<span class="hljs-comment">#@File : bob.py</span>
+
+<span class="hljs-keyword">import</span> socket
+<span class="hljs-keyword">import</span> libnum
+<span class="hljs-keyword">from</span> RSA <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> MD5 <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> AES <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> file_decode <span class="hljs-keyword">import</span> *
+
+name = <span class="hljs-string">&quot;This is bob.&quot;</span>  <span class="hljs-comment"># bob的身份信息真实环境中可以为双方知道的秘密</span>
+
+n,d = n_and_d()  <span class="hljs-comment"># 获取n,d</span>
+e = <span class="hljs-number">65537</span>
+
+server = socket.socket() <span class="hljs-comment">#创建对象</span>
+server.bind((<span class="hljs-string">&quot;localhost&quot;</span>,<span class="hljs-number">8888</span>))<span class="hljs-comment">#绑定 ip和端口</span>
+server.listen()  <span class="hljs-comment">#监听</span>
+<span class="hljs-comment">#等待连接</span>
+print(<span class="hljs-string">&#x27;Waiting connection...&#x27;</span>)
+<span class="hljs-comment">#接受请求，返回套接字对象和IP+端口号</span>
+con,addr = server.accept()
+con.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-string">&quot;Welcome connect!\n开分发RSA公钥n:\n&quot;</span>,<span class="hljs-string">&quot;utf-8&quot;</span>))
+con.recv(<span class="hljs-number">1024</span>)
+<span class="hljs-comment"># 向alice发送公钥n</span>
+con.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">str</span>(n),<span class="hljs-string">&quot;utf-8&quot;</span>))
+
+n_alice = con.recv(<span class="hljs-number">1024</span>).decode()
+n_alice = <span class="hljs-built_in">int</span>(n_alice)
+print(<span class="hljs-string">&quot;Alice使用的公钥n:&quot;</span>, n_alice)
+
+
+<span class="hljs-comment"># 验证alice身份</span>
+
+print(<span class="hljs-string">&quot;验证alice身份...&quot;</span>)
+<span class="hljs-comment"># a = input()</span>
+alice_name = con.recv(<span class="hljs-number">512</span>).decode()  <span class="hljs-comment"># alice 的明文信息</span>
+con.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
+
+hash_name = con.recv(<span class="hljs-number">512</span>).decode()   <span class="hljs-comment"># alice 用私钥加密明文的hash值</span>
+plain_text = RSADecode(<span class="hljs-built_in">int</span>(hash_name),e,n_alice) <span class="hljs-comment"># 用alice 的公钥解密出hash值</span>
+<span class="hljs-keyword">if</span> plain_text == md5(alice_name):   <span class="hljs-comment"># 判断上一步的值与md5函数加密是否相同</span>
+    print(alice_name)               <span class="hljs-comment"># 如果二者相同则可以保证对方是alice,这里的安全性是由公钥算法和hash函数保证</span>
+    print(<span class="hljs-string">&quot;验证通过！&quot;</span>)               <span class="hljs-comment"># 因为只有alice有自己的私钥，hash函数的存在防止伪造明文攻击</span>
+    con.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-string">&quot;您通过了验证!&quot;</span>,<span class="hljs-string">&quot;utf-8&quot;</span>))
+<span class="hljs-keyword">else</span>:
+    exit(<span class="hljs-string">&quot;这不是alice,验证错误！&quot;</span>)
+<span class="hljs-comment">#送出自己的身份信息和签名值</span>
+print(<span class="hljs-string">&quot;等待alice验证自身身份...&quot;</span>)
+
+con.send(<span class="hljs-built_in">bytes</span>(name,<span class="hljs-string">&#x27;utf-8&#x27;</span>))    <span class="hljs-comment"># 向alice发送身份信息的明文</span>
+con.recv(<span class="hljs-number">1024</span>).decode()
+
+hash_name = md5(name)            <span class="hljs-comment"># 明文信息的hash值</span>
+crpto_name = <span class="hljs-built_in">str</span>(RSAEncode(hash_name, d, n))  <span class="hljs-comment"># 使用自己的私钥加密上一步的hash值</span>
+crpto_name = <span class="hljs-built_in">bytes</span>(crpto_name,<span class="hljs-string">&#x27;utf-8&#x27;</span>)        <span class="hljs-comment"># 发送给alice</span>
+con.send(crpto_name)
+
+print(con.recv(<span class="hljs-number">1024</span>).decode())
+print(<span class="hljs-string">&quot;-----------开始接收对称加密密钥-------------&quot;</span>)
+enc_key = con.recv(<span class="hljs-number">1024</span>)
+enc_key = enc_key.decode()
+
+enc_key = <span class="hljs-built_in">int</span>(enc_key)  <span class="hljs-comment"># 将密钥转换为int类</span>
+dec_key = fast_mod(enc_key,d,n)
+print(<span class="hljs-string">&quot;收到的对称加密密钥:&quot;</span>,<span class="hljs-built_in">hex</span>(dec_key))
+print(<span class="hljs-string">&quot;---&quot;</span>*<span class="hljs-number">5</span>+<span class="hljs-string">&quot;开始接收密文&quot;</span>+<span class="hljs-string">&quot;---&quot;</span>*<span class="hljs-number">5</span>)
+
+<span class="hljs-comment"># 一共接收八条消息</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">8</span>):
+    print(<span class="hljs-string">&quot;接收第&#123;0&#125;条消息&quot;</span>.<span class="hljs-built_in">format</span>(i+<span class="hljs-number">1</span>))
+    con.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
+    length = con.recv(<span class="hljs-number">1024</span>)
+    length = <span class="hljs-built_in">int</span>(length.decode())
+
+    buff = []
+    size = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> size &lt; length:  <span class="hljs-comment"># 开始接受密文</span>
+        dat = con.recv(<span class="hljs-number">1024</span>)
+        size += <span class="hljs-built_in">len</span>(dat.decode())
+        buff.append(dat)
+    data = <span class="hljs-string">b&#x27;&#x27;</span>.join(buff)
+    bin_cipher = data.decode()
+    enc_plain = <span class="hljs-built_in">int</span>(bin_cipher)
+    print(<span class="hljs-string">&quot;收到的密文:&quot;</span>, enc_plain)
+    plain_text = AES_dec(enc_plain, dec_key)
+    print(<span class="hljs-string">&quot;收到的消息:&quot;</span>, plain_text)
+
+<span class="hljs-comment"># 以下是发送确认收到消息和消息的数字签名</span>
+message = <span class="hljs-string">&quot;Bob received the file successfully!&quot;</span>
+con.send(<span class="hljs-built_in">bytes</span>(message,<span class="hljs-string">&#x27;utf-8&#x27;</span>))
+con.recv(<span class="hljs-number">1024</span>).decode()
+hash_message = md5(message)
+crypt_message = <span class="hljs-built_in">str</span>(RSAEncode(hash_message,d,n))
+con.send(<span class="hljs-built_in">bytes</span>(crypt_message,<span class="hljs-string">&#x27;utf-8&#x27;</span>))
+
+print(<span class="hljs-string">&quot;文件传输结束！&quot;</span>)
+server.close()</code></pre></div>
+
+<h2 id="alice-client-py"><a href="#alice-client-py" class="headerlink" title="alice_client.py"></a>alice_client.py</h2><div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-comment">#@Time : 2021/7/10 23:17</span>
+<span class="hljs-comment">#@Author : sunzy</span>
+<span class="hljs-comment">#@File : Alice.py</span>
+
+<span class="hljs-keyword">from</span> RSA <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> MD5 <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">from</span> file_decode <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">import</span> socket
+
+name = <span class="hljs-string">&quot;This is alice.&quot;</span>   <span class="hljs-comment"># alice的身份信息真实环境中可以为双方知道的秘密</span>
+<span class="hljs-comment"># n = 44531776921047477359676235110843825307036514195195627878765712056028758572817 测试使用的n</span>
+<span class="hljs-comment"># d = 34159352569920789505556306994405309761109146525598570740717995833480670158209 </span>
+n,d = n_and_d()
+e = <span class="hljs-number">65537</span>  <span class="hljs-comment"># e使用的都是65537对安全性</span>
+
+client = socket.socket()
+client.connect((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>,<span class="hljs-number">8888</span>))  <span class="hljs-comment"># 本机地址和端口</span>
+
+data = client.recv(<span class="hljs-number">1024</span>)
+print(<span class="hljs-built_in">str</span>(data, <span class="hljs-string">&quot;utf-8&quot;</span>),end=<span class="hljs-string">&quot;&quot;</span>)  <span class="hljs-comment"># 连接成功提示消息</span>
+client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
+
+n_bob = client.recv(<span class="hljs-number">1024</span>).decode()
+n_bob = <span class="hljs-built_in">int</span>(n_bob)
+print(<span class="hljs-string">&quot;bob使用的公钥n:&quot;</span>,n_bob)
+<span class="hljs-comment"># 向bob发送自己的n</span>
+client.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">str</span>(n),<span class="hljs-string">&quot;utf-8&quot;</span>))
+
+print(<span class="hljs-string">&quot;等待bob验证自身身份...&quot;</span>)
+<span class="hljs-comment"># alice送出自己的身份信息和签名值</span>
+client.send(<span class="hljs-built_in">bytes</span>(name,<span class="hljs-string">&#x27;utf-8&#x27;</span>))             <span class="hljs-comment"># alice发送身份明文信息</span>
+client.recv(<span class="hljs-number">1024</span>).decode()
+hash_name = md5(name)
+crpto_name = <span class="hljs-built_in">str</span>(RSAEncode(
+    hash_name, d, n)) <span class="hljs-comment"># 发送对hash值加密后的值</span>
+crpto_name = <span class="hljs-built_in">bytes</span>(crpto_name,<span class="hljs-string">&#x27;utf-8&#x27;</span>)
+client.send(crpto_name)
+
+print(client.recv(<span class="hljs-number">1024</span>).decode())             <span class="hljs-comment"># 接收身份认证的结果</span>
+<span class="hljs-comment">#接收bob身份hash值并验证</span>
+print(<span class="hljs-string">&quot;验证bob身份...&quot;</span>)
+
+bob_name = client.recv(<span class="hljs-number">512</span>).decode()          <span class="hljs-comment"># bob发送过来的身份明文信息</span>
+client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
+
+hash_name = client.recv(<span class="hljs-number">512</span>).decode()          <span class="hljs-comment"># bob使用自己的私钥加密身份明文信息hash值后的值</span>
+plain_text = RSADecode(<span class="hljs-built_in">int</span>(hash_name),e,n_bob) <span class="hljs-comment"># 使用bob的公钥解密上一步的值</span>
+
+<span class="hljs-keyword">if</span> plain_text == md5(bob_name):                <span class="hljs-comment"># 验证是不是bob</span>
+    print(bob_name)
+    print(<span class="hljs-string">&quot;验证通过!&quot;</span>)
+    client.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-string">&quot;您通过了验证!&quot;</span>, <span class="hljs-string">&quot;utf-8&quot;</span>))
+<span class="hljs-keyword">else</span>:
+    exit(<span class="hljs-string">&quot;验证错误!&quot;</span>)
+
+print(<span class="hljs-string">&quot;------------开始传输对称加密密钥-----------&quot;</span>)
+key = <span class="hljs-number">0x12345678</span>
+int_key = <span class="hljs-built_in">int</span>(key)
+enc_key = RSA(int_key,e,n_bob)
+print(<span class="hljs-string">&quot;RAS加密后的密钥:&quot;</span>,enc_key)
+print(<span class="hljs-string">&quot;开始传输......&quot;</span>)
+client.sendall(<span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">str</span>(enc_key), <span class="hljs-string">&quot;utf-8&quot;</span>))
+
+print(<span class="hljs-string">&quot;---&quot;</span> * <span class="hljs-number">5</span> + <span class="hljs-string">&quot;开始传输密文&quot;</span> + <span class="hljs-string">&quot;---&quot;</span> * <span class="hljs-number">5</span>)
+<span class="hljs-comment"># 一共发送八条消息</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">8</span>):
+    print(<span class="hljs-string">&quot;发送第&#123;0&#125;条消息&quot;</span>.<span class="hljs-built_in">format</span>(i+<span class="hljs-number">1</span>))
+    plain = read_file(i)  <span class="hljs-comment"># 读取文件内容</span>
+    print(<span class="hljs-string">&quot;待加密的内容:&quot;</span>, plain)
+    enc_plain = AES_enc(plain, key)  <span class="hljs-comment"># 使用AES算法加密内容</span>
+    print(<span class="hljs-string">&quot;加密后的结果:&quot;</span>, enc_plain)
+    client.recv(<span class="hljs-number">512</span>)
+
+    length = <span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(<span class="hljs-built_in">str</span>(enc_plain)))  <span class="hljs-comment"># 传输发送内容的长度</span>
+    length = <span class="hljs-built_in">bytes</span>(length, <span class="hljs-string">&quot;utf-8&quot;</span>)  <span class="hljs-comment"># 方便其接收</span>
+    client.send(length)
+    print(<span class="hljs-string">&quot;传输密文...&quot;</span>)
+    client.sendall(<span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">str</span>(enc_plain), <span class="hljs-string">&quot;utf-8&quot;</span>))  <span class="hljs-comment"># 发送密文</span>
+
+message = client.recv(<span class="hljs-number">512</span>).decode()
+client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
+crypt_message = client.recv(<span class="hljs-number">512</span>).decode()
+hash_message = RSADecode(<span class="hljs-built_in">int</span>(crypt_message),e,n_bob)
+<span class="hljs-keyword">if</span> hash_message == md5(message):
+    print(message)
+print(<span class="hljs-string">&quot;文件传输结束！&quot;</span>)
+
+client.close()</code></pre></div>
+
+<h2 id="程序运行结果"><a href="#程序运行结果" class="headerlink" title="程序运行结果"></a>程序运行结果</h2><p>程序运行截图</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714162621437.png" srcset="/img/loading.gif" alt="image-20210714162621437" style="zoom:50%;">
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210714162636877.png" srcset="/img/loading.gif" alt="image-20210714162636877" style="zoom:50%;">
+
+<p>服务器端</p>
+<div class="hljs"><pre><code class="hljs makefile"><span class="hljs-section">生成的p: 212578631077022742980302422715125542611</span>
+<span class="hljs-section">生成的q: 316188159582830019844276947208676920009</span>
+Waiting connection...
+<span class="hljs-section">Alice使用的公钥n: 76623010774774676027114980830533718839055908618566240235027551452927884987983</span>
+验证alice身份...
+This is alice.
+验证通过！
+等待alice验证自身身份...
+您通过了验证!
+-----------开始接收对称加密密钥-------------
+<span class="hljs-section">收到的对称加密密钥: 0x12345678</span>
+---------------开始接收密文---------------
+接收第1条消息
+<span class="hljs-section">收到的密文: 135682548930565198779372680096238675594</span>
+<span class="hljs-section">收到的消息: NUP-SCS</span>
+
+接收第2条消息
+<span class="hljs-section">收到的密文: 204524647430676670718786346706390507203</span>
+<span class="hljs-section">收到的消息: helle,bob!</span>
+接收第3条消息
+<span class="hljs-section">收到的密文: 246320535020402174803721345214000008151</span>
+<span class="hljs-section">收到的消息: I am alice!</span>
+接收第4条消息
+<span class="hljs-section">收到的密文: 58157974753797302313029320017455836609</span>
+<span class="hljs-section">收到的消息: I am a cumter!</span>
+接收第5条消息
+<span class="hljs-section">收到的密文: 226398669380783825649368460310305319452</span>
+<span class="hljs-section">收到的消息: zheshixiexiaox</span>
+接收第6条消息
+<span class="hljs-section">收到的密文: 53302749101918911090246485689074999058</span>
+<span class="hljs-section">收到的消息: sadsadddddd</span>
+接收第7条消息
+<span class="hljs-section">收到的密文: 176777421636819016900191058879173899767</span>
+<span class="hljs-section">收到的消息: asdasda</span>
+接收第8条消息
+<span class="hljs-section">收到的密文: 3474752232209638365517789143309475776</span>
+<span class="hljs-section">收到的消息: welcome to nwpu!</span>
+文件传输结束！
+
+Process finished with exit code 0</code></pre></div>
+
+<p>客户端</p>
+<div class="hljs"><pre><code class="hljs makefile"><span class="hljs-section">生成的p: 248283914849807386247828596061320396999</span>
+<span class="hljs-section">生成的q: 308610450343211666351389068102678761017</span>
+Welcome connect!
+<span class="hljs-section">开分发RSA公钥n:</span>
+<span class="hljs-section">bob使用的公钥n: 67214846126881216073162389743685441714708801777758418373886646066828368003499</span>
+等待bob验证自身身份...
+您通过了验证!
+验证bob身份...
+This is bob.
+验证通过!
+------------开始传输对称加密密钥-----------
+<span class="hljs-section">RAS加密后的密钥: 32731716332593832426148490730299678696611415440651747149365389018478993136648</span>
+开始传输......
+---------------开始传输密文---------------
+发送第1条消息
+读取成功!
+<span class="hljs-section">待加密的内容: NUP-SCS</span>
+
+<span class="hljs-section">加密后的结果: 135682548930565198779372680096238675594</span>
+传输密文...
+发送第2条消息
+读取成功!
+<span class="hljs-section">待加密的内容: helle,bob!</span>
+<span class="hljs-section">加密后的结果: 204524647430676670718786346706390507203</span>
+传输密文...
+发送第3条消息
+读取成功!
+<span class="hljs-section">待加密的内容: I am alice!</span>
+<span class="hljs-section">加密后的结果: 246320535020402174803721345214000008151</span>
+传输密文...
+发送第4条消息
+读取成功!
+<span class="hljs-section">待加密的内容: I am a cumter!</span>
+<span class="hljs-section">加密后的结果: 58157974753797302313029320017455836609</span>
+传输密文...
+发送第5条消息
+读取成功!
+<span class="hljs-section">待加密的内容: zheshixiexiaox</span>
+<span class="hljs-section">加密后的结果: 226398669380783825649368460310305319452</span>
+传输密文...
+发送第6条消息
+读取成功!
+<span class="hljs-section">待加密的内容: sadsadddddd</span>
+<span class="hljs-section">加密后的结果: 53302749101918911090246485689074999058</span>
+传输密文...
+发送第7条消息
+读取成功!
+<span class="hljs-section">待加密的内容: asdasda</span>
+<span class="hljs-section">加密后的结果: 176777421636819016900191058879173899767</span>
+传输密文...
+发送第8条消息
+读取成功!
+<span class="hljs-section">待加密的内容: welcome to nwpu!</span>
+<span class="hljs-section">加密后的结果: 3474752232209638365517789143309475776</span>
+传输密文...
+Bob received the file successfully!
+文件传输结束！</code></pre></div>
+
+<h1 id="五、安全分析"><a href="#五、安全分析" class="headerlink" title="五、安全分析"></a>五、安全分析</h1><ul>
+<li><p>本系统最脆弱也是最危险的位置就是RSA密钥分发。在商业使用的密钥分发都存在一个可信的第三方（CA）,其作用是将用户的信息和用户使用的公钥用自己的私钥隐藏在证书中。当bob从可信第三方获取到alice的证书时，需要使用可信第三方的私钥（在CA的根证书）解密证书获取证书所有者信息和公钥（alice），alice使用同样的方法验证bob的信息，这样可以确保不会被中间人攻击。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210715155058235.png" srcset="/img/loading.gif" alt="image-20210715155058235"></p>
+</li>
+<li><p>认证过程的安全性</p>
+<p>认证过程采用的是第二类签名算法，Alice和Bob的私钥只有自己知道，当Alice使用自己的私钥加密信息后，拥有Alice公钥的Bob能够解密其发送的内容，并使用验证公式就可以验证对面是否为Alice。</p>
+<p>该过程可以理解为：</p>
+<p>因为只有A才拥有私钥d ，而且由公钥e 和n在计算上不能求出保密的私钥。因此签名的操作只有A才能进行，任何其他人都不能伪造签名。所以，私钥d就相当于A的印章或指纹，而加密信息SA就是A对M（明文）的签名。因此A不能抵赖，任何其他人不能伪造。</p>
+<p>这个过程具有不可否认认性和伪造攻击</p>
+</li>
+<li><p>对AES密钥加密使用的是RSA算法，该过程可以使用更大的数字来保证其安全性。比如使用生成1024位的p,q计算出n。由于我们知道公钥算法目前是安全的，所以这里加密后的密钥是安全的，即使被截获，攻击者也很难破解出明文信息。</p>
+</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/07/21/VPN/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">VPN</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/05/11/shentou/">
+                        <span class="hidden-mobile">shentou</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "RSA_AES&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

