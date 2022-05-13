@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      898 字
+      1.7k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      28
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：26 分钟前
+                  本文最后更新于：3 分钟前
                 
               </p>
             
@@ -392,6 +392,152 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
 
+<h1 id="mybatis-plus-generator"><a href="#mybatis-plus-generator" class="headerlink" title="mybatis-plus-generator"></a>mybatis-plus-generator</h1><p>MP的代码生成器，可以节约创建文件的时间</p>
+<h2 id="1-导入依赖"><a href="#1-导入依赖" class="headerlink" title="1.导入依赖"></a>1.导入依赖</h2><div class="hljs"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--代码生成器--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-generator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<h2 id="2-编写生成器代码"><a href="#2-编写生成器代码" class="headerlink" title="2.编写生成器代码"></a>2.编写生成器代码</h2><p>可以放在专门的工具类包下</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.utils;
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.FastAutoGenerator;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.config.OutputFile;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+
+<span class="hljs-keyword">import</span> java.util.Collections;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * mp代码生成器</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CodeGenreator</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        generator();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generator</span><span class="hljs-params">()</span></span>&#123;
+        FastAutoGenerator.create(<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/admin_demo?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&quot;</span>,
+                <span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;password&quot;</span>)
+                .globalConfig(builder -&gt; &#123;
+                    builder.author(<span class="hljs-string">&quot;sunzy&quot;</span>) <span class="hljs-comment">// 设置作者</span>
+                            .enableSwagger() <span class="hljs-comment">// 开启 swagger 模式</span>
+                            .fileOverride() <span class="hljs-comment">// 覆盖已生成文件</span>
+                            .outputDir(<span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\java\\&quot;</span>); <span class="hljs-comment">// 指定输出目录</span>
+                &#125;)
+                .packageConfig(builder -&gt; &#123;
+                    builder.parent(<span class="hljs-string">&quot;com.sunzy&quot;</span>) <span class="hljs-comment">// 设置父包名</span>
+                            .moduleName(<span class="hljs-string">&quot;&quot;</span>) <span class="hljs-comment">// 设置父包模块名</span>
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, <span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\resources\\mapper\\&quot;</span>)); <span class="hljs-comment">// 设置mapperXml生成路径 OutputEile.xml这里可能会报错 根据版本修改</span>
+                &#125;)
+                .strategyConfig(builder -&gt; &#123;
+                    builder.entityBuilder().enableLombok();
+                    builder.mapperBuilder().enableMapperAnnotation().build();
+                    builder.controllerBuilder().enableHyphenStyle()  <span class="hljs-comment">// 连字符转驼峰</span>
+                            .enableRestStyle();  <span class="hljs-comment">// 开启rest控制器</span>
+                    builder.addInclude(<span class="hljs-string">&quot;sys_user&quot;</span>) <span class="hljs-comment">// 设置需要生成的表名</span>
+                            .addTablePrefix(<span class="hljs-string">&quot;t_&quot;</span>, <span class="hljs-string">&quot;sys_&quot;</span>); <span class="hljs-comment">// 设置过滤表前缀</span>
+                &#125;)
+<span class="hljs-comment">//                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板</span>
+                .execute();
+
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>完成后，直接运行改工具类就可以直接生成以下文件：</p>
+<p>UserMapper.java IUserService.java UserServiceImpl.java UserController.java</p>
+<h2 id="3-Controller模板"><a href="#3-Controller模板" class="headerlink" title="3.Controller模板"></a>3.Controller模板</h2><p>可以根据需要修改自己的模板</p>
+<div class="hljs"><pre><code class="hljs kotlin"><span class="hljs-keyword">package</span> $&#123;<span class="hljs-keyword">package</span>.Controller&#125;;
+
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.*;
+<span class="hljs-keyword">import</span> javax.<span class="hljs-keyword">annotation</span>.Resource;
+<span class="hljs-keyword">import</span> java.util.List;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Service&#125;.$&#123;table.serviceName&#125;;
+<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Entity&#125;.$&#123;entity&#125;;
+
+#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
+#<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Controller;
+#end
+#<span class="hljs-keyword">if</span>($&#123;superControllerClassPackage&#125;)
+<span class="hljs-keyword">import</span> $&#123;superControllerClassPackage&#125;;
+#end
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * &lt;p&gt;</span>
+<span class="hljs-comment"> * $!&#123;table.comment&#125; 前端控制器</span>
+<span class="hljs-comment"> * &lt;/p&gt;</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> $&#123;author&#125;</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> $&#123;date&#125;</span>
+<span class="hljs-comment"> */</span>
+#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
+<span class="hljs-meta">@RestController</span>
+#<span class="hljs-keyword">else</span>
+<span class="hljs-meta">@Controller</span>
+#end
+<span class="hljs-meta">@RequestMapping(<span class="hljs-meta-string">&quot;#if(<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>)/<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>#end/#if(<span class="hljs-subst">$&#123;controllerMappingHyphenStyle&#125;</span>)<span class="hljs-subst">$&#123;controllerMappingHyphen&#125;</span>#else<span class="hljs-subst">$&#123;table.entityPath&#125;</span>#end&quot;</span>)</span>
+#<span class="hljs-keyword">if</span>($&#123;kotlin&#125;)
+<span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125;#<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;) : $&#123;superControllerClass&#125;()#end
+
+#<span class="hljs-keyword">else</span>
+    #<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;)
+    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; extends $&#123;superControllerClass&#125; &#123;
+    #<span class="hljs-keyword">else</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; &#123;
+    #end
+
+<span class="hljs-meta">@Resource</span>
+<span class="hljs-keyword">private</span> $&#123;table.serviceName&#125; $&#123;table.entityPath&#125;Service;
+
+<span class="hljs-comment">// 新增或者更新</span>
+<span class="hljs-meta">@PostMapping</span>
+<span class="hljs-keyword">public</span> boolean save(<span class="hljs-meta">@RequestBody</span> $&#123;entity&#125; $&#123;table.entityPath&#125;) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.saveOrUpdate($&#123;table.entityPath&#125;);
+        &#125;
+
+<span class="hljs-meta">@DeleteMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-built_in">Boolean</span> delete(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(id);
+        &#125;
+
+<span class="hljs-meta">@PostMapping(<span class="hljs-meta-string">&quot;/del/batch&quot;</span>)</span>
+<span class="hljs-keyword">public</span> boolean deleteBatch(<span class="hljs-meta">@RequestBody</span> List&lt;Integer&gt; ids) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeByIds(ids);
+        &#125;
+
+<span class="hljs-meta">@GetMapping</span>
+<span class="hljs-keyword">public</span> List&lt;$&#123;entity&#125;&gt; findAll() &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.list();
+        &#125;
+
+<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-keyword">public</span> $&#123;entity&#125; findOne(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.getById(id);
+        &#125;
+
+<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/page&quot;</span>)</span>
+<span class="hljs-keyword">public</span> Page&lt;$&#123;entity&#125;&gt; findPage(<span class="hljs-meta">@RequestParam</span> Integer pageNum,
+<span class="hljs-meta">@RequestParam</span> Integer pageSize) &#123;
+        LambdaQueryWrapper&lt;$&#123;entity&#125;&gt; queryWrapper = new LambdaQueryWrapper&lt;&gt;();
+        queryWrapper.orderByDesc(<span class="hljs-string">&quot;id&quot;</span>);
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.page(new Page&lt;&gt;(pageNum, pageSize), queryWrapper);
+        &#125;
+
+&#125;
+
+#end
+</code></pre></div>
+
+<p>更多的模板可以到<code>com.baomidou.mybatis-plus-generator</code>包中复制到项目的<code>resources\templates</code>中，根据自己的需求修改模板</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220513194907662.png" srcset="/img/loading.gif" alt="image-20220513194907662"></p>
 
             </div>
             <hr>

