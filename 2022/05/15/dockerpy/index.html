@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>dockerpy - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-15 13:44" pubdate>
+        2022年5月15日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      22
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">dockerpy</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Docker-py"><a href="#Docker-py" class="headerlink" title="Docker-py"></a>Docker-py</h1><p>使用python第三方库docker-py操作docker</p>
+<p>docker-py的地址：<a target="_blank" rel="noopener" href="https://github.com/docker/docker-py">https://github.com/docker/docker-py</a></p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="1-安装docker-py"><a href="#1-安装docker-py" class="headerlink" title="1.安装docker-py"></a>1.安装docker-py</h3><p>​    pip安装即可，安装最新版</p>
+<div class="hljs"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> docker</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135319833.png" srcset="/img/loading.gif" alt="image-20220515135319833"></p>
+<h3 id="2-配置docker"><a href="#2-配置docker" class="headerlink" title="2.配置docker"></a>2.配置docker</h3><p>本文使用的是Docker Desktop，docker版本是<code>20.10.12</code></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135534992.png" srcset="/img/loading.gif" alt="image-20220515135534992"></p>
+<h4 id="docker开启远程访问"><a href="#docker开启远程访问" class="headerlink" title="docker开启远程访问"></a>docker开启远程访问</h4><p>对于Docker Desktop来说，开启远程访问很简单，只需要再settings中选中如下配置项</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140305267.png" srcset="/img/loading.gif" alt="image-20220515140305267"> </p>
+<p>对于linux中配置远程访问就稍微麻烦一点</p>
+<p><strong>方法一</strong></p>
+<p>在/usr/lib/systemd/system/docker.service，配置远程访问。</p>
+<p>主要是在[Service]这个部分，加上下面两个参数</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-comment"># vim /usr/lib/systemd/system/docker.service</span>
+<span class="hljs-section">[Service]</span>
+ExecStart=
+<span class="hljs-attr">ExecStart</span>=/usr/bin/dockerd -H tcp://<span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span>:<span class="hljs-number">2375</span> -H unix://var/run/docker.sock</code></pre></div>
+
+<p>重启</p>
+<div class="hljs"><pre><code class="hljs undefined">systemctl daemon-reload
+systemctl restart docker</code></pre></div>
+
+<p><strong>方法二</strong></p>
+<p>修改<code>daemon.json</code>的配置</p>
+<div class="hljs"><pre><code class="hljs bash">vim /etc/docker/daemon.json
+
+&#123;
+  <span class="hljs-string">&quot;hosts&quot;</span>: [<span class="hljs-string">&quot;tcp://0.0.0.0:2375&quot;</span>, <span class="hljs-string">&quot;unix:///var/run/docker.sock&quot;</span>]
+&#125;</code></pre></div>
+
+<blockquote>
+<p>“unix:///var/run/docker.sock”：unix socket，本地客户端将通过这个来连接 Docker Daemon。<br>“tcp://0.0.0.0:2375”：tcp socket，表示允许任何远程客户端通过 2375 端口连接 Docker Daemon。</p>
+</blockquote>
+<p>修改配置以后</p>
+<p>然后让docker重新读取配置文件,并重启docker服务</p>
+<div class="hljs"><pre><code class="hljs undefined">systemctl daemon-reload
+systemctl restart docker</code></pre></div>
+
+<p>查看docker进程：</p>
+<div class="hljs"><pre><code class="hljs perl">[root@slaver2 ~]<span class="hljs-comment"># ps -ef|grep docker</span>
+root      <span class="hljs-number">44221</span>      <span class="hljs-number">1</span>  <span class="hljs-number">1</span> <span class="hljs-number">18</span>:<span class="hljs-number">16</span> ?        <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">06</span> /usr/bin/dockerd -H tcp:<span class="hljs-regexp">//</span><span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>:<span class="hljs-number">2375</span> -H unix:<span class="hljs-regexp">//</span>var/run/docker.sock</code></pre></div>
+
+<p>Docker守护进程打开一个HTTP Socket,这样才能实现远程通信</p>
+<p>当开启远程访问后，可以再浏览器中查看docker服务器上的相关信息，并且该API遵循RESTful API标准</p>
+<ul>
+<li><p>查看当前版本：<a target="_blank" rel="noopener" href="http://IP:2375/version">http://IP:2375/version</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141120592.png" srcset="/img/loading.gif" alt="image-20220515141120592"></p>
+</li>
+<li><p>查看所有镜像信息：<a target="_blank" rel="noopener" href="http://IP:2375/images/json">http://IP:2375/images/json</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140906433.png" srcset="/img/loading.gif" alt="image-20220515140906433"></p>
+</li>
+<li><p>查看已启动容器信息：<a target="_blank" rel="noopener" href="http://127.0.0.1:2375/containers/json">http://127.0.0.1:2375/containers/json</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141343749.png" srcset="/img/loading.gif" alt="image-20220515141343749"></p>
+</li>
+<li><p>查看网卡信息： <a target="_blank" rel="noopener" href="http://127.0.0.1:2375/networks/">http://127.0.0.1:2375/networks/</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141509777.png" srcset="/img/loading.gif" alt="image-20220515141509777"></p>
+</li>
+</ul>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><h5 id="Docker-Desktop与VM冲突"><a href="#Docker-Desktop与VM冲突" class="headerlink" title="Docker Desktop与VM冲突"></a>Docker Desktop与VM冲突</h5><p>需要注意的是，安装Docker Desktop 后VM就无法使用，原因：</p>
+<blockquote>
+<p>1、Device Guard或Credential Guard与Workstation不兼容。</p>
+<p>2、Windows系统的Hyper-V不兼容导致</p>
+</blockquote>
+<p>解决方法如<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36761831/article/details/81175736">https://blog.csdn.net/qq_36761831/article/details/81175736</a></p>
+<p>开启和关闭Hyper-V</p>
+<div class="hljs"><pre><code class="hljs shell">bcdedit /set hypervisorlaunchtype auto
+bcdedit /set hypervisorlaunchtype off</code></pre></div>
+
+<p>当需要使用VM时，执行关闭Hyper-V命令即可</p>
+<h5 id="配置国内镜像源"><a href="#配置国内镜像源" class="headerlink" title="配置国内镜像源"></a>配置国内镜像源</h5><p>settings=&gt;Dokcer engine修改配置内容</p>
+<div class="hljs"><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;builder&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;gc&quot;</span>: &#123;
+      <span class="hljs-attr">&quot;defaultKeepStorage&quot;</span>: <span class="hljs-string">&quot;20GB&quot;</span>,
+      <span class="hljs-attr">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>
+    &#125;
+  &#125;,
+  <span class="hljs-attr">&quot;experimental&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;features&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;buildkit&quot;</span>: <span class="hljs-literal">true</span>
+  &#125;,
+  <span class="hljs-attr">&quot;registry-mirrors&quot;</span>: [
+    <span class="hljs-string">&quot;https://registry.docker-cn.com&quot;</span>,
+    <span class="hljs-string">&quot;http://hub-mirror.c.163.com&quot;</span>,
+    <span class="hljs-string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span>
+  ]
+&#125;</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141737016.png" srcset="/img/loading.gif" alt="image-20220515141737016"></p>
+<h5 id="docker配置软链接"><a href="#docker配置软链接" class="headerlink" title="docker配置软链接"></a>docker配置软链接</h5><p>由于Docker Desktop默认安装在C盘，所以下载的镜像也都保存在C盘，由于镜像文件一般很大，很容易爆盘，所以需要为保存镜像的文件夹创建一个软链接，将镜像保存到其他盘。<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343278599">参考</a></p>
+<p>请务必先关闭docker 或者docker desktop</p>
+<ul>
+<li>通过Everything或者资源管理器找到以.vhdx结尾的文件所在的位置，这些就是docker镜像路径：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/v2-affd20a39ee0002a4c880ff3eb4e75f7_720w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<ul>
+<li>将.vhdx复制到想要的路径下，本文路径为：</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-70f80706f26839ff0dd3a4fcdc0aca80_720w.jpg" srcset="/img/loading.gif" alt="img"></p>
+<ul>
+<li><p>删除源文件夹，本文是data文件夹</p>
+</li>
+<li><p>以管理员运行cmd并且使用以下命令创建链接：</p>
+<div class="hljs"><pre><code class="hljs shell">mklink /J C:\Users\admin\AppData\Local\Docker\wsl\data   D:\docker\data</code></pre></div>
+
+<p>请大家自行替换路径，本文路径分别为源路径：C:\Users\admin\AppData\Local\Docker\wsl\data</p>
+<p>以及想要移动的路径：D:\docker\data此时可以在源路径看到新建出来的文件夹</p>
+</li>
+</ul>
+<h2 id="使用dockerpy"><a href="#使用dockerpy" class="headerlink" title="使用dockerpy"></a>使用dockerpy</h2><p>官方给出了详细的说明文档<a target="_blank" rel="noopener" href="https://docker-py.readthedocs.io/en/stable/index.html">说明文档</a>，下面只给出几个常见的操作</p>
+<h3 id="image相关操作"><a href="#image相关操作" class="headerlink" title="image相关操作"></a>image相关操作</h3><p>进入docker库的imges.py中可以看到与镜像相关的所有操作，包括在shell中使用的build、pull、push、search等操作</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515144118231.png" srcset="/img/loading.gif" alt="image-20220515144118231"></p>
+<h4 id="list"><a href="#list" class="headerlink" title="list()"></a>list()</h4><p>查看源码，可知有三个可选参数</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">list</span>(<span class="hljs-params">self, name=<span class="hljs-literal">None</span>, <span class="hljs-built_in">all</span>=<span class="hljs-literal">False</span>, filters=<span class="hljs-literal">None</span></span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    List images on the server.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Args:</span>
+<span class="hljs-string">        name (str): Only show images belonging to the repository ``name``</span>
+<span class="hljs-string">        all (bool): Show intermediate image layers. By default, these are</span>
+<span class="hljs-string">            filtered out.</span>
+<span class="hljs-string">        filters (dict): Filters to be processed on the image list.</span>
+<span class="hljs-string">            Available filters:</span>
+<span class="hljs-string">            - ``dangling`` (bool)</span>
+<span class="hljs-string">            - ``label`` (str): format either ``key`` or ``key=value``</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Returns:</span>
+<span class="hljs-string">        (list of :py:class:`Image`): The images.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Raises:</span>
+<span class="hljs-string">        :py:class:`docker.errors.APIError`</span>
+<span class="hljs-string">            If the server returns an error.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    resp = self.client.api.images(name=name, <span class="hljs-built_in">all</span>=<span class="hljs-built_in">all</span>, filters=filters)
+    <span class="hljs-keyword">return</span> [self.get(r[<span class="hljs-string">&quot;Id&quot;</span>]) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> resp]</code></pre></div>
+
+<h5 id="获取所有镜像"><a href="#获取所有镜像" class="headerlink" title="获取所有镜像"></a>获取所有镜像</h5><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
+
+client = docker.from_env()
+imagesList = client.images.<span class="hljs-built_in">list</span>()
+print(imagesList)</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515143446882.png" srcset="/img/loading.gif" alt="image-20220515143446882"></p>
+<h4 id="get"><a href="#get" class="headerlink" title="get()"></a>get()</h4><p>该函数只有一个参数name，镜像名称</p>
+<p>获取指定名称的镜像</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
+client = docker.from_env()
+mysqlImage = client.images.get(<span class="hljs-string">&quot;mysql&quot;</span>)
+print(mysqlImage)</code></pre></div>
+
+<h4 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h4><p>与docker search 命令相同</p>
+<div class="hljs"><pre><code class="hljs stylus">searchList = client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.search</span>(<span class="hljs-string">&quot;nginx&quot;</span>)
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(searchList)</span></span></code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515153818793.png" srcset="/img/loading.gif" alt="image-20220515153818793"></p>
+<h4 id="pull"><a href="#pull" class="headerlink" title="pull()"></a>pull()</h4><p>作用等同于docker pull</p>
+<div class="hljs"><pre><code class="hljs stylus">client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.pull</span>(<span class="hljs-string">&quot;nginx&quot;</span>)</code></pre></div>
+
+<h3 id="container相关操作"><a href="#container相关操作" class="headerlink" title="container相关操作"></a>container相关操作</h3><p>容器相关的操作很多</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515161345640.png" srcset="/img/loading.gif" alt="image-20220515161345640"></p>
+<h4 id="run"><a href="#run" class="headerlink" title="run()"></a>run()</h4><p>官方注释</p>
+<div class="hljs"><pre><code class="hljs lasso">Run a container. <span class="hljs-keyword">By</span> default, it will wait for the container <span class="hljs-keyword">to</span> finish
+<span class="hljs-literal">and</span> <span class="hljs-keyword">return</span> its logs, similar <span class="hljs-keyword">to</span> <span class="hljs-string">``</span>docker run<span class="hljs-string">``</span>.
+<span class="hljs-comment">// </span>
+<span class="hljs-keyword">If</span> the <span class="hljs-string">``</span>detach<span class="hljs-string">``</span> argument is <span class="hljs-string">``</span><span class="hljs-literal">True</span><span class="hljs-string">``</span>, it will start the container
+<span class="hljs-literal">and</span> immediately <span class="hljs-keyword">return</span> a :py:class:<span class="hljs-string">`Container`</span> object, similar <span class="hljs-keyword">to</span>
+<span class="hljs-string">``</span>docker run <span class="hljs-params">-d</span><span class="hljs-string">``</span>.</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs python">port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
+image_name = nginx
+client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 以守护进程的方式创建容器，容器停止后不会删除</span>
+
+```
+- The port number, <span class="hljs-keyword">as</span> an integer. For example,
+``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;`` will expose port <span class="hljs-number">2222</span> inside the
+container <span class="hljs-keyword">as</span> port <span class="hljs-number">3333</span> on the host.
+- ``<span class="hljs-literal">None</span>``, to assign a random host port. For example,
+``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-literal">None</span>&#125;``.
+- A <span class="hljs-built_in">tuple</span> of ``(address, port)`` <span class="hljs-keyword">if</span> you want to specify the
+host interface. For example,
+``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: (<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">1111</span>)&#125;``.
+- A <span class="hljs-built_in">list</span> of integers, <span class="hljs-keyword">if</span> you want to bind multiple host ports
+to a single container port. For example,
+``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: [<span class="hljs-number">1234</span>, <span class="hljs-number">4567</span>]&#125;``.
+```</code></pre></div>
+
+<h4 id="get-1"><a href="#get-1" class="headerlink" title="get()"></a>get()</h4><p>获取容器对象</p>
+<div class="hljs"><pre><code class="hljs python">docker_container_id = <span class="hljs-string">&quot;236efe761aeb&quot;</span>
+container = client.containers.get(docker_container_id)
+print(container.<span class="hljs-built_in">id</span>)
+print(container.attrs) <span class="hljs-comment"># 获取容器的详细信息</span></code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515163148958.png" srcset="/img/loading.gif" alt="image-20220515163148958"></p>
+<h4 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h4><p>进入容器内部执行命令，与下面的命令作用相同</p>
+<div class="hljs"><pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> containerID bash</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs python">command = <span class="hljs-string">&#x27;touch /tmp/flag&#x27;</span> 
+port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
+image_name = nginx
+container = client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  
+container.exec_run(command)</code></pre></div>
+
+
+
+<h3 id="network相关操作"><a href="#network相关操作" class="headerlink" title="network相关操作"></a>network相关操作</h3><h4 id="create"><a href="#create" class="headerlink" title="create"></a>create</h4><p>使用默认参数，桥接模式创建网卡</p>
+<div class="hljs"><pre><code class="hljs python">client.networks.create(<span class="hljs-string">&quot;net1&quot;</span>, driver=<span class="hljs-string">&quot;bridge&quot;</span>)</code></pre></div>
+
+<p>使用自定义IPAM配置创建更高级的网络。例如，将子网设置为192.168.52.0/24和网关地址为192.168.52.254</p>
+<div class="hljs"><pre><code class="hljs routeros">ipam_pool = docker.types.IPAMPool(
+    <span class="hljs-attribute">subnet</span>=<span class="hljs-string">&#x27;192.168.52.0/24&#x27;</span>,
+    <span class="hljs-attribute">gateway</span>=<span class="hljs-string">&#x27;192.168.52.254&#x27;</span>
+)
+ipam_config = docker.types.IPAMConfig(
+    pool_configs=[ipam_pool]
+)
+
+client.networks.create(
+    <span class="hljs-string">&quot;network1&quot;</span>,
+    <span class="hljs-attribute">driver</span>=<span class="hljs-string">&quot;bridge&quot;</span>,
+    <span class="hljs-attribute">ipam</span>=ipam_config
+)</code></pre></div>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/python/">python</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/docker/">docker</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/04/29/reggie/">
+                        <span class="hidden-mobile">reggie</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "dockerpy&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
