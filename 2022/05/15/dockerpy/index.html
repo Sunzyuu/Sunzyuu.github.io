@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      2.2k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      22
+      32
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 分钟前
+                  本文最后更新于：11 分钟前
                 
               </p>
             
@@ -470,6 +470,119 @@ client.networks.create(
     <span class="hljs-attribute">driver</span>=<span class="hljs-string">&quot;bridge&quot;</span>,
     <span class="hljs-attribute">ipam</span>=ipam_config
 )</code></pre></div>
+
+
+
+<h1 id="创建kali攻击机镜像"><a href="#创建kali攻击机镜像" class="headerlink" title="创建kali攻击机镜像"></a>创建kali攻击机镜像</h1><h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><div class="hljs"><pre><code class="hljs nginx"><span class="hljs-attribute">docker</span> pull kalilinux/kali-rolling</code></pre></div>
+
+<p>查看下载的镜像</p>
+<div class="hljs"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker images</span></code></pre></div>
+
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kalilinux/kali-rolling /bin/bash</code></pre></div>
+
+<p>查看容器id</p>
+<div class="hljs"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker ps</span></code></pre></div>
+
+<p>进入容器</p>
+<div class="hljs"><pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> <span class="hljs-built_in">id</span> bash</code></pre></div>
+
+<h2 id="安装基础环境包"><a href="#安装基础环境包" class="headerlink" title="安装基础环境包"></a>安装基础环境包</h2><p>❗需要关闭防火墙或者打开3399端口，否则无法连接</p>
+<p>首先安装vim</p>
+<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y upgrade
+apt-<span class="hljs-builtin-name">get</span> update --fix-missing	
+apt-<span class="hljs-builtin-name">get</span> install vim</code></pre></div>
+
+<p>修改镜像源</p>
+<div class="hljs"><pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>apt/sources.list
+
+添加内容
+deb http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rolling main non-free contrib
+deb-src http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rolling main non-free contrib</code></pre></div>
+
+<p>安装基础环境包</p>
+<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y<span class="hljs-built_in"> upgrade </span>&amp;&amp; \
+   <span class="hljs-attribute">DEBIAN_FRONTEND</span>=noninteractive apt-<span class="hljs-builtin-name">get</span> install -y \
+   kali-tools-top10 \
+   pciutils \
+   iputils-ping \
+   bash-completion &amp;&amp; \
+   apt-<span class="hljs-builtin-name">get</span> autoremove -y &amp;&amp; \
+   apt-<span class="hljs-builtin-name">get</span> clean</code></pre></div>
+
+<h2 id="生成新镜像"><a href="#生成新镜像" class="headerlink" title="生成新镜像"></a>生成新镜像</h2><p>待上面的所有程序安装完成后，打包生成新镜像</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> commit f<span class="hljs-number">16618</span>e<span class="hljs-number">0</span>fda<span class="hljs-number">5</span> kali-<span class="hljs-number">2021</span></code></pre></div>
+
+
+
+<h2 id="远程桌面环境安装"><a href="#远程桌面环境安装" class="headerlink" title="远程桌面环境安装"></a>远程桌面环境安装</h2><h3 id="使用新镜像启动容器"><a href="#使用新镜像启动容器" class="headerlink" title="使用新镜像启动容器"></a>使用新镜像启动容器</h3><div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-<span class="hljs-number">2021</span></code></pre></div>
+
+<p>进入镜像</p>
+<div class="hljs"><pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> <span class="hljs-built_in">id</span> bash</code></pre></div>
+
+<h3 id="安装桌面服务"><a href="#安装桌面服务" class="headerlink" title="安装桌面服务"></a>安装桌面服务</h3><p><strong>●</strong> kali-desktop-xfce ：安装远程桌面环境</p>
+<p><strong>●</strong> xrdp ：远程桌面服务</p>
+<p><strong>●</strong> xorg：xorg是x11的一个实现，xorg提供X server</p>
+<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> update
+
+apt-<span class="hljs-builtin-name">get</span> -y install kali-desktop-xfce xorg xrdp</code></pre></div>
+
+<p>配置xrdp实现远程连接图形界面：</p>
+<div class="hljs"><pre><code class="hljs 1c">sed -i &#x27;s/port=<span class="hljs-number">3399</span>/port=<span class="hljs-number">3389</span>/g&#x27; /etc/xrdp/xrdp.ini
+service xrdp restart</code></pre></div>
+
+<p>修改root用户密码：</p>
+<div class="hljs"><pre><code class="hljs vim">passwd root
+
+
+<span class="hljs-keyword">echo</span> roo<span class="hljs-variable">t:root</span>|chpasswd</code></pre></div>
+
+<p>再次登录XRDP：</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220304155750507.png" srcset="/img/loading.gif" alt="image-20220304155750507"></p>
+<h3 id="打包镜像"><a href="#打包镜像" class="headerlink" title="打包镜像"></a>打包镜像</h3><div class="hljs"><pre><code class="hljs applescript">docker commit <span class="hljs-built_in">id</span> docker-attack</code></pre></div>
+
+<h2 id="编写Dockerfile"><a href="#编写Dockerfile" class="headerlink" title="编写Dockerfile"></a>编写Dockerfile</h2><p>因为启动容器后需要运行</p>
+<div class="hljs"><pre><code class="hljs 1c">sed -i &#x27;s/port=<span class="hljs-number">3399</span>/port=<span class="hljs-number">3389</span>/g&#x27; /etc/xrdp/xrdp.ini
+service xrdp restart</code></pre></div>
+
+<p>所有使用Dockerfile完成这两步操作</p>
+<div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> kali-attack:latest
+<span class="hljs-keyword">COPY</span><span class="bash"> run.sh /home/run.sh</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> chmod +x /home/run.sh</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-string">&quot;-c&quot;</span>,<span class="hljs-string">&quot;/home/run.sh &amp;&amp; tail -f /dev/null&quot;</span>]</span></code></pre></div>
+
+<p> 没有<code>tail -f /dev/null</code>会导致启动容器后自动退出无法使用，<a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/docker_practice/image/dockerfile/cmd">原因</a>可能如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220305103247695.png" srcset="/img/loading.gif" alt="image-20220305103247695"></p>
+<p><code>run.sh</code>中的内容，为启动容器后需要执行的两条命令</p>
+<div class="hljs"><pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span>
+
+sed -i <span class="hljs-string">&#x27;s/port=3399/port=3389/g&#x27;</span> /etc/xrdp/xrdp.ini
+<span class="hljs-built_in">wait</span>
+service xrdp restart</code></pre></div>
+
+<p>使用</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t kali-attack<span class="hljs-number">2</span> .</code></pre></div>
+
+<p>创建镜像，之后创建容器</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-attack<span class="hljs-number">2</span></code></pre></div>
+
+<p>这样就可以直接使用mstvc.exe连接kali桌面</p>
+<div class="hljs"><pre><code class="hljs avrasm"><span class="hljs-symbol">username:</span>root
+<span class="hljs-symbol">password:</span>root</code></pre></div>
+
+
+
+<h1 id="docker访问宿主机网络资源"><a href="#docker访问宿主机网络资源" class="headerlink" title="docker访问宿主机网络资源"></a>docker访问宿主机网络资源</h1><p><a target="_blank" rel="noopener" href="https://swiftflamel.com/2021/04/01/docker-container%E5%AE%B9%E5%99%A8%E5%86%85%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BAhost%E6%9C%8D%E5%8A%A1/">解决方案</a></p>
+<p>本文使用的的windows docker版本大于18.03可以直接使用<code>host.docker.internal</code>访问宿主机网络资源</p>
+<p>其他操作系统的可以<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4a358a120983">参考</a></p>
+<h1 id="docker容器安装vim出错"><a href="#docker容器安装vim出错" class="headerlink" title="docker容器安装vim出错"></a>docker容器安装vim出错</h1><p>报错信息如下</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ncurses</span>-base : Breaks: libtinfo<span class="hljs-number">5</span> (&lt; <span class="hljs-number">6</span>.<span class="hljs-number">1</span>) but <span class="hljs-number">6</span>.<span class="hljs-number">0</span>+<span class="hljs-number">20161126</span>-<span class="hljs-number">1</span>+deb<span class="hljs-number">9</span>u<span class="hljs-number">2</span> is to be installed
+<span class="hljs-attribute">E</span>: Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages.
+<span class="hljs-attribute">E</span>: Unable to correct dependencies</code></pre></div>
+
+<p>直接使用apt安装此包即可</p>
+<div class="hljs"><pre><code class="hljs vim">apt <span class="hljs-keyword">update</span>
+apt upgrade
+apt install <span class="hljs-keyword">vim</span></code></pre></div>
 
 
             </div>
