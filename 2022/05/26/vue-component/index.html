@@ -1,0 +1,981 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>vue_component - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-05-26 15:03" pubdate>
+        2022年5月26日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">vue_component</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：几秒前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="Vue组件"><a href="#Vue组件" class="headerlink" title="Vue组件"></a>Vue组件</h1><p>做项目中使用到的vue组件，记录一下，以后使用到时直接复制即可</p>
+<h2 id="Element-UI"><a href="#Element-UI" class="headerlink" title="Element UI"></a>Element UI</h2><h3 id="进入项目目录，安装依赖"><a href="#进入项目目录，安装依赖" class="headerlink" title="进入项目目录，安装依赖"></a>进入项目目录，安装依赖</h3><div class="hljs"><pre><code class="hljs sh">npm install element-ui -S</code></pre></div>
+
+<p>安装成功后，查看配置文件<code>package.json</code>，是否有element-ui组件的版本号 如下图：</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526152216904.png" srcset="/img/loading.gif" alt="image-20220526152216904"></p>
+<h3 id="在main-js文件中-引入-element-组件"><a href="#在main-js文件中-引入-element-组件" class="headerlink" title="在main.js文件中 引入 element 组件"></a>在main.js文件中 引入 element 组件</h3><div class="hljs"><pre><code class="hljs gradle"><span class="hljs-keyword">import</span> ElementUI <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;element-ui&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;element-ui/lib/theme-chalk/index.css&#x27;</span>;
+Vue.use(ElementUI, &#123; <span class="hljs-keyword">size</span>: <span class="hljs-string">&quot;mini&quot;</span> &#125;);</code></pre></div>
+
+<p>完成以上两个步骤，即可在项目中使用element-ui提供的组件了</p>
+<h2 id="Echarts"><a href="#Echarts" class="headerlink" title="Echarts"></a>Echarts</h2><h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><div class="hljs"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> echarts -S</code></pre></div>
+
+<p>如果不加版本号则默认安装最新版</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">npm</span> install echarts@<span class="hljs-number">5</span>.<span class="hljs-number">3</span>.<span class="hljs-number">2</span> -S</code></pre></div>
+
+<p>添加版本号，可以安装指定版本的依赖包，如图所示。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526152216904.png" srcset="/img/loading.gif" alt="image-20220526152216904"></p>
+<p>在vue文件中使用Echarts</p>
+<h3 id="创建dom组件"><a href="#创建dom组件" class="headerlink" title="创建dom组件"></a>创建dom组件</h3><div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;pie&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 500px; height: 400px&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
+
+<h3 id="初始化图表数据"><a href="#初始化图表数据" class="headerlink" title="初始化图表数据"></a>初始化图表数据</h3><div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">var</span> pieOption = &#123;
+  title: &#123;
+    text: <span class="hljs-string">&#x27;各季度会员数量统计&#x27;</span>,
+    subtext: <span class="hljs-string">&#x27;比例图&#x27;</span>,
+    left: <span class="hljs-string">&#x27;center&#x27;</span>
+  &#125;,
+  tooltip: &#123;
+    trigger: <span class="hljs-string">&#x27;item&#x27;</span>
+  &#125;,
+  legend: &#123;
+    orient: <span class="hljs-string">&#x27;vertical&#x27;</span>,
+    left: <span class="hljs-string">&#x27;left&#x27;</span>
+  &#125;,
+  series: [
+    &#123;
+      type: <span class="hljs-string">&#x27;pie&#x27;</span>,
+      radius: <span class="hljs-string">&#x27;60%&#x27;</span>,
+      label:&#123;            <span class="hljs-comment">//饼图图形上的文本标签</span>
+        normal:&#123;
+          show:<span class="hljs-literal">true</span>,
+          position:<span class="hljs-string">&#x27;inner&#x27;</span>, <span class="hljs-comment">//标签的位置</span>
+          textStyle : &#123;
+            fontWeight : <span class="hljs-number">300</span> ,
+            fontSize : <span class="hljs-number">14</span>,    <span class="hljs-comment">//文字的字体大小</span>
+            color: <span class="hljs-string">&quot;#fff&quot;</span>
+          &#125;,
+          formatter:<span class="hljs-string">&#x27;&#123;d&#125;%&#x27;</span>
+        &#125;
+      &#125;,
+      data: [],  <span class="hljs-comment">// 填空</span>
+      emphasis: &#123;
+        itemStyle: &#123;
+          shadowBlur: <span class="hljs-number">10</span>,
+          shadowOffsetX: <span class="hljs-number">0</span>,
+          shadowColor: <span class="hljs-string">&#x27;rgba(0, 0, 0, 0.5)&#x27;</span>
+        &#125;
+      &#125;
+    &#125;
+  ]
+&#125;;
+
+<span class="hljs-keyword">var</span> pieDom = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;pie&#x27;</span>);
+<span class="hljs-keyword">var</span> pieChart = echarts.init(pieDom);</code></pre></div>
+
+<p>其中<code>data: [],</code>是表格显示的数据，这里是需要重点实现的</p>
+<p>这里可以在前端页面中写死数据，但是大多需要请求后端接口获取数据，如下</p>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-built_in">this</span>.request.get(<span class="hljs-string">&quot;/echarts/members&quot;</span>).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span>&#123;
+      pieOption.series[<span class="hljs-number">0</span>].data = [
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第一季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">0</span>]&#125;,
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第二季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">1</span>]&#125;,
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第三季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">2</span>]&#125;,
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第四季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">3</span>]&#125;,
+      ]
+    pieChart.setOption(pieOption);
+&#125;</code></pre></div>
+
+<p>实现效果图</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526155808268.png" srcset="/img/loading.gif" alt="image-20220526155808268"></p>
+<h2 id="Xterm"><a href="#Xterm" class="headerlink" title="Xterm"></a>Xterm</h2><p>毕业设计中实现了在网页中进入容器内容，也就是<code>docker exec -it containerId bash</code>功能</p>
+<p>与webSHH功能类似</p>
+<h3 id="安装依赖-1"><a href="#安装依赖-1" class="headerlink" title="安装依赖"></a>安装依赖</h3><div class="hljs"><pre><code class="hljs cmake">npm <span class="hljs-keyword">install</span> xterm -S</code></pre></div>
+
+<p>安装使用到的插件</p>
+<div class="hljs"><pre><code class="hljs sh">npm install xterm-addon-attach -S
+npm install xterm-addon-fit -S</code></pre></div>
+
+<p>本文使用的版本如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526160612795.png" srcset="/img/loading.gif" alt="image-20220526160612795"></p>
+<h3 id="在页面中导入使用到的包"><a href="#在页面中导入使用到的包" class="headerlink" title="在页面中导入使用到的包"></a>在页面中导入使用到的包</h3><div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;xterm/css/xterm.css&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; Terminal &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; FitAddon &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm-addon-fit&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; AttachAddon &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm-addon-attach&quot;</span>;</code></pre></div>
+
+<p>前端所有代码如下</p>
+<div class="hljs"><pre><code class="hljs vue">&lt;template&gt;
+  &lt;div class&#x3D;&quot;app-container&quot;&gt;
+    &lt;el-row &gt;
+      &lt;h1&gt;Web Console&lt;&#x2F;h1&gt;
+        &lt;div id&#x3D;&quot;log&quot; style&#x3D;&quot;margin-top:20px;&quot;&gt;
+          &lt;div class&#x3D;&quot;xterm&quot; id&#x3D;&quot;terminal&quot;&gt;&lt;&#x2F;div&gt;
+        &lt;&#x2F;div&gt;
+    &lt;&#x2F;el-row&gt;
+  &lt;&#x2F;div&gt;
+&lt;&#x2F;template&gt;
+&lt;script&gt;
+import &quot;xterm&#x2F;css&#x2F;xterm.css&quot;;
+import &#123; Terminal &#125; from &quot;xterm&quot;;
+import &#123; FitAddon &#125; from &quot;xterm-addon-fit&quot;;
+import &#123; AttachAddon &#125; from &quot;xterm-addon-attach&quot;;
+
+export default &#123;
+  components: &#123;&#125;,
+  props: &#123;
+    socketURI: &#123;
+      type: String,
+      default: &quot;&quot;
+    &#125;
+  &#125;,
+  data() &#123;
+    return &#123;
+      term: null,
+      socket: null,
+      rows: 40,
+      &#x2F;&#x2F; cols: 10,
+      webSocketUrl: &#39;&#39;, &#x2F;&#x2F;&quot;ws:&#x2F;&#x2F;127.0.0.1:8081&#x2F;terminal?workdir&#x3D;&#x2F;&amp;container&#x3D;5e0647ee611b&quot;,
+      SetOut: false,
+      isKey: false
+    &#125;
+  &#125;,
+  computed: &#123;&#125;,
+  watch: &#123;&#125;,
+  created() &#123;
+    const id &#x3D; this.$route.query.id
+    console.log(id)
+    this.webSocketUrl &#x3D; &quot;ws:&#x2F;&#x2F;127.0.0.1:8081&#x2F;terminal?workdir&#x3D;&#x2F;&amp;container&#x3D;&quot; + id
+  &#125;,
+  mounted() &#123;
+    this.initSocket();
+  &#125;,
+  beforeDestroy() &#123;
+    this.socket.close();
+    &#x2F;&#x2F; this.term.dispose();
+  &#125;,
+  methods: &#123;
+    submitForm() &#123;
+      this.$refs[&#39;elForm&#39;].validate(valid &#x3D;&gt; &#123;
+        if (!valid) return
+        &#x2F;&#x2F; TODO 提交表单
+      &#125;)
+    &#125;,
+    resetForm() &#123;
+      this.$refs[&#39;elForm&#39;].resetFields()
+    &#125;,
+    &#x2F;&#x2F;Xterm主题
+    initTerm(data, callback) &#123;
+      const term &#x3D; new Terminal(&#123;
+        rendererType: &quot;canvas&quot;, &#x2F;&#x2F;渲染类型
+        rows: this.rows, &#x2F;&#x2F;行数
+        &#x2F;&#x2F; cols: this.cols,&#x2F;&#x2F; 设置之后会输入多行之后覆盖现象
+        convertEol: true, &#x2F;&#x2F;启用时，光标将设置为下一行的开头
+        &#x2F;&#x2F; scrollback: 10,&#x2F;&#x2F;终端中的回滚量
+        fontSize: 14, &#x2F;&#x2F;字体大小
+        disableStdin: false, &#x2F;&#x2F;是否应禁用输入。
+        cursorStyle: &quot;block&quot;, &#x2F;&#x2F;光标样式
+        cursorBlink: true, &#x2F;&#x2F;光标闪烁
+        scrollback: 30,
+        tabStopWidth: 8,
+        theme: &#123;
+          foreground: &quot;green&quot;, &#x2F;&#x2F;字体
+          background: &quot;#000000&quot;, &#x2F;&#x2F;背景色
+          cursor: &quot;help&quot; &#x2F;&#x2F;设置光标
+        &#125;
+      &#125;);
+      const attachAddon &#x3D; new AttachAddon(this.socket);
+      const fitAddon &#x3D; new FitAddon();
+      term.loadAddon(attachAddon);
+      term.loadAddon(fitAddon);
+      term.open(document.getElementById(&quot;terminal&quot;));
+      fitAddon.fit();
+      term.focus();
+      let _this &#x3D; this;
+      &#x2F;&#x2F;限制和后端交互，只有输入回车键才显示结果
+      term.prompt &#x3D; () &#x3D;&gt; &#123;
+        term.write(&quot;\r\n$ &quot;);
+      &#125;;
+      term.prompt();
+
+      function runFakeTerminal(_this) &#123;
+        if (term._initialized) &#123;
+          return;
+        &#125;
+        &#x2F;&#x2F; 初始化
+        term._initialized &#x3D; true;
+        term.writeln();&#x2F;&#x2F;控制台初始化报错处
+        term.prompt();
+        &#x2F;&#x2F; &#x2F; **
+        &#x2F;&#x2F;     *添加事件监听器，用于按下键时的事件。事件值包含
+        &#x2F;&#x2F;     *将在data事件以及DOM事件中发送的字符串
+        &#x2F;&#x2F;     *触发了它。
+        &#x2F;&#x2F;     * @返回一个IDisposable停止监听。
+        &#x2F;&#x2F;  * &#x2F;
+        &#x2F;&#x2F;   &#x2F; ** 更新：xterm 4.x（新增）
+        &#x2F;&#x2F;  *为数据事件触发时添加事件侦听器。发生这种情况
+        &#x2F;&#x2F;  *用户输入或粘贴到终端时的示例。事件值
+        &#x2F;&#x2F;  *是&#96;string&#96;结果的结果，在典型的设置中，应该通过
+        &#x2F;&#x2F;  *到支持pty。
+        &#x2F;&#x2F;  * @返回一个IDisposable停止监听。
+        &#x2F;&#x2F;  * &#x2F;
+        &#x2F;&#x2F; 支持输入与粘贴方法
+        term.onData(function(key) &#123;
+          let order &#x3D; &#123;
+            Data: key,
+            Op: &quot;stdin&quot;
+          &#125;;
+          _this.onSend(order);
+        &#125;);
+        _this.term &#x3D; term;
+      &#125;
+
+      runFakeTerminal(_this);
+    &#125;,
+    &#x2F;&#x2F;webShell主题
+    initSocket() &#123;
+      const WebSocketUrl &#x3D; this.webSocketUrl
+      this.socket &#x3D; new WebSocket(
+        WebSocketUrl
+      );
+      this.socketOnClose(); &#x2F;&#x2F;关闭
+      this.socketOnOpen(); &#x2F;&#x2F;
+      this.socketOnError();
+    &#125;,
+    &#x2F;&#x2F;webshell链接成功之后操作
+    socketOnOpen() &#123;
+      this.socket.onopen &#x3D; () &#x3D;&gt; &#123;
+        &#x2F;&#x2F; 链接成功后
+        this.initTerm();
+      &#125;;
+    &#125;,
+    &#x2F;&#x2F;webshell关闭之后操作
+    socketOnClose() &#123;
+      this.socket.onclose &#x3D; () &#x3D;&gt; &#123;
+        console.log(&quot;close socket&quot;);
+      &#125;;
+    &#125;,
+    &#x2F;&#x2F;webshell错误信息
+    socketOnError() &#123;
+      this.socket.onerror &#x3D; () &#x3D;&gt; &#123;
+        console.log(&quot;socket 链接失败&quot;);
+      &#125;;
+    &#125;,
+    &#x2F;&#x2F;特殊处理
+    onSend(data) &#123;
+      data &#x3D; this.base.isObject(data) ? JSON.stringify(data) : data;
+      data &#x3D; this.base.isArray(data) ? data.toString() : data;
+      data &#x3D; data.replace(&#x2F;\\\\&#x2F;, &quot;\\&quot;);
+      this.shellWs.onSend(data);
+    &#125;,
+    &#x2F;&#x2F;删除左右两端的空格
+    trim(str) &#123;
+      return str.replace(&#x2F;(^\s*)|(\s*$)&#x2F;g, &quot;&quot;);
+    &#125;
+  &#125;
+&#125;
+&lt;&#x2F;script&gt;
+&lt;style&gt;
+&lt;&#x2F;style&gt;</code></pre></div>
+
+<p>以前前端代码基本不需要改动，只需要修改后端的api</p>
+<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">this.webSocketUrl</span> = <span class="hljs-string">&quot;ws://127.0.0.1:8081/terminal?workdir=/&amp;container=&quot;</span> + id</code></pre></div>
+
+<p>将该参数修改为后端websocket接口即可使用</p>
+<h2 id="vue-video-player"><a href="#vue-video-player" class="headerlink" title="vue-video-player"></a>vue-video-player</h2><h3 id="安装依赖-2"><a href="#安装依赖-2" class="headerlink" title="安装依赖"></a>安装依赖</h3><div class="hljs"><pre><code class="hljs sh">npm install vue-video-player@5.0.2 -S</code></pre></div>
+
+<h3 id="在单文件中使用"><a href="#在单文件中使用" class="headerlink" title="在单文件中使用"></a>在单文件中使用</h3><p>首先导入依赖</p>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">import</span> &#123; videoPlayer &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue-video-player/src&#x27;</span>  
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;video.js/dist/video-js.css&#x27;</span>
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;vue-video-player/src/custom-theme.css&#x27;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
+  name: <span class="hljs-string">&quot;VideoDetail&quot;</span>,
+  components: &#123;
+    videoPlayer
+  &#125;,</code></pre></div>
+
+<p>之前是<code>import &#123; videoPlayer &#125; from &#39;vue-video-player&#39;</code> ，报错信息如下</p>
+<div class="hljs"><pre><code class="hljs subunit"> error  in ./node_modules/vue-video-player/dist/vue-video-player.js
+
+Module not found: Error: Can&#x27;t resolve &#x27;videojs&#x27; in &#x27;E:\Sunzh\java\admin_demo\hello-world\node_modules\vue-video-player\dist&#x27;
+
+<span class="hljs-keyword">ERROR </span>in ./node_modules/vue-video-player/dist/vue-video-player.js
+Module not found: Error: Can&#x27;t resolve &#x27;videojs&#x27; in &#x27;E:\Sunzh\java\admin_demo\hello-world\node_modules\vue-video-player\dist&#x27;
+ @ ./node_modules/babel-loader/lib/index.js??clonedRuleSet<span class="hljs-string">-40</span>[0].rules[0].use[0]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/views/Detail.vue?vue&amp;type=scr
+ipt&amp;lang=js&amp; 13:0<span class="hljs-string">-47</span> 19:17<span class="hljs-string">-28</span>
+ @ ./src/views/Detail.vue?vue&amp;type=script&amp;lang=js&amp; 1:0<span class="hljs-string">-212</span> 1:228<span class="hljs-string">-231</span> 1:233<span class="hljs-string">-442</span> 1:233<span class="hljs-string">-442</span>
+ @ ./src/views/Detail.vue 2:0<span class="hljs-string">-58</span> 3:0<span class="hljs-string">-53</span> 3:0<span class="hljs-string">-53</span> 9:2<span class="hljs-string">-8</span>
+ @ ./src/router/index.js 82:11<span class="hljs-string">-40</span>
+ @ ./src/main.js 7:0<span class="hljs-string">-30</span> 26:10<span class="hljs-string">-16</span>
+</code></pre></div>
+
+
+
+<p>完整的前端代码</p>
+<div class="hljs"><pre><code class="hljs vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;div class&#x3D;&#39;demo&#39;&gt;
+      &lt;video-player class&#x3D;&quot;video-player-box&quot;
+                    ref&#x3D;&quot;videoPlayer&quot;
+                    :playsinline&#x3D;&quot;true&quot;
+                    :options&#x3D;&quot;playerOptions&quot;&gt;
+      &lt;&#x2F;video-player&gt;
+    &lt;&#x2F;div&gt;
+  &lt;&#x2F;div&gt;
+&lt;&#x2F;template&gt;
+
+&lt;script&gt;
+import &#123; videoPlayer &#125; from &#39;vue-video-player&#x2F;src&#39;
+import &#39;video.js&#x2F;dist&#x2F;video-js.css&#39;
+import &#39;vue-video-player&#x2F;src&#x2F;custom-theme.css&#39;
+
+export default &#123;
+  name: &quot;VideoDetail&quot;,
+  components: &#123;
+    videoPlayer
+  &#125;,
+  data() &#123;
+    return &#123;
+      &#x2F;&#x2F; id: this.$route.query.id,
+      &#x2F;&#x2F; video: &#123;&#125;,
+      playerOptions: &#123;
+        playbackRates: [0.5, 1.0, 1.5, 2.0], &#x2F;&#x2F; 可选的播放速度
+        autoplay: true, &#x2F;&#x2F; 如果为true,浏览器准备好时开始回放。
+        muted: false, &#x2F;&#x2F; 默认情况下将会消除任何音频。
+        loop: false, &#x2F;&#x2F; 是否视频一结束就重新开始。
+        preload: &#39;auto&#39;, &#x2F;&#x2F; 建议浏览器在&lt;video&gt;加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: &#39;zh-CN&#39;,
+        aspectRatio: &#39;16:9&#39;, &#x2F;&#x2F; 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如&quot;16:9&quot;或&quot;4:3&quot;）
+        fluid: true, &#x2F;&#x2F; 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        sources: [&#123;
+          type: &quot;video&#x2F;mp4&quot;, &#x2F;&#x2F; 类型
+          src: &#39;&#39; &#x2F;&#x2F; url地址
+        &#125;],
+        poster: &#39;&#39;, &#x2F;&#x2F; 封面地址
+        notSupportedMessage: &#39;此视频暂无法播放，请稍后再试&#39;, &#x2F;&#x2F; 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+        controlBar: &#123;
+          timeDivider: true, &#x2F;&#x2F; 当前时间和持续时间的分隔符
+          durationDisplay: true, &#x2F;&#x2F; 显示持续时间
+          remainingTimeDisplay: true, &#x2F;&#x2F; 是否显示剩余时间功能
+          fullscreenToggle: true &#x2F;&#x2F; 是否显示全屏按钮
+        &#125;
+      &#125;
+    &#125;
+  &#125;,
+  created() &#123;
+    let id &#x3D;  this.$route.query.id
+    &#x2F;&#x2F; this.playerOptions.sources[0].src &#x3D; &quot;http:&#x2F;&#x2F;vjs.zencdn.net&#x2F;v&#x2F;oceans.mp4&quot;
+    this.request(&quot;&#x2F;file&#x2F;detail&#x2F;&quot; + id).then(res &#x3D;&gt; &#123;
+      console.log(res.data)
+      this.video &#x3D; res.data
+      this.playerOptions.sources[0].src &#x3D; res.data.url
+
+    &#125;)
+  &#125;,
+  methods: &#123;&#125;
+&#125;
+&lt;&#x2F;script&gt;
+
+&lt;style&gt;
+
+&lt;&#x2F;style&gt;
+</code></pre></div>
+
+<p>需要修改的位置只有<code>this.playerOptions.sources[0].src</code></p>
+<p>将参数换成你的视频地址即可</p>
+<p>实现效果如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526161723965.png" srcset="/img/loading.gif" alt="image-20220526161723965"></p>
+<p>可以调整播放速度</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526161842064.png" srcset="/img/loading.gif" alt="image-20220526161842064"></p>
+<h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/vue/">vue</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/05/15/dockerpy/">
+                        <span class="hidden-mobile">dockerpy</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "vue_component&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
