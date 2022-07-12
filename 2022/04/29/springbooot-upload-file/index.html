@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      4.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      28
+      67
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：13 天前
+                  本文最后更新于：6 小时前
                 
               </p>
             
@@ -538,6 +538,396 @@
 
 <p>更多的模板可以到<code>com.baomidou.mybatis-plus-generator</code>包中复制到项目的<code>resources\templates</code>中，根据自己的需求修改模板</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220513194907662.png" srcset="/img/loading.gif" alt="image-20220513194907662"></p>
+<h1 id="Swagger"><a href="#Swagger" class="headerlink" title="Swagger"></a>Swagger</h1><h2 id="1-导入依赖-1"><a href="#1-导入依赖-1" class="headerlink" title="1.导入依赖"></a>1.导入依赖</h2><div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+
+
+<h2 id="2-创建配置类"><a href="#2-创建配置类" class="headerlink" title="2.创建配置类"></a>2.创建配置类</h2><p>再<code>com.sunzy.fmmall.config.SwaggerConfig</code>路径下创建swagger的配置类</p>
+<p>配置文档的封面信息 包括标题，版本，作者信息</p>
+<p>修改需要扫面的controller包位置即可</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.fmmall.config;
+
+
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> springfox.documentation.builders.ApiInfoBuilder;
+<span class="hljs-keyword">import</span> springfox.documentation.builders.PathSelectors;
+<span class="hljs-keyword">import</span> springfox.documentation.builders.RequestHandlerSelectors;
+<span class="hljs-keyword">import</span> springfox.documentation.service.ApiInfo;
+<span class="hljs-keyword">import</span> springfox.documentation.service.Contact;
+<span class="hljs-keyword">import</span> springfox.documentation.spi.DocumentationType;
+<span class="hljs-keyword">import</span> springfox.documentation.spring.web.plugins.Docket;
+<span class="hljs-keyword">import</span> springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-meta">@EnableSwagger2</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SwaggerConfig</span> </span>&#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * swagger可以自动生成接口文档</span>
+<span class="hljs-comment">     * 1.配置生成文档的信息</span>
+<span class="hljs-comment">     * 2.配置生成规则</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     */</span>
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * Docket用来封装接口文档</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Docket <span class="hljs-title">getDocket</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-comment">//创建封面信息对象</span>
+        ApiInfoBuilder apiInfoBuilder = <span class="hljs-keyword">new</span> ApiInfoBuilder();
+        apiInfoBuilder.title(<span class="hljs-string">&quot;《锋迷商城》后端接口说明&quot;</span>)
+                .description(<span class="hljs-string">&quot;此文档详细说明了锋迷商城项目后端接口规范....&quot;</span>)
+                .version(<span class="hljs-string">&quot;v 2.0.1&quot;</span>)
+                .contact( <span class="hljs-keyword">new</span> Contact(<span class="hljs-string">&quot;sunzy&quot;</span>,<span class="hljs-string">&quot;www.suzny.com&quot;</span>,<span class="hljs-string">&quot;sunzy@wang.com&quot;</span>) );
+        ApiInfo apiInfo =  apiInfoBuilder.build();
+
+        Docket docket = <span class="hljs-keyword">new</span> Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo) <span class="hljs-comment">//指定生成的文档中的封面信息：文档标题、版本、作者</span>
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(<span class="hljs-string">&quot;com.sunzy.fmmall.controller&quot;</span>))
+                .paths(PathSelectors.any())
+                .build();
+
+        <span class="hljs-keyword">return</span> docket;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>启动springboot项目访问项目地址/swagger-ui.html即可看到相关接口信息，并可以进行测试</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220710113522350.png" srcset="/img/loading.gif" alt="image-20220710113522350"></p>
+<h2 id="3-swagger注解说明"><a href="#3-swagger注解说明" class="headerlink" title="3.swagger注解说明"></a>3.swagger注解说明</h2><blockquote>
+<p>Swagger提供一套详细的注解可以对接口进行详细的说明</p>
+</blockquote>
+<p>@Api 类注解，对控制器类添加此注解可以对控制器进行功能说明</p>
+<div class="hljs"><pre><code class="hljs reasonml">@<span class="hljs-constructor">Api(<span class="hljs-params">value</span> = <span class="hljs-string">&quot;用户管理&quot;</span>, <span class="hljs-params">tags</span> = <span class="hljs-string">&quot;提供用户注册和登录服务&quot;</span>)</span></code></pre></div>
+
+<p>@ApiOperation 方法注解，对每个方法作用进行详细说明</p>
+<div class="hljs"><pre><code class="hljs kotlin"><span class="hljs-meta">@ApiOperation(<span class="hljs-meta-string">&quot;用户登录接口&quot;</span>)</span></code></pre></div>
+
+<p>@ApiImplicitParams和@ApiImplicitParam 对方法中的参数进行详细的说明，包括字段名，备注，是否必须，以及默认值</p>
+<div class="hljs"><pre><code class="hljs less"><span class="hljs-variable">@ApiImplicitParams</span>(
+        <span class="hljs-variable">@ApiImplicitParam</span>(dataType = <span class="hljs-string">&quot;string&quot;</span>, name = <span class="hljs-string">&quot;username&quot;</span>, value = <span class="hljs-string">&quot;用户账号&quot;</span>, required = true),
+        <span class="hljs-variable">@ApiImplicitParam</span>(dataType = <span class="hljs-string">&quot;string&quot;</span>, name = <span class="hljs-string">&quot;password&quot;</span>, value = <span class="hljs-string">&quot;用户密码&quot;</span>, required = true)
+)</code></pre></div>
+
+
+
+<p>@ApiModel 当接口参数和返回值类型为对象类型是需要添加此注解</p>
+<div class="hljs"><pre><code class="hljs reasonml">@<span class="hljs-constructor">ApiModel(<span class="hljs-params">value</span> = <span class="hljs-string">&quot;ResultVO对象&quot;</span>,<span class="hljs-params">description</span> = <span class="hljs-string">&quot;封装接口返回给前端的数据&quot;</span>)</span></code></pre></div>
+
+<p>@ApiModelProperty 模型中的成员变量进行说明</p>
+<div class="hljs"><pre><code class="hljs reasonml">@<span class="hljs-constructor">ApiModelProperty(<span class="hljs-params">value</span> = <span class="hljs-string">&quot;响应状态码&quot;</span>,<span class="hljs-params">dataType</span> = <span class="hljs-string">&quot;int&quot;</span>)</span>
+<span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> code;</code></pre></div>
+
+
+
+<p>@ApiIngnore接口方法注解，添加此注解的方法不会出现在接口文档中</p>
+<h2 id="4-swagger-ui插件"><a href="#4-swagger-ui插件" class="headerlink" title="4.swagger-ui插件"></a>4.swagger-ui插件</h2><p>导入插件依赖</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--swagger-ui插件依赖--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.xiaoymin<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>swagger-bootstrap-ui<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.9.6<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<p>访问url:<a target="_blank" rel="noopener" href="http://localhost:8080/doc.html">http://localhost:8080/doc.html</a> ,ui界面设计更加美观</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220710133641781.png" srcset="/img/loading.gif" alt="image-20220710133641781"></p>
+<h1 id="tkMapper"><a href="#tkMapper" class="headerlink" title="tkMapper"></a>tkMapper</h1><p>整合tkmapper</p>
+<h2 id="1-导入依赖-2"><a href="#1-导入依赖-2" class="headerlink" title="1.导入依赖"></a>1.导入依赖</h2><div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>tk.mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mapper-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.1.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+
+
+<h2 id="2-配置application-yml文件"><a href="#2-配置application-yml文件" class="headerlink" title="2.配置application.yml文件"></a>2.配置application.yml文件</h2><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">datasource:</span>
+    <span class="hljs-attr">druid:</span>
+      <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
+      <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
+      <span class="hljs-attr">password:</span> <span class="hljs-string">root</span>
+      <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/fmmall?characterEncoding=utf-8&amp;useSSL=false</span>
+<span class="hljs-attr">mybatis:</span>
+  <span class="hljs-attr">mapper-locations:</span> <span class="hljs-string">classpath:mapper/*Mapper.xml</span>
+  <span class="hljs-attr">type-aliases-package:</span> <span class="hljs-string">com.sunzy.fmmall.dao</span></code></pre></div>
+
+<h2 id="3-修改启动类"><a href="#3-修改启动类" class="headerlink" title="3.修改启动类"></a>3.修改启动类</h2><p>注意MapperScan需要使用tkmapper包中的</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.tkmapper;
+
+<span class="hljs-comment">//import org.mybatis.spring.annotation.MapperScan;</span>
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> tk.mybatis.spring.annotation.MapperScan;
+
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-comment">//@MapperScan(&quot;com.sunzy.tkmapper.dao&quot;)</span>
+<span class="hljs-meta">@MapperScan(&quot;com.sunzy.tkmapper.dao&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TkmapperDemoApplication</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        SpringApplication.run(TkmapperDemoApplication.class, args);
+    &#125;
+
+&#125;
+</code></pre></div>
+
+<h2 id="4-逆向工程"><a href="#4-逆向工程" class="headerlink" title="4.逆向工程"></a>4.逆向工程</h2><p>导入插件依赖</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+               <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis.generator<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+               <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-generator-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+               <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.3.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+               <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+                   <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                       <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                       <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                       <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>5.1.47<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+                   <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+                   <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                       <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>tk.mybatis<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                       <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mapper<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                       <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.4.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+                   <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+               <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+           <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span></code></pre></div>
+
+<p>添加配置文件GeneratorConfig.xml</p>
+<p>记得修改对应包名<code>&lt;!--**--&gt;</code>标记处需要修改</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">generatorConfiguration</span></span>
+<span class="hljs-meta">        <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//mybatis.org//DTD MyBatis Generator Configuration</span></span>
+<span class="hljs-meta"><span class="hljs-meta-string">1.0//EN&quot;</span></span>
+<span class="hljs-meta">        <span class="hljs-meta-string">&quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">generatorConfiguration</span>&gt;</span>
+    <span class="hljs-comment">&lt;!-- 引⼊数据库连接配置 --&gt;</span>
+    <span class="hljs-comment">&lt;!-- &lt;properties resource=&quot;jdbc.properties&quot;/&gt;--&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">context</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;Mysql&quot;</span> <span class="hljs-attr">targetRuntime</span>=<span class="hljs-string">&quot;MyBatis3Simple&quot;</span></span>
+<span class="hljs-tag">             <span class="hljs-attr">defaultModelType</span>=<span class="hljs-string">&quot;flat&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;beginningDelimiter&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;`&quot;</span>/&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;endingDelimiter&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;`&quot;</span>/&gt;</span>
+        <span class="hljs-comment">&lt;!-- 配置 GeneralDAO --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;tk.mybatis.mapper.generator.MapperPlugin&quot;</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;mappers&quot;</span></span>
+<span class="hljs-tag">                      <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;com.sunzy.fmmall.general.GeneralDao&quot;</span>/&gt;</span><span class="hljs-comment">&lt;!--**--&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 配置数据库连接 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">jdbcConnection</span> <span class="hljs-attr">driverClass</span>=<span class="hljs-string">&quot;com.mysql.jdbc.Driver&quot;</span></span>
+<span class="hljs-tag">                        <span class="hljs-attr">connectionURL</span>=<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/fmmall?useSSL=false&quot;</span> </span>
+<span class="hljs-tag">                        <span class="hljs-attr">userId</span>=<span class="hljs-string">&quot;root&quot;</span> <span class="hljs-attr">password</span>=<span class="hljs-string">&quot;root&quot;</span>&gt;</span><span class="hljs-comment">&lt;!--**--&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">jdbcConnection</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- 配置实体类存放路径 --&gt;</span>
+        &lt;javaModelGenerator
+                targetPackage=&quot;com.sunzy.fmmall.entity&quot;
+                targetProject=&quot;src/main/java&quot;/&gt;   <span class="hljs-comment">&lt;!--**--&gt;</span>
+        <span class="hljs-comment">&lt;!-- 配置 XML 存放路径 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">sqlMapGenerator</span> <span class="hljs-attr">targetPackage</span>=<span class="hljs-string">&quot;/&quot;</span></span>
+<span class="hljs-tag">                         <span class="hljs-attr">targetProject</span>=<span class="hljs-string">&quot;src/main/resources/mapper&quot;</span>/&gt;</span> <span class="hljs-comment">&lt;!--**--&gt;</span>
+        <span class="hljs-comment">&lt;!-- 配置 DAO 存放路径 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">javaClientGenerator</span> <span class="hljs-attr">targetPackage</span>=<span class="hljs-string">&quot;com.sunzy.fmmall.dao&quot;</span></span>
+<span class="hljs-tag">                             <span class="hljs-attr">targetProject</span>=<span class="hljs-string">&quot;src/main/java&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;XMLMAPPER&quot;</span>/&gt;</span>  <span class="hljs-comment">&lt;!--**--&gt;</span>
+        <span class="hljs-comment">&lt;!-- 配置需要指定⽣成的数据库和表，% 代表所有表 --&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">table</span> <span class="hljs-attr">tableName</span>=<span class="hljs-string">&quot;%&quot;</span>&gt;</span>
+            <span class="hljs-comment">&lt;!-- mysql 配置 --&gt;</span>
+            <span class="hljs-comment">&lt;!-- &lt;generatedKey column=&quot;id&quot; sqlStatement=&quot;Mysql&quot;</span>
+<span class="hljs-comment">            identity=&quot;true&quot;/&gt;--&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">table</span>&gt;</span>
+        <span class="hljs-comment">&lt;!-- &lt;table tableName=&quot;tb_roles&quot;&gt;--&gt;</span>
+        <span class="hljs-comment">&lt;!-- &amp;lt;!&amp;ndash; mysql 配置 &amp;ndash;&amp;gt;--&gt;</span>
+        <span class="hljs-comment">&lt;!-- &lt;generatedKey column=&quot;roleid&quot; sqlStatement=&quot;Mysql&quot;</span>
+<span class="hljs-comment">        identity=&quot;true&quot;/&gt;--&gt;</span>
+        <span class="hljs-comment">&lt;!-- &lt;/table&gt;--&gt;</span>
+        <span class="hljs-comment">&lt;!-- &lt;table tableName=&quot;tb_permissions&quot;&gt;--&gt;</span>
+        <span class="hljs-comment">&lt;!-- &amp;lt;!&amp;ndash; mysql 配置 &amp;ndash;&amp;gt;--&gt;</span>
+        <span class="hljs-comment">&lt;!-- &lt;generatedKey column=&quot;perid&quot; sqlStatement=&quot;Mysql&quot;</span>
+<span class="hljs-comment">        identity=&quot;true&quot;/&gt;--&gt;</span>
+        <span class="hljs-comment">&lt;!-- &lt;/table&gt;--&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">context</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">generatorConfiguration</span>&gt;</span></code></pre></div>
+
+<p>创建<code>com.sunzy.fmmall.general.GeneralDao</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.fmmall.general;
+
+<span class="hljs-keyword">import</span> tk.mybatis.mapper.common.Mapper;
+<span class="hljs-keyword">import</span> tk.mybatis.mapper.common.MySqlMapper;
+
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">GeneralDao</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">Mapper</span>&lt;<span class="hljs-title">T</span>&gt;, <span class="hljs-title">MySqlMapper</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;
+&#125;
+</code></pre></div>
+
+<p>在pom.xml中添加配置文件的位置</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220710225357498.png" srcset="/img/loading.gif" alt="image-20220710225357498"></p>
+<p>使用插件进行代码生成</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220710225431382.png" srcset="/img/loading.gif" alt="image-20220710225431382"></p>
+<h1 id="JWT实现登录权限认证"><a href="#JWT实现登录权限认证" class="headerlink" title="JWT实现登录权限认证"></a>JWT实现登录权限认证</h1><h2 id="1-导入JWT依赖"><a href="#1-导入JWT依赖" class="headerlink" title="1.导入JWT依赖"></a>1.导入JWT依赖</h2><div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.auth0<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>java-jwt<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.10.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.jsonwebtoken<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jjwt<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.9.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<h2 id="2-生成对应的token并返回给前端"><a href="#2-生成对应的token并返回给前端" class="headerlink" title="2.生成对应的token并返回给前端"></a>2.生成对应的token并返回给前端</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 验证成功则生成对应的token</span>
+<span class="hljs-comment">// 使用jwt生成token</span>
+JwtBuilder builder = Jwts.builder();
+Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+map.put(<span class="hljs-string">&quot;key1&quot;</span>, <span class="hljs-string">&quot;value2&quot;</span>);
+map.put(<span class="hljs-string">&quot;key2&quot;</span>, <span class="hljs-string">&quot;value2&quot;</span>);
+JwtBuilder jwtBuilder = builder.setSubject(username)    <span class="hljs-comment">//设置subject</span>
+    .setIssuedAt(<span class="hljs-keyword">new</span> Date())        <span class="hljs-comment">// 设置token生成的时间</span>
+    .setId(user.getUserId() + <span class="hljs-string">&quot;&quot;</span>)        <span class="hljs-comment">// 设置userid为token的唯一id</span>
+    .setClaims(map)                 <span class="hljs-comment">// map中可以存放用户的角色和权限信息</span>
+    .setExpiration(<span class="hljs-keyword">new</span> Date(System.currentTimeMillis() + <span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span> * <span class="hljs-number">2</span>))               <span class="hljs-comment">// 设置token的过期时间 为两天</span>
+    .signWith(SignatureAlgorithm.HS256, <span class="hljs-string">&quot;sunzy123456&quot;</span>);<span class="hljs-comment">// 设置token的加密方式和加密密钥</span>
+
+String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token</span>
+<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, token, user);</code></pre></div>
+
+<h2 id="3-前端进行登录验证时获取对应的token"><a href="#3-前端进行登录验证时获取对应的token" class="headerlink" title="3.前端进行登录验证时获取对应的token"></a>3.前端进行登录验证时获取对应的token</h2><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220711172838166.png" srcset="/img/loading.gif" alt="image-20220711172838166"></p>
+<h2 id="4-JWT进行token解析"><a href="#4-JWT进行token解析" class="headerlink" title="4.JWT进行token解析"></a>4.JWT进行token解析</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">if</span>(token == <span class="hljs-keyword">null</span> || <span class="hljs-string">&quot;&quot;</span>.equals(token))&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;failed&quot;</span>, <span class="hljs-keyword">null</span>);
+&#125;<span class="hljs-keyword">else</span> &#123;
+    JwtParser parser = Jwts.parser();
+    parser.setSigningKey(<span class="hljs-string">&quot;sunzy123456&quot;</span>); <span class="hljs-comment">// 密钥需要与加密时使用的一致</span>
+    <span class="hljs-keyword">try</span>&#123;
+        <span class="hljs-comment">// 如果token正确 且在有效期内 则解析正常否则会出现异常</span>
+        Jws&lt;Claims&gt; claimsJws = parser.parseClaimsJws(token);
+        Claims body = claimsJws.getBody();  <span class="hljs-comment">// 获取token中的用户数据</span>
+        String subject = body.getSubject();  <span class="hljs-comment">// 获取token中发subject</span>
+        String key1 = body.get(<span class="hljs-string">&quot;key1&quot;</span>, String.class);  <span class="hljs-comment">/// 获取添加在map中的值</span>
+    &#125;<span class="hljs-keyword">catch</span>(UnsupportedJwtException e)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;token不合法请重新登录！&quot;</span>, <span class="hljs-keyword">null</span>);
+    &#125;<span class="hljs-keyword">catch</span>(ExpiredJwtException e)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;token已过期，请重新登录！&quot;</span>, <span class="hljs-keyword">null</span>);
+    &#125;
+    <span class="hljs-keyword">catch</span> (Exception e)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;未知错误&quot;</span>, <span class="hljs-keyword">null</span>);
+    &#125;</code></pre></div>
+
+<h2 id="5-使用拦截器验证token"><a href="#5-使用拦截器验证token" class="headerlink" title="5.使用拦截器验证token"></a>5.使用拦截器验证token</h2><ul>
+<li><p>创建拦截器</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.fmmall.interceptor;
+
+<span class="hljs-keyword">import</span> com.alibaba.fastjson.JSON;
+<span class="hljs-keyword">import</span> com.sunzy.fmmall.vo.ResStatus;
+<span class="hljs-keyword">import</span> com.sunzy.fmmall.vo.ResultVO;
+<span class="hljs-keyword">import</span> io.jsonwebtoken.*;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+<span class="hljs-keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;
+<span class="hljs-keyword">import</span> org.springframework.web.servlet.ModelAndView;
+
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletResponse;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.io.PrintWriter;
+
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CheckTokenInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">HandlerInterceptor</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">preHandle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        String token = request.getParameter(<span class="hljs-string">&quot;token&quot;</span>);
+
+        <span class="hljs-keyword">if</span> (token == <span class="hljs-keyword">null</span> || <span class="hljs-string">&quot;&quot;</span>.equals(token)) &#123;
+            doResponse(response, <span class="hljs-string">&quot;请先登录！&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            JwtParser parser = Jwts.parser();
+            parser.setSigningKey(<span class="hljs-string">&quot;sunzy123456&quot;</span>); <span class="hljs-comment">// 密钥需要与加密时使用的一致</span>
+            <span class="hljs-keyword">try</span> &#123;
+                <span class="hljs-comment">// 如果token正确 且在有效期内 则解析正常否则会出现异常</span>
+                Jws&lt;Claims&gt; claimsJws = parser.parseClaimsJws(token);
+                Claims body = claimsJws.getBody();  <span class="hljs-comment">// 获取token中的用户数据</span>
+                String subject = body.getSubject();  <span class="hljs-comment">// 获取token中发subject</span>
+                String key1 = body.get(<span class="hljs-string">&quot;key1&quot;</span>, String.class);  <span class="hljs-comment">/// 获取添加在map中的值</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            &#125; <span class="hljs-keyword">catch</span> (UnsupportedJwtException e) &#123;
+                doResponse(response,<span class="hljs-string">&quot;token不合法，请重新登录！&quot;</span>);
+            &#125; <span class="hljs-keyword">catch</span> (ExpiredJwtException e) &#123;
+                doResponse(response,<span class="hljs-string">&quot;token已过期，请重新登录！&quot;</span>);
+            &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+                doResponse(response,<span class="hljs-string">&quot;未知错误！&quot;</span>);
+            &#125;
+
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        &#125;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span>  <span class="hljs-title">doResponse</span><span class="hljs-params">(HttpServletResponse response, String msg)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        ResultVO resultVO = <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, msg, <span class="hljs-keyword">null</span>);
+        String string = JSON.toJSONString(resultVO);
+        response.setContentType(<span class="hljs-string">&quot;application/json&quot;</span>);
+        response.setCharacterEncoding(<span class="hljs-string">&quot;utf-8&quot;</span>);
+        PrintWriter writer = response.getWriter();
+        writer.write(string);
+        writer.flush();
+        writer.close();
+    &#125;
+
+&#125;
+</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>配置拦截器</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.fmmall.config;
+
+<span class="hljs-keyword">import</span> com.sunzy.fmmall.interceptor.CheckTokenInterceptor;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+<span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 拦截器的配置类</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InterceptorConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">WebMvcConfigurer</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> CheckTokenInterceptor checkTokenInterceptor;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addInterceptors</span><span class="hljs-params">(InterceptorRegistry registry)</span> </span>&#123;
+        <span class="hljs-comment">// registry是拦截器的注册器</span>
+        <span class="hljs-comment">// 将自己创建的拦截器加入进来 即可实现拦截功能</span>
+        registry.addInterceptor(checkTokenInterceptor)
+        .addPathPatterns(<span class="hljs-string">&quot;/**&quot;</span>)  <span class="hljs-comment">// 拦截所有路径</span>
+        .excludePathPatterns(<span class="hljs-string">&quot;/user/**&quot;</span>); <span class="hljs-comment">// 除了用户登录和注册路径</span>
+    &#125;
+&#125;
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+</li>
+</ul>
 
             </div>
             <hr>
