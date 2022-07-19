@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="sunzy">
   <meta name="keywords" content="">
-  <title>fmmall - 一路走到黑</title>
+  <title>一路走到黑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.4k 字
+      13.8k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      73
+      232
        分钟
     </span>
   
@@ -237,7 +237,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">fmmall</h1>
+            <h1 style="display: none"></h1>
             
               <p class="note note-info">
                 
@@ -825,8 +825,7 @@
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220712183632458.png" srcset="/img/loading.gif" alt="image-20220712183632458"></p>
 </li>
 </ul>
-<p>1.7 分类商品推荐</p>
-<blockquote>
+<h3 id="1-7-分类商品推荐"><a href="#1-7-分类商品推荐" class="headerlink" title="1.7 分类商品推荐"></a>1.7 分类商品推荐</h3><blockquote>
 <p>一次性加载所有分类的推荐商品，整体完成初始化</p>
 <p>分别获取所有一级标题下销量最高的六个商品</p>
 <p>返回查询到的6个商品</p>
@@ -896,8 +895,1486 @@ limit 0,6;</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220712235328090.png" srcset="/img/loading.gif" alt="image-20220712235328090"></p>
 </li>
 </ul>
+<h3 id="1-8-商品详情"><a href="#1-8-商品详情" class="headerlink" title="1.8 商品详情"></a>1.8 商品详情</h3><blockquote>
+<p>点击首页推荐的商品、轮播图商品广告、商品列表页面点击商品，就会进入到商品的详情页面</p>
+<p>用户点击时，携带商品的id进行后端请求，后端接收到商品id后，进行数据库查询，返回详细信息</p>
+<p>包括以下内容</p>
+<p>1.商品的基本信息</p>
+<p>2.商品的套餐信息</p>
+<p>3.商品的图片信息</p>
+<p>4.商品的评价信息</p>
+<p>5.商品的参数信息</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713104403656.png" srcset="/img/loading.gif" alt="image-20220713104403656"></p>
+<h4 id="商品详情接口"><a href="#商品详情接口" class="headerlink" title="商品详情接口"></a>商品详情接口</h4><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713110111555.png" srcset="/img/loading.gif" alt="image-20220713110111555"></p>
+<p>接口所需信息如下，只需要三个单表查询即可完成，因此dao层可以直接使用tkMapper提供的接口</p>
+<ul>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductBasicInfo</span><span class="hljs-params">(String productId)</span> </span>&#123;
+    <span class="hljs-comment">//1.商品基本信息</span>
+    Example example = <span class="hljs-keyword">new</span> Example(Product.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+    criteria.andEqualTo(<span class="hljs-string">&quot;productStatus&quot;</span>,<span class="hljs-number">1</span>);<span class="hljs-comment">//状态为1表示上架商品</span>
+    List&lt;Product&gt; products = productMapper.selectByExample(example);
+    <span class="hljs-keyword">if</span>(products.size() &gt; <span class="hljs-number">0</span>)&#123;
+        Example exampleImg = <span class="hljs-keyword">new</span> Example(ProductImg.class);
+        Example.Criteria imgCriteria = exampleImg.createCriteria();
+        imgCriteria.andEqualTo(<span class="hljs-string">&quot;itemId&quot;</span>,productId);
+        List&lt;ProductImg&gt; productImgs = productImgMapper.selectByExample(exampleImg);
+
+        Example exampleSku = <span class="hljs-keyword">new</span> Example(ProductSku.class);
+        Example.Criteria skuCriteria = exampleSku.createCriteria();
+        skuCriteria.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+        List&lt;ProductSku&gt; productSkus = productSkuMapper.selectByExample(exampleSku);
+
+        HashMap&lt;String, Object&gt; hashMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        hashMap.put(<span class="hljs-string">&quot;product&quot;</span>, products.get(<span class="hljs-number">0</span>));
+        hashMap.put(<span class="hljs-string">&quot;productImgs&quot;</span>, productImgs);
+        hashMap.put(<span class="hljs-string">&quot;productSkus&quot;</span>, productSkus);
+        <span class="hljs-keyword">return</span> ResultVO.success(hashMap);
+    &#125;
+    <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;查询的商品不存在&quot;</span>);
+&#125;</code></pre></div>
+
+<ul>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@CrossOrigin</span>
+<span class="hljs-meta">@RequestMapping(&quot;/product&quot;)</span>
+<span class="hljs-meta">@Api(value = &quot;提供商品信息相关的接口&quot;,tags = &quot;商品管理&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProductController</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> ProductService productService;
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> ProductCommontsService productCommontsService;
+
+    <span class="hljs-meta">@ApiOperation(&quot;商品基本信息查询接口&quot;)</span>
+    <span class="hljs-meta">@GetMapping(&quot;/detail-info/&#123;pid&#125;&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductBasicInfo</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;pid&quot;)</span> String pid)</span></span>&#123;
+        <span class="hljs-keyword">return</span> productService.getProductBasicInfo(pid);
+    &#125;
+
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<p>  接口测试</p>
+<p>  <img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713110939926.png" srcset="/img/loading.gif" alt="image-20220713110939926"></p>
+<h4 id="商品参数接口"><a href="#商品参数接口" class="headerlink" title="商品参数接口"></a>商品参数接口</h4><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713111914400.png" srcset="/img/loading.gif" alt="image-20220713111914400"></p>
+<p>接口所需数据可知，也为单表查询，因此dao层可以直接使用tkMapper提供的接口</p>
+<ul>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductParamsById</span><span class="hljs-params">(String productId)</span> </span>&#123;
+    <span class="hljs-comment">//1.商品基本信息</span>
+    Example example = <span class="hljs-keyword">new</span> Example(Product.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+    criteria.andEqualTo(<span class="hljs-string">&quot;productStatus&quot;</span>,<span class="hljs-number">1</span>);<span class="hljs-comment">//状态为1表示上架商品</span>
+    List&lt;Product&gt; products = productMapper.selectByExample(example);
+    <span class="hljs-keyword">if</span>(products.size() &gt; <span class="hljs-number">0</span>)&#123;
+        Example exampleParams = <span class="hljs-keyword">new</span> Example(ProductParams.class);
+        Example.Criteria criteria1 = exampleParams.createCriteria();
+        criteria1.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>, productId);
+        List&lt;ProductParams&gt; params = productParamsMapper.selectByExample(exampleParams);
+        <span class="hljs-keyword">if</span>(params.size() &gt; <span class="hljs-number">0</span>)&#123;
+            <span class="hljs-keyword">return</span> ResultVO.success(params.get(<span class="hljs-number">0</span>));
+        &#125;<span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;此产品为三无产品！&quot;</span>);
+        &#125;
+    &#125;<span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;查询的商品不存在&quot;</span>);
+    &#125;
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@ApiOperation(&quot;商品参数信息查询接口&quot;)</span>
+<span class="hljs-meta">@GetMapping(&quot;/detail-params/&#123;pid&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductParams</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;pid&quot;)</span> String pid)</span></span>&#123;
+    <span class="hljs-keyword">return</span> productService.getProductParamsById(pid);
+&#125;</code></pre></div>
+
+<p>测试结果</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713112142962.png" srcset="/img/loading.gif" alt="image-20220713112142962"></p>
+</li>
+</ul>
+<h4 id="商品评价接口"><a href="#商品评价接口" class="headerlink" title="商品评价接口"></a>商品评价接口</h4><p>评价接口需要完成两个功能：评价列表分页展示和评价分析</p>
+<ul>
+<li><p>评价列表分页展示</p>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713113518231.png" srcset="/img/loading.gif" alt="image-20220713113518231" style="zoom:67%;">
+
 <p>​    </p>
-<h2 id="2-JWT实现权限认证"><a href="#2-JWT实现权限认证" class="headerlink" title="2  JWT实现权限认证"></a>2  JWT实现权限认证</h2><h3 id="2-1-JWT实现"><a href="#2-1-JWT实现" class="headerlink" title="2.1 JWT实现"></a>2.1 JWT实现</h3><h4 id="导入JWT依赖"><a href="#导入JWT依赖" class="headerlink" title="导入JWT依赖"></a>导入JWT依赖</h4><div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+<p>接口所需参数如上图，可以看出需要关联用户数据，因此为多表关联查询</p>
+<ul>
+<li><p>sql</p>
+<div class="hljs"><pre><code class="hljs mysql">select u.username,  u.nickname, u.user_img,
+  c.comm_id, c.product_id, c.product_name,
+  c.order_item_id, c.user_id, c.is_anonymous,
+  c.comm_type, c.comm_level, c.comm_content,
+  c.comm_imgs, c.sepc_name, c.reply_status,
+  c.reply_content, c.reply_time, c.is_show
+from product_comments c
+INNER JOIN users u
+ON u.user_id &#x3D; c.user_id
+WHERE c.product_id &#x3D; 3
+limit 1,5</code></pre></div>
+</li>
+<li><p>dao</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;ProductCommentsVOMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.entity.ProductCommentsVO&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;comm_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;commId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productName&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_item_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderItemId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;is_anonymous&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;isAnonymous&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;comm_type&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;commType&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;comm_level&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;commLevel&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;comm_content&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;commContent&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;comm_imgs&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;commImgs&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sepc_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;sepcName&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;reply_status&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;replyStatus&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;reply_content&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;replyContent&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;reply_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;replyTime&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;is_show&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;isShow&quot;</span> /&gt;</span>
+    
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;userId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;username&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;nickname&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;nickname&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_img&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;userImg&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+    
+<span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectCommontsByProductId&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;ProductCommentsVOMap&quot;</span>&gt;</span>
+  select u.username,  u.nickname, u.user_img,
+    c.comm_id, c.product_id, c.product_name,
+    c.order_item_id, c.user_id, c.is_anonymous,
+    c.comm_type, c.comm_level, c.comm_content,
+    c.comm_imgs, c.sepc_name, c.reply_status,
+    c.reply_content, c.reply_time, c.is_show
+  from product_comments c
+  INNER JOIN users u
+  ON u.user_id = c.user_id
+  WHERE c.product_id =#&#123;productId&#125;
+  limit #&#123;start&#125;,#&#123;limit&#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>serevice</p>
+<p>添加实体类ProductCommentsVO</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ProductCommentsVO</span> </span>&#123;
+
+    <span class="hljs-keyword">private</span> String commId;
+    <span class="hljs-keyword">private</span> String productId;
+    <span class="hljs-keyword">private</span> String productName;
+    <span class="hljs-keyword">private</span> String orderItemId;
+    <span class="hljs-keyword">private</span> Integer isAnonymous;
+    <span class="hljs-keyword">private</span> Integer commType;
+    <span class="hljs-keyword">private</span> Integer commLevel;
+    <span class="hljs-keyword">private</span> String commContent;
+    <span class="hljs-keyword">private</span> String commImgs;
+    <span class="hljs-keyword">private</span> Date sepcName;
+    <span class="hljs-keyword">private</span> Integer replyStatus;
+    <span class="hljs-keyword">private</span> String replyContent;
+    <span class="hljs-keyword">private</span> Date replyTime;
+    <span class="hljs-keyword">private</span> Integer isShow;
+    <span class="hljs-comment">//封装评论对应的用户数据</span>
+    <span class="hljs-keyword">private</span> String userId;
+    <span class="hljs-keyword">private</span> String username;
+    <span class="hljs-keyword">private</span> String nickname;
+    <span class="hljs-keyword">private</span> String userImg;
+&#125;</code></pre></div>
+
+<p>添加分页实体类</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PageHelper</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">//总记录数</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> count;
+
+    <span class="hljs-comment">//总页数</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> pageCount;
+
+    <span class="hljs-comment">//分页数据</span>
+    <span class="hljs-keyword">private</span> List&lt;T&gt; list;
+
+&#125;</code></pre></div>
+
+<p>Service的代码</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listCommontsByProductId</span><span class="hljs-params">(String productId,<span class="hljs-keyword">int</span> pageNum,<span class="hljs-keyword">int</span> limit)</span> </span>&#123;
+    <span class="hljs-comment">//List&lt;ProductCommentsVO&gt; productCommentsVOS = productCommentsMapper.selectCommontsByProductId(productId);</span>
+    <span class="hljs-comment">//1.根据商品id查询总记录数</span>
+    Example example = <span class="hljs-keyword">new</span> Example(ProductComments.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+    <span class="hljs-keyword">int</span> count = productCommentsMapper.selectCountByExample(example);
+    
+    <span class="hljs-comment">//2.计算总页数（必须确定每页显示多少条  pageSize = limit）</span>
+    <span class="hljs-keyword">int</span> pageCount = count%limit==<span class="hljs-number">0</span>? count/limit : count/limit+<span class="hljs-number">1</span>;
+    
+    <span class="hljs-comment">//3.查询当前页的数据（因为评论中需要用户信息，因此需要连表查询---自定义）</span>
+    <span class="hljs-keyword">int</span> start = (pageNum-<span class="hljs-number">1</span>)*limit;
+    List&lt;ProductCommentsVO&gt; list = productCommentsMapper.selectCommontsByProductId(productId, start, limit);
+    
+    <span class="hljs-keyword">return</span> ResultVO.success(list);
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@ApiOperation(&quot;商品评价分页查询接口&quot;)</span>
+<span class="hljs-meta">@GetMapping(&quot;/detail-commonts/&#123;pid&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductCommonts</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;pid&quot;)</span> String pid,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                   <span class="hljs-meta">@RequestParam(&quot;pageNum&quot;)</span> <span class="hljs-keyword">int</span> pageNum,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                   <span class="hljs-meta">@RequestParam(&quot;limit&quot;)</span> <span class="hljs-keyword">int</span> limit)</span></span>&#123;
+    <span class="hljs-keyword">return</span> productCommontsService.listCommontsByProductId(pid, pageNum, limit);
+&#125;</code></pre></div>
+
+<p>接口测试</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713150611632.png" srcset="/img/loading.gif" alt="image-20220713150611632"></p>
+</li>
+</ul>
+</li>
+<li><p>评价分析</p>
+<p>对该商品的评价进行分类，分为好评中评和差评</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713112838049.png" srcset="/img/loading.gif" alt="image-20220713112838049"></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713113028811.png" srcset="/img/loading.gif" alt="image-20220713113028811"></p>
+<p>响应数据如图所示，可以看出是单表查询</p>
+<ul>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+ <span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getCommentsCountByProductId</span><span class="hljs-params">(String productId)</span> </span>&#123;
+    <span class="hljs-comment">// 查询商品总数</span>
+     Example example = <span class="hljs-keyword">new</span> Example(ProductComments.class);
+     Example.Criteria criteria = example.createCriteria();
+     criteria.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+     <span class="hljs-keyword">int</span> total = productCommentsMapper.selectCountByExample(criteria);
+    
+     <span class="hljs-comment">// 查询好评数</span>
+     Example example1 = <span class="hljs-keyword">new</span> Example(ProductComments.class);
+     Example.Criteria criteria1 = example1.createCriteria();
+     criteria1.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+     criteria1.andEqualTo(<span class="hljs-string">&quot;commType&quot;</span>, <span class="hljs-number">1</span>);
+     <span class="hljs-keyword">int</span> goodTotal = productCommentsMapper.selectCountByExample(example1);
+    
+     <span class="hljs-comment">// 查询中评数</span>
+     Example example2 = <span class="hljs-keyword">new</span> Example(ProductComments.class);
+     Example.Criteria criteria2 = example1.createCriteria();
+     criteria2.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+     criteria2.andEqualTo(<span class="hljs-string">&quot;commType&quot;</span>, <span class="hljs-number">0</span>);
+     <span class="hljs-keyword">int</span> midTotal = productCommentsMapper.selectCountByExample(example2);
+    
+     <span class="hljs-comment">// 查询差评数</span>
+     Example example3 = <span class="hljs-keyword">new</span> Example(ProductComments.class);
+     Example.Criteria criteria3 = example1.createCriteria();
+     criteria3.andEqualTo(<span class="hljs-string">&quot;productId&quot;</span>,productId);
+     criteria3.andEqualTo(<span class="hljs-string">&quot;commType&quot;</span>, -<span class="hljs-number">1</span>);
+     <span class="hljs-keyword">int</span> badTotal = productCommentsMapper.selectCountByExample(example3);
+    
+     <span class="hljs-comment">// 好评率</span>
+     <span class="hljs-keyword">double</span> percent = (Double.parseDouble(goodTotal+<span class="hljs-string">&quot;&quot;</span>)/Double.parseDouble(total + <span class="hljs-string">&quot;&quot;</span>)) * <span class="hljs-number">100</span>;
+     String percentValue = (percent+<span class="hljs-string">&quot;&quot;</span>).substring(<span class="hljs-number">0</span>,(percent+<span class="hljs-string">&quot;&quot;</span>).lastIndexOf(<span class="hljs-string">&quot;.&quot;</span>)+<span class="hljs-number">3</span>);
+    
+     HashMap&lt;String, Object&gt; hashMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+     hashMap.put(<span class="hljs-string">&quot;total&quot;</span>, total);
+     hashMap.put(<span class="hljs-string">&quot;goodTotal&quot;</span>, goodTotal);
+     hashMap.put(<span class="hljs-string">&quot;badTotal&quot;</span>, badTotal);
+     hashMap.put(<span class="hljs-string">&quot;midTotal&quot;</span>, midTotal);
+     hashMap.put(<span class="hljs-string">&quot;percent&quot;</span>, percentValue);
+     
+     <span class="hljs-keyword">return</span> ResultVO.success(hashMap);
+    
+ &#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java">    
+<span class="hljs-meta">@ApiOperation(&quot;商品总体评价信息查询接口&quot;)</span>
+<span class="hljs-meta">@GetMapping(&quot;/detail-commontscount/&#123;pid&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductCommontscount</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;pid&quot;)</span> String pid)</span></span>&#123;
+    <span class="hljs-keyword">return</span> productCommontsService.getCommentsCountByProductId(pid);
+&#125;</code></pre></div>
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-9-购物车业务"><a href="#1-9-购物车业务" class="headerlink" title="1.9 购物车业务"></a>1.9 购物车业务</h3><h4 id="添加购物车"><a href="#添加购物车" class="headerlink" title="添加购物车"></a>添加购物车</h4><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220713151431751.png" srcset="/img/loading.gif" alt="image-20220713151431751"></p>
+<ul>
+<li><p>Service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> SimpleDateFormat sdf = <span class="hljs-keyword">new</span> SimpleDateFormat(<span class="hljs-string">&quot;yyyy-MM-dd hh:mm:ss&quot;</span>);    
+<span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">addShoppingCart</span><span class="hljs-params">(ShoppingCart cart)</span> </span>&#123;
+    cart.setCartTime(sdf.format(<span class="hljs-keyword">new</span> Date()));
+    <span class="hljs-keyword">int</span> i = shoppingCartMapper.insert(cart);
+    <span class="hljs-keyword">if</span>(i&gt;<span class="hljs-number">0</span>)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK,<span class="hljs-string">&quot;success&quot;</span>,<span class="hljs-keyword">null</span>);
+    &#125;<span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO,<span class="hljs-string">&quot;fail&quot;</span>,<span class="hljs-keyword">null</span>);
+    &#125;
+</code></pre></div>
+</li>
+<li><p>Controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/add&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">addShoppingCart</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> ShoppingCart cart)</span></span>&#123;
+    ResultVO resultVO = shoppingCartService.addShoppingCart(cart);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<h4 id="获取购物车列表"><a href="#获取购物车列表" class="headerlink" title="获取购物车列表"></a>获取购物车列表</h4><ul>
+<li>sql</li>
+</ul>
+  <div class="hljs"><pre><code class="hljs mysql">select c.cart_id, c.product_id,  c.sku_id, c.user_id, c.cart_num, c.cart_time,
+c.product_price, c.sku_props,p.product_name, i.url,s.original_price,s.sell_price,s.sku_name
+from shopping_cart c 
+inner JOIN product p
+INNER JOIN product_sku s
+INNER JOIN product_img i
+ON c.product_id &#x3D; p.product_id
+AND c.sku_id&#x3D;s.sku_id
+AND c.product_id&#x3D;i.item_id
+WHERE c.user_id &#x3D; 1
+AND i.is_main&#x3D;1</code></pre></div>
+
+<ul>
+<li><p>dao</p>
+<p>创建一个新的实体类用于保存返回的数据</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ShoppingCartVO</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Integer cartId;
+    <span class="hljs-keyword">private</span> String productId;
+    <span class="hljs-keyword">private</span> String skuId;
+    <span class="hljs-keyword">private</span> String userId;
+    <span class="hljs-keyword">private</span> String cartNum;
+    <span class="hljs-keyword">private</span> String cartTime;
+    <span class="hljs-keyword">private</span> BigDecimal productPrice;
+    <span class="hljs-keyword">private</span> String skuProps;
+
+    <span class="hljs-keyword">private</span> String productName;
+    <span class="hljs-keyword">private</span> String productImg;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> originalPrice;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> sellPrice;
+    <span class="hljs-keyword">private</span> String skuName;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> skuStock;  <span class="hljs-comment">//库存</span>
+&#125;</code></pre></div>
+
+<p>mapper</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;ShoppingCartVO&gt; <span class="hljs-title">selectShopcartByUserId</span><span class="hljs-params">(<span class="hljs-keyword">int</span> userId)</span></span>;</code></pre></div>
+
+<p>xml</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;ShoppingCartVOMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.entity.ShoppingCartVO&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;cart_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;cartId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;userId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;cart_num&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;cartNum&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;cart_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;cartTime&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;DECIMAL&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_props&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuProps&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productName&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;url&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productImg&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;original_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;originalPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sell_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;sellPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuName&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+  
+<span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectShopcartByUserId&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;ShoppingCartVOMap&quot;</span>&gt;</span>
+  select c.cart_id, c.product_id,  c.sku_id, c.user_id, c.cart_num, c.cart_time,
+   c.product_price, c.sku_props,  p.product_name, i.url,s.original_price,s.sell_price,s.sku_name
+  from shopping_cart c
+  INNER JOIN product p
+  INNER JOIN product_img i
+  INNER JOIN product_sku s
+  ON c.product_id = p.product_id
+  and i.item_id=p.product_id
+  and c.sku_id=s.sku_id
+  where user_id = #&#123;userId&#125;
+  and i.is_main=1
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(propagation = Propagation.SUPPORTS)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listShoppingCartsByUserId</span><span class="hljs-params">(<span class="hljs-keyword">int</span> userId)</span> </span>&#123;
+    List&lt;ShoppingCartVO&gt; list = shoppingCartMapper.selectShopcartByUserId(userId);
+    ResultVO resultVO = <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, <span class="hljs-string">&quot;success&quot;</span>, list);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/list&quot;)</span>
+<span class="hljs-meta">@ApiImplicitParam(dataType = &quot;int&quot;,name = &quot;userId&quot;, value = &quot;用户ID&quot;,required = true)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">list</span><span class="hljs-params">(Integer userId,<span class="hljs-meta">@RequestHeader(&quot;token&quot;)</span>String token)</span></span>&#123;
+    ResultVO resultVO = shoppingCartService.listShoppingCartsByUserId(userId);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><h4 id="更新购物车"><a href="#更新购物车" class="headerlink" title="更新购物车"></a>更新购物车</h4></li>
+</ul>
+<p>更新购物车发送的请求如下，由分析可以看出url的格式如下，并且发送的是put请求</p>
+<div class="hljs"><pre><code class="hljs awk"><span class="hljs-regexp">/shopcart/u</span>pdate<span class="hljs-regexp">/&#123;cartId&#125;/</span>&#123;num&#125;</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714105311322.png" srcset="/img/loading.gif" alt="image-20220714105311322"></p>
+<ul>
+<li><p>sql</p>
+<p>使用update方法对对应的购物车记录进行修改即可</p>
+<div class="hljs"><pre><code class="hljs routeros">update shopping_cart <span class="hljs-builtin-name">set</span> <span class="hljs-attribute">cart_num</span>=3 where <span class="hljs-attribute">cart_id</span>=1</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>dao</p>
+<p>xml</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectShopcartByUserId&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;ShoppingCartVOMap&quot;</span>&gt;</span>
+  select c.cart_id, c.product_id,  c.sku_id, c.user_id, c.cart_num, c.cart_time,
+   c.product_price, c.sku_props,  p.product_name, i.url,s.original_price,s.sell_price,s.sku_name
+  from shopping_cart c
+  INNER JOIN product p
+  INNER JOIN product_img i
+  INNER JOIN product_sku s
+  ON c.product_id = p.product_id
+  and i.item_id=p.product_id
+  and c.sku_id=s.sku_id
+  where user_id = #&#123;userId&#125;
+  and i.is_main=1
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;updateCartnumByCartid&quot;</span>&gt;</span>
+  update shopping_cart set cart_num=#&#123;cartNum&#125; where cart_id=#&#123;cartId&#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span></code></pre></div>
+
+<p>mapper</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">updateCartnumByCartid</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;cartId&quot;)</span> <span class="hljs-keyword">int</span> cartId,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                 <span class="hljs-meta">@Param(&quot;cartNum&quot;)</span> <span class="hljs-keyword">int</span> cartNum)</span></span>;</code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">updateCartNum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> cartId, <span class="hljs-keyword">int</span> cartNum)</span> </span>&#123;
+    <span class="hljs-keyword">int</span> i = shoppingCartMapper.updateCartnumByCartid(cartId, cartNum);
+    <span class="hljs-keyword">if</span>(i&gt;<span class="hljs-number">0</span>)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK,<span class="hljs-string">&quot;update success&quot;</span>,<span class="hljs-keyword">null</span>);
+    &#125;<span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO,<span class="hljs-string">&quot;update fail&quot;</span>,<span class="hljs-keyword">null</span>);
+    &#125;
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java">
+<span class="hljs-meta">@PutMapping(&quot;/update/&#123;cid&#125;/&#123;cnum&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">updateNum</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;cid&quot;)</span> Integer cartId,</span></span>
+<span class="hljs-function"><span class="hljs-params">                          <span class="hljs-meta">@PathVariable(&quot;cnum&quot;)</span> Integer cartNum,</span></span>
+<span class="hljs-function"><span class="hljs-params">                          <span class="hljs-meta">@RequestHeader(&quot;token&quot;)</span> String token)</span></span>&#123;
+    ResultVO resultVO = shoppingCartService.updateCartNum(cartId, cartNum);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+
+</li>
+</ul>
+<p>获取购物车列表信息</p>
+<blockquote>
+<p>当点击结算时，页面会跳转到结算页面，这里依然需要显示订单中的信息，但是这里需要的是批量结算，所以需要批量获取</p>
+</blockquote>
+<p>从前端发起的请求可以看到cids为本次请求的所有购物车订单</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714124912790.png" srcset="/img/loading.gif" alt="image-20220714124912790"></p>
+<p>响应结果如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714125042189.png" srcset="/img/loading.gif" alt="image-20220714125042189"></p>
+<p>从中可以看到与获取购物车列表使用到的sql语句大致相同</p>
+<ul>
+<li><p>sql</p>
+<div class="hljs"><pre><code class="hljs mysql">select c.cart_id, c.product_id,  c.sku_id, c.user_id, c.cart_num, c.cart_time,
+c.product_price, c.sku_props,  p.product_name, i.url,s.original_price,s.sell_price,s.sku_name,s.stock
+from shopping_cart c
+INNER JOIN product p
+INNER JOIN product_img i
+INNER JOIN product_sku s
+ON c.product_id &#x3D; p.product_id
+and i.item_id&#x3D;p.product_id
+and c.sku_id&#x3D;s.sku_id
+where i.is_main&#x3D;1 and c.cart_id in (6,7)</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714125332136.png" srcset="/img/loading.gif" alt="image-20220714125332136"></p>
+</li>
+<li><p>dao</p>
+<p>创建新的实体类保存结果</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 新增 productName、productImg</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ShoppingCartVO</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Integer cartId;
+    <span class="hljs-keyword">private</span> String productId;
+    <span class="hljs-keyword">private</span> String skuId;
+    <span class="hljs-keyword">private</span> String userId;
+    <span class="hljs-keyword">private</span> String cartNum;
+    <span class="hljs-keyword">private</span> String cartTime;
+    <span class="hljs-keyword">private</span> BigDecimal productPrice;
+    <span class="hljs-keyword">private</span> String skuProps;
+
+    <span class="hljs-keyword">private</span> String productName;
+    <span class="hljs-keyword">private</span> String productImg;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> originalPrice;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">double</span> sellPrice;
+    <span class="hljs-keyword">private</span> String skuName;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> skuStock;  <span class="hljs-comment">//库存</span>
+&#125;</code></pre></div>
+
+<p>Mapper中代码</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;ShoppingCartVO&gt; <span class="hljs-title">selectShopcartByCids</span><span class="hljs-params">(List&lt;Integer&gt; cids)</span></span>;</code></pre></div>
+
+<p>xml</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;ShoppingCartVOMap2&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.entity.ShoppingCartVO&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;cart_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;cartId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;userId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;cart_num&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;cartNum&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;cart_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;cartTime&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;DECIMAL&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_props&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuProps&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productName&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;url&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productImg&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;original_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;originalPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sell_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;sellPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuName&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;stock&quot;</span>  <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuStock&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+  
+<span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectShopcartByCids&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;ShoppingCartVOMap2&quot;</span>&gt;</span>
+  select c.cart_id, c.product_id,  c.sku_id, c.user_id, c.cart_num, c.cart_time,
+  c.product_price, c.sku_props,  p.product_name, i.url,s.original_price,s.sell_price,s.sku_name,s.stock
+  from shopping_cart c
+  INNER JOIN product p
+  INNER JOIN product_img i
+  INNER JOIN product_sku s
+  ON c.product_id = p.product_id
+  and i.item_id=p.product_id
+  and c.sku_id=s.sku_id
+  where i.is_main=1 and c.cart_id in
+  <span class="hljs-tag">&lt;<span class="hljs-name">foreach</span> <span class="hljs-attr">collection</span>=<span class="hljs-string">&quot;cids&quot;</span> <span class="hljs-attr">item</span>=<span class="hljs-string">&quot;cid&quot;</span> <span class="hljs-attr">separator</span>=<span class="hljs-string">&quot;,&quot;</span> <span class="hljs-attr">open</span>=<span class="hljs-string">&quot;(&quot;</span> <span class="hljs-attr">close</span>=<span class="hljs-string">&quot;)&quot;</span>&gt;</span>
+      #&#123;cid&#125;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">foreach</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listShoppingCartsByCids</span><span class="hljs-params">(String cids)</span> </span>&#123;
+    <span class="hljs-comment">// 将前端请求携带的字符串转换成int数组 </span>
+    List&lt;Integer&gt; cartIds = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    String[] strings = cids.split(<span class="hljs-string">&quot;,&quot;</span>);
+    <span class="hljs-keyword">for</span> (String string : strings) &#123;
+        cartIds.add(Integer.parseInt(string));
+    &#125;
+    List&lt;ShoppingCartVO&gt; list = shoppingCartMapper.selectShopcartByCids(cartIds);
+    <span class="hljs-keyword">return</span> ResultVO.success(list);
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/listbycids&quot;)</span>
+<span class="hljs-meta">@ApiImplicitParam(dataType = &quot;String&quot;,name = &quot;cids&quot;, value = &quot;选择的购物车记录的id&quot;,required = true)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listByCids</span><span class="hljs-params">(String cids, <span class="hljs-meta">@RequestHeader(&quot;token&quot;)</span>String token)</span></span>&#123;
+    ResultVO resultVO = shoppingCartService.listShoppingCartsByCids(cids);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;
+</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714130445019.png" srcset="/img/loading.gif" alt="image-20220714130445019"></p>
+</li>
+</ul>
+<h4 id="删除购物车"><a href="#删除购物车" class="headerlink" title="删除购物车"></a>删除购物车</h4><ul>
+<li><p>sql</p>
+<p>删除数据时，可以批量删除也可以是单个删除，因此使用下面的sql语句</p>
+<div class="hljs"><pre><code class="hljs mysql">delete from shopping_cart where cart_id IN (10,11)</code></pre></div>
+</li>
+<li><p>dao</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">deleteShopcartByCids</span><span class="hljs-params">(List&lt;Integer&gt; cids)</span></span>;</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">delete</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;deleteShopcartByCids&quot;</span>&gt;</span>
+  delete from shopping_cart where cart_id in
+  <span class="hljs-tag">&lt;<span class="hljs-name">foreach</span> <span class="hljs-attr">collection</span>=<span class="hljs-string">&quot;cids&quot;</span> <span class="hljs-attr">item</span>=<span class="hljs-string">&quot;cid&quot;</span> <span class="hljs-attr">separator</span>=<span class="hljs-string">&quot;,&quot;</span> <span class="hljs-attr">open</span>=<span class="hljs-string">&quot;(&quot;</span> <span class="hljs-attr">close</span>=<span class="hljs-string">&quot;)&quot;</span>&gt;</span>
+    #&#123;cid&#125;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">foreach</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">delete</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">deleteShoppingCartsByCids</span><span class="hljs-params">(String cids)</span> </span>&#123;
+    <span class="hljs-comment">// 将前端请求携带的字符串转换成int数组</span>
+    List&lt;Integer&gt; cartIds = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    String[] strings = cids.split(<span class="hljs-string">&quot;,&quot;</span>);
+    <span class="hljs-keyword">for</span> (String string : strings) &#123;
+        cartIds.add(Integer.parseInt(string));
+    &#125;
+    <span class="hljs-keyword">int</span> i = shoppingCartMapper.deleteShopcartByCids(cartIds);
+    <span class="hljs-keyword">if</span>(i &gt; <span class="hljs-number">0</span>)&#123;
+        <span class="hljs-keyword">return</span> ResultVO.success();
+    &#125;<span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;删除失败！&quot;</span>);
+    &#125;
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/delete&quot;)</span>
+<span class="hljs-meta">@ApiImplicitParam(dataType = &quot;String&quot;,name = &quot;cids&quot;, value = &quot;选择的购物车记录的id&quot;,required = true)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">deletebycids</span><span class="hljs-params">(String cids, <span class="hljs-meta">@RequestHeader(&quot;token&quot;)</span>String token)</span></span>&#123;
+    ResultVO resultVO = shoppingCartService.deleteShoppingCartsByCids(cids);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+</li>
+<li><p>前端代码</p>
+<p>由于该功能没有再前端实现因此在shopcart.html页面中加入如下js代码    </p>
+<div class="hljs"><pre><code class="hljs js">deleteByIds: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.opts.length == <span class="hljs-number">0</span>) &#123;
+        alert(<span class="hljs-string">&quot;请选择要购买的商品！&quot;</span>)
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-comment">//1.获取选择购物车记录的id [0,2]  ---&gt;  cartId 8   cartId 10 --- 8,10,</span>
+        <span class="hljs-keyword">var</span> cids = <span class="hljs-string">&quot;&quot;</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">this</span>.opts.length; i++) &#123;
+            <span class="hljs-keyword">var</span> index = <span class="hljs-built_in">this</span>.opts[i];
+            <span class="hljs-keyword">var</span> cartId = <span class="hljs-built_in">this</span>.shopcarts[index].cartId;
+            <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-built_in">this</span>.opts.length - <span class="hljs-number">1</span>) &#123;
+                cids = cids + cartId + <span class="hljs-string">&quot;,&quot;</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                cids = cids + cartId;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">var</span> url = baseUrl + <span class="hljs-string">&quot;shopcart/delete/?cids=&quot;</span> + cids;
+        axios(&#123;
+            url: url,
+            method: <span class="hljs-string">&quot;get&quot;</span>,
+            headers: &#123;
+                token: <span class="hljs-built_in">this</span>.token
+            &#125;
+        &#125;).then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;
+            <span class="hljs-built_in">console</span>.log(res);
+            <span class="hljs-keyword">if</span> (res.data.code = <span class="hljs-number">10000</span>) &#123;
+                <span class="hljs-comment">//重新刷新购物车</span>
+                <span class="hljs-built_in">this</span>.getShoppingCartList();
+            &#125;
+        &#125;);
+    &#125;
+&#125;</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714134933507.png" srcset="/img/loading.gif" alt="image-20220714134933507"></p>
+<p>接口测试</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714135115137.png" srcset="/img/loading.gif" alt="image-20220714135115137"></p>
+</li>
+</ul>
+<h3 id="1-10-收货地址"><a href="#1-10-收货地址" class="headerlink" title="1.10 收货地址"></a>1.10 收货地址</h3><h4 id="获取收获地址"><a href="#获取收获地址" class="headerlink" title="获取收获地址"></a>获取收获地址</h4><p>直接根据用户id即可获取到收获地址，所以这里直接使用tkMapper生成的即可。</p>
+<ul>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(propagation = Propagation.SUPPORTS)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listAddrsByUid</span><span class="hljs-params">(<span class="hljs-keyword">int</span> userId)</span> </span>&#123;
+    Example example = <span class="hljs-keyword">new</span> Example(UserAddr.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andEqualTo(<span class="hljs-string">&quot;userId&quot;</span>,userId);
+    criteria.andEqualTo(<span class="hljs-string">&quot;status&quot;</span>,<span class="hljs-number">1</span>);
+
+    List&lt;UserAddr&gt; userAddrs = userAddrMapper.selectByExample(example);
+    ResultVO resultVO = <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, <span class="hljs-string">&quot;success&quot;</span>, userAddrs);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/list&quot;)</span>
+<span class="hljs-meta">@ApiImplicitParam(dataType = &quot;int&quot;,name = &quot;userId&quot;, value = &quot;用户ID&quot;,required = true)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">list</span><span class="hljs-params">(Integer userId,<span class="hljs-meta">@RequestHeader(&quot;token&quot;)</span>String token)</span></span>&#123;
+    ResultVO resultVO = userAddrService.listAddrsByUid(userId);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<h3 id="1-11-订单业务"><a href="#1-11-订单业务" class="headerlink" title="1.11 订单业务"></a>1.11 订单业务</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220714172108540.png" srcset="/img/loading.gif" alt="image-20220714172108540"></p>
+<h4 id="订单添加接口"><a href="#订单添加接口" class="headerlink" title="订单添加接口"></a>订单添加接口</h4><ul>
+<li><p>数据库操作</p>
+<ul>
+<li>根据收获地址的id，获取地址信息</li>
+<li>根据购物车id，查询购物车的详细信息（关联商品名称，sku，库存，商品图片，价格），用于生成订单快照</li>
+<li>保存订单</li>
+<li>保存商品快照</li>
+<li>修改库存</li>
+</ul>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 保存订单业务</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> cids</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> order</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> SQLException</span>
+<span class="hljs-comment">     */</span>
+<span class="hljs-meta">@Transactional</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">addOrder</span><span class="hljs-params">(String cids, Orders order)</span> <span class="hljs-keyword">throws</span> SQLException </span>&#123;
+    <span class="hljs-comment">//处理cids</span>
+    String[] strings = cids.split(<span class="hljs-string">&quot;,&quot;</span>);
+    List&lt;Integer&gt; cidsInt = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    <span class="hljs-keyword">for</span> (String string : strings) &#123;
+        cidsInt.add(Integer.parseInt(string));
+    &#125;
+    <span class="hljs-comment">// 查询与当前订单相关联的购物车记录</span>
+    List&lt;ShoppingCartVO&gt; shopcartList = shoppingCartMapper.selectShopcartByCids(cidsInt);
+
+    <span class="hljs-comment">// 判断商品库存是否充足</span>
+    <span class="hljs-keyword">boolean</span> flag = <span class="hljs-keyword">true</span>;
+    String untitle = <span class="hljs-string">&quot;&quot;</span>;  <span class="hljs-comment">// 保存所有商品的名称 最后保存到订单快照中</span>
+    <span class="hljs-keyword">for</span> (ShoppingCartVO cartVO : shopcartList) &#123;
+        <span class="hljs-keyword">if</span>(Integer.parseInt(cartVO.getCartNum()) &gt; cartVO.getSkuStock())&#123;
+            flag = <span class="hljs-keyword">false</span>;
+        &#125;
+        untitle = untitle + cartVO.getProductName() + <span class="hljs-string">&quot;,&quot;</span>;
+    &#125;
+
+
+    <span class="hljs-keyword">if</span>(flag)&#123;
+        <span class="hljs-comment">// 库存充足 则保存订单</span>
+        <span class="hljs-comment">// userId</span>
+        <span class="hljs-comment">// untitle</span>
+        <span class="hljs-comment">// 支付时间</span>
+        <span class="hljs-comment">// 收货人的信息</span>
+        <span class="hljs-comment">// 总价格</span>
+        <span class="hljs-comment">// 支付方式（1）</span>
+        <span class="hljs-comment">// 支付状态（待支付）</span>
+        order.setUntitled(untitle);
+        order.setCancelTime(<span class="hljs-keyword">new</span> Date());
+        order.setStatus(<span class="hljs-string">&quot;1&quot;</span>);
+        String orderId = UUID.randomUUID().toString().replace(<span class="hljs-string">&quot;-&quot;</span>, <span class="hljs-string">&quot;&quot;</span>);
+        order.setOrderId(orderId);
+        <span class="hljs-keyword">int</span> i = ordersMapper.insert(order);
+
+        <span class="hljs-comment">// 生成商品快照</span>
+        <span class="hljs-keyword">for</span> (ShoppingCartVO sc: shopcartList) &#123;
+            <span class="hljs-keyword">int</span> cnum = Integer.parseInt(sc.getCartNum());
+            String itemId = System.currentTimeMillis()+<span class="hljs-string">&quot;&quot;</span>+ (<span class="hljs-keyword">new</span> Random().nextInt(<span class="hljs-number">89999</span>)+<span class="hljs-number">10000</span>);
+            OrderItem orderItem = <span class="hljs-keyword">new</span> OrderItem(itemId, orderId, sc.getProductId(), sc.getProductName(), sc.getProductImg(), sc.getSkuId(), sc.getSkuName(), <span class="hljs-keyword">new</span> BigDecimal(sc.getSellPrice()), cnum, <span class="hljs-keyword">new</span> BigDecimal(sc.getSellPrice() * cnum), <span class="hljs-keyword">new</span> Date(), <span class="hljs-keyword">new</span> Date(), <span class="hljs-number">0</span>);
+            orderItemMapper.insert(orderItem);
+            <span class="hljs-comment">//增加商品销量</span>
+        &#125;
+
+        <span class="hljs-comment">// 扣减库存</span>
+        <span class="hljs-comment">// 使用当前库存减去商品数量</span>
+        <span class="hljs-keyword">for</span> (ShoppingCartVO cartVO : shopcartList) &#123;
+            String skuId = cartVO.getSkuId();
+            <span class="hljs-keyword">int</span> newStock = cartVO.getSkuStock() - Integer.parseInt(cartVO.getCartNum());
+
+            Example example = <span class="hljs-keyword">new</span> Example(ProductSku.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo(<span class="hljs-string">&quot;skuId&quot;</span>, skuId);
+            <span class="hljs-comment">//                ProductSku productSku = productSkuMapper.selectByPrimaryKey(skuId);</span>
+            <span class="hljs-comment">//                productSku.setStock(newStock);</span>
+            <span class="hljs-comment">//                int k = productSkuMapper.updateByExample(productSku, example);</span>
+            ProductSku productSku = <span class="hljs-keyword">new</span> ProductSku();
+            productSku.setStock(newStock);
+            productSku.setSkuId(skuId);
+            <span class="hljs-keyword">int</span> k = productSkuMapper.updateByPrimaryKeySelective(productSku);
+        &#125;
+        <span class="hljs-comment">//购买完成后 删除对应的购物车数据</span>
+        <span class="hljs-keyword">for</span> (Integer cid : cidsInt) &#123;
+            shoppingCartMapper.deleteByPrimaryKey(cid);
+        &#125;
+
+        <span class="hljs-keyword">return</span> ResultVO.success(<span class="hljs-string">&quot;生成订单成功！&quot;</span>, orderId);
+    &#125;<span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;商品库存不足，请重新选择！&quot;</span>);
+    &#125;
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java">    <span class="hljs-meta">@PostMapping(&quot;/add&quot;)</span>
+<span class="hljs-comment">//    @ApiImplicitParam(dataType = &quot;String&quot;,name = &quot;cids&quot;, value = &quot;购物车id&quot;,required = true)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">list</span><span class="hljs-params">(String cids, <span class="hljs-meta">@RequestBody</span> Orders order)</span></span>&#123;
+        System.out.println(<span class="hljs-string">&quot;##################&quot;</span>);
+        System.out.println(cids);
+        <span class="hljs-keyword">if</span>(cids.contains(<span class="hljs-string">&quot;#&quot;</span>))&#123;
+            cids.replace(<span class="hljs-string">&quot;#&quot;</span>, <span class="hljs-string">&quot;&quot;</span>);
+        &#125;
+        System.out.println(cids);
+        <span class="hljs-keyword">try</span> &#123;
+            Map&lt;String, String&gt; orderInfo = orderService.addOrder(cids, order);
+            String orderId = orderInfo.get(<span class="hljs-string">&quot;orderId&quot;</span>);
+
+            <span class="hljs-keyword">if</span>(orderId !=<span class="hljs-keyword">null</span>)&#123;
+                Map&lt;String , String&gt; data = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+                data.put(<span class="hljs-string">&quot;body&quot;</span>,orderInfo.get(<span class="hljs-string">&quot;productNames&quot;</span>)); <span class="hljs-comment">//商品描述</span>
+                data.put(<span class="hljs-string">&quot;out_trade_no&quot;</span>,orderId); <span class="hljs-comment">//使⽤当前⽤户订单的编号作为当前⽀付交易的交易号</span>
+                data.put(<span class="hljs-string">&quot;fee_type&quot;</span>,<span class="hljs-string">&quot;CNY&quot;</span>); <span class="hljs-comment">//⽀付币种</span>
+                data.put(<span class="hljs-string">&quot;total_fee&quot;</span>, order.getActualAmount()*<span class="hljs-number">100</span> + <span class="hljs-string">&quot;&quot;</span> ); <span class="hljs-comment">//⽀付⾦额</span>
+                data.put(<span class="hljs-string">&quot;trade_type&quot;</span>,<span class="hljs-string">&quot;NATIVE&quot;</span>); <span class="hljs-comment">//交易类型</span>
+                data.put(<span class="hljs-string">&quot;notify_url&quot;</span>,<span class="hljs-string">&quot;/pay/success&quot;</span>); <span class="hljs-comment">//设置⽀付完成时的回调⽅法</span>
+                WXPay wxPay = <span class="hljs-keyword">new</span> WXPay(<span class="hljs-keyword">new</span> MyPayConfig());
+                Map&lt;String, String&gt; resp = wxPay.unifiedOrder(data); <span class="hljs-comment">//发送请求</span>
+                System.out.println(resp);
+                String code_url = resp.get(<span class="hljs-string">&quot;code_url&quot;</span>);
+                orderInfo.put(<span class="hljs-string">&quot;code_url&quot;</span>, code_url);
+                <span class="hljs-keyword">return</span> ResultVO.success(orderInfo);
+            &#125;<span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;订单为空！&quot;</span>);
+            &#125;
+        &#125; <span class="hljs-keyword">catch</span> (SQLException throwables) &#123;
+            <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;添加订单失败！&quot;</span>);
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            e.printStackTrace();
+            <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;添加订单失败！&quot;</span>);
+        &#125;
+    &#125;</code></pre></div>
+
+</li>
+</ul>
+<h4 id="支付回调"><a href="#支付回调" class="headerlink" title="支付回调"></a>支付回调</h4><blockquote>
+<p>当用户支付成功后，支付平台会向服务器的指定接口发送支付订单的支付状态数据</p>
+</blockquote>
+<ul>
+<li><p>创建控制器并定义回调接口</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.fmmall.controller;
+
+<span class="hljs-keyword">import</span> com.github.wxpay.sdk.WXPayUtil;
+<span class="hljs-keyword">import</span> com.qfedu.fmmall.entity.Orders;
+<span class="hljs-keyword">import</span> com.qfedu.fmmall.service.OrderService;
+<span class="hljs-keyword">import</span> com.qfedu.fmmall.vo.ResultVO;
+<span class="hljs-keyword">import</span> io.swagger.annotations.Api;
+<span class="hljs-keyword">import</span> io.swagger.annotations.ApiImplicitParam;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.*;
+
+<span class="hljs-keyword">import</span> javax.servlet.ServletInputStream;
+<span class="hljs-keyword">import</span> javax.servlet.http.HttpServletRequest;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.sql.SQLException;
+<span class="hljs-keyword">import</span> java.util.HashMap;
+<span class="hljs-keyword">import</span> java.util.Map;
+
+<span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@RequestMapping(&quot;/pay&quot;)</span>
+<span class="hljs-meta">@Api(value = &quot;用户地址接口&quot;,tags = &quot;用户地址管理&quot;)</span>
+<span class="hljs-meta">@CrossOrigin</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PayController</span> </span>&#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> OrderService orderService;
+
+    <span class="hljs-meta">@GetMapping(&quot;/callable&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">success</span><span class="hljs-params">(HttpServletRequest request)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        ServletInputStream is = request.getInputStream();
+        <span class="hljs-keyword">byte</span>[] bytes = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">1024</span>];
+        <span class="hljs-keyword">int</span> len = -<span class="hljs-number">1</span>;
+        StringBuilder builder = <span class="hljs-keyword">new</span> StringBuilder();
+        <span class="hljs-keyword">while</span>((len = is.read(bytes)) != -<span class="hljs-number">1</span>)&#123;
+            builder.append(<span class="hljs-keyword">new</span> String(bytes, <span class="hljs-number">0</span> ,len));
+        &#125;
+        String s = builder.toString();
+        <span class="hljs-comment">// 使用wxpay的工具类讲xml的响应结果 转换成map</span>
+        Map&lt;String, String&gt; map = WXPayUtil.xmlToMap(s);
+        <span class="hljs-keyword">if</span>(map != <span class="hljs-keyword">null</span>  &amp;&amp; <span class="hljs-string">&quot;success&quot;</span>.equalsIgnoreCase(map.get(<span class="hljs-string">&quot;result_code&quot;</span>)))&#123;
+            <span class="hljs-comment">// 支付成功</span>
+            <span class="hljs-comment">// 修改订单状态为代发货/已支付</span>
+            String orderId = map.get(<span class="hljs-string">&quot;out_trade_no&quot;</span>);
+            <span class="hljs-keyword">int</span> i = orderService.updateOrderStatus(orderId, <span class="hljs-string">&quot;2&quot;</span>);
+            <span class="hljs-keyword">if</span>(i&gt;<span class="hljs-number">0</span>)&#123;
+                <span class="hljs-comment">// 响应微信平台</span>
+                HashMap&lt;String, String&gt; resp = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+                resp.put(<span class="hljs-string">&quot;return_code&quot;</span>, <span class="hljs-string">&quot;success&quot;</span>);
+                resp.put(<span class="hljs-string">&quot;return_msg&quot;</span>, <span class="hljs-string">&quot;OK&quot;</span>);
+                resp.put(<span class="hljs-string">&quot;appid&quot;</span>, map.get(<span class="hljs-string">&quot;appid&quot;</span>));
+                resp.put(<span class="hljs-string">&quot;result_code&quot;</span>, <span class="hljs-string">&quot;success&quot;</span>);
+                String s1 = WXPayUtil.mapToXml(resp);
+                <span class="hljs-keyword">return</span> s1;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    &#125;
+
+&#125;
+</code></pre></div>
+
+
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>设置回调的url</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220715163058828.png" srcset="/img/loading.gif" alt="image-20220715163058828"></p>
+</li>
+</ul>
+<p>** 这里涉及到内网穿透的知识点，但是如果部署到云服务器上的可以忽略这一步</p>
+<h4 id="订单状态查询"><a href="#订单状态查询" class="headerlink" title="订单状态查询"></a>订单状态查询</h4><p>该接口实现比较简单</p>
+<ul>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getOrderById</span><span class="hljs-params">(String orderId)</span> </span>&#123;
+    Orders orders = ordersMapper.selectByPrimaryKey(orderId);
+    <span class="hljs-keyword">return</span> ResultVO.success(orders.getStatus());
+&#125;
+</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/status/&#123;oid&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getStatus</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;oid&quot;)</span> String oid, <span class="hljs-meta">@RequestHeader(&quot;token&quot;)</span> String token)</span></span>&#123;
+    <span class="hljs-keyword">return</span> orderService.getOrderById(oid);
+&#125;</code></pre></div>
+
+<p>测试接口</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220715173458440.png" srcset="/img/loading.gif" alt="image-20220715173458440"></p>
+</li>
+</ul>
+<h4 id="websocket消息推送"><a href="#websocket消息推送" class="headerlink" title="websocket消息推送"></a>websocket消息推送</h4><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220715174726117.png" srcset="/img/loading.gif" alt="image-20220715174726117"></p>
+<p>创建webSocket服务器</p>
+<ul>
+<li><p>添加依赖</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-websocket<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+</li>
+<li><p>添加websocket服务节点配置（Java配置⽅式）</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.fmmall.websocket;
+
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> org.springframework.web.socket.server.standard.ServerEndpointExporter;
+
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebSocketConfig</span> </span>&#123;
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ServerEndpointExporter <span class="hljs-title">getServerEndpointExporter</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ServerEndpointExporter();
+    &#125;
+
+&#125;
+</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>创建websocket服务器</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.fmmall.websocket;
+
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+
+<span class="hljs-keyword">import</span> javax.websocket.OnClose;
+<span class="hljs-keyword">import</span> javax.websocket.OnOpen;
+<span class="hljs-keyword">import</span> javax.websocket.Session;
+<span class="hljs-keyword">import</span> javax.websocket.server.PathParam;
+<span class="hljs-keyword">import</span> javax.websocket.server.ServerEndpoint;
+<span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentHashMap;
+
+<span class="hljs-meta">@Component</span>
+<span class="hljs-meta">@ServerEndpoint(&quot;/webSocket/&#123;oid&#125;&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebSocketServer</span> </span>&#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> ConcurrentHashMap&lt;String,Session&gt; sessionMap = <span class="hljs-keyword">new</span> ConcurrentHashMap&lt;&gt;();
+
+    <span class="hljs-comment">/**前端发送请求建立websocket连接，就会执行<span class="hljs-doctag">@OnOpen</span>方法**/</span>
+    <span class="hljs-meta">@OnOpen</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">open</span><span class="hljs-params">(<span class="hljs-meta">@PathParam(&quot;oid&quot;)</span> String orderId, Session session)</span></span>&#123;
+        System.out.println(<span class="hljs-string">&quot;------------建立连接：&quot;</span>+orderId);
+        sessionMap.put(orderId,session);
+    &#125;
+
+    <span class="hljs-comment">/**前端关闭页面或者主动关闭websocket连接，都会执行close**/</span>
+    <span class="hljs-meta">@OnClose</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">close</span><span class="hljs-params">(<span class="hljs-meta">@PathParam(&quot;oid&quot;)</span> String orderId)</span></span>&#123;
+        sessionMap.remove(orderId);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sendMsg</span><span class="hljs-params">(String orderId,String msg)</span></span>&#123;
+        <span class="hljs-keyword">try</span> &#123;
+            Session session = sessionMap.get(orderId);
+            session.getBasicRemote().sendText(msg);
+        &#125;<span class="hljs-keyword">catch</span> (Exception e)&#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+
+&#125;
+</code></pre></div>
+</li>
+<li><p>在PayController中添加使用websocket与前端通信的代码</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220715223718929.png" srcset="/img/loading.gif" alt="image-20220715223718929"></p>
+</li>
+</ul>
+<h4 id="订单超时取消-定时任务"><a href="#订单超时取消-定时任务" class="headerlink" title="订单超时取消-定时任务"></a>订单超时取消-定时任务</h4><blockquote>
+<p>当用户提交订单后，没有在规定时间内进行支付操作，该订单讲自动取消，还原商品库存信息</p>
+<ul>
+<li>定时任务(quartz）</li>
+<li>延时队列（MQ）</li>
+</ul>
+</blockquote>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220715224137251.png" srcset="/img/loading.gif" alt="image-20220715224137251" style="zoom:67%;">
+
+<blockquote>
+<div class="hljs"><pre><code class="hljs reasonml">首先查询已失效的未支付订单
+订单的有效支付时间是半小时，因此判断订单是否失效，就是从当前时间下，向前推半个小时，
+如果订单的创建时间不在此范围内则属于失效的订单
+需要注意的是，在数据库查询到是 未支付 状态的不一定就一定是未支付，因为支付平台支付成功对服务器响应过程中可能
+出现意想不到的问题，所以在修改订单状态之前一定要向支付平台确认此订单的状态，若已经支付则修改支付状态为已支付（<span class="hljs-number">2</span>）
+若仍然是未支付则取消订单，取消订单后需要修改订单状态 为支付失败(<span class="hljs-number">6</span>)，并向支付平台通知取消支付链接，恢复商品的库存，就是<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">ProductSku</span>.</span></span>stock + <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">OrderItem</span>.</span></span>buy_conuts
+这里需要考虑到数据库的并发问题，需要加锁和事务管理，隔离级别是 串行化，以保证数据的正确性和一致性</code></pre></div>
+</blockquote>
+<ul>
+<li><p>dao</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(isolation = Isolation.SERIALIZABLE)</span> <span class="hljs-comment">//  隔离级别是 串行化</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">closeOrder</span><span class="hljs-params">(String orderId)</span> </span>&#123;
+    <span class="hljs-keyword">synchronized</span> (<span class="hljs-keyword">this</span>)&#123;
+        Orders orders = ordersMapper.selectByPrimaryKey(orderId);
+        orders.setStatus(<span class="hljs-string">&quot;6&quot;</span>);
+        orders.setCloseType(<span class="hljs-number">1</span>); <span class="hljs-comment">// 失败原因未支付</span>
+        <span class="hljs-comment">// 将订单状态改为支付失败</span>
+        ordersMapper.updateByPrimaryKeySelective(orders);
+        <span class="hljs-comment">// 根据订单id查询商品快照</span>
+        Example example = <span class="hljs-keyword">new</span> Example(OrderItem.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo(<span class="hljs-string">&quot;orderId&quot;</span>, orderId);
+        List&lt;OrderItem&gt; orderItems = orderItemMapper.selectByExample(example);
+
+        <span class="hljs-keyword">for</span> (OrderItem orderItem : orderItems) &#123;
+            String skuId = orderItem.getSkuId();
+            ProductSku productSku = productSkuMapper.selectByPrimaryKey(skuId);
+            productSku.setStock(productSku.getStock() + orderItem.getBuyCounts());
+            productSkuMapper.updateByPrimaryKeySelective(productSku);
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Scheduled(cron = &quot;0/60 * * * * ?&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">checkAndCloseOrder</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-comment">// 首先查询已失效的未支付订单</span>
+    <span class="hljs-comment">// 订单的有效支付时间是半小时，因此判断订单是否失效，就是从当前时间下，向前推半个小时，</span>
+    <span class="hljs-comment">// 如果订单的创建时间不在此范围内则属于失效的订单</span>
+    <span class="hljs-comment">// 需要注意的是，在数据库查询到是 未支付 状态的不一定就一定是未支付，因为支付平台支付成功对服务器响应过程中可能</span>
+    <span class="hljs-comment">// 出现意想不到的问题，所以在修改订单状态之前一定要向支付平台确认此订单的状态，若仍然是 未支付 则取消订单</span>
+    <span class="hljs-comment">// 取消订单后需要修改订单状态 为支付失败(6)，并向支付平台通知取消支付链接</span>
+    <span class="hljs-comment">// 取消订单后，需要恢复商品的库存，就是ProductSku中的stock + OrderItem(订单快照)中的buy_conuts</span>
+    <span class="hljs-comment">// 这里需要考虑到数据库的并发问题，需要加锁和事务管理</span>
+
+    
+    <span class="hljs-comment">// 1.查询超过三十分钟未支付订单</span>
+    <span class="hljs-keyword">try</span>&#123;
+        System.out.println(<span class="hljs-string">&quot;1——————————————————————----1&quot;</span>);
+        Example example = <span class="hljs-keyword">new</span> Example(Orders.class);
+        Example.Criteria criteria = example.createCriteria();
+        Date time = <span class="hljs-keyword">new</span> Date(System.currentTimeMillis() - <span class="hljs-number">30</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>);
+        criteria.andLessThan(<span class="hljs-string">&quot;createTime&quot;</span>, time);
+        List&lt;Orders&gt; orders = ordersMapper.selectByExample(example);
+        <span class="hljs-comment">//2.访问微信平台接口，确认当前订单最终的支付状态</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; orders.size(); i++) &#123;
+            Orders order = orders.get(i);
+            HashMap&lt;String, String&gt; params = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+            params.put(<span class="hljs-string">&quot;out_trade_no&quot;</span>, order.getOrderId());
+            <span class="hljs-comment">// 使用微信支付提供发接口查询订单的支付状态</span>
+            Map&lt;String, String&gt; resp = wxPay.orderQuery(params);
+            <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;SUCCESS&quot;</span>.equalsIgnoreCase(resp.get(<span class="hljs-string">&quot;trade_state&quot;</span>)))&#123;
+                <span class="hljs-comment">//2.1 如果订单已经支付，则修改订单状态为&quot;代发货/已支付&quot;  status = 2</span>
+                Orders updateOrder = <span class="hljs-keyword">new</span> Orders();
+                updateOrder.setOrderId(order.getOrderId());
+                updateOrder.setStatus(<span class="hljs-string">&quot;2&quot;</span>);
+                ordersMapper.updateByPrimaryKeySelective(updateOrder);
+            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;NOTPAY&quot;</span>.equalsIgnoreCase(resp.get(<span class="hljs-string">&quot;trade_state&quot;</span>)))&#123;
+                <span class="hljs-comment">//2.2 如果确实未支付 则取消订单：</span>
+                <span class="hljs-comment">//  a.向微信支付平台发送请求，关闭当前订单的支付链接</span>
+                Map&lt;String, String&gt; map = wxPay.closeOrder(params);
+                System.out.println(map);
+
+                <span class="hljs-comment">// b.关闭订单</span>
+                orderService.closeOrder(order.getOrderId());
+            &#125;
+        &#125;
+    &#125;<span class="hljs-keyword">catch</span> (Exception e)&#123;
+        e.printStackTrace();
+    &#125;
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<h3 id="1-12-根据品牌筛选商品"><a href="#1-12-根据品牌筛选商品" class="headerlink" title="1.12 根据品牌筛选商品"></a>1.12 根据品牌筛选商品</h3><h4 id="获取某个商品的所有品牌"><a href="#获取某个商品的所有品牌" class="headerlink" title="获取某个商品的所有品牌"></a>获取某个商品的所有品牌</h4><ul>
+<li><p>sql</p>
+<p>首先根据分类的category_id获取该分类下的所有商品，再从这些商品中获取到品牌名称</p>
+<div class="hljs"><pre><code class="hljs mysql">select product_id from product  where category_id&#x3D; cid  
+
+select  select DISTINCT brand  from product_params  where product_id in cids
+&#x2F;&#x2F; 合并
+select  select DISTINCT brand  from product_params  where product_id in (
+	select product_id from product  where category_id&#x3D; cid  
+)</code></pre></div>
+</li>
+<li><p>dao</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 根据类别id查询此类别下的商品的品牌列表</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> cid</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title">selectBrandByCategoryId</span><span class="hljs-params">(<span class="hljs-keyword">int</span> cid)</span></span>;</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectBrandByCategoryId&quot;</span> <span class="hljs-attr">resultSets</span>=<span class="hljs-string">&quot;java.util.List&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;String&quot;</span>&gt;</span>
+    select DISTINCT brand
+    from product_params
+    where product_id in (
+    select product_id
+    from product
+    where category_id=#&#123;cid&#125;
+    )
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listBrands</span><span class="hljs-params">(<span class="hljs-keyword">int</span> categoryId)</span> </span>&#123;
+    List&lt;String&gt; brands = productMapper.selectBrandByCategoryId(categoryId);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK,<span class="hljs-string">&quot;success&quot;</span>,brands);
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/listbrands/&#123;cid&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getListBrands</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;cid&quot;)</span> String cid)</span></span>&#123;
+    <span class="hljs-keyword">return</span> productService.listBrands(Integer.parseInt(cid));
+&#125;</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220716105333765.png" srcset="/img/loading.gif" alt="image-20220716105333765"></p>
+</li>
+</ul>
+<h4 id="根据分类和品牌分页查询商品"><a href="#根据分类和品牌分页查询商品" class="headerlink" title="根据分类和品牌分页查询商品"></a>根据分类和品牌分页查询商品</h4><table>
+<thead>
+<tr>
+<th>请求url</th>
+<th>响应结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>product/listbycid/49?pageNum=1&amp;limit=4</td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220716105625379.png" srcset="/img/loading.gif" alt="image-20220716105625379"></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>sql</p>
+<p>由响应数据可以看出是分页查询，并且将商品的价格最低的sku一起返回</p>
+<div class="hljs"><pre><code class="hljs mysql">select * from product_sku where prodoct_id &#x3D; 1 ORDER BY  sell_price limit 0,1
+select * from product where category_id &#x3D; 49</code></pre></div>
+</li>
+<li><p>dao</p>
+<div class="hljs"><pre><code class="hljs java"> * 根据三级分类ID分页查询商品信息
+ * <span class="hljs-meta">@param</span> cid 三级分类id
+ * <span class="hljs-meta">@param</span> start 起始索引
+ * <span class="hljs-meta">@param</span> limit 查询记录数
+ * <span class="hljs-meta">@return</span>
+ */
+<span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;ProductVO&gt; <span class="hljs-title">selectProductByCategoryId</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;cid&quot;)</span> <span class="hljs-keyword">int</span> cid,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                                 <span class="hljs-meta">@Param(&quot;start&quot;)</span> <span class="hljs-keyword">int</span> start,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                                 <span class="hljs-meta">@Param(&quot;limit&quot;)</span> <span class="hljs-keyword">int</span> limit)</span></span>;</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;ProductVOMap2&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.entity.ProductVO&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productName&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;category_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;categoryId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;root_category_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;rootCategoryId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sold_num&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;soldNum&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_status&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productStatus&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;create_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;createTime&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;update_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;updateTime&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;content&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;LONGVARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;content&quot;</span> /&gt;</span>
+  <span class="hljs-comment">&lt;!--  根据商品ID查询价格最低的套餐  --&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">collection</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skus&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_id&quot;</span> <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.dao.ProductSkuMapper.selectLowerestPriceByProductId&quot;</span>/&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+  
+<span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectProductByCategoryId&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;ProductVOMap2&quot;</span>&gt;</span>
+  select  product_id,
+          product_name,
+          category_id,
+          root_category_id,
+          sold_num,
+          product_status,
+          content,
+          create_time,
+          update_time
+  from product
+  where category_id=#&#123;cid&#125;
+  limit #&#123;start&#125;,#&#123;limit&#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+
+<p>selectLowerestPriceByProductId</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.entity.ProductSku&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productId&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuName&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_img&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuImg&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;untitled&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;untitled&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;original_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;originalPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sell_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;sellPrice&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;discounts&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;DECIMAL&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;discounts&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;stock&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;stock&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;create_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;createTime&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;update_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;updateTime&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;status&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;status&quot;</span> /&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+  
+<span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectLowerestPriceByProductId&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span>&gt;</span>
+  select  sku_id,product_id,sku_name, sku_img,untitled,original_price,sell_price,
+    discounts,stock,create_time,update_time,status
+  from product_sku
+  where product_id = #&#123;productId&#125;
+  ORDER BY  sell_price limit 0,1
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductsByCategoryId</span><span class="hljs-params">(<span class="hljs-keyword">int</span> categoryId, <span class="hljs-keyword">int</span> pageNum, <span class="hljs-keyword">int</span> limit)</span> </span>&#123;
+    <span class="hljs-comment">//1.查询分页数据</span>
+    <span class="hljs-keyword">int</span> start = (pageNum-<span class="hljs-number">1</span>)*limit;
+    List&lt;ProductVO&gt; productVOS = productMapper.selectProductByCategoryId(categoryId, start, limit);
+    <span class="hljs-comment">//2.查询当前类别下的商品的总记录数</span>
+    Example example = <span class="hljs-keyword">new</span> Example(Product.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andEqualTo(<span class="hljs-string">&quot;categoryId&quot;</span>,categoryId);
+    <span class="hljs-keyword">int</span> count = productMapper.selectCountByExample(example);
+    <span class="hljs-comment">//3.计算总页数</span>
+    <span class="hljs-keyword">int</span> pageCount = count%limit==<span class="hljs-number">0</span>? count/limit : count/limit+<span class="hljs-number">1</span>;
+    <span class="hljs-comment">//4.封装返回数据</span>
+    PageHelper&lt;ProductVO&gt; pageHelper = <span class="hljs-keyword">new</span> PageHelper&lt;&gt;(count, pageCount, productVOS);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK,<span class="hljs-string">&quot;SUCCESS&quot;</span>,pageHelper);
+&#125;</code></pre></div>
+</li>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@ApiOperation(&quot;商品品牌分页查询接口&quot;)</span>
+<span class="hljs-meta">@GetMapping(&quot;/listbycid/&#123;cid&#125;&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getProductsByCategoryId</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;cid&quot;)</span> String cid,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                        <span class="hljs-meta">@RequestParam(&quot;pageNum&quot;)</span> <span class="hljs-keyword">int</span> pageNum,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                        <span class="hljs-meta">@RequestParam(&quot;limit&quot;)</span> <span class="hljs-keyword">int</span> limit)</span></span>&#123;
+    <span class="hljs-keyword">return</span> productService.getProductsByCategoryId(Integer.parseInt(cid), pageNum, limit);
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<p>  <img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220716114341669.png" srcset="/img/loading.gif" alt="image-20220716114341669"></p>
+<h3 id="1-13-关键字搜索商品"><a href="#1-13-关键字搜索商品" class="headerlink" title="1.13 关键字搜索商品"></a>1.13 关键字搜索商品</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220716114519584.png" srcset="/img/loading.gif" alt="image-20220716114519584"></p>
+<h4 id="搜索相关商品的品牌"><a href="#搜索相关商品的品牌" class="headerlink" title="搜索相关商品的品牌"></a>搜索相关商品的品牌</h4><ul>
+<li><p>dao</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectBrandByKeyword&quot;</span> <span class="hljs-attr">resultSets</span>=<span class="hljs-string">&quot;java.util.List&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;String&quot;</span>&gt;</span>
+    select DISTINCT brand
+    from product_params
+    where product_id in (
+    select product_id
+    from product
+    where product_name like #&#123;kw&#125;
+    )
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listBrands</span><span class="hljs-params">(String kw)</span> </span>&#123;
+    kw = <span class="hljs-string">&quot;%&quot;</span>+kw+<span class="hljs-string">&quot;%&quot;</span>;
+    List&lt;String&gt; brands = productMapper.selectBrandByKeyword(kw);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK,<span class="hljs-string">&quot;SUCCESS&quot;</span>,brands);
+&#125;</code></pre></div>
+
+</li>
+</ul>
+<h4 id="搜索出包含关键词的商品"><a href="#搜索出包含关键词的商品" class="headerlink" title="搜索出包含关键词的商品"></a>搜索出包含关键词的商品</h4><ul>
+<li><p>dao</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectProductByKeyword&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;ProductVOMap2&quot;</span>&gt;</span>
+    select  product_id,
+    product_name,
+    category_id,
+    root_category_id,
+    sold_num,
+    product_status,
+    content,
+    create_time,
+    update_time
+    from product
+    where product_name like #&#123;kw&#125;
+    limit #&#123;start&#125;,#&#123;limit&#125;
+<span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">searchProduct</span><span class="hljs-params">(String kw, <span class="hljs-keyword">int</span> pageNum, <span class="hljs-keyword">int</span> limit)</span> </span>&#123;
+    <span class="hljs-comment">//1.查询搜索结果</span>
+    kw = <span class="hljs-string">&quot;%&quot;</span>+kw+<span class="hljs-string">&quot;%&quot;</span>;
+    <span class="hljs-keyword">int</span> start = (pageNum-<span class="hljs-number">1</span>)*limit;
+    List&lt;ProductVO&gt; productVOS = productMapper.selectProductByKeyword(kw, start, limit);
+
+    <span class="hljs-comment">//2.查询总记录数</span>
+    Example example = <span class="hljs-keyword">new</span> Example(Product.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andLike(<span class="hljs-string">&quot;productName&quot;</span>,kw);
+    <span class="hljs-keyword">int</span> count = productMapper.selectCountByExample(example);
+
+    <span class="hljs-comment">//3.计算总页数</span>
+    <span class="hljs-keyword">int</span> pageCount = count%limit==<span class="hljs-number">0</span>? count/limit:count/limit+<span class="hljs-number">1</span>;
+
+    <span class="hljs-comment">//4.封装，返回数据</span>
+    PageHelper&lt;ProductVO&gt; pageHelper = <span class="hljs-keyword">new</span> PageHelper&lt;&gt;(count, pageCount, productVOS);
+    ResultVO resultVO = <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, <span class="hljs-string">&quot;SUCCESS&quot;</span>, pageHelper);
+    <span class="hljs-keyword">return</span> resultVO;
+&#125;</code></pre></div>
+
+</li>
+</ul>
+<h3 id="1-14-个人中心"><a href="#1-14-个人中心" class="headerlink" title="1.14 个人中心"></a>1.14 个人中心</h3><h4 id="显示所有订单"><a href="#显示所有订单" class="headerlink" title="显示所有订单"></a>显示所有订单</h4><blockquote>
+<p>order/list?userId=15&amp;pageNum=1&amp;limit=5&amp;status=1</p>
+</blockquote>
+<ul>
+<li><p>dao</p>
+<p>OrdersMapper</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;OrdersVO&gt; <span class="hljs-title">selectOrders</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;userId&quot;)</span> String userId,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                   <span class="hljs-meta">@Param(&quot;status&quot;)</span> String status,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                   <span class="hljs-meta">@Param(&quot;start&quot;)</span> <span class="hljs-keyword">int</span> start,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                   <span class="hljs-meta">@Param(&quot;limit&quot;)</span> <span class="hljs-keyword">int</span> limit)</span></span>;</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;OrdersVOMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.entity.OrdersVO&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;userId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;untitled&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;untitled&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;receiver_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;receiverName&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;receiver_mobile&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;receiverMobile&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;receiver_address&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;receiverAddress&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;total_amount&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;DECIMAL&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;totalAmount&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;actual_amount&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;actualAmount&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;pay_type&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;payType&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_remark&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderRemark&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;status&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;status&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;delivery_type&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deliveryType&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;delivery_flow_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deliveryFlowId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_freight&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;DECIMAL&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderFreight&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;delete_status&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deleteStatus&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;create_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;createTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;update_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;updateTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;pay_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;payTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;delivery_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;deliveryTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;flish_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;flishTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;cancel_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;cancelTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;close_type&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;closeType&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">collection</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderItems&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_id&quot;</span> <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.dao.OrderItemMapper.listOrderItemsByOrderId&quot;</span>/&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectOrders&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;OrdersVOMap&quot;</span>&gt;</span>
+    select
+    order_id,user_id,untitled,receiver_name, receiver_mobile,receiver_address,
+    total_amount, actual_amount,pay_type,order_remark,status,delivery_type,
+    delivery_flow_id,order_freight,delete_status,create_time,
+    update_time,pay_time,delivery_time, flish_time,cancel_time,close_type
+    from orders
+    where user_id=#&#123;userId&#125;
+    <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;status != null&quot;</span>&gt;</span>
+      and status=#&#123;status&#125;
+    <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span>
+    limit #&#123;start&#125;,#&#123;limit&#125;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+
+<p>OrderItemMapper</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;OrderItem&gt; <span class="hljs-title">listOrderItemsByOrderId</span><span class="hljs-params">(String orderId)</span></span>;</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.qfedu.fmmall.entity.OrderItem&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;item_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;itemId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productName&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_img&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productImg&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuId&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;sku_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;skuName&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;product_price&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;DECIMAL&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;productPrice&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;buy_counts&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;buyCounts&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;total_amount&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;DECIMAL&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;totalAmount&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;basket_date&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;basketDate&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;buy_time&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TIMESTAMP&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;buyTime&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;is_comment&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;INTEGER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;isComment&quot;</span> /&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span>
+
+  <span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;listOrderItemsByOrderId&quot;</span> <span class="hljs-attr">resultMap</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span>&gt;</span>
+    select
+      item_id,
+      order_id,
+      product_id,
+      product_name,
+      product_img,
+      sku_id,
+      sku_name,
+      product_price,
+      buy_counts,
+      total_amount,
+      basket_date,
+      buy_time,
+      is_comment
+    from order_item where order_id=#&#123;orderId&#125;
+  <span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span></code></pre></div>
+</li>
+<li><p>service</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">listOrders</span><span class="hljs-params">(String userId, String status, <span class="hljs-keyword">int</span> pageNum, <span class="hljs-keyword">int</span> limit)</span> </span>&#123;
+    Example example = <span class="hljs-keyword">new</span> Example(Orders.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andLike(<span class="hljs-string">&quot;userId&quot;</span>, userId);
+    <span class="hljs-keyword">if</span>(status != <span class="hljs-keyword">null</span> &amp;&amp; <span class="hljs-string">&quot;&quot;</span>.equals(status))&#123;
+        criteria.andEqualTo(<span class="hljs-string">&quot;status&quot;</span>,status);
+    &#125;
+    <span class="hljs-keyword">int</span> count = ordersMapper.selectCountByExample(example);
+
+    <span class="hljs-comment">//2.计算总页数（必须确定每页显示多少条  pageSize = limit）</span>
+    <span class="hljs-keyword">int</span> pageCount = count%limit==<span class="hljs-number">0</span>? count/limit : count/limit+<span class="hljs-number">1</span>;
+
+
+    <span class="hljs-keyword">int</span> start = (pageNum-<span class="hljs-number">1</span>)*limit;
+    List&lt;OrdersVO&gt; ordersVOS = ordersMapper.selectOrders(userId, status, start, limit);
+    PageHelper&lt;OrdersVO&gt; ordersVOPageHelper = <span class="hljs-keyword">new</span> PageHelper&lt;&gt;(count, pageCount, ordersVOS);
+
+    <span class="hljs-keyword">return</span> ResultVO.success(ordersVOPageHelper);
+&#125;</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>controller</p>
+<div class="hljs"><pre><code class="hljs java">
+<span class="hljs-meta">@GetMapping(&quot;/list&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">getList</span><span class="hljs-params">(String userId,</span></span>
+<span class="hljs-function"><span class="hljs-params">                        String status,</span></span>
+<span class="hljs-function"><span class="hljs-params">                        <span class="hljs-keyword">int</span> pageNum,</span></span>
+<span class="hljs-function"><span class="hljs-params">                        <span class="hljs-keyword">int</span> limit)</span></span>&#123;
+    <span class="hljs-keyword">return</span> orderService.listOrders(userId, status, pageNum,limit);
+
+&#125;</code></pre></div>
+
+</li>
+</ul>
+<h4 id="收货地址管理"><a href="#收货地址管理" class="headerlink" title="收货地址管理"></a>收货地址管理</h4><h2 id="2-JWT实现权限认证"><a href="#2-JWT实现权限认证" class="headerlink" title="2  JWT实现权限认证"></a>2  JWT实现权限认证</h2><h3 id="2-1-JWT实现"><a href="#2-1-JWT实现" class="headerlink" title="2.1 JWT实现"></a>2.1 JWT实现</h3><h4 id="导入JWT依赖"><a href="#导入JWT依赖" class="headerlink" title="导入JWT依赖"></a>导入JWT依赖</h4><div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.auth0<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>java-jwt<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.10.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
@@ -1077,26 +2554,204 @@ System.out.println(method);
 </li>
 <li></li>
 </ul>
+<h2 id="3-通用实体类"><a href="#3-通用实体类" class="headerlink" title="3.通用实体类"></a>3.通用实体类</h2><p>3.1 用于响应的实体类</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.fmmall.vo;
+
+<span class="hljs-keyword">import</span> io.swagger.annotations.ApiModel;
+<span class="hljs-keyword">import</span> io.swagger.annotations.ApiModelProperty;
+<span class="hljs-keyword">import</span> lombok.AllArgsConstructor;
+<span class="hljs-keyword">import</span> lombok.Data;
+<span class="hljs-keyword">import</span> lombok.NoArgsConstructor;
+
+<span class="hljs-keyword">import</span> javax.annotation.Resource;
+
+<span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-meta">@ApiModel(value = &quot;ResultVO对象&quot;,description = &quot;封装接口返回给前端的数据&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ResultVO</span> </span>&#123;
+
+    <span class="hljs-comment">//响应给前端的状态码</span>
+    <span class="hljs-meta">@ApiModelProperty(value = &quot;响应状态码&quot;,dataType = &quot;int&quot;)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> code;
+
+    <span class="hljs-comment">//响应给前端的提示信息</span>
+    <span class="hljs-meta">@ApiModelProperty(&quot;响应提示信息&quot;)</span>
+    <span class="hljs-keyword">private</span> String msg;
+
+    <span class="hljs-comment">//响应给前端的数据</span>
+    <span class="hljs-meta">@ApiModelProperty(&quot;响应数据&quot;)</span>
+    <span class="hljs-keyword">private</span> Object data;
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ResultVO <span class="hljs-title">success</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, <span class="hljs-string">&quot;success&quot;</span>, <span class="hljs-keyword">null</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ResultVO <span class="hljs-title">success</span><span class="hljs-params">(String msg)</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, msg, <span class="hljs-keyword">null</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ResultVO <span class="hljs-title">success</span><span class="hljs-params">(Object obj)</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, <span class="hljs-string">&quot;success&quot;</span>, obj);
+    &#125;
+    
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ResultVO <span class="hljs-title">failed</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;failed&quot;</span>, <span class="hljs-keyword">null</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ResultVO <span class="hljs-title">failed</span><span class="hljs-params">(String msg)</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, msg, <span class="hljs-keyword">null</span>);
+    &#125;
+
+&#125;
+</code></pre></div>
+
+
+
+
+
+<h2 id="4-微信支付"><a href="#4-微信支付" class="headerlink" title="4 微信支付"></a>4 微信支付</h2><blockquote>
+<p>通过微信平台为商家提供代收款服务</p>
+</blockquote>
+<h3 id="4-1-商户注册微信支付业务"><a href="#4-1-商户注册微信支付业务" class="headerlink" title="4.1 商户注册微信支付业务"></a>4.1 商户注册微信支付业务</h3><ul>
+<li>商户编号：1497984412</li>
+<li>商户账号AppID：wx632c8f211f8122c6</li>
+<li>商户Key：sbNCm1JnevqI36LrEaxFwcaT0hkGxFnC</li>
+</ul>
+<h3 id="4-2-商户向微信申请支付订单，即支付短链接"><a href="#4-2-商户向微信申请支付订单，即支付短链接" class="headerlink" title="4.2 商户向微信申请支付订单，即支付短链接"></a>4.2 商户向微信申请支付订单，即支付短链接</h3><ul>
+<li><p>导入微信支付的依赖</p>
+<div class="hljs"><pre><code class="hljs XML"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.github.wxpay<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>wxpay-sdk<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+</li>
+<li><p>创建WXPayConfig，重写里面的方法，设置自己的AppID，商户id，密钥，</p>
+<div class="hljs"><pre><code class="hljs java">
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPayConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">WXPayConfig</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getAppID</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;wx632c8f211f8122c6&quot;</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getMchID</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;1497984412&quot;</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getKey</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;sbNCm1JnevqI36LrEaxFwcaT0hkGxFnC&quot;</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> InputStream <span class="hljs-title">getCertStream</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getHttpConnectTimeoutMs</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getHttpReadTimeoutMs</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+&#125;
+</code></pre></div>
+</li>
+<li><p>设置⽀付订单的参数</p>
+<div class="hljs"><pre><code class="hljs java">HashMap&lt;String,String&gt; data = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+data.put(<span class="hljs-string">&quot;body&quot;</span>,<span class="hljs-string">&quot;咪咪萧条&quot;</span>); <span class="hljs-comment">//商品描述</span>
+data.put(<span class="hljs-string">&quot;out_trade_no&quot;</span>,orderId); <span class="hljs-comment">//使⽤当前⽤户订单的编号作为当前⽀付交易的</span>
+交易号
+data.put(<span class="hljs-string">&quot;fee_type&quot;</span>,<span class="hljs-string">&quot;CNY&quot;</span>); <span class="hljs-comment">//⽀付币种</span>
+data.put(<span class="hljs-string">&quot;total_fee&quot;</span>,<span class="hljs-string">&quot;1&quot;</span>); <span class="hljs-comment">//⽀付⾦额</span>
+data.put(<span class="hljs-string">&quot;trade_type&quot;</span>,<span class="hljs-string">&quot;NATIVE&quot;</span>); <span class="hljs-comment">//交易类型</span>
+data.put(<span class="hljs-string">&quot;notify_url&quot;</span>,<span class="hljs-string">&quot;/pay/success&quot;</span>); <span class="hljs-comment">//设置⽀付完成时的回调⽅法</span>
+接⼝</code></pre></div>
+</li>
+<li><p>申请支付连接</p>
+<div class="hljs"><pre><code class="hljs java">WXPay wxPay = <span class="hljs-keyword">new</span> WXPay(<span class="hljs-keyword">new</span> MyPayConfig());
+Map&lt;String, String&gt; resp = wxPay.unifiedOrder(data); <span class="hljs-comment">//发送请求</span>
+orderInfo.put(<span class="hljs-string">&quot;payUrl&quot;</span>,resp.get(<span class="hljs-string">&quot;code_url&quot;</span>));</code></pre></div>
+
+</li>
+</ul>
+<h2 id="5-Ngrok实现内网穿透"><a href="#5-Ngrok实现内网穿透" class="headerlink" title="5 Ngrok实现内网穿透"></a>5 Ngrok实现内网穿透</h2><ul>
+<li><p>注册Ngrok后进行实名认证</p>
+</li>
+<li><p>开通隧道</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220715164520718.png" srcset="/img/loading.gif" alt="image-20220715164520718"></p>
+</li>
+<li><p>获取隧道ID</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220715164621244.png" srcset="/img/loading.gif" alt="image-20220715164621244"></p>
+</li>
+<li><p>下载ngork客户端</p>
+</li>
+<li><p>启动客户端，输入对应的隧道ID，即可实现内网穿透</p>
+</li>
+</ul>
+<h2 id="6-quartz定时任务框架使⽤"><a href="#6-quartz定时任务框架使⽤" class="headerlink" title="6 quartz定时任务框架使⽤"></a>6 quartz定时任务框架使⽤</h2><h3 id="6-1-导入依赖"><a href="#6-1-导入依赖" class="headerlink" title="6.1 导入依赖"></a>6.1 导入依赖</h3><div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-quartz<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+</code></pre></div>
+
+<h3 id="6-2-创建定时任务"><a href="#6-2-创建定时任务" class="headerlink" title="6.2 创建定时任务"></a>6.2 创建定时任务</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PrintHelloWorldJob</span> </span>&#123;
+ <span class="hljs-comment">//https://cron.qqe2.com</span>
+ <span class="hljs-meta">@Scheduled(cron = &quot;0/3 * * * * ?&quot;)</span>
+ <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">printHelloWorld</span><span class="hljs-params">()</span></span>&#123;
+ System.out.println(<span class="hljs-string">&quot;----hello world.&quot;</span>);
+ &#125;
+&#125;</code></pre></div>
+
+<h3 id="6-3-在启动类添加注解以开启定时任务"><a href="#6-3-在启动类添加注解以开启定时任务" class="headerlink" title="6.3 在启动类添加注解以开启定时任务"></a>6.3 在启动类添加注解以开启定时任务</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-meta">@EnableScheduling</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">QuartzDemoApplication</span> </span>&#123;
+ <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+ SpringApplication.run(QuartzDemoApplication.class, args);
+ &#125;
+&#125;</code></pre></div>
+
+
+
+<p>当控制台打印出这段日志时，说明定时任务创建成功</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220716085923884.png" srcset="/img/loading.gif" alt="image-20220716085923884"></p>
+<h2 id="7-后端项目部署"><a href="#7-后端项目部署" class="headerlink" title="7 后端项目部署"></a>7 后端项目部署</h2><p>使用docker部署项目</p>
+<ul>
+<li><p>Dockerfile</p>
+<div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> java:<span class="hljs-number">8</span>-alpine
+<span class="hljs-keyword">COPY</span><span class="bash"> ./app.jar /tmp/app.jar</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8080</span>
+<span class="hljs-keyword">ENTRYPOINT</span><span class="bash"> java -jar /tmp/app.jar</span></code></pre></div>
+</li>
+<li><p>项目打包</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220719123949027.png" srcset="/img/loading.gif" alt="image-20220719123949027"></p>
+</li>
+<li><p>将jar包放到与dockerfile同一目录下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220719124037998.png" srcset="/img/loading.gif" alt="image-20220719124037998"></p>
+</li>
+<li><p>上传到服务器中构建镜像</p>
+<p>进入到Dockerfile所在的目录下，运行以下命令</p>
+<div class="hljs"><pre><code class="hljs sh">docker build -t fmmall .</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220719124317986.png" srcset="/img/loading.gif" alt="image-20220719124317986"></p>
+</li>
+<li><p>创建容器</p>
+<div class="hljs"><pre><code class="hljs sh">docker run --name fmmall -p 8080:8080 -d  fmmall</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220719124407926.png" srcset="/img/loading.gif" alt="image-20220719124407926"></p>
+</li>
+</ul>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/java/">java</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/springboot/">springboot</a>
-                    
-                  </div>
                 
               </div>
               
@@ -1315,7 +2970,7 @@ System.out.println(method);
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "fmmall&nbsp;",
+        "&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

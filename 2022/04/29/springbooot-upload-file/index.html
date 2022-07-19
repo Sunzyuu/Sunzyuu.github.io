@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      4.1k 字
+      4.3k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      67
+      70
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：6 小时前
+                  本文最后更新于：1 天前
                 
               </p>
             
@@ -501,27 +501,27 @@
 <span class="hljs-meta">@PostMapping</span>
 <span class="hljs-keyword">public</span> boolean save(<span class="hljs-meta">@RequestBody</span> $&#123;entity&#125; $&#123;table.entityPath&#125;) &#123;
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.saveOrUpdate($&#123;table.entityPath&#125;);
-        &#125;
+&#125;
 
 <span class="hljs-meta">@DeleteMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-built_in">Boolean</span> delete(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(id);
-        &#125;
+&#125;
 
 <span class="hljs-meta">@PostMapping(<span class="hljs-meta-string">&quot;/del/batch&quot;</span>)</span>
 <span class="hljs-keyword">public</span> boolean deleteBatch(<span class="hljs-meta">@RequestBody</span> List&lt;Integer&gt; ids) &#123;
-        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeByIds(ids);
-        &#125;
+        <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(ids);
+&#125;
 
 <span class="hljs-meta">@GetMapping</span>
 <span class="hljs-keyword">public</span> List&lt;$&#123;entity&#125;&gt; findAll() &#123;
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.list();
-        &#125;
+&#125;
 
 <span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
 <span class="hljs-keyword">public</span> $&#123;entity&#125; findOne(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.getById(id);
-        &#125;
+&#125;
 
 <span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/page&quot;</span>)</span>
 <span class="hljs-keyword">public</span> Page&lt;$&#123;entity&#125;&gt; findPage(<span class="hljs-meta">@RequestParam</span> Integer pageNum,
@@ -529,8 +529,7 @@
         LambdaQueryWrapper&lt;$&#123;entity&#125;&gt; queryWrapper = new LambdaQueryWrapper&lt;&gt;();
         queryWrapper.orderByDesc(<span class="hljs-string">&quot;id&quot;</span>);
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.page(new Page&lt;&gt;(pageNum, pageSize), queryWrapper);
-        &#125;
-
+	&#125;
 &#125;
 
 #end
@@ -556,7 +555,6 @@
 <p>配置文档的封面信息 包括标题，版本，作者信息</p>
 <p>修改需要扫面的controller包位置即可</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.fmmall.config;
-
 
 <span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
 <span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
@@ -624,16 +622,12 @@
         <span class="hljs-variable">@ApiImplicitParam</span>(dataType = <span class="hljs-string">&quot;string&quot;</span>, name = <span class="hljs-string">&quot;password&quot;</span>, value = <span class="hljs-string">&quot;用户密码&quot;</span>, required = true)
 )</code></pre></div>
 
-
-
 <p>@ApiModel 当接口参数和返回值类型为对象类型是需要添加此注解</p>
 <div class="hljs"><pre><code class="hljs reasonml">@<span class="hljs-constructor">ApiModel(<span class="hljs-params">value</span> = <span class="hljs-string">&quot;ResultVO对象&quot;</span>,<span class="hljs-params">description</span> = <span class="hljs-string">&quot;封装接口返回给前端的数据&quot;</span>)</span></code></pre></div>
 
 <p>@ApiModelProperty 模型中的成员变量进行说明</p>
 <div class="hljs"><pre><code class="hljs reasonml">@<span class="hljs-constructor">ApiModelProperty(<span class="hljs-params">value</span> = <span class="hljs-string">&quot;响应状态码&quot;</span>,<span class="hljs-params">dataType</span> = <span class="hljs-string">&quot;int&quot;</span>)</span>
 <span class="hljs-keyword">private</span> <span class="hljs-built_in">int</span> code;</code></pre></div>
-
-
 
 <p>@ApiIngnore接口方法注解，添加此注解的方法不会出现在接口文档中</p>
 <h2 id="4-swagger-ui插件"><a href="#4-swagger-ui插件" class="headerlink" title="4.swagger-ui插件"></a>4.swagger-ui插件</h2><p>导入插件依赖</p>
@@ -918,16 +912,54 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
 &#125;
 </code></pre></div>
 
-
-
-
-
-
-
-
-
 </li>
 </ul>
+<h1 id="加密使用到工具类"><a href="#加密使用到工具类" class="headerlink" title="加密使用到工具类"></a>加密使用到工具类</h1><h2 id="1-md5"><a href="#1-md5" class="headerlink" title="1.md5"></a>1.md5</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.fmmall.utils;
+
+<span class="hljs-keyword">import</span> java.math.BigInteger;
+<span class="hljs-keyword">import</span> java.security.MessageDigest;
+<span class="hljs-keyword">import</span> java.security.NoSuchAlgorithmException;
+
+<span class="hljs-comment">//MD5 生成器</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MD5Utils</span> </span>&#123;
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">md5</span><span class="hljs-params">(String password)</span></span>&#123;
+		<span class="hljs-comment">//生成一个md5加密器</span>
+		<span class="hljs-keyword">try</span> &#123;
+			MessageDigest md = MessageDigest.getInstance(<span class="hljs-string">&quot;MD5&quot;</span>);
+			<span class="hljs-comment">//计算MD5 的值</span>
+			md.update(password.getBytes());
+			<span class="hljs-comment">//BigInteger 将8位的字符串 转成16位的字符串 得到的字符串形式是哈希码值</span>
+			<span class="hljs-comment">//BigInteger(参数1,参数2) 参数1 是 1为正数 0为0 -1为负数</span>
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> BigInteger(<span class="hljs-number">1</span>, md.digest()).toString(<span class="hljs-number">16</span>);
+		&#125; <span class="hljs-keyword">catch</span> (NoSuchAlgorithmException e) &#123;
+			e.printStackTrace();
+		&#125;
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+	&#125;
+&#125;
+</code></pre></div>
+
+<h2 id="2-base64"><a href="#2-base64" class="headerlink" title="2.base64"></a>2.base64</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.fmmall.utils;
+
+<span class="hljs-keyword">import</span> java.util.Base64;
+
+<span class="hljs-comment">//base64 加密 解密 激活邮件的时候 为 邮箱地址 code验证码 进行加密</span>
+<span class="hljs-comment">//当 回传回来后 进行邮箱地址 和 code 的解密</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base64Utils</span> </span>&#123;
+	<span class="hljs-comment">//加密</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">encode</span><span class="hljs-params">(String msg)</span></span>&#123;
+		<span class="hljs-keyword">return</span> Base64.getEncoder().encodeToString(msg.getBytes());
+	&#125;
+	<span class="hljs-comment">//解密</span>
+	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">decode</span><span class="hljs-params">(String msg)</span></span>&#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> String(Base64.getDecoder().decode(msg));
+	&#125;
+&#125;
+</code></pre></div>
+
+
+
+<p>​     </p>
 
             </div>
             <hr>
