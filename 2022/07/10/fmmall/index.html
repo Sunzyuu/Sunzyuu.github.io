@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      13.8k 字
+      17.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      232
+      289
        分钟
     </span>
   
@@ -241,12 +241,15 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2 分钟前
+                  本文最后更新于：3 小时前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="商城项目"><a href="#商城项目" class="headerlink" title="商城项目"></a>商城项目</h1><h2 id="1-业务逻辑开发"><a href="#1-业务逻辑开发" class="headerlink" title="1.业务逻辑开发"></a>1.业务逻辑开发</h2><h3 id="1-1登录注册"><a href="#1-1登录注册" class="headerlink" title="1.1登录注册"></a>1.1登录注册</h3><p>1.1.1 完成dao操作</p>
+              <p>商城项目</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/sunzhengyu99/fmmall/tree/master">https://github.com/sunzhengyu99/fmmall/tree/master</a></p>
+<p>体验地址：<a target="_blank" rel="noopener" href="http://www.fmmall.top/">http://www.fmmall.top/</a></p>
+<h2 id="1-业务逻辑开发"><a href="#1-业务逻辑开发" class="headerlink" title="1.业务逻辑开发"></a>1.业务逻辑开发</h2><h3 id="1-1登录注册"><a href="#1-1登录注册" class="headerlink" title="1.1登录注册"></a>1.1登录注册</h3><p>1.1.1 完成dao操作</p>
 <ol>
 <li><p>创建实体类</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.fmmall.entity;
@@ -2746,6 +2749,669 @@ orderInfo.put(<span class="hljs-string">&quot;payUrl&quot;</span>,resp.get(<span
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220719124407926.png" srcset="/img/loading.gif" alt="image-20220719124407926"></p>
 </li>
 </ul>
+<h2 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h2><h3 id="使用watch-dog机制监视redis中key的过期时间"><a href="#使用watch-dog机制监视redis中key的过期时间" class="headerlink" title="使用watch dog机制监视redis中key的过期时间"></a>使用watch dog机制监视redis中key的过期时间</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220726222800912.png" srcset="/img/loading.gif" alt="image-20220726222800912"></p>
+<blockquote>
+<p>看门狗线程：用于给当前的key延长过期时间，保证业务线程正常执行过程，锁不会过期</p>
+</blockquote>
+<h3 id="分布式锁框架-redisson"><a href="#分布式锁框架-redisson" class="headerlink" title="分布式锁框架-redisson"></a>分布式锁框架-redisson</h3><blockquote>
+<p>基于redis+看门狗实现的分布式锁框架</p>
+</blockquote>
+<h3 id="ES"><a href="#ES" class="headerlink" title="ES"></a>ES</h3><h4 id="springboot整合ES"><a href="#springboot整合ES" class="headerlink" title="springboot整合ES"></a>springboot整合ES</h4><ul>
+<li><p>导入依赖</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+ <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-elasticsearch<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+</li>
+<li><p>配置信息</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">elasticsearch:</span>
+    <span class="hljs-attr">rest:</span>
+      <span class="hljs-attr">uris:</span> <span class="hljs-string">http://192.168.238.132:9200</span></code></pre></div>
+</li>
+<li><p>将数据库中的信息导入到ES中</p>
+<blockquote>
+<p>如果商品表中没有数据，则在平台管理系统中的商品添加功能中，当商家向商品表添加并上架一个商品时同步向ES添加一个商品;商家下架一个商品就从ES中删除一个商品。<br>系统运行前期数据量小没有使用ES，当数据量增长之后使用ES时，需要将数据库现有的数据导入到ES(导入工作需要在项目部署到生产环境之前来完成)</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 1.查询数据库获取到所有数据</span>
+        List&lt;ProductVO&gt; productVOS = productMapper.selectProducts();
+        <span class="hljs-keyword">int</span> size = productVOS.size();
+
+<span class="hljs-comment">//        return ResultVO.success(size);</span>
+        <span class="hljs-comment">// 2. 遍历数据将数据写入到ES中</span>
+        <span class="hljs-keyword">this</span>.client =<span class="hljs-keyword">new</span> RestHighLevelClient(RestClient.builder(
+                HttpHost.create(<span class="hljs-string">&quot;http://192.168.238.132:9200&quot;</span>)
+        ));
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; productVOS.size(); i++) &#123;
+            ProductVO productVO = productVOS.get(i);
+            String productId = productVO.getProductId();
+            String productName = productVO.getProductName();
+            Integer soldNum = productVO.getSoldNum();
+
+            List&lt;ProductSku&gt; skus = productVO.getSkus();
+            String skuImg = skus.size() == <span class="hljs-number">0</span>? <span class="hljs-string">&quot;&quot;</span>: productVO.getSkus().get(<span class="hljs-number">0</span>).getSkuImg();
+            String skuName = skus.size() == <span class="hljs-number">0</span>? <span class="hljs-string">&quot;&quot;</span>: productVO.getSkus().get(<span class="hljs-number">0</span>).getSkuName();
+            Integer sellPrice = skus.size() == <span class="hljs-number">0</span>? <span class="hljs-number">0</span>: productVO.getSkus().get(<span class="hljs-number">0</span>).getSellPrice();
+
+            Product4ES product4ES = <span class="hljs-keyword">new</span> Product4ES(productId, productName, skuImg, soldNum, skuName, sellPrice);
+
+            IndexRequest request = <span class="hljs-keyword">new</span> IndexRequest(<span class="hljs-string">&quot;fmmallproductindex&quot;</span>);
+            request.id(productId).source(JSON.toJSONString(product4ES), XContentType.JSON);
+            IndexResponse index = <span class="hljs-keyword">this</span>.client.index(request, RequestOptions.DEFAULT);
+            System.out.println(<span class="hljs-string">&quot;------ i &quot;</span> + i + <span class="hljs-string">&quot;-----&quot;</span> + index);
+        &#125;
+
+        <span class="hljs-keyword">this</span>.client.close();</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>使用ES进行进行全文搜索</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/*从ES中查询信息*/</span>
+<span class="hljs-keyword">this</span>.client =<span class="hljs-keyword">new</span> RestHighLevelClient(RestClient.builder(
+    HttpHost.create(<span class="hljs-string">&quot;http://192.168.238.132:9200&quot;</span>)
+));
+
+<span class="hljs-keyword">int</span> start = (pageNum-<span class="hljs-number">1</span>)*limit;
+SearchRequest request = <span class="hljs-keyword">new</span> SearchRequest(<span class="hljs-string">&quot;fmmallproductindex&quot;</span>);
+
+SearchSourceBuilder sourceBuilder = <span class="hljs-keyword">new</span> SearchSourceBuilder();
+sourceBuilder.query(QueryBuilders.multiMatchQuery(kw, <span class="hljs-string">&quot;productName&quot;</span>, <span class="hljs-string">&quot;pruductSkuName&quot;</span>));
+<span class="hljs-comment">// 分页条件</span>
+sourceBuilder.from(start);
+sourceBuilder.size(limit);
+<span class="hljs-comment">// 高亮显示</span>
+HighlightBuilder highlightBuilder = <span class="hljs-keyword">new</span> HighlightBuilder();
+HighlightBuilder.Field productName = <span class="hljs-keyword">new</span> HighlightBuilder.Field(<span class="hljs-string">&quot;productName&quot;</span>);
+HighlightBuilder.Field pruductSkuName = <span class="hljs-keyword">new</span> HighlightBuilder.Field(<span class="hljs-string">&quot;pruductSkuName&quot;</span>);
+highlightBuilder.field(productName);
+highlightBuilder.field(pruductSkuName);
+highlightBuilder.preTags(<span class="hljs-string">&quot;&lt;label style=&#x27;color:red&#x27;&gt;&quot;</span>);
+highlightBuilder.postTags(<span class="hljs-string">&quot;&lt;label&gt;&quot;</span>);
+sourceBuilder.highlighter(highlightBuilder);
+request.source(sourceBuilder);
+SearchResponse searchResponse = <span class="hljs-keyword">null</span>;
+<span class="hljs-keyword">try</span> &#123;
+    searchResponse = <span class="hljs-keyword">this</span>.client.search(request, RequestOptions.DEFAULT);
+&#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;
+    e.printStackTrace();
+&#125;
+<span class="hljs-comment">// 处理响应结果</span>
+SearchHits hits = searchResponse.getHits();
+TotalHits totalHits = hits.getTotalHits();
+
+<span class="hljs-keyword">int</span> count = (<span class="hljs-keyword">int</span>) totalHits.value;   <span class="hljs-comment">// 查询到的记录总数</span>
+<span class="hljs-keyword">int</span> pageCount = (count%limit==<span class="hljs-number">0</span>? count/limit:count/limit+<span class="hljs-number">1</span>);
+
+Iterator&lt;SearchHit&gt; iterator = hits.iterator();
+List&lt;Product4ES&gt; product4ESList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+<span class="hljs-keyword">while</span>(iterator.hasNext())&#123;
+    SearchHit nextHit = iterator.next();
+    String sourceAsString = nextHit.getSourceAsString();
+    Product4ES product4ES = JSON.parseObject(sourceAsString, Product4ES.class);
+
+    <span class="hljs-comment">// 获取高亮字段</span>
+    Map&lt;String, HighlightField&gt; highlightFields = nextHit.getHighlightFields();
+    HighlightField highLightProductName = highlightFields.get(<span class="hljs-string">&quot;productName&quot;</span>);
+    <span class="hljs-keyword">if</span>(highLightProductName != <span class="hljs-keyword">null</span>)&#123;
+        String string = Arrays.toString(highLightProductName.fragments());
+        product4ES.setProductName(string);
+    &#125;
+    product4ESList.add(product4ES);
+&#125;
+
+
+PageHelper&lt;Product4ES&gt; pageHelper = <span class="hljs-keyword">new</span> PageHelper&lt;&gt;(count, pageCount, product4ESList);
+ResultVO resultVO = <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, <span class="hljs-string">&quot;SUCCESS&quot;</span>, pageHelper);
+<span class="hljs-keyword">return</span> resultVO;
+</code></pre></div>
+
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220730122320909.png" srcset="/img/loading.gif" alt="image-20220730122320909"></p>
+<h3 id="搭建服务发现和注册中心Eureka"><a href="#搭建服务发现和注册中心Eureka" class="headerlink" title="搭建服务发现和注册中心Eureka"></a>搭建服务发现和注册中心Eureka</h3><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220730180822713.png" srcset="/img/loading.gif" alt="image-20220730180822713" style="zoom:67%;">
+
+<ul>
+<li><p>添加关于erueka相关配置信息</p>
+<div class="hljs"><pre><code class="hljs properties"><span class="hljs-attr">eureka</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">client</span>:<span class="hljs-string"></span>
+    <span class="hljs-meta">service-url</span>:<span class="hljs-string"></span>
+      <span class="hljs-attr">defaultZone</span>: <span class="hljs-string">http://127.0.0.1:8761/eureka</span>
+    <span class="hljs-meta">register-with-eureka</span>: <span class="hljs-string">false</span>
+    <span class="hljs-meta">fetch-registry</span>: <span class="hljs-string">false</span>
+
+<span class="hljs-attr">server</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">port</span>: <span class="hljs-string">8761</span>
+<span class="hljs-attr">spring</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">application</span>:<span class="hljs-string"></span>
+    <span class="hljs-attr">name</span>: <span class="hljs-string">eureka-server</span>
+</code></pre></div>
+</li>
+<li><p>在项目的启动类中添加注释<code>@EnableEurekaServer</code></p>
+<div class="hljs"><pre><code class="hljs JAVA"><span class="hljs-keyword">package</span> com.qfedu.eureka.server;
+
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-meta">@EnableEurekaServer</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">EurekaServerApplication</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        SpringApplication.run(EurekaServerApplication.class, args);
+    &#125;
+
+&#125;</code></pre></div>
+</li>
+<li><p>配置security信息</p>
+<div class="hljs"><pre><code class="hljs properties"><span class="hljs-attr">spring</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">application</span>:<span class="hljs-string"></span>
+    <span class="hljs-attr">name</span>: <span class="hljs-string">eureka-server</span>
+
+  <span class="hljs-attr">security</span>:<span class="hljs-string"></span>
+    <span class="hljs-attr">user</span>:<span class="hljs-string"></span>
+      <span class="hljs-attr">name</span>: <span class="hljs-string">sunzy</span>
+      <span class="hljs-attr">password</span>: <span class="hljs-string">111111</span></code></pre></div>
+</li>
+<li><p>配置springsecuity</p>
+<div class="hljs"><pre><code class="hljs java">  ```
+
+
+
+### 拆分用户登录模块
+
+- 首先创建新的模块 api-user-login
+
+- 导入依赖
+
+  ```xml
+  &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  
+  &lt;dependency&gt;
+      &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+      &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt;</code></pre></div>
+
+
+
+</li>
+</ul>
+<ul>
+<li><p>配置application.yml</p>
+<div class="hljs"><pre><code class="hljs properties"><span class="hljs-attr">server</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">port</span>: <span class="hljs-string">8001</span>
+
+<span class="hljs-attr">eureka</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">client</span>:<span class="hljs-string"></span>
+    <span class="hljs-meta">service-url</span>:<span class="hljs-string"></span>
+      <span class="hljs-attr">defualtZone</span>: <span class="hljs-string">http://sunzy:111111@127.0.0.1:8761/eureka</span>
+<span class="hljs-attr">spring</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">application</span>:<span class="hljs-string"></span>
+    <span class="hljs-attr">name</span>: <span class="hljs-string">api-user-login</span>
+</code></pre></div>
+</li>
+<li><p>在启动类添加注解<code>@EnableDiscoveryClient</code>和<code>@EnableFeignClients</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.api;
+
+<span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="hljs-keyword">import</span> org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+<span class="hljs-keyword">import</span> org.springframework.cloud.openfeign.EnableFeignClients;
+
+<span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-meta">@EnableDiscoveryClient</span>
+<span class="hljs-meta">@EnableFeignClients</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ApiUserLoginApplication</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        SpringApplication.run(ApiUserLoginApplication.class, args);
+    &#125;
+
+&#125;</code></pre></div>
+
+<p>添加注解后既可启动服务，在注册中心中可以看到注册成功的服务</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220730224027994.png" srcset="/img/loading.gif" alt="image-20220730224027994"></p>
+</li>
+</ul>
+<h3 id="用户查询模块"><a href="#用户查询模块" class="headerlink" title="用户查询模块"></a>用户查询模块</h3><blockquote>
+<p>该模块的主要的作用是为登录提供用户查询功能，因此涉及到服务调用</p>
+</blockquote>
+<ul>
+<li><p>首先创建模块user-check</p>
+</li>
+<li><p>pom文件内容</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
+<span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.6.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.qfedu<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>user-check<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.1.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>user-check<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>Demo project for Spring Boot<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">spring-cloud.version</span>&gt;</span>2021.0.3<span class="hljs-tag">&lt;/<span class="hljs-name">spring-cloud.version</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.qfedu<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>common<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.2.2<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-server<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.4.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">dependencyManagement</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">dependencyManagement</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span>
+</code></pre></div>
+</li>
+<li><p>application.yaml</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">9001</span>
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">user-check</span>
+
+  <span class="hljs-attr">datasource:</span>
+    <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
+    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://81.68.252.36:3306/fmmall?characterEncoding=utf-8&amp;useSSL=false</span>
+    <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
+    <span class="hljs-attr">password:</span> <span class="hljs-string">root</span>
+
+<span class="hljs-attr">mybatis-plus:</span>
+  <span class="hljs-attr">global-config:</span>
+    <span class="hljs-attr">db-config:</span>
+<span class="hljs-comment">#      table-prefix: tbl_</span>
+      <span class="hljs-attr">id-type:</span> <span class="hljs-string">auto</span>
+  <span class="hljs-attr">configuration:</span> <span class="hljs-comment"># 设置mybatisplus的日志为标准输入格式 可以显示执行的sql语句、携带的参数与查询结果</span>
+    <span class="hljs-attr">log-impl:</span> <span class="hljs-string">org.apache.ibatis.logging.stdout.StdOutImpl</span>
+<span class="hljs-attr">eureka:</span>
+  <span class="hljs-attr">client:</span>
+    <span class="hljs-attr">service-url:</span>
+      <span class="hljs-attr">defaultZone:</span> <span class="hljs-string">http://sunzy:111111@127.0.0.1:8761/eureka</span></code></pre></div>
+</li>
+<li><p>在启动类中添加注释<code>@EnableDiscoveryClient</code></p>
+</li>
+<li><p>service和dao层代码与之前写内容基本一致</p>
+</li>
+<li><p>在api-user-login模块中调用user-check</p>
+<ul>
+<li><p>创建UserCheckClient</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@FeignClient(value = &quot;user-check&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">UserCheckClient</span> </span>&#123;
+
+    <span class="hljs-meta">@GetMapping(&quot;user/check&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Users <span class="hljs-title">userCheck</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(&quot;username&quot;)</span> String username,<span class="hljs-meta">@RequestParam(&quot;password&quot;)</span> String password)</span></span>;
+&#125;</code></pre></div>
+
+<p>其中<code>@FeignClient(value = &quot;user-check&quot;)</code>中的value要与注册到eureka中服务名相同，<code>@GetMapping(&quot;user/check&quot;)</code>要与user-check的controller中的访问路径相同。</p>
+<p>方法名也要与controller中的方法相同。并且在有多个参数的情况下需要在每个参数前加上<code>@RequestParam(&quot;username&quot;)</code>，否则fegin调用时，会将所有的参数当成post方式的请求体，从而报错。</p>
+<div class="hljs"><pre><code class="hljs less"><span class="hljs-selector-tag">public</span> <span class="hljs-selector-tag">Users</span> <span class="hljs-selector-tag">userCheck</span>(<span class="hljs-variable">@RequestParam</span>(<span class="hljs-string">&quot;username&quot;</span>) String username,<span class="hljs-variable">@RequestParam</span>(<span class="hljs-string">&quot;password&quot;</span>) String password);</code></pre></div>
+</li>
+<li><p>api-user-login在service中进行服务调用即可</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.api.service.impl;
+
+<span class="hljs-keyword">import</span> com.qfedu.api.service.UserService;
+<span class="hljs-keyword">import</span> com.qfedu.api.service.fegin.UserCheckClient;
+<span class="hljs-keyword">import</span> com.qfedu.fmmall.beans.Users;
+<span class="hljs-keyword">import</span> com.qfedu.fmmall.vo.ResultVO;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Service;
+
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">UserService</span> </span>&#123;
+
+    <span class="hljs-meta">@Qualifier(&quot;com.qfedu.api.service.fegin.UserCheckClient&quot;)</span>
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> UserCheckClient userCheckClient;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ResultVO <span class="hljs-title">checkLogin</span><span class="hljs-params">(String username, String password)</span> </span>&#123;
+        <span class="hljs-comment">// 调用另外一个服务从数据库中查询到用户信息</span>
+        Users users = userCheckClient.userCheck(username, password);
+        <span class="hljs-keyword">if</span>(users == <span class="hljs-keyword">null</span>) &#123;
+            <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;密码错误！&quot;</span>);
+        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;null&quot;</span>.equals(users.getNickname()))&#123;
+            <span class="hljs-keyword">return</span> ResultVO.failed(<span class="hljs-string">&quot;用户名不存在！&quot;</span>);
+        &#125;<span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">return</span> ResultVO.success(users);
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="搭建gateway"><a href="#搭建gateway" class="headerlink" title="搭建gateway"></a>搭建gateway</h3><ul>
+<li><p>创建gateway服务模块</p>
+</li>
+<li><p>pom文件内容</p>
+<div class="hljs"><pre><code class="hljs java">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;
+&lt;project xmlns=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> xmlns:xsi=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+         xsi:schemaLocation=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.6.2&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;
+    &lt;groupId&gt;com.qfedu&lt;/groupId&gt;
+    &lt;artifactId&gt;gateway&lt;/artifactId&gt;
+    &lt;version&gt;2.1.1&lt;/version&gt;
+    &lt;name&gt;gateway&lt;/name&gt;
+    &lt;description&gt;Demo project for Spring Boot&lt;/description&gt;
+    &lt;properties&gt;
+        &lt;java.version&gt;1.8&lt;/java.version&gt;
+        &lt;spring-cloud.version&gt;2021.0.3&lt;/spring-cloud.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.projectreactor&lt;/groupId&gt;
+            &lt;artifactId&gt;reactor-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;dependencyManagement&gt;
+        &lt;dependencies&gt;
+            &lt;dependency&gt;
+                &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+                &lt;version&gt;$&#123;spring-cloud.version&#125;&lt;/version&gt;
+                &lt;type&gt;pom&lt;/type&gt;
+                &lt;scope&gt;import&lt;/scope&gt;
+            &lt;/dependency&gt;
+        &lt;/dependencies&gt;
+    &lt;/dependencyManagement&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+
+&lt;/project&gt;
+</code></pre></div>
+</li>
+<li><p>在application.yml中配置相关信息</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">8000</span>
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">gateway</span>
+  <span class="hljs-attr">cloud:</span>
+    <span class="hljs-attr">gateway:</span>
+      <span class="hljs-attr">routes:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">api-service</span>
+          <span class="hljs-attr">uri:</span> <span class="hljs-string">http://127.0.0.1:8001</span>
+          <span class="hljs-attr">predicates:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">Path=/user/login</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">api-service</span>
+            <span class="hljs-attr">uri:</span> <span class="hljs-string">http://127.0.0.1:8002</span>
+            <span class="hljs-attr">predicates:</span>
+              <span class="hljs-bullet">-</span> <span class="hljs-string">Path=/user/regist</span>
+</code></pre></div>
+</li>
+<li><p>实现全局过滤器</p>
+<blockquote>
+<p>当用户访问8000端口时，所有的请求都会被该过滤器拦截</p>
+<p>因此全局过滤器可以进行权限验证</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.gateway.filter;
+
+<span class="hljs-keyword">import</span> org.springframework.cloud.gateway.filter.GatewayFilterChain;
+<span class="hljs-keyword">import</span> org.springframework.cloud.gateway.filter.GlobalFilter;
+<span class="hljs-keyword">import</span> org.springframework.core.Ordered;
+<span class="hljs-keyword">import</span> org.springframework.http.HttpStatus;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+<span class="hljs-keyword">import</span> org.springframework.web.server.ServerWebExchange;
+<span class="hljs-keyword">import</span> reactor.core.publisher.Mono;
+
+<span class="hljs-keyword">import</span> java.util.List;
+
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyGlobalFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">GlobalFilter</span>, <span class="hljs-title">Ordered</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Mono&lt;Void&gt; <span class="hljs-title">filter</span><span class="hljs-params">(ServerWebExchange exchange, GatewayFilterChain chain)</span> </span>&#123;
+        System.out.println(<span class="hljs-string">&quot;-------------------&quot;</span>);
+        System.out.println(<span class="hljs-string">&quot;进入全局过滤器&quot;</span>);
+        List&lt;String&gt; token = exchange.getRequest().getHeaders().get(<span class="hljs-string">&quot;token&quot;</span>);
+
+        <span class="hljs-keyword">if</span>(token != <span class="hljs-keyword">null</span> &amp;&amp; token.size() &gt; <span class="hljs-number">0</span>)&#123;
+            <span class="hljs-comment">// 对token进行验证，如果验证通过则放行本次拦截</span>
+            <span class="hljs-keyword">return</span> chain.filter(exchange);
+        &#125;<span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-comment">// 验证不通过，则返回对应的状态码</span>
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            <span class="hljs-comment">// 拦截请求</span>
+            <span class="hljs-keyword">return</span> exchange.getResponse().setComplete();
+        &#125;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getOrder</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    &#125;
+&#125;</code></pre></div>
+</li>
+<li><p>动态路由配置</p>
+<blockquote>
+<p>使用服务注册与发现实现动态路由</p>
+</blockquote>
+<ul>
+<li><p>将gateway服务模块加入到eureka中，即添加依赖添加配置文件</p>
+<div class="hljs"><pre><code class="hljs properties"><span class="hljs-attr">eureka</span>:<span class="hljs-string"></span>
+  <span class="hljs-attr">client</span>:<span class="hljs-string"></span>
+    <span class="hljs-meta">service-url</span>:<span class="hljs-string"></span>
+      <span class="hljs-attr">defaultZone</span>: <span class="hljs-string">http://sunzy:111111@127.0.0.1:8761/eureka</span></code></pre></div>
+</li>
+<li><p>使用注册到eureka中的服务名替换ip地址</p>
+<blockquote>
+<p>lb代表使用负载均衡模式，默认策略时轮询</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">8000</span>
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">gateway</span>
+
+  <span class="hljs-attr">main:</span>
+    <span class="hljs-attr">web-application-type:</span> <span class="hljs-string">reactive</span>
+  <span class="hljs-attr">cloud:</span>
+    <span class="hljs-attr">gateway:</span>
+      <span class="hljs-attr">routes:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">api-login</span>
+          <span class="hljs-attr">uri:</span> <span class="hljs-string">lb://api-user-login</span>
+          <span class="hljs-comment">#uri: http://127.0.0.1:8001</span>
+          <span class="hljs-attr">predicates:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">Path=/user/login</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">api-regist</span>
+          <span class="hljs-attr">uri:</span> <span class="hljs-string">lb://api-user-regist</span>
+          <span class="hljs-attr">predicates:</span>
+             <span class="hljs-bullet">-</span> <span class="hljs-string">Path=/user/regist</span>
+<span class="hljs-attr">eureka:</span>
+  <span class="hljs-attr">client:</span>
+    <span class="hljs-attr">service-url:</span>
+      <span class="hljs-attr">defaultZone:</span> <span class="hljs-string">http://sunzy:111111@127.0.0.1:8761/eureka</span></code></pre></div>
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Gateway限流"><a href="#Gateway限流" class="headerlink" title="Gateway限流"></a>Gateway限流</h3><blockquote>
+<p>基于令牌桶实现的网关限流，使用redis作为桶结合过滤器实现限流</p>
+</blockquote>
+<ul>
+<li><p>添加依赖</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis-reactive<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.commons<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-pool2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+</li>
+<li><p>配置application.yml</p>
+<div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">server:</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">8000</span>
+<span class="hljs-attr">spring:</span>
+  <span class="hljs-attr">application:</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">gateway</span>
+
+  <span class="hljs-attr">main:</span>
+    <span class="hljs-attr">web-application-type:</span> <span class="hljs-string">reactive</span>
+  <span class="hljs-attr">cloud:</span>
+    <span class="hljs-attr">gateway:</span>
+      <span class="hljs-attr">routes:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">api-login</span>
+          <span class="hljs-attr">uri:</span> <span class="hljs-string">http://127.0.0.1:8001</span>
+<span class="hljs-comment">#          uri: lb://api-user-login</span>
+          <span class="hljs-attr">predicates:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-string">Path=/user/login</span>
+           <span class="hljs-comment">#限流策略配置</span>
+          <span class="hljs-attr">filters:</span>
+            <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">RequestRateLimiter</span>
+              <span class="hljs-attr">args:</span>
+                <span class="hljs-attr">redis-rate-limiter.replenishRate:</span> <span class="hljs-number">1</span> <span class="hljs-comment">#令牌桶每s的填充速度</span>
+                <span class="hljs-attr">redis-rate-limiter.burstCapacity:</span> <span class="hljs-number">2</span> <span class="hljs-comment"># 令牌桶容量</span>
+                <span class="hljs-attr">redis-rate-limiter.requestedTokens:</span> <span class="hljs-number">1</span>
+                <span class="hljs-attr">key-resolver:</span> <span class="hljs-string">&quot;#&#123;@keyResolver&#125;&quot;</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">id:</span> <span class="hljs-string">api-regist</span>
+          <span class="hljs-attr">uri:</span> <span class="hljs-string">lb://api-user-regist</span>
+          <span class="hljs-attr">predicates:</span>
+             <span class="hljs-bullet">-</span> <span class="hljs-string">Path=/user/regist</span>
+  <span class="hljs-attr">redis:</span>
+    <span class="hljs-attr">host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>
+    <span class="hljs-attr">port:</span> <span class="hljs-number">6379</span>
+    <span class="hljs-attr">database:</span> <span class="hljs-number">0</span>
+    <span class="hljs-attr">password:</span>
+<span class="hljs-comment">#    lettuce:</span>
+<span class="hljs-comment">#      pool:</span>
+<span class="hljs-comment">#        max-active: 10</span>
+<span class="hljs-comment">#        max-wait: 1000</span>
+<span class="hljs-comment">#        max-idle: 5</span>
+<span class="hljs-comment">#        min-idle: 3</span>
+<span class="hljs-attr">eureka:</span>
+  <span class="hljs-attr">client:</span>
+    <span class="hljs-attr">service-url:</span>
+      <span class="hljs-attr">defaultZone:</span> <span class="hljs-string">http://sunzy:111111@127.0.0.1:8761/eureka</span></code></pre></div>
+</li>
+<li><p>配置keyResolver</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.gateway.config;
+
+<span class="hljs-keyword">import</span> org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="hljs-keyword">import</span> reactor.core.publisher.Mono;
+
+<span class="hljs-meta">@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AppConfig</span> </span>&#123;
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> KeyResolver <span class="hljs-title">keyResolver</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-comment">//http://localhost:9999/order/query?user=1</span>
+        <span class="hljs-comment">//使⽤请求中的user参数的值作为令牌桶的key</span>
+        <span class="hljs-comment">//return exchange -&gt;Mono.just(exchange.getRequest().getQueryParams().getFirst(&quot;user&quot;));</span>
+        <span class="hljs-keyword">return</span> exchange -&gt;
+                Mono.just(exchange.getRequest().getURI().getPath());
+    &#125;
+&#125;</code></pre></div>
+
+</li>
+</ul>
+<p>当用户访问的速度超过了令牌的产生速度时就会无法访问，返回429的状态码</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220731190403002.png" srcset="/img/loading.gif" alt="image-20220731190403002"></p>
 
             </div>
             <hr>
@@ -2761,6 +3427,12 @@ orderInfo.put(<span class="hljs-string">&quot;payUrl&quot;</span>,resp.get(<span
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/07/24/nginx/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nginx</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
