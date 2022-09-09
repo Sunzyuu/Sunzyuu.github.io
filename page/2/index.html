@@ -189,6 +189,129 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/">python安全攻防</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/16/python%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2/">
+          
+          
+            
+          
+          多线程爆破账号密码文件目录
+
+passwords：密码字典 
+username:   账号字典
+result: 保存结果
+WeakPass.py :破解程序
+
+# -*- coding = utf - 8 -*-
+import threading
+import os
+import requests
+import time
+
+# 对字典的分块大小
+BLOCK_SIZE = 1000
+
+class T
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-16 11:24" pubdate>
+              2021-08-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/08/06/maliciousUrls/">商品评价情感分析</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/08/06/maliciousUrls/">
+          
+          
+            
+          
+          项目综述
+对给定的文本进行自动分类，对评价分成好评和差评
+
+支持批量检测，并进行可视化展示
+
+对所有评价进行词云展示
+
+
+数据获取爬虫获取JD的商品评价，这里主要针对智能手机的评价
+
+首先是分析如何获取到商品的评价
+
+对商品评价进行提取
+
+对获取的数据进行分类保存
+
+
+获取评价首先进行搜索，比如关键词 为手机
+self.startUrl = &quot;https://search.jd.com/
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-08-06 15:26" pubdate>
+              2021-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/python/">python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">朴素贝叶斯</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2021/07/28/IDscan/">IDscan</a>
       </h1>
 
@@ -532,121 +655,6 @@ jd也买你获取今日秒杀的商品信息
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/thinkPHP-cms/">thinkPHP,cms</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/03/03/net-a-and-d/">net_a_and_d</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/03/03/net-a-and-d/">
-          
-          
-            
-          
-          [TOC]
-sql注入level1get提交参数id
-首先提交1&#39;，判断是字符型还是数字型注入
-
-这里出现报错，说明是字符类型的，并且是用&#39;将参数id包裹起来的。
-接下来就是判断列数，爆表名，爆列名和数据库内容
-0x1 确定列数并爆出表名
-
-当列数增加到4的时候开始报错，说明是三列
-?id=-1&#x27; union select 1,group_concat(table_nam
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-03-03 15:09" pubdate>
-              2021-03-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/homework/">homework</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/sql/">sql</a>
-            
-              <a href="/tags/xss/">xss</a>
-            
-              <a href="/tags/xxe/">xxe</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/12/23/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/23/%E5%AF%86%E7%A0%81%E5%AD%A6/">
-          
-          
-            
-          
-          密码学实验课程设计
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-23 16:37" pubdate>
-              2020-12-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%8F%A4%E5%85%B8%E5%AF%86%E7%A0%81/">古典密码</a>
-            
-              <a href="/tags/DES/">DES</a>
-            
-              <a href="/tags/RSA/">RSA</a>
-            
-              <a href="/tags/MD5/">MD5</a>
             
           </div>
         

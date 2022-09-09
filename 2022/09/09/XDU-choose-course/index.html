@@ -1,0 +1,789 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>XDU_choose_course - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-09-09 12:59" pubdate>
+        2022年9月9日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">XDU_choose_course</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="XDU-抢课脚本"><a href="#XDU-抢课脚本" class="headerlink" title="XDU 抢课脚本"></a>XDU 抢课脚本</h1><p><a target="_blank" rel="noopener" href="https://github.com/sunzhengyu99/DailyClock_XDU_version">项目地址</a></p>
+<h2 id="1-登录认证"><a href="#1-登录认证" class="headerlink" title="1.登录认证"></a>1.登录认证</h2><h2 id="1-1-密码加密"><a href="#1-1-密码加密" class="headerlink" title="1.1 密码加密"></a>1.1 密码加密</h2><p>首先在浏览器中在同一身份的位置进行手动登录可以发现如下的请求</p>
+<ul>
+<li>输入的密码已经被加密</li>
+<li>表单参数中多了一个execution参数</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220909130442.png" srcset="/img/loading.gif" alt="image-20220909095403214"></p>
+<p>在浏览器拦截的请求中有一个<code>encrypt.js</code>的文件，猜测是用于加密密码的</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909095645965.png" srcset="/img/loading.gif" alt="image-20220909095645965"></p>
+<p>该文件的代码很长，但是核心的加密过程如下</p>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getAesString</span>(<span class="hljs-params">data, key0, iv0</span>) </span>&#123;
+  key0 = key0.replace(<span class="hljs-regexp">/(^\s+)|(\s+$)/g</span>, <span class="hljs-string">&quot;&quot;</span>);
+  <span class="hljs-keyword">var</span> key = CryptoJS.enc.Utf8.parse(key0);
+  <span class="hljs-keyword">var</span> iv = CryptoJS.enc.Utf8.parse(iv0);
+  <span class="hljs-keyword">var</span> encrypted = CryptoJS.AES.encrypt(data, key, &#123;
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  &#125;);
+  <span class="hljs-keyword">return</span> encrypted.toString();
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">encryptAES</span>(<span class="hljs-params">data, aesKey</span>) </span>&#123;
+  <span class="hljs-keyword">if</span> (!aesKey) &#123;
+    <span class="hljs-keyword">return</span> data;
+  &#125;
+  <span class="hljs-keyword">var</span> encrypted = getAesString(
+    randomString(<span class="hljs-number">64</span>) + data,
+    aesKey,
+    randomString(<span class="hljs-number">16</span>)
+  );
+  <span class="hljs-keyword">return</span> encrypted;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">encryptPassword</span>(<span class="hljs-params">pwd0, key</span>) </span>&#123;
+  <span class="hljs-keyword">try</span> &#123;
+    <span class="hljs-keyword">return</span> encryptAES(pwd0, key);
+  &#125; <span class="hljs-keyword">catch</span> (e) &#123;&#125;
+  <span class="hljs-keyword">return</span> pwd0;
+&#125;
+<span class="hljs-keyword">var</span> $aes_chars = <span class="hljs-string">&quot;ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678&quot;</span>;
+<span class="hljs-keyword">var</span> aes_chars_len = $aes_chars.length;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">randomString</span>(<span class="hljs-params">len</span>) </span>&#123;
+  <span class="hljs-keyword">var</span> retStr = <span class="hljs-string">&quot;&quot;</span>;
+  <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; len; i++) &#123;
+    retStr += $aes_chars.charAt(<span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random() * aes_chars_len));
+  &#125;
+  <span class="hljs-keyword">return</span> retStr;
+&#125;</code></pre></div>
+
+<p>可以看出使用的时AES的CBC模式进行加密，而AES在加密时需要一个密钥，这个密钥应该是隐藏在前端页面中，每次刷新都会更新。</p>
+<p>果然在前端页面中可以找到<code>pwdEncryptSalt</code>字段，并把<code>execution</code>字段也找了出来</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909100329173.png" srcset="/img/loading.gif" alt="image-20220909100329173"></p>
+<p>下面就是写出AES加密的脚本(fe1w0写的)</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encryptPassword</span>(<span class="hljs-params">password, key</span>):</span>
+    <span class="hljs-comment"># password 加密, 该段代码参考于 https://github.com/EdenLin-c/CPdaily/blob/master/Jin.py</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">randomString</span>(<span class="hljs-params"><span class="hljs-built_in">len</span></span>):</span>
+        retStr = <span class="hljs-string">&#x27;&#x27;</span>
+        i=<span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>:
+            retStr += aes_chars[(math.floor(random.random() * aes_chars_len))]
+            i=i+<span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> retStr
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getAesString</span>(<span class="hljs-params">data,key,iv</span>):</span>
+        key = re.sub(<span class="hljs-string">&#x27;/(^\s+)|(\s+$)/g&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, key)
+        aes = AES.new(<span class="hljs-built_in">str</span>.encode(key),AES.MODE_CBC,<span class="hljs-built_in">str</span>.encode(iv))
+        pad_pkcs7 = pad(data.encode(<span class="hljs-string">&#x27;utf-8&#x27;</span>), AES.block_size, style=<span class="hljs-string">&#x27;pkcs7&#x27;</span>)
+        encrypted =aes.encrypt(pad_pkcs7)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(base64.b64encode(encrypted),<span class="hljs-string">&#x27;utf-8&#x27;</span>)
+    aes_chars = <span class="hljs-string">&#x27;ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678&#x27;</span>
+    aes_chars_len = <span class="hljs-built_in">len</span>(aes_chars)
+    encrypted = getAesString(randomString(<span class="hljs-number">64</span>) + password, key, randomString(<span class="hljs-number">16</span>))
+    <span class="hljs-keyword">return</span> encrypted
+</code></pre></div>
+
+<h2 id="1-2-获取session"><a href="#1-2-获取session" class="headerlink" title="1.2 获取session"></a>1.2 获取session</h2><p>下面就是使用requese获取登录的session</p>
+<p>设置请求头</p>
+<div class="hljs"><pre><code class="hljs python">headers = &#123;
+    <span class="hljs-string">&#x27;Accept&#x27;</span>: <span class="hljs-string">&#x27;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3&#x27;</span>,
+    <span class="hljs-string">&#x27;Accept-Encoding&#x27;</span>: <span class="hljs-string">&#x27;gzip, deflate&#x27;</span>,
+    <span class="hljs-string">&#x27;Accept-Language&#x27;</span>: <span class="hljs-string">&#x27;zh-CN,zh;q=0.9,en;q=0.8&#x27;</span>,
+    <span class="hljs-string">&#x27;Cache-Control&#x27;</span>: <span class="hljs-string">&#x27;max-age=0&#x27;</span>,
+    <span class="hljs-string">&#x27;Connection&#x27;</span>: <span class="hljs-string">&#x27;keep-alive&#x27;</span>,
+    <span class="hljs-string">&#x27;Content-Length&#x27;</span>: <span class="hljs-string">&#x27;154&#x27;</span>,
+    <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/x-www-form-urlencoded&#x27;</span>,
+    <span class="hljs-string">&#x27;Host&#x27;</span>: <span class="hljs-string">&#x27;ids.xidian.edu.cn&#x27;</span>,
+    <span class="hljs-string">&#x27;Origin&#x27;</span>: <span class="hljs-string">&#x27;http://ids.xidian.edu.cn&#x27;</span>,
+    <span class="hljs-string">&#x27;Referer&#x27;</span>: <span class="hljs-string">&#x27;http://ids.xidian.edu.cn/authserver/login&#x27;</span>,
+    <span class="hljs-string">&#x27;Upgrade-Insecure-Requests&#x27;</span>: <span class="hljs-string">&#x27;1&#x27;</span>,
+    <span class="hljs-string">&#x27;User-Agent&#x27;</span>: <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36&#x27;</span>,
+&#125;</code></pre></div>
+
+<p>获取前端页面的<code>pwdEncryptSalt</code>字段和<code>execution</code>字段，并对密码进行加密</p>
+<div class="hljs"><pre><code class="hljs python">session_client = requests.Session()
+requests.packages.urllib3.disable_warnings()
+response = session_client.get(<span class="hljs-string">&quot;https://ids.xidian.edu.cn/authserver/login&quot;</span>)
+
+parse_html = etree.HTML(response.text)
+pwdEncryptSalt = parse_html.xpath(<span class="hljs-string">&#x27;//div//input[@id=&quot;pwdEncryptSalt&quot;]//@value&#x27;</span>)[<span class="hljs-number">0</span>]
+execution = parse_html.xpath(<span class="hljs-string">&#x27;//div//input[@id=&quot;execution&quot;]//@value&#x27;</span>)[<span class="hljs-number">0</span>]
+encrypt_passwrod = encryptPassword(password, pwdEncryptSalt)</code></pre></div>
+
+<p>设置post请求参数</p>
+<div class="hljs"><pre><code class="hljs python">post_data = &#123;
+<span class="hljs-string">&quot;username&quot;</span>: user_id,
+<span class="hljs-string">&quot;password&quot;</span>: encrypt_passwrod,
+<span class="hljs-string">&quot;captcha&quot;</span>: <span class="hljs-literal">None</span>,
+<span class="hljs-string">&quot;_eventId&quot;</span>: <span class="hljs-string">&quot;submit&quot;</span>,
+<span class="hljs-string">&quot;cllt&quot;</span>: <span class="hljs-string">&quot;userNameLogin&quot;</span>,
+<span class="hljs-string">&quot;dllt&quot;</span>: <span class="hljs-string">&quot;generalLogin&quot;</span>,
+<span class="hljs-string">&quot;lt&quot;</span>: <span class="hljs-literal">None</span>,
+<span class="hljs-string">&quot;execution&quot;</span>: execution
+&#125;
+sso_response = session_client.post(<span class="hljs-string">&quot;https://ids.xidian.edu.cn/authserver/login&quot;</span>, headers=headers, data=post_data,verify=<span class="hljs-literal">False</span>)</code></pre></div>
+
+<h2 id="2-获取课程列表"><a href="#2-获取课程列表" class="headerlink" title="2.获取课程列表"></a>2.获取课程列表</h2><p>进入选课平台后，能够看到<code>https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkCourse/loadJhnCourseInfo.do</code>这样一条请求，查看数可知，是加载计划内选课的api</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909101535786.png" srcset="/img/loading.gif" alt="image-20220909101535786"></p>
+<p>再仔细看拦截的请求，可以看到很多请求参数</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909101655048.png" srcset="/img/loading.gif" alt="image-20220909101655048"></p>
+<p>第一个就是查询关键字参数，即将想抢课的课程代码或课程名放到此处即可获取到相应的课程信息。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">getCourseInfo</span>(<span class="hljs-params">session_client, course_KCDM</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    获取指定课程的详细信息</span>
+<span class="hljs-string">    :param session_client:</span>
+<span class="hljs-string">    :param course_KCDM:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># course_KCDM = &quot;&quot;</span>
+    course_infos = session_client.post(<span class="hljs-string">&quot;https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkCourse/loadJhnCourseInfo.do?query_keyword=&quot;</span> + course_KCDM,  verify = <span class="hljs-literal">False</span>)
+    course_json = json.loads(course_infos.text)[<span class="hljs-string">&quot;datas&quot;</span>]
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(course_json) == <span class="hljs-number">0</span>:
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+    course_info = <span class="hljs-string">&quot;&quot;</span>
+    <span class="hljs-keyword">for</span> course <span class="hljs-keyword">in</span> course_json:
+        <span class="hljs-keyword">if</span> course_KCDM == course[<span class="hljs-string">&quot;KCDM&quot;</span>]:
+            course_info = course
+            <span class="hljs-keyword">break</span>
+    <span class="hljs-keyword">return</span> course_info</code></pre></div>
+
+<h2 id="3-监控容量并抢课"><a href="#3-监控容量并抢课" class="headerlink" title="3.监控容量并抢课"></a>3.监控容量并抢课</h2><h2 id="3-1-选课函数"><a href="#3-1-选课函数" class="headerlink" title="3.1 选课函数"></a>3.1 选课函数</h2><p>获取课程信息后，只要判断课程的容量与当前的选课人数的关系即可进行选课。点击选课按钮，发送的请求如下，可以看到加入<strong>csrfToken</strong>，那么就想办法找到它就能进行选课了。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909102145303.png" srcset="/img/loading.gif" alt="image-20220909102145303"></p>
+<p>在刷新选课页面时，会出现<code>https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkHome/loadPublicInfo_course.do</code>，其返回的数据中就包含了csrfToken</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220909102441128.png" srcset="/img/loading.gif" alt="image-20220909102441128"></p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">chooseCourse</span>(<span class="hljs-params">course_BJDM</span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    选课函数，根据course_BJDM进行选课</span>
+<span class="hljs-string">    :param course_BJDM:</span>
+<span class="hljs-string">    :return:</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    csrf_token_url = <span class="hljs-string">&quot;https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkHome/loadPublicInfo_course.do&quot;</span>
+    csrf_response = session_client.get(csrf_token_url).text
+    json_csrf_res = json.loads(csrf_response)
+    csrf_token = json_csrf_res.get(<span class="hljs-string">&quot;csrfToken&quot;</span>)
+    choose_course_url = <span class="hljs-string">&quot;https://yjspt.xidian.edu.cn/yjsxkapp/sys/xsxkapp/xsxkCourse/choiceCourse.do?bjdm=&#123;0&#125;&amp;csrfToken=&#123;1&#125;&amp;lx=0&quot;</span>.<span class="hljs-built_in">format</span>(course_BJDM, csrf_token)
+    choose_response = session_client.get(choose_course_url, verify = <span class="hljs-literal">False</span>).text
+    <span class="hljs-comment"># print(choose_response)</span>
+    <span class="hljs-keyword">return</span> json.loads(choose_response)[<span class="hljs-string">&quot;code&quot;</span>]</code></pre></div>
+
+<h2 id="3-2-监控容量并抢课"><a href="#3-2-监控容量并抢课" class="headerlink" title="3.2 监控容量并抢课"></a>3.2 监控容量并抢课</h2><p>为了防止登录的session过期可以设置一个定时任务，每个十二小时启动一次该脚本。</p>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
+    KCDM = course_KCDM
+    session_client = getSession()
+    course_info = getCourseInfo(session_client = session_client, course_KCDM = KCDM)
+    <span class="hljs-keyword">if</span> course_info == <span class="hljs-literal">None</span>:
+        print(<span class="hljs-string">&quot;[+] 未查询到课程信息，请检查课程代码！&quot;</span>)
+        quit()
+    course_KXRS = course_info[<span class="hljs-string">&quot;KXRS&quot;</span>]  <span class="hljs-comment"># 课程总容量</span>
+    course_DQRS = course_info[<span class="hljs-string">&quot;DQRS&quot;</span>]  <span class="hljs-comment"># 当前选课人数</span>
+
+    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
+        <span class="hljs-keyword">if</span> course_DQRS &lt; course_KXRS:
+            course_BJDM = course_info[<span class="hljs-string">&quot;BJDM&quot;</span>]
+            code = chooseCourse(course_BJDM)
+            <span class="hljs-keyword">if</span> code == <span class="hljs-number">1</span>:
+                print(<span class="hljs-string">&quot;[+] 选课成功!&quot;</span>)
+                print(<span class="hljs-string">&quot;[+] 课程信息如下:&quot;</span>)
+                printCourseInfo(course_info)
+                quit()
+            <span class="hljs-keyword">else</span>:
+                print(<span class="hljs-string">&quot;[+] 选课失败!&quot;</span>)
+        <span class="hljs-keyword">else</span>:
+            print(<span class="hljs-string">&quot;[+] 当前课程容量已满!&quot;</span>)
+            time.sleep(sleep_time)    <span class="hljs-comment"># 每60s查询一次</span>
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-comment"># 监控选课人数的变化</span>
+        course_info = getCourseInfo(session_client=session_client, course_KCDM = KCDM)
+        course_KXRS = course_info[<span class="hljs-string">&quot;KXRS&quot;</span>]  <span class="hljs-comment"># 课程总容量</span>
+        course_DQRS = course_info[<span class="hljs-string">&quot;DQRS&quot;</span>]  <span class="hljs-comment"># 当前选课人数</span>
+    print(<span class="hljs-string">&quot;[+] Finish&quot;</span>)</code></pre></div>
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/29/Daily-Algorithm/">
+                        <span class="hidden-mobile">Daily_Algorithm</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "XDU_choose_course&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
