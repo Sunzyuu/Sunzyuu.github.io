@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="sunzy">
   <meta name="keywords" content="">
-  <title>chatroom - 一路走到黑</title>
+  <title>半年杭州体验卡即将到期 - 一路走到黑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -177,7 +177,7 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-12-07 09:43" pubdate>
+      <time datetime="2022-12-07 10:38" pubdate>
         2022年12月7日 上午
       </time>
     </span>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      70 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      1
        分钟
     </span>
   
@@ -237,199 +237,122 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">chatroom</h1>
+            <h1 style="display: none">半年杭州体验卡即将到期</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 小时前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="GO语言实现的聊天室"><a href="#GO语言实现的聊天室" class="headerlink" title="GO语言实现的聊天室"></a>GO语言实现的聊天室</h1><p>实现很简单，基于tcp socket,做这个小项目的目的是检测对channel的理解，channel在并发场景中真的好用，但是有时候也是真挺难理解的</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="User"><a href="#User" class="headerlink" title="User"></a>User</h3><p>每个连接的用户需要对应一个账号，因此需要创建一个全局的struct，用户有名字，id，以及接受消息的管道</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
-	<span class="hljs-comment">// 名字</span>
-	name <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// id</span>
-	id <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// msg管道</span>
-	msg <span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>
-&#125;</code></pre></div>
-
-<h3 id="map-amp-message"><a href="#map-amp-message" class="headerlink" title="map&amp;message"></a>map&amp;message</h3><p>还需要一个全局的map保存所有的用户信息，以便服务器端向所有的用户转发消息</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-comment">// 需要一个全局的map存储所有user信息</span>
-<span class="hljs-keyword">var</span> allUsers = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>] User)</code></pre></div>
-
-<p>转发消息时又需要一个管道接收用户发送的消息后转发给所有用户</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-comment">// 需要一个全局的管道message 向所有用户发送消息</span>
-<span class="hljs-keyword">var</span> message = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">10</span>)</code></pre></div>
-
-
-
-<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><p>需要一个广播函数，开启该goroutine后可以一直监听message管道中的消息，然后向用户转发消息</p>
-<p>需要一个业务处理函数，当用户发送消息后，通过该函数处理</p>
-<p>需要一个消息反馈函数，将User.msg中的消息返回到客户端</p>
-<h3 id="broadcast"><a href="#broadcast" class="headerlink" title="broadcast"></a>broadcast</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">broadcast</span><span class="hljs-params">()</span></span>&#123;
-	fmt.Println(<span class="hljs-string">&quot;[+]:广播go协程启动成功...&quot;</span>)
-	<span class="hljs-keyword">for</span>&#123;
-		<span class="hljs-comment">// 从message中读取数据</span>
-		info := &lt;- message
-		<span class="hljs-comment">// 将消息发送给所有用户</span>
-		<span class="hljs-keyword">if</span> info != <span class="hljs-string">&quot;&quot;</span>&#123;
-			<span class="hljs-keyword">for</span> _, user := <span class="hljs-keyword">range</span> allUsers&#123;
-				user.msg &lt;- info
-			&#125;
-		&#125;
-	&#125;
-&#125;</code></pre></div>
-
-<h3 id="handler"><a href="#handler" class="headerlink" title="handler"></a>handler</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(conn net.Conn)</span></span> &#123;
-	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;
-		fmt.Println(<span class="hljs-string">&quot;[+]:启动业务...&quot;</span>)
-		<span class="hljs-comment">// 每次建立新连接需要创建一个user</span>
-		clientAddr := conn.RemoteAddr().String()
-		newUser := User&#123;
-			name : clientAddr,
-			id : clientAddr,
-			msg: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>),  <span class="hljs-comment">// 一定要使用make，否则没有空间写人</span>
-		&#125;
-		fmt.Println(clientAddr)
-
-		_, ok := allUsers[clientAddr]
-		<span class="hljs-keyword">if</span> !ok&#123;
-			<span class="hljs-comment">//将新创建的用户添加到map中</span>
-			allUsers[newUser.id] = newUser
-			<span class="hljs-comment">// 向广播中写入消息 通知其他人你已经上线</span>
-			loginInfo := fmt.Sprintf(<span class="hljs-string">&quot;[%s]:[%s] ====&gt; online now!&quot;</span>, newUser.name, newUser.id)
-			message &lt;- loginInfo
-			time.Sleep(time.Second)
-			<span class="hljs-keyword">go</span> writeToClient(newUser, conn)
-		&#125;
-		buf:= <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">1024</span>)
-		cnt, err := conn.Read(buf)
-		<span class="hljs-keyword">if</span> err!=<span class="hljs-literal">nil</span>&#123;
-			fmt.Println(<span class="hljs-string">&quot;conn.Read error: &quot;</span> , err)
-		&#125;
-		<span class="hljs-comment">//fmt.Println(&quot;服务器端接受的数据为：&quot;,  string(buf[:cnt]), &quot;, cnt:&quot;, cnt)</span>
-		userInfo:= fmt.Sprintf(<span class="hljs-string">&quot;[%s] say:&quot;</span>, clientAddr)
-		message &lt;- userInfo + <span class="hljs-keyword">string</span>(buf[:cnt])
-	&#125;
-&#125;</code></pre></div>
-
-<h3 id="writeToClient"><a href="#writeToClient" class="headerlink" title="writeToClient"></a>writeToClient</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">writeToClient</span><span class="hljs-params">(user User, conn net.Conn)</span></span>&#123;
-	<span class="hljs-keyword">for</span> msg := <span class="hljs-keyword">range</span> user.msg&#123;
-		conn.Write([]<span class="hljs-keyword">byte</span>(msg + <span class="hljs-string">&quot;\n&quot;</span>))
-	&#125;
-&#125;</code></pre></div>
-
-
-
-<p>完整程序</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
-
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;fmt&quot;</span>
-	<span class="hljs-string">&quot;net&quot;</span>
-	<span class="hljs-string">&quot;time&quot;</span>
-)
-
-<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
-	<span class="hljs-comment">// 名字</span>
-	name <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// id</span>
-	id <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// msg管道</span>
-	msg <span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>
-&#125;
-<span class="hljs-comment">// 需要一个全局的map存储所有user信息</span>
-<span class="hljs-keyword">var</span> allUsers = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>] User)
-<span class="hljs-comment">// 需要一个全局的管道message 向所有用户发送消息</span>
-<span class="hljs-keyword">var</span> message = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">10</span>)
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	listen, err := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8080&quot;</span>)
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		fmt.Println(<span class="hljs-string">&quot;net.listen err: &quot;</span>, err)
-	&#125;
-	fmt.Println(<span class="hljs-string">&quot;[+]:服务器监听成功&quot;</span>)
-	<span class="hljs-comment">// 启动全局唯一的 广播协程</span>
-	<span class="hljs-keyword">go</span> broadcast()
-	<span class="hljs-keyword">for</span>&#123;
-		accept, err := listen.Accept()
-		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-			fmt.Println(<span class="hljs-string">&quot;[+]:listen.accept err: &quot;</span>, err)
-		&#125;
-		fmt.Println(<span class="hljs-string">&quot;[+]:建立连接成功...&quot;</span>)
-		<span class="hljs-keyword">go</span> handler(accept)
-
-	&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(conn net.Conn)</span></span> &#123;
-	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;
-		fmt.Println(<span class="hljs-string">&quot;[+]:启动业务...&quot;</span>)
-		<span class="hljs-comment">// 每次建立新连接需要创建一个user</span>
-		clientAddr := conn.RemoteAddr().String()
-		newUser := User&#123;
-			name : clientAddr,
-			id : clientAddr,
-			msg: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>),  <span class="hljs-comment">// 一定要使用make，否则没有空间写人</span>
-		&#125;
-		fmt.Println(clientAddr)
-
-		_, ok := allUsers[clientAddr]
-		<span class="hljs-keyword">if</span> !ok&#123;
-			<span class="hljs-comment">//将新创建的用户添加到map中</span>
-			allUsers[newUser.id] = newUser
-			<span class="hljs-comment">// 向广播中写入消息 通知其他人你已经上线</span>
-			loginInfo := fmt.Sprintf(<span class="hljs-string">&quot;[%s]:[%s] ====&gt; online now!&quot;</span>, newUser.name, newUser.id)
-			message &lt;- loginInfo
-			time.Sleep(time.Second)
-			<span class="hljs-keyword">go</span> writeToClient(newUser, conn)
-		&#125;
-		buf:= <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">1024</span>)
-		cnt, err := conn.Read(buf)
-		<span class="hljs-keyword">if</span> err!=<span class="hljs-literal">nil</span>&#123;
-			fmt.Println(<span class="hljs-string">&quot;conn.Read error: &quot;</span> , err)
-		&#125;
-		<span class="hljs-comment">//fmt.Println(&quot;服务器端接受的数据为：&quot;,  string(buf[:cnt]), &quot;, cnt:&quot;, cnt)</span>
-		userInfo:= fmt.Sprintf(<span class="hljs-string">&quot;[%s] say:&quot;</span>, clientAddr)
-		message &lt;- userInfo + <span class="hljs-keyword">string</span>(buf[:cnt])
-	&#125;
-&#125;
-
-<span class="hljs-comment">// 向所有用户广播消息， 全局唯一</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">broadcast</span><span class="hljs-params">()</span></span>&#123;
-	fmt.Println(<span class="hljs-string">&quot;[+]:广播go协程启动成功...&quot;</span>)
-	<span class="hljs-keyword">for</span>&#123;
-		<span class="hljs-comment">// 从message中读取数据</span>
-		info := &lt;- message
-		<span class="hljs-comment">// 将消息发送给所有用户</span>
-		<span class="hljs-keyword">if</span> info != <span class="hljs-string">&quot;&quot;</span>&#123;
-			<span class="hljs-keyword">for</span> _, user := <span class="hljs-keyword">range</span> allUsers&#123;
-				user.msg &lt;- info
-			&#125;
-		&#125;
-	&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">writeToClient</span><span class="hljs-params">(user User, conn net.Conn)</span></span>&#123;
-	<span class="hljs-keyword">for</span> msg := <span class="hljs-keyword">range</span> user.msg&#123;
-		conn.Write([]<span class="hljs-keyword">byte</span>(msg + <span class="hljs-string">&quot;\n&quot;</span>))
-	&#125;
-&#125;
-
-</code></pre></div>
-
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>用户一</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103317397.png" srcset="/img/loading.gif" alt="image-20221207103317397"></p>
-<p>用户二</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103251004.png" srcset="/img/loading.gif" alt="image-20221207103251004"></p>
-<p>用户三</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103427557.png" srcset="/img/loading.gif" alt="image-20221207103427557"></p>
-<p>控制台消息</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103500122.png" srcset="/img/loading.gif" alt></p>
-<p>后续再对聊天室进一步优化</p>
+              <h1 id="杭州半年体验卡"><a href="#杭州半年体验卡" class="headerlink" title="杭州半年体验卡"></a>杭州半年体验卡</h1><p>本来以为一个学期会很慢，但是现在发现时间过得好快。</p>
+<p>四个月来拍了很多照片，但是都没发朋友圈。</p>
+<h2 id="关于杭研"><a href="#关于杭研" class="headerlink" title="关于杭研"></a>关于杭研</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220909_125413767_iOS.jpg" srcset="/img/loading.gif" alt="20220909_125413767_iOS"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_142137039_iOS.jpg" srcset="/img/loading.gif" alt="20220910_142137039_iOS"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111228259.png" srcset="/img/loading.gif" alt="image-20221207111228259"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111355531.png" srcset="/img/loading.gif" alt="image-20221207111355531"></td>
+</tr>
+<tr>
+<td><img src="/2022/12/07/vblog1/OneDrive%20-%20cumt.edu.cn/%E5%9B%BE%E7%89%87/%E6%9C%AC%E6%9C%BA%E7%85%A7%E7%89%87/2022/11/20221130_094731139_iOS.jpg" srcset="/img/loading.gif" alt="20221130_094731139_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221112_092918159_iOS.jpg" srcset="/img/loading.gif" alt="20221112_092918159_iOS"></td>
+</tr>
+</tbody></table>
+<h2 id="关于西湖"><a href="#关于西湖" class="headerlink" title="关于西湖"></a>关于西湖</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_090838376_iOS.jpg" srcset="/img/loading.gif" alt="20220910_090838376_iOS"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_091601507_iOS.jpg" srcset="/img/loading.gif" alt="20220910_091601507_iOS"></th>
+<th><img src="/2022/12/07/vblog1/OneDrive%20-%20cumt.edu.cn/%E5%9B%BE%E7%89%87/%E6%9C%AC%E6%9C%BA%E7%85%A7%E7%89%87/2022/09/20220910_092605365_iOS.jpg" srcset="/img/loading.gif" alt="20220910_092605365_iOS"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_093711007_iOS.jpg" srcset="/img/loading.gif" alt="20220910_093711007_iOS"></td>
+<td><img src="/2022/12/07/vblog1/OneDrive%20-%20cumt.edu.cn/%E5%9B%BE%E7%89%87/%E6%9C%AC%E6%9C%BA%E7%85%A7%E7%89%87/2022/09/20220910_095123680_iOS.jpg" srcset="/img/loading.gif" alt="20220910_095123680_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095545635_iOS.jpg" srcset="/img/loading.gif" alt="20220910_095545635_iOS"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_091850580_iOS.jpg" srcset="/img/loading.gif" alt="20220910_091850580_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095521961_iOS.jpg" srcset="/img/loading.gif" alt="20220910_095521961_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_101905976_iOS.jpg" srcset="/img/loading.gif" alt="20220910_101905976_iOS"></td>
+</tr>
+<tr>
+<td><img src="/2022/12/07/vblog1/OneDrive%20-%20cumt.edu.cn/%E5%9B%BE%E7%89%87/%E6%9C%AC%E6%9C%BA%E7%85%A7%E7%89%87/2022/11/20221127_092047692_iOS.jpg" srcset="/img/loading.gif" alt="20221127_092047692_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092218929_iOS.jpg" srcset="/img/loading.gif" alt="20221127_092218929_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092607734_iOS.jpg" srcset="/img/loading.gif" alt="20221127_092607734_iOS"></td>
+</tr>
+</tbody></table>
+<h2 id="关于绍兴"><a href="#关于绍兴" class="headerlink" title="关于绍兴"></a>关于绍兴</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111836034.png" srcset="/img/loading.gif" alt="image-20221207111836034"></th>
+<th><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20221207111857720.png" srcset="/img/loading.gif" alt="image-20221207111857720"></th>
+<th align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111920504.png" srcset="/img/loading.gif" alt></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111905422.png" srcset="/img/loading.gif" alt="image-20221207111905422"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112733073.png" srcset="/img/loading.gif" alt="image-20221207112733073"></td>
+<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112652542.png" srcset="/img/loading.gif" alt="image-20221207112652542"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112051468.png" srcset="/img/loading.gif" alt="image-20221207112051468"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221004_033920832_iOS.jpg" srcset="/img/loading.gif" alt></td>
+<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111929931.png" srcset="/img/loading.gif" alt></td>
+</tr>
+</tbody></table>
+<h2 id="关于杭州"><a href="#关于杭州" class="headerlink" title="关于杭州"></a>关于杭州</h2><p>….</p>
+<table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114150650.png" srcset="/img/loading.gif" alt="image-20221207114150650"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113619574.png" srcset="/img/loading.gif" alt="image-20221207113619574"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221003_042522512_iOS.jpg" srcset="/img/loading.gif" alt></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113814788.png" srcset="/img/loading.gif" alt="image-20221207113814788"></td>
+<td><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20221207113919110.png" srcset="/img/loading.gif" alt="image-20221207113919110"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114011453.png" srcset="/img/loading.gif" alt="image-20221207114011453"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114342399.png" srcset="/img/loading.gif" alt="image-20221207114304031"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114240111.png" srcset="/img/loading.gif" alt="image-20221207114240111"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114408016.png" srcset="/img/loading.gif" alt="image-20221207114408016"></td>
+</tr>
+</tbody></table>
+<p>关于🌇</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>未完待续。。。</p>
 
             </div>
             <hr>
@@ -439,7 +362,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/go/">go</a>
+                      <a class="hover-with-bg" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
                     
                   </div>
                 
@@ -447,11 +370,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/go/">go</a>
-                    
-                      <a class="hover-with-bg" href="/tags/tcp/">tcp</a>
-                    
-                      <a class="hover-with-bg" href="/tags/socket/">socket</a>
+                      <a class="hover-with-bg" href="/tags/%E7%85%A7%E7%89%87/">照片</a>
                     
                   </div>
                 
@@ -464,18 +383,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/07/vblog1/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">半年杭州体验卡即将到期</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/30/vulnhub/">
-                        <span class="hidden-mobile">vulnhub</span>
+                      <a href="/2022/12/07/chatroom/">
+                        <span class="hidden-mobile">chatroom</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -678,7 +591,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "chatroom&nbsp;",
+        "半年杭州体验卡即将到期&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
