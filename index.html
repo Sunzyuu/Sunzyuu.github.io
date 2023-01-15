@@ -189,6 +189,63 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/01/06/redis-application/">redis_application</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/01/06/redis-application/">
+          
+          
+            
+          
+          优惠券秒杀实现
+redis实现分布式锁
+指定时间范围内
+一人一单
+
+创建购买优惠券订单的代码如下
+@Transactional
+public  Result createVoucherOrder(Long voucherId) &#123;
+	Long userId = UserHolder.getUser().getId();
+	synchronized(userId.toString().in
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-06 11:39" pubdate>
+              2023-01-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/java/">java</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/redis/">redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/12/08/gin/">gin</a>
       </h1>
 
@@ -738,57 +795,11 @@ import
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/05/26/vue-component/">vue_component</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/05/26/vue-component/">
-          
-          
-            
-          
-          Vue组件做项目中使用到的vue组件，记录一下，以后使用到时直接复制即可
-Element UI进入项目目录，安装依赖npm install element-ui -S
-
-安装成功后，查看配置文件package.json，是否有element-ui组件的版本号 如下图：
-
-在main.js文件中 引入 element 组件import ElementUI from &#x27;element-ui&
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-26 15:03" pubdate>
-              2022-05-26
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/vue/">vue</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
