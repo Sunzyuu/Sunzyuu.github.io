@@ -1446,6 +1446,8 @@ apt install <span class="hljs-keyword">vim</span></code></pre>
 <span class="hljs-keyword">import</span> (
 	<span class="hljs-string">&quot;fmt&quot;</span>
 	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+	<span class="hljs-string">&quot;gorm.io/gorm&quot;</span>
+	<span class="hljs-string">&quot;gotoken/db&quot;</span>
 	<span class="hljs-string">&quot;gotoken/jwt&quot;</span>
 	<span class="hljs-string">&quot;net/http&quot;</span>
 )
@@ -1454,7 +1456,18 @@ apt install <span class="hljs-keyword">vim</span></code></pre>
 	Name <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;name&quot;`</span>
 &#125;
 
+<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span>&#123;
+	gorm.Model
+	Username <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span>
+	Password <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;password&quot;`</span>
+&#125;
+
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+	db := db.GetDatabase()
+	user := User&#123;&#125;
+
+	<span class="hljs-comment">//fmt.Println(user)</span>
 	jwt.Secret = <span class="hljs-string">&quot;123456&quot;</span>
 
 	r := gin.Default()
@@ -1478,13 +1491,29 @@ apt install <span class="hljs-keyword">vim</span></code></pre>
 
 	<span class="hljs-comment">// 第一次访问该路由获取token</span>
 	r.POST(<span class="hljs-string">&quot;/login&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
-		accountToken := AccountToken&#123;Name: <span class="hljs-string">&quot;sunzy&quot;</span>&#125;
-		sign, _ := jwt.Sign(accountToken)
+		userNew := User&#123;&#125;
+		c.ShouldBind(&amp;userNew)
+		<span class="hljs-keyword">if</span> userNew.Username == <span class="hljs-string">&quot;&quot;</span> || userNew.Password == <span class="hljs-string">&quot;&quot;</span> &#123;
+			c.JSON(http.StatusForbidden, gin.H&#123;
+				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;username or password is empty&quot;</span>,
+			&#125;)
+			<span class="hljs-keyword">return</span>
+		&#125;
+		db.First(&amp;user, <span class="hljs-string">&quot;username = ?&quot;</span>, userNew.Username)
+		<span class="hljs-keyword">if</span> user.Username == userNew.Username &amp;&amp; user.Password == userNew.Password &#123;
+			sign, _ := jwt.Sign(user)
 
-		c.JSON(http.StatusOK, <span class="hljs-keyword">struct</span> &#123;
-			Code    <span class="hljs-keyword">int</span>    <span class="hljs-string">`json:&quot;code&quot;`</span>
-			Message <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;message&quot;`</span>
-		&#125;&#123;Code: http.StatusOK, Message: sign&#125;)
+			c.JSON(http.StatusOK, gin.H&#123;
+				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;login successfully!&quot;</span>,
+				<span class="hljs-string">&quot;data&quot;</span>: sign,
+			&#125;)
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			c.JSON(http.StatusForbidden, gin.H&#123;
+				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;username or password is invalid&quot;</span>,
+			&#125;)
+			<span class="hljs-keyword">return</span>
+		&#125;
+
 	&#125;)
 	<span class="hljs-comment">// 访问此路由不需要token</span>
 	r.GET(<span class="hljs-string">&quot;/index&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
@@ -1492,6 +1521,32 @@ apt install <span class="hljs-keyword">vim</span></code></pre>
 	&#125;)
 
 	r.Run(<span class="hljs-string">&quot;:8081&quot;</span>)
+&#125;
+</code></pre>
+
+<p>数据库初始化文件</p>
+<pre><code class="hljs go"><span class="hljs-keyword">package</span> db
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;gorm.io/driver/mysql&quot;</span>
+	<span class="hljs-string">&quot;gorm.io/gorm&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> Db  *gorm.DB
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">// 初始化数据库</span>
+	dsn := <span class="hljs-string">&quot;root:root@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&amp;parseTime=True&amp;loc=Local&quot;</span>
+	db, err := gorm.Open(mysql.Open(dsn), &amp;gorm.Config&#123;&#125;)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(err)
+	&#125;
+	Db = db
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetDatabase</span><span class="hljs-params">()</span> *<span class="hljs-title">gorm</span>.<span class="hljs-title">DB</span></span>&#123;
+	<span class="hljs-keyword">return</span> Db
 &#125;
 </code></pre>
 
@@ -2109,6 +2164,103 @@ ITEM_PIPELINES = &#123;
 ]]></content>
   </entry>
   <entry>
+    <title>upload-11-21</title>
+    <url>/2020/09/18/upload2/</url>
+    <content><![CDATA[<h1 id="upload-labs-11-21"><a href="#upload-labs-11-21" class="headerlink" title="upload-labs 11-21"></a>upload-labs 11-21</h1><span id="more"></span>
+
+<h2 id="pass11"><a href="#pass11" class="headerlink" title="pass11"></a>pass11</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>,<span class="hljs-string">&quot;php5&quot;</span>,<span class="hljs-string">&quot;php4&quot;</span>,<span class="hljs-string">&quot;php3&quot;</span>,<span class="hljs-string">&quot;php2&quot;</span>,<span class="hljs-string">&quot;html&quot;</span>,<span class="hljs-string">&quot;htm&quot;</span>,<span class="hljs-string">&quot;phtml&quot;</span>,<span class="hljs-string">&quot;pht&quot;</span>,<span class="hljs-string">&quot;jsp&quot;</span>,<span class="hljs-string">&quot;jspa&quot;</span>,<span class="hljs-string">&quot;jspx&quot;</span>,<span class="hljs-string">&quot;jsw&quot;</span>,<span class="hljs-string">&quot;jsv&quot;</span>,<span class="hljs-string">&quot;jspf&quot;</span>,<span class="hljs-string">&quot;jtml&quot;</span>,<span class="hljs-string">&quot;asp&quot;</span>,<span class="hljs-string">&quot;aspx&quot;</span>,<span class="hljs-string">&quot;asa&quot;</span>,<span class="hljs-string">&quot;asax&quot;</span>,<span class="hljs-string">&quot;ascx&quot;</span>,<span class="hljs-string">&quot;ashx&quot;</span>,<span class="hljs-string">&quot;asmx&quot;</span>,<span class="hljs-string">&quot;cer&quot;</span>,<span class="hljs-string">&quot;swf&quot;</span>,<span class="hljs-string">&quot;htaccess&quot;</span>,<span class="hljs-string">&quot;ini&quot;</span>);
+
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_name</span> = str_ireplace(<span class="hljs-variable">$deny_ext</span>,<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$file_name</span>);
+        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+        <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;        
+        <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+
+<p> <code>$file_name = str_ireplace($deny_ext,&quot;&quot;, $file_name);</code></p>
+<p>这段代码是将文件名中出现  <code>deny_ext</code>的后缀名替换为空</p>
+<p>可以双写绕过，即<code>1.pphphp</code></p>
+<h2 id="pass12"><a href="#pass12" class="headerlink" title="pass12"></a>pass12</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
+    <span class="hljs-variable">$ext_arr</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;jpg&#x27;</span>,<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;gif&#x27;</span>);
+    <span class="hljs-variable">$file_ext</span> = substr(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],strrpos(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],<span class="hljs-string">&quot;.&quot;</span>)+<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$file_ext</span>,<span class="hljs-variable">$ext_arr</span>))&#123;
+        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+        <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;save_path&#x27;</span>].<span class="hljs-string">&quot;/&quot;</span>.rand(<span class="hljs-number">10</span>, <span class="hljs-number">99</span>).date(<span class="hljs-string">&quot;YmdHis&quot;</span>).<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$file_ext</span>;
+
+        <span class="hljs-keyword">if</span>(move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>))&#123;
+            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span>&#123;
+        <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;只允许上传.jpg|.png|.gif类型文件！&quot;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>本题与之前的题目有所不同，这题的文件的保存路径是可以控制的</p>
+<p>这里用的<code>%00截断</code>，原理如下</p>
+<p><code>www.xxx.com/qq.jpg</code></p>
+<p><code>www.xxx.com/qq.php%00.jpg =&gt; www.xxx.com/qq.php</code>其后缀名为.jpg可以绕过检测，但是windows系统处理时不会处理%00之后的内容故保存的文件就是qq.php</p>
+<p><img src="https://i.loli.net/2020/11/30/TwSKHkqZFC78uRd.png" alt></p>
+<h2 id="pass13"><a href="#pass13" class="headerlink" title="pass13"></a>pass13</h2><p>这题与上题利用的原理相同</p>
+<p>但是这里要使用 00的二进制形式</p>
+<p><img src="/2020/09/18/upload2/13.png" alt></p>
+<p><img src="/2020/09/18/upload2/13-1.png" alt></p>
+<h2 id="pass14"><a href="#pass14" class="headerlink" title="pass14"></a>pass14</h2><p>明确说了上传图片木马</p>
+<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getReailFileType</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>)</span>&#123;
+    <span class="hljs-variable">$file</span> = fopen(<span class="hljs-variable">$filename</span>, <span class="hljs-string">&quot;rb&quot;</span>);
+    <span class="hljs-variable">$bin</span> = fread(<span class="hljs-variable">$file</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//只读2字节</span>
+    fclose(<span class="hljs-variable">$file</span>);
+    <span class="hljs-variable">$strInfo</span> = @unpack(<span class="hljs-string">&quot;C2chars&quot;</span>, <span class="hljs-variable">$bin</span>);    
+    <span class="hljs-variable">$typeCode</span> = intval(<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars1&#x27;</span>].<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars2&#x27;</span>]);    
+    <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;&#x27;</span>;    
+    <span class="hljs-keyword">switch</span>(<span class="hljs-variable">$typeCode</span>)&#123;      
+        <span class="hljs-keyword">case</span> <span class="hljs-number">255216</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;jpg&#x27;</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">case</span> <span class="hljs-number">13780</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;png&#x27;</span>;
+            <span class="hljs-keyword">break</span>;        
+        <span class="hljs-keyword">case</span> <span class="hljs-number">7173</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;gif&#x27;</span>;
+            <span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">default</span>:            
+            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;unknown&#x27;</span>;
+        &#125;    
+        <span class="hljs-keyword">return</span> <span class="hljs-variable">$fileType</span>;
+&#125;</code></pre>
+
+<p><strong>GIF89a</strong> 是GIF图片的文件头 ，是为了绕过gif文件的检查</p>
+<p><strong>图片木马的制作</strong></p>
+<p>桌面建立一个文本文件将其改为2.jpg，再建立一个改为1.php,其内容为你想添加的一句话木马</p>
+<p><img src="https://i.loli.net/2020/11/30/vXmVIJ3OEzcnrsL.png" alt></p>
+<p><code>copy 2.jpg /b + 1.php /a webshell.jpg</code></p>
+<p><img src="https://i.loli.net/2020/11/30/KWgpdyf8xoFqcMn.png" alt></p>
+<p><strong>未完待续。。。</strong></p>
+]]></content>
+      <categories>
+        <category>文件上传</category>
+      </categories>
+      <tags>
+        <tag>双写绕过</tag>
+        <tag>00截断</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>juc</title>
     <url>/2023/01/24/thread-pool/</url>
     <content><![CDATA[<h1 id="线程池demo"><a href="#线程池demo" class="headerlink" title="线程池demo"></a>线程池demo</h1><p>简化版java线程池</p>
@@ -2677,103 +2829,6 @@ video/mp4
         <tag>大小写绕过</tag>
         <tag>.htaccess</tag>
         <tag>windows文件特性</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>upload-11-21</title>
-    <url>/2020/09/18/upload2/</url>
-    <content><![CDATA[<h1 id="upload-labs-11-21"><a href="#upload-labs-11-21" class="headerlink" title="upload-labs 11-21"></a>upload-labs 11-21</h1><span id="more"></span>
-
-<h2 id="pass11"><a href="#pass11" class="headerlink" title="pass11"></a>pass11</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;php&quot;</span>,<span class="hljs-string">&quot;php5&quot;</span>,<span class="hljs-string">&quot;php4&quot;</span>,<span class="hljs-string">&quot;php3&quot;</span>,<span class="hljs-string">&quot;php2&quot;</span>,<span class="hljs-string">&quot;html&quot;</span>,<span class="hljs-string">&quot;htm&quot;</span>,<span class="hljs-string">&quot;phtml&quot;</span>,<span class="hljs-string">&quot;pht&quot;</span>,<span class="hljs-string">&quot;jsp&quot;</span>,<span class="hljs-string">&quot;jspa&quot;</span>,<span class="hljs-string">&quot;jspx&quot;</span>,<span class="hljs-string">&quot;jsw&quot;</span>,<span class="hljs-string">&quot;jsv&quot;</span>,<span class="hljs-string">&quot;jspf&quot;</span>,<span class="hljs-string">&quot;jtml&quot;</span>,<span class="hljs-string">&quot;asp&quot;</span>,<span class="hljs-string">&quot;aspx&quot;</span>,<span class="hljs-string">&quot;asa&quot;</span>,<span class="hljs-string">&quot;asax&quot;</span>,<span class="hljs-string">&quot;ascx&quot;</span>,<span class="hljs-string">&quot;ashx&quot;</span>,<span class="hljs-string">&quot;asmx&quot;</span>,<span class="hljs-string">&quot;cer&quot;</span>,<span class="hljs-string">&quot;swf&quot;</span>,<span class="hljs-string">&quot;htaccess&quot;</span>,<span class="hljs-string">&quot;ini&quot;</span>);
-
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_name</span> = str_ireplace(<span class="hljs-variable">$deny_ext</span>,<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-variable">$file_name</span>);
-        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-        <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;        
-        <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-
-<p> <code>$file_name = str_ireplace($deny_ext,&quot;&quot;, $file_name);</code></p>
-<p>这段代码是将文件名中出现  <code>deny_ext</code>的后缀名替换为空</p>
-<p>可以双写绕过，即<code>1.pphphp</code></p>
-<h2 id="pass12"><a href="#pass12" class="headerlink" title="pass12"></a>pass12</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
-    <span class="hljs-variable">$ext_arr</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;jpg&#x27;</span>,<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;gif&#x27;</span>);
-    <span class="hljs-variable">$file_ext</span> = substr(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],strrpos(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>],<span class="hljs-string">&quot;.&quot;</span>)+<span class="hljs-number">1</span>);
-    <span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$file_ext</span>,<span class="hljs-variable">$ext_arr</span>))&#123;
-        <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-        <span class="hljs-variable">$img_path</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;save_path&#x27;</span>].<span class="hljs-string">&quot;/&quot;</span>.rand(<span class="hljs-number">10</span>, <span class="hljs-number">99</span>).date(<span class="hljs-string">&quot;YmdHis&quot;</span>).<span class="hljs-string">&quot;.&quot;</span>.<span class="hljs-variable">$file_ext</span>;
-
-        <span class="hljs-keyword">if</span>(move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>))&#123;
-            <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span>&#123;
-        <span class="hljs-variable">$msg</span> = <span class="hljs-string">&quot;只允许上传.jpg|.png|.gif类型文件！&quot;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>本题与之前的题目有所不同，这题的文件的保存路径是可以控制的</p>
-<p>这里用的<code>%00截断</code>，原理如下</p>
-<p><code>www.xxx.com/qq.jpg</code></p>
-<p><code>www.xxx.com/qq.php%00.jpg =&gt; www.xxx.com/qq.php</code>其后缀名为.jpg可以绕过检测，但是windows系统处理时不会处理%00之后的内容故保存的文件就是qq.php</p>
-<p><img src="https://i.loli.net/2020/11/30/TwSKHkqZFC78uRd.png" alt></p>
-<h2 id="pass13"><a href="#pass13" class="headerlink" title="pass13"></a>pass13</h2><p>这题与上题利用的原理相同</p>
-<p>但是这里要使用 00的二进制形式</p>
-<p><img src="/2020/09/18/upload2/13.png" alt></p>
-<p><img src="/2020/09/18/upload2/13-1.png" alt></p>
-<h2 id="pass14"><a href="#pass14" class="headerlink" title="pass14"></a>pass14</h2><p>明确说了上传图片木马</p>
-<pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getReailFileType</span>(<span class="hljs-params"><span class="hljs-variable">$filename</span></span>)</span>&#123;
-    <span class="hljs-variable">$file</span> = fopen(<span class="hljs-variable">$filename</span>, <span class="hljs-string">&quot;rb&quot;</span>);
-    <span class="hljs-variable">$bin</span> = fread(<span class="hljs-variable">$file</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">//只读2字节</span>
-    fclose(<span class="hljs-variable">$file</span>);
-    <span class="hljs-variable">$strInfo</span> = @unpack(<span class="hljs-string">&quot;C2chars&quot;</span>, <span class="hljs-variable">$bin</span>);    
-    <span class="hljs-variable">$typeCode</span> = intval(<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars1&#x27;</span>].<span class="hljs-variable">$strInfo</span>[<span class="hljs-string">&#x27;chars2&#x27;</span>]);    
-    <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;&#x27;</span>;    
-    <span class="hljs-keyword">switch</span>(<span class="hljs-variable">$typeCode</span>)&#123;      
-        <span class="hljs-keyword">case</span> <span class="hljs-number">255216</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;jpg&#x27;</span>;
-            <span class="hljs-keyword">break</span>;
-        <span class="hljs-keyword">case</span> <span class="hljs-number">13780</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;png&#x27;</span>;
-            <span class="hljs-keyword">break</span>;        
-        <span class="hljs-keyword">case</span> <span class="hljs-number">7173</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;gif&#x27;</span>;
-            <span class="hljs-keyword">break</span>;
-        <span class="hljs-keyword">default</span>:            
-            <span class="hljs-variable">$fileType</span> = <span class="hljs-string">&#x27;unknown&#x27;</span>;
-        &#125;    
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$fileType</span>;
-&#125;</code></pre>
-
-<p><strong>GIF89a</strong> 是GIF图片的文件头 ，是为了绕过gif文件的检查</p>
-<p><strong>图片木马的制作</strong></p>
-<p>桌面建立一个文本文件将其改为2.jpg，再建立一个改为1.php,其内容为你想添加的一句话木马</p>
-<p><img src="https://i.loli.net/2020/11/30/vXmVIJ3OEzcnrsL.png" alt></p>
-<p><code>copy 2.jpg /b + 1.php /a webshell.jpg</code></p>
-<p><img src="https://i.loli.net/2020/11/30/KWgpdyf8xoFqcMn.png" alt></p>
-<p><strong>未完待续。。。</strong></p>
-]]></content>
-      <categories>
-        <category>文件上传</category>
-      </categories>
-      <tags>
-        <tag>双写绕过</tag>
-        <tag>00截断</tag>
       </tags>
   </entry>
   <entry>

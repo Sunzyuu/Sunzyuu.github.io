@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.3k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      16
+      19
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：3 分钟前
                 
               </p>
             
@@ -376,6 +376,8 @@
 <span class="hljs-keyword">import</span> (
 	<span class="hljs-string">&quot;fmt&quot;</span>
 	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
+	<span class="hljs-string">&quot;gorm.io/gorm&quot;</span>
+	<span class="hljs-string">&quot;gotoken/db&quot;</span>
 	<span class="hljs-string">&quot;gotoken/jwt&quot;</span>
 	<span class="hljs-string">&quot;net/http&quot;</span>
 )
@@ -384,7 +386,18 @@
 	Name <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;name&quot;`</span>
 &#125;
 
+<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span>&#123;
+	gorm.Model
+	Username <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span>
+	Password <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;password&quot;`</span>
+&#125;
+
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
+
+	db := db.GetDatabase()
+	user := User&#123;&#125;
+
+	<span class="hljs-comment">//fmt.Println(user)</span>
 	jwt.Secret = <span class="hljs-string">&quot;123456&quot;</span>
 
 	r := gin.Default()
@@ -408,13 +421,29 @@
 
 	<span class="hljs-comment">// 第一次访问该路由获取token</span>
 	r.POST(<span class="hljs-string">&quot;/login&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
-		accountToken := AccountToken&#123;Name: <span class="hljs-string">&quot;sunzy&quot;</span>&#125;
-		sign, _ := jwt.Sign(accountToken)
+		userNew := User&#123;&#125;
+		c.ShouldBind(&amp;userNew)
+		<span class="hljs-keyword">if</span> userNew.Username == <span class="hljs-string">&quot;&quot;</span> || userNew.Password == <span class="hljs-string">&quot;&quot;</span> &#123;
+			c.JSON(http.StatusForbidden, gin.H&#123;
+				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;username or password is empty&quot;</span>,
+			&#125;)
+			<span class="hljs-keyword">return</span>
+		&#125;
+		db.First(&amp;user, <span class="hljs-string">&quot;username = ?&quot;</span>, userNew.Username)
+		<span class="hljs-keyword">if</span> user.Username == userNew.Username &amp;&amp; user.Password == userNew.Password &#123;
+			sign, _ := jwt.Sign(user)
 
-		c.JSON(http.StatusOK, <span class="hljs-keyword">struct</span> &#123;
-			Code    <span class="hljs-keyword">int</span>    <span class="hljs-string">`json:&quot;code&quot;`</span>
-			Message <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;message&quot;`</span>
-		&#125;&#123;Code: http.StatusOK, Message: sign&#125;)
+			c.JSON(http.StatusOK, gin.H&#123;
+				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;login successfully!&quot;</span>,
+				<span class="hljs-string">&quot;data&quot;</span>: sign,
+			&#125;)
+		&#125; <span class="hljs-keyword">else</span> &#123;
+			c.JSON(http.StatusForbidden, gin.H&#123;
+				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;username or password is invalid&quot;</span>,
+			&#125;)
+			<span class="hljs-keyword">return</span>
+		&#125;
+
 	&#125;)
 	<span class="hljs-comment">// 访问此路由不需要token</span>
 	r.GET(<span class="hljs-string">&quot;/index&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
@@ -422,6 +451,32 @@
 	&#125;)
 
 	r.Run(<span class="hljs-string">&quot;:8081&quot;</span>)
+&#125;
+</code></pre></div>
+
+<p>数据库初始化文件</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> db
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">&quot;gorm.io/driver/mysql&quot;</span>
+	<span class="hljs-string">&quot;gorm.io/gorm&quot;</span>
+)
+
+<span class="hljs-keyword">var</span> Db  *gorm.DB
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;
+	<span class="hljs-comment">// 初始化数据库</span>
+	dsn := <span class="hljs-string">&quot;root:root@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&amp;parseTime=True&amp;loc=Local&quot;</span>
+	db, err := gorm.Open(mysql.Open(dsn), &amp;gorm.Config&#123;&#125;)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
+		<span class="hljs-built_in">panic</span>(err)
+	&#125;
+	Db = db
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetDatabase</span><span class="hljs-params">()</span> *<span class="hljs-title">gorm</span>.<span class="hljs-title">DB</span></span>&#123;
+	<span class="hljs-keyword">return</span> Db
 &#125;
 </code></pre></div>
 
