@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="sunzy">
   <meta name="keywords" content="">
-  <title>gin_jwt - 一路走到黑</title>
+  <title>grpc - 一路走到黑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -177,8 +177,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2023-02-04 21:34" pubdate>
-        2023年2月4日 晚上
+      <time datetime="2023-02-07 23:55" pubdate>
+        2023年2月7日 晚上
       </time>
     </span>
   
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      1.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      19
+      17
        分钟
     </span>
   
@@ -237,249 +237,209 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">gin_jwt</h1>
+            <h1 style="display: none">grpc</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2 天前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="1-jwt"><a href="#1-jwt" class="headerlink" title="1.jwt"></a>1.jwt</h1><blockquote>
-<p>JSON Web Token（缩写 JWT）是目前最流行的跨域认证解决方案 </p>
-<p><a target="_blank" rel="noopener" href="https://jwt.io/">jwt官网</a></p>
-</blockquote>
-<h2 id="1-1-原理"><a href="#1-1-原理" class="headerlink" title="1.1 原理"></a>1.1 原理</h2><p>JWT 的原理是，服务器认证以后，生成一个 JSON 对象，发回给用户，用户与服务端通信的时候，都要发回这个 JSON 对象。服务器完全只靠这个对象认定用户身份。为了防止用户篡改数据，服务器在生成这个对象的时候，会加上签名。这样服务器就不用保存session，实现无状态认证，可扩展性更强</p>
-<h2 id="1-2-数据结构"><a href="#1-2-数据结构" class="headerlink" title="1.2 数据结构"></a>1.2 数据结构</h2><p>JWT主要分为三个部分</p>
-<blockquote>
-<ul>
-<li>Header（头部）</li>
-<li>Payload（负载）</li>
-<li>Signature（签名）</li>
-</ul>
-</blockquote>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230204214410681.png" srcset="/img/loading.gif" alt="image-20230204214410681"></p>
-<p>可以看出来jwt的组成也十分简单明了</p>
-<h3 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h3><p>header中alg(algorithm)决定了签名使用的加密算法，默认为HS256，也可以根据需要修改加密算法(官网提供了多种加密算法)，typ属性表示这个令牌token的类型（type），JWT 令牌统一写为<code>JWT</code>。</p>
-<h3 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h3><p>payload就是要传递的数据，也是一个json对象，JWT 规定了7个官方字段，供选用。</p>
-<div class="hljs"><pre><code class="hljs erlang"><span class="hljs-function"><span class="hljs-title">iss</span> <span class="hljs-params">(issuer)</span>：签发人</span>
-<span class="hljs-function"><span class="hljs-title">exp</span> <span class="hljs-params">(expiration time)</span>：过期时间</span>
-<span class="hljs-function"><span class="hljs-title">sub</span> <span class="hljs-params">(subject)</span>：主题</span>
-<span class="hljs-function"><span class="hljs-title">aud</span> <span class="hljs-params">(audience)</span>：受众</span>
-<span class="hljs-function"><span class="hljs-title">nbf</span> <span class="hljs-params">(Not Before)</span>：生效时间</span>
-<span class="hljs-function"><span class="hljs-title">iat</span> <span class="hljs-params">(Issued At)</span>：签发时间</span>
-<span class="hljs-function"><span class="hljs-title">jti</span> <span class="hljs-params">(JWT ID)</span>：编号</span></code></pre></div>
+              <p>grpc入门</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="1-安装-protobuf"><a href="#1-安装-protobuf" class="headerlink" title="1.安装 protobuf"></a>1.安装 protobuf</h2><p><a target="_blank" rel="noopener" href="https://github.com/protocolbuffers/protobuf/releases">https://github.com/protocolbuffers/protobuf/releases</a><br>选择对应版本下载后解压到GOPATH路径下即可</p>
+<h2 id="2-在go-mod中引入grpc"><a href="#2-在go-mod中引入grpc" class="headerlink" title="2.在go.mod中引入grpc"></a>2.在go.mod中引入grpc</h2><div class="hljs"><pre><code class="hljs sh">go get google.golang.org/grpc</code></pre></div>
 
-<p>除了官方字段，你还可以在这个部分定义私有字段，下面就是一个例子。</p>
-<div class="hljs"><pre><code class="hljs json">&#123;
-  <span class="hljs-attr">&quot;sub&quot;</span>: <span class="hljs-string">&quot;1234567890&quot;</span>,
-  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;John Doe&quot;</span>,
-  <span class="hljs-attr">&quot;iat&quot;</span>: <span class="hljs-number">1516239022</span>
+<h2 id="3-安装GO协议编译器的插件"><a href="#3-安装GO协议编译器的插件" class="headerlink" title="3.安装GO协议编译器的插件"></a>3.安装GO协议编译器的插件</h2><div class="hljs"><pre><code class="hljs sh">go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2</code></pre></div>
+
+<h2 id="4-编写proto文件"><a href="#4-编写proto文件" class="headerlink" title="4.编写proto文件"></a>4.编写proto文件</h2><p>创建client和service目录，在两目录中创建proto目录，分别创建client.proto和server.proto文件<br>proto文件相当于一层约束，规定了在rpc调用时，有哪些api，api接口需要传递哪些参数，返回值类型，以及服务名称等信息</p>
+<div class="hljs"><pre><code class="hljs proto">syntax &#x3D; &quot;proto3&quot;;  
+  
+&#x2F;&#x2F; 生成go文件时的包名  
+option go_package &#x3D; &quot;.;service&quot;;  
+  
+&#x2F;&#x2F; 服务定义  
+service SayHello &#123;  
+    &#x2F;&#x2F; 定义一个方法 方法的形参和返回值类型在下面定义  
+    rpc SayHello(HelloRequest) returns (HelloResponse)&#123;&#125;  
+&#125;  
+  
+&#x2F;&#x2F; message 就像是go中struct,java中的class  
+message HelloRequest&#123;  
+    string requestName &#x3D; 1; &#x2F;&#x2F; 数字作为标识号 放在函数具体位置  
+    int64 age &#x3D; 2;          &#x2F;&#x2F; &#x2F;&#x2F;    repeated string ids &#x3D; 3;&#x2F;&#x2F; repeated为切片类型  
+&#125;  
+  
+  
+message HelloResponse&#123;  
+    string responseMsg &#x3D; 1;  
 &#125;</code></pre></div>
 
-<p>注意，JWT 默认是不加密的，任何人都可以读到，所以不要把秘密信息放在这个部分。这个 JSON 对象也要使用 Base64URL 算法转成字符串。</p>
-<h3 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h3><p>Signature 部分是对前两部分的签名，防止数据篡改。</p>
-<p>首先，需要指定一个密钥（secret）。这个密钥只有服务器才知道，不能泄露给用户。然后，使用 Header 里面指定的签名算法（默认是 HMAC SHA256），按照下面的公式产生签名。</p>
-<div class="hljs"><pre><code class="hljs javascript">HMACSHA256(
-  base64UrlEncode(header) + <span class="hljs-string">&quot;.&quot;</span> +
-  base64UrlEncode(payload),
-  secret)</code></pre></div>
+<h2 id="5-初始化项目文件"><a href="#5-初始化项目文件" class="headerlink" title="5.初始化项目文件"></a>5.初始化项目文件</h2><p>创建client和service目录，在两目录中创建proto目录，之后在cmd中执行</p>
+<div class="hljs"><pre><code class="hljs routeros">protoc <span class="hljs-attribute">--go_out</span>=. .\server.proto
+protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code></pre></div>
+<p>命令执行成功后会创建hello.pb.go和hello_grpc.pb.go，可以写一个shell脚本进行建立。后面再加</p>
+<p>文件目录为<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230207235146.png" srcset="/img/loading.gif" alt="Pasted image 20230207235146"></p>
+<h1 id="编写代码"><a href="#编写代码" class="headerlink" title="编写代码"></a>编写代码</h1><h2 id="1-服务端"><a href="#1-服务端" class="headerlink" title="1.服务端"></a>1.服务端</h2><p>对grpc_pb.go文件中的<code>UnimplementedSayHelloServer</code>函数进行重写</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">type</span> server <span class="hljs-keyword">struct</span> &#123;  
+   pb.UnimplementedSayHelloServer  <span class="hljs-comment">//导入包 pb &quot;grpc_demo/server/proto&quot; </span>
+&#125;  
+<span class="hljs-comment">// 实现业务逻辑  </span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context,req *pb.HelloRequest)</span> <span class="hljs-params">(*pb.HelloResponse, error)</span></span> &#123;  
+   <span class="hljs-keyword">return</span> &amp;pb.HelloResponse&#123;ResponseMsg: <span class="hljs-string">&quot;hello, &quot;</span> + req.RequestName&#125;, <span class="hljs-literal">nil</span>  
+&#125;</code></pre></div>
+<p>启动服务端</p>
+<ul>
+<li>监听端口</li>
+<li>启动grpc服务</li>
+<li>在grpc服务器中注册服务，即上面的server</li>
+<li>启动grpc服务<div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+   <span class="hljs-comment">// 监听端口  </span>
+   listen, _ := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8081&quot;</span>)  
+   <span class="hljs-comment">// 开启grpc服务  </span>
+   grpcServer := grpc.NewServer()  
+   <span class="hljs-comment">// 在grpc服务器中注册我们自己写的服务  </span>
+   pb.RegisterSayHelloServer(grpcServer, &amp;server&#123;&#125;)  
+   <span class="hljs-comment">// 启动服务  </span>
+   err := grpcServer.Serve(listen)  
+   <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  
+      <span class="hljs-built_in">panic</span>(err)  
+   &#125;  
+&#125;</code></pre></div>
 
-<p>算出签名以后，把 Header、Payload、Signature 三个部分拼成一个字符串，每个部分之间用”点”（<code>.</code>）分隔，就可以返回给用户。</p>
-<h2 id="1-3-go实现jwt"><a href="#1-3-go实现jwt" class="headerlink" title="1.3 go实现jwt"></a>1.3 go实现jwt</h2><div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> jwt
+</li>
+</ul>
+<h2 id="2-客户端"><a href="#2-客户端" class="headerlink" title="2.客户端"></a>2.客户端</h2><p>服务端代码相对简单</p>
+<ul>
+<li>连接服务端</li>
+<li>创建请求服务的客户端</li>
+<li>执行rpc调用</li>
+<li>获取结果<div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;   
+   <span class="hljs-comment">// 连接到server 此处不使用安全连接  </span>
+   conn, err := grpc.Dial(<span class="hljs-string">&quot;127.0.0.1:8081&quot;</span>, grpc.WithTransportCredentials(insecure.NewCredentials()))  
+  
+   <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  
+      log.Fatal(err)  
+   &#125;  
+   <span class="hljs-keyword">defer</span> conn.Close()  
+  
+   <span class="hljs-comment">// 建立连接  </span>
+   client := pb.NewSayHelloClient(conn)  
+   <span class="hljs-comment">// 执行rpc调用，从server端获取执行结果  </span>
+   helloResponse, err := client.SayHello(context.Background(), &amp;pb.HelloRequest&#123;RequestName: <span class="hljs-string">&quot;sunzyclient&quot;</span>, Age: <span class="hljs-number">10</span>&#125;)  
+   <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  
+      log.Fatal(err)  
+   &#125;  
+  
+   fmt.Println(helloResponse.GetResponseMsg())  
+&#125;</code></pre></div>
 
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;crypto/hmac&quot;</span>
-	<span class="hljs-string">&quot;crypto/sha256&quot;</span>
-	<span class="hljs-string">&quot;encoding/base64&quot;</span>
-	<span class="hljs-string">&quot;encoding/json&quot;</span>
-	<span class="hljs-string">&quot;errors&quot;</span>
-	<span class="hljs-string">&quot;fmt&quot;</span>
-	<span class="hljs-string">&quot;strings&quot;</span>
-)
+</li>
+</ul>
+<p>通过上面的步骤，即可完成最简单的grpc调用</p>
+<h2 id="3-增加token认证"><a href="#3-增加token认证" class="headerlink" title="3.增加token认证"></a>3.增加token认证</h2><p>server中main.go</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main  
+<span class="hljs-keyword">import</span> (  
+   <span class="hljs-string">&quot;context&quot;</span>  
+   <span class="hljs-string">&quot;errors&quot;</span>   
+   <span class="hljs-string">&quot;fmt&quot;</span>   
+   <span class="hljs-string">&quot;google.golang.org/grpc&quot;</span>       <span class="hljs-string">&quot;google.golang.org/grpc/credentials/insecure&quot;</span>   <span class="hljs-string">&quot;google.golang.org/grpc/metadata&quot;</span>   
+   pb <span class="hljs-string">&quot;grpc_demo/server/proto&quot;</span>  
+   <span class="hljs-string">&quot;net&quot;</span>
+   )  
+  
+<span class="hljs-keyword">type</span> server <span class="hljs-keyword">struct</span> &#123;  
+   pb.UnimplementedSayHelloServer  
+&#125;  
+<span class="hljs-comment">// 实现业务逻辑  </span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context,req *pb.HelloRequest)</span> <span class="hljs-params">(*pb.HelloResponse, error)</span></span> &#123;  
+   <span class="hljs-comment">// 获取元数据  </span>
+   md, ok := metadata.FromIncomingContext(ctx)  
+   <span class="hljs-keyword">if</span> !ok &#123;  
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;token does not exist&quot;</span>)  
+   &#125;  
+  
+   <span class="hljs-keyword">var</span> appId <span class="hljs-keyword">string</span>  
+   <span class="hljs-keyword">var</span> appKey <span class="hljs-keyword">string</span>  
+   <span class="hljs-keyword">if</span> v, ok := md[<span class="hljs-string">&quot;appid&quot;</span>]; ok &#123; <span class="hljs-comment">// 这里所有字母都为小写  </span>
+      appId = v[<span class="hljs-number">0</span>]  
+   &#125;  
+   <span class="hljs-keyword">if</span> v, ok := md[<span class="hljs-string">&quot;appkey&quot;</span>]; ok &#123;  
+      appKey = v[<span class="hljs-number">0</span>]  
+   &#125;  
+   fmt.Printf(<span class="hljs-string">&quot;appId: %v, appKey: %v&quot;</span>, appId, appKey)  
+   <span class="hljs-keyword">if</span> appId != <span class="hljs-string">&quot;sunzy&quot;</span> || appKey != <span class="hljs-string">&quot;123456&quot;</span>&#123;  
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;token error&quot;</span>)  
+   &#125;  
+  
+   <span class="hljs-keyword">return</span> &amp;pb.HelloResponse&#123;ResponseMsg: <span class="hljs-string">&quot;hello, &quot;</span> + req.RequestName&#125;, <span class="hljs-literal">nil</span>  
+&#125;  
+  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+   <span class="hljs-comment">// 监听端口  </span>
+   listen, _ := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8081&quot;</span>)  
+   <span class="hljs-comment">// 开启grpc服务  </span>
+   grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()))  
+   <span class="hljs-comment">// 在grpc服务器中注册我们自己写的服务  </span>
+   pb.RegisterSayHelloServer(grpcServer, &amp;server&#123;&#125;)  
+   <span class="hljs-comment">// 启动服务  </span>
+   err := grpcServer.Serve(listen)  
+   <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  
+      <span class="hljs-built_in">panic</span>(err)  
+   &#125;  
+&#125;</code></pre></div>
 
-<span class="hljs-keyword">type</span> header <span class="hljs-keyword">struct</span> &#123;
-	Alg <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;alg&quot;`</span>
-	Typ <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;typ&quot;`</span>
-&#125;
-
-<span class="hljs-keyword">const</span> (
-	HS256 = <span class="hljs-string">&quot;HS256&quot;</span>
-)
-
-<span class="hljs-keyword">var</span> alg = HS256
-<span class="hljs-keyword">var</span> Secret <span class="hljs-keyword">string</span>
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hs256</span><span class="hljs-params">(secret, data []<span class="hljs-keyword">byte</span>)</span> <span class="hljs-params">(ret <span class="hljs-keyword">string</span>, err error)</span></span> &#123;
-	hasher := hmac.New(sha256.New, secret)
-	_, err = hasher.Write(data)
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>, err
-	&#125;
-	r := hasher.Sum(<span class="hljs-literal">nil</span>)
-	<span class="hljs-keyword">return</span> base64.RawURLEncoding.EncodeToString(r), <span class="hljs-literal">nil</span>
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Sign</span><span class="hljs-params">(payload <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(ret <span class="hljs-keyword">string</span>, err error)</span></span> &#123;
-	h := header&#123;
-		Alg: alg,
-		Typ: <span class="hljs-string">&quot;JWT&quot;</span>,
-	&#125;
-	marshal, err := json.Marshal(h)
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>, err
-	&#125;
-	bh := base64.RawURLEncoding.EncodeToString(marshal)
-
-	marshal, err = json.Marshal(payload)
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>, err
-	&#125;
-
-	bp := base64.RawURLEncoding.EncodeToString(marshal)
-	<span class="hljs-comment">// 将header和payload 拼接在一起</span>
-	s := fmt.Sprintf(<span class="hljs-string">&quot;%s.%s&quot;</span>, bh, bp)
-
-	ret, err = hs256([]<span class="hljs-keyword">byte</span>(Secret), []<span class="hljs-keyword">byte</span>(s))
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>, err
-	&#125;
-
-	<span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;%s.%s.%s&quot;</span>, bh, bp, ret), <span class="hljs-literal">nil</span>
-
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Verify</span><span class="hljs-params">(token <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(err error)</span></span> &#123;
-	parts := strings.Split(token, <span class="hljs-string">&quot;.&quot;</span>)
-	data := strings.Join(parts[<span class="hljs-number">0</span>:<span class="hljs-number">2</span>], <span class="hljs-string">&quot;.&quot;</span>)
-	hasher := hmac.New(sha256.New, []<span class="hljs-keyword">byte</span>(Secret))
-	_, err = hasher.Write([]<span class="hljs-keyword">byte</span>(data))
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">return</span> err
-	&#125;
-	sig, err := base64.RawURLEncoding.DecodeString(parts[<span class="hljs-number">2</span>])
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-keyword">return</span> err
-	&#125;
-	<span class="hljs-keyword">if</span> hmac.Equal(sig, hasher.Sum(<span class="hljs-literal">nil</span>)) &#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
-	&#125;
-	<span class="hljs-keyword">return</span> errors.New(<span class="hljs-string">&quot;verify is invalid&quot;</span>)
-&#125;
-</code></pre></div>
-
-
-
-<h1 id="2-gin框架实现jwt身份认证"><a href="#2-gin框架实现jwt身份认证" class="headerlink" title="2.gin框架实现jwt身份认证"></a>2.gin框架实现jwt身份认证</h1><div class="hljs"><pre><code class="hljs GO"><span class="hljs-keyword">package</span> main
-
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;fmt&quot;</span>
-	<span class="hljs-string">&quot;github.com/gin-gonic/gin&quot;</span>
-	<span class="hljs-string">&quot;gorm.io/gorm&quot;</span>
-	<span class="hljs-string">&quot;gotoken/db&quot;</span>
-	<span class="hljs-string">&quot;gotoken/jwt&quot;</span>
-	<span class="hljs-string">&quot;net/http&quot;</span>
-)
-
-<span class="hljs-keyword">type</span> AccountToken <span class="hljs-keyword">struct</span> &#123;
-	Name <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;name&quot;`</span>
-&#125;
-
-<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span>&#123;
-	gorm.Model
-	Username <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span>
-	Password <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;password&quot;`</span>
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-
-	db := db.GetDatabase()
-	user := User&#123;&#125;
-
-	<span class="hljs-comment">//fmt.Println(user)</span>
-	jwt.Secret = <span class="hljs-string">&quot;123456&quot;</span>
-
-	r := gin.Default()
-	<span class="hljs-comment">// 中间件 相当于拦截器进行鉴权处理</span>
-	r.Use(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
-		<span class="hljs-keyword">if</span> c.Request.RequestURI == <span class="hljs-string">&quot;/login&quot;</span> &#123;
-			<span class="hljs-comment">// 如果访问的是login则放行，从而获取token</span>
-			<span class="hljs-keyword">return</span>
-		&#125;
-		token, ok := c.Request.Header[<span class="hljs-string">&quot;Token&quot;</span>]
-		fmt.Println(token)
-		<span class="hljs-keyword">if</span> ok &#123;
-			err := jwt.Verify(token[<span class="hljs-number">0</span>])
-			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-				c.AbortWithStatusJSON(<span class="hljs-number">403</span>, <span class="hljs-string">&quot;Forbidden1&quot;</span>) <span class="hljs-comment">//jwt toke验证不通过 不放行</span>
-			&#125;
-		&#125; <span class="hljs-keyword">else</span> &#123;
-			c.AbortWithStatusJSON(<span class="hljs-number">403</span>, <span class="hljs-string">&quot;Forbidden2&quot;</span>)
-		&#125;
-	&#125;)
-
-	<span class="hljs-comment">// 第一次访问该路由获取token</span>
-	r.POST(<span class="hljs-string">&quot;/login&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
-		userNew := User&#123;&#125;
-		c.ShouldBind(&amp;userNew)
-		<span class="hljs-keyword">if</span> userNew.Username == <span class="hljs-string">&quot;&quot;</span> || userNew.Password == <span class="hljs-string">&quot;&quot;</span> &#123;
-			c.JSON(http.StatusForbidden, gin.H&#123;
-				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;username or password is empty&quot;</span>,
-			&#125;)
-			<span class="hljs-keyword">return</span>
-		&#125;
-		db.First(&amp;user, <span class="hljs-string">&quot;username = ?&quot;</span>, userNew.Username)
-		<span class="hljs-keyword">if</span> user.Username == userNew.Username &amp;&amp; user.Password == userNew.Password &#123;
-			sign, _ := jwt.Sign(user)
-
-			c.JSON(http.StatusOK, gin.H&#123;
-				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;login successfully!&quot;</span>,
-				<span class="hljs-string">&quot;data&quot;</span>: sign,
-			&#125;)
-		&#125; <span class="hljs-keyword">else</span> &#123;
-			c.JSON(http.StatusForbidden, gin.H&#123;
-				<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">&quot;username or password is invalid&quot;</span>,
-			&#125;)
-			<span class="hljs-keyword">return</span>
-		&#125;
-
-	&#125;)
-	<span class="hljs-comment">// 访问此路由不需要token</span>
-	r.GET(<span class="hljs-string">&quot;/index&quot;</span>, <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(c *gin.Context)</span></span> &#123;
-		c.JSON(http.StatusOK, <span class="hljs-string">&quot;index&quot;</span>)
-	&#125;)
-
-	r.Run(<span class="hljs-string">&quot;:8081&quot;</span>)
-&#125;
-</code></pre></div>
-
-<p>数据库初始化文件</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> db
-
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;gorm.io/driver/mysql&quot;</span>
-	<span class="hljs-string">&quot;gorm.io/gorm&quot;</span>
-)
-
-<span class="hljs-keyword">var</span> Db  *gorm.DB
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span> &#123;
-	<span class="hljs-comment">// 初始化数据库</span>
-	dsn := <span class="hljs-string">&quot;root:root@tcp(127.0.0.1:3306)/demo?charset=utf8mb4&amp;parseTime=True&amp;loc=Local&quot;</span>
-	db, err := gorm.Open(mysql.Open(dsn), &amp;gorm.Config&#123;&#125;)
-
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		<span class="hljs-built_in">panic</span>(err)
-	&#125;
-	Db = db
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetDatabase</span><span class="hljs-params">()</span> *<span class="hljs-title">gorm</span>.<span class="hljs-title">DB</span></span>&#123;
-	<span class="hljs-keyword">return</span> Db
-&#125;
-</code></pre></div>
-
+<p>client中的main.go</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main  
+  
+<span class="hljs-keyword">import</span> (  
+   <span class="hljs-string">&quot;context&quot;</span>  
+   <span class="hljs-string">&quot;fmt&quot;</span>   
+   <span class="hljs-string">&quot;google.golang.org/grpc&quot;</span>    <span class="hljs-string">&quot;google.golang.org/grpc/credentials/insecure&quot;</span>   
+   pb <span class="hljs-string">&quot;grpc_demo/server/proto&quot;</span>  
+   <span class="hljs-string">&quot;log&quot;</span>
+   )  
+  
+  
+<span class="hljs-comment">// 自定义token认证  </span>
+<span class="hljs-keyword">type</span> ClientAuthToken <span class="hljs-keyword">struct</span> &#123;  
+  
+&#125;  
+  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *ClientAuthToken)</span> <span class="hljs-title">GetRequestMetadata</span><span class="hljs-params">(ctx context.Context, uri ...<span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>, error)</span></span>&#123;  
+   <span class="hljs-keyword">return</span> <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>&#123;  
+      <span class="hljs-string">&quot;appId&quot;</span> : <span class="hljs-string">&quot;sunzy&quot;</span>,  
+      <span class="hljs-string">&quot;appKey&quot;</span> : <span class="hljs-string">&quot;123456&quot;</span>,  
+   &#125;, <span class="hljs-literal">nil</span>  
+&#125;  
+  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *ClientAuthToken)</span> <span class="hljs-title">RequireTransportSecurity</span><span class="hljs-params">()</span> <span class="hljs-title">bool</span></span>&#123;  
+   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>  <span class="hljs-comment">// 不使用ssl认证  </span>
+&#125;  
+  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;  
+   <span class="hljs-keyword">var</span> ops []grpc.DialOption  
+   ops = <span class="hljs-built_in">append</span>(ops, grpc.WithTransportCredentials(insecure.NewCredentials()))  
+   ops = <span class="hljs-built_in">append</span>(ops, grpc.WithPerRPCCredentials(<span class="hljs-built_in">new</span>(ClientAuthToken)))  
+   <span class="hljs-comment">// 连接到server 此处不使用安全连接  </span>
+   conn, err := grpc.Dial(<span class="hljs-string">&quot;127.0.0.1:8081&quot;</span>, ops...)  
+  
+   <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  
+      log.Fatal(err)  
+   &#125;  
+   <span class="hljs-keyword">defer</span> conn.Close()  
+  
+   <span class="hljs-comment">// 建立连接  </span>
+   client := pb.NewSayHelloClient(conn)  
+   <span class="hljs-comment">// 执行rpc调用，从server端获取执行结果  </span>
+   helloResponse, err := client.SayHello(context.Background(), &amp;pb.HelloRequest&#123;RequestName: <span class="hljs-string">&quot;sunzyclient&quot;</span>, Age: <span class="hljs-number">10</span>&#125;)  
+   <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  
+      log.Fatal(err)  
+   &#125;  
+  
+   fmt.Println(helloResponse.GetResponseMsg())  
+&#125;</code></pre></div>
 
             </div>
             <hr>
@@ -497,7 +457,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/gin-jwt/">gin, jwt</a>
+                      <a class="hover-with-bg" href="/tags/grpc/">grpc</a>
                     
                   </div>
                 
@@ -510,18 +470,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/02/07/grpc/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">grpc</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/01/24/thread-pool/">
-                        <span class="hidden-mobile">juc</span>
+                      <a href="/2023/02/04/gin-jwt/">
+                        <span class="hidden-mobile">gin_jwt</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -724,7 +678,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "gin_jwt&nbsp;",
+        "grpc&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
