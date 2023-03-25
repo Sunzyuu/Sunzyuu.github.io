@@ -189,6 +189,50 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2023/03/25/MYDB/">MYDB</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/03/25/MYDB/">
+          
+          
+            
+          
+          MYDB项目的总结花了一周从头到尾看了整个项目，在此做个总结，真是太复杂了，实在佩服作者。如果有错误，请指正。
+MYDB的每个部分的作用
+TM 通过维护 XID 文件来维护事务的状态，并提供接口供其他模块来查询某个事务的状态。
+
+DM 直接管理数据库 DB 文件和日志文件。DM 的主要职责有：
+
+分页管理 DB 文件，并进行缓存；
+
+管理日志文件，保证在发生错误时可以根据日志进行恢复；
+
+抽象 D
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-03-25 22:01" pubdate>
+              2023-03-25
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2023/02/07/grpc/">grpc</a>
       </h1>
 
@@ -760,51 +804,6 @@ drop table if exists
               <a href="/tags/mysql/">mysql</a>
             
           </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/09/09/XDU-choose-course/">XDU_choose_course</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/09/09/XDU-choose-course/">
-          
-          
-            
-          
-          XDU 抢课脚本项目地址
-1.登录认证1.1 密码加密首先在浏览器中在同一身份的位置进行手动登录可以发现如下的请求
-
-输入的密码已经被加密
-表单参数中多了一个execution参数
-
-
-在浏览器拦截的请求中有一个encrypt.js的文件，猜测是用于加密密码的
-
-该文件的代码很长，但是核心的加密过程如下
-function getAesString(data, key0, iv0) &#123;
- 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-09-09 12:59" pubdate>
-              2022-09-09
-            </time>
-          </div>
-        
-        
         
       </div>
     </article>

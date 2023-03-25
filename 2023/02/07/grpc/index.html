@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.4k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      17
+      21
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：2 个月前
                 
               </p>
             
@@ -441,6 +441,40 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
    fmt.Println(helloResponse.GetResponseMsg())  
 &#125;</code></pre></div>
 
+
+
+<h1 id="grpc拦截器"><a href="#grpc拦截器" class="headerlink" title="grpc拦截器"></a>grpc拦截器</h1><p>上面代码中token是在服务函数中验证的，显然不合理，grpc与gin一样也有拦截器，可以添加一个拦截器进行token的验证</p>
+<p>创建grpc的拦截器</p>
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tokenHandler</span><span class="hljs-params">()</span> <span class="hljs-title">grpc</span>.<span class="hljs-title">UnaryServerInterceptor</span></span> &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ctx context.Context, req <span class="hljs-keyword">interface</span>&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler)</span> <span class="hljs-params">(resp <span class="hljs-keyword">interface</span>&#123;&#125;, err error)</span></span> &#123;
+		log.Print(<span class="hljs-string">&quot;tokenHandler Interceptor...&quot;</span>)
+		<span class="hljs-comment">// 获取元数据</span>
+		md, ok := metadata.FromIncomingContext(ctx)
+		<span class="hljs-keyword">if</span> !ok &#123;
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;token does not exist&quot;</span>)
+		&#125;
+		<span class="hljs-keyword">var</span> appId <span class="hljs-keyword">string</span>
+		<span class="hljs-keyword">var</span> appKey <span class="hljs-keyword">string</span>
+		<span class="hljs-keyword">if</span> v, ok := md[<span class="hljs-string">&quot;appid&quot;</span>]; ok &#123; <span class="hljs-comment">// 这里所有字母都为小写</span>
+			appId = v[<span class="hljs-number">0</span>]
+		&#125;
+		<span class="hljs-keyword">if</span> v, ok := md[<span class="hljs-string">&quot;appkey&quot;</span>]; ok &#123;
+			appKey = v[<span class="hljs-number">0</span>]
+		&#125;
+		log.Printf(<span class="hljs-string">&quot;appId: %v, appKey: %v\n&quot;</span>, appId, appKey)
+		<span class="hljs-keyword">if</span> appId != <span class="hljs-string">&quot;sunzy&quot;</span> || appKey != <span class="hljs-string">&quot;123456&quot;</span>&#123;
+			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;token error&quot;</span>)
+		&#125;
+		log.Print(<span class="hljs-string">&quot;token is valid&quot;</span>)
+		resp, err = handler(ctx,req)
+		<span class="hljs-keyword">return</span> resp, err
+	&#125;
+&#125;</code></pre></div>
+
+<p>在main函数中添加拦截器</p>
+<div class="hljs"><pre><code class="hljs go">grpcServer := grpc.NewServer(grpc.Creds(insecure.NewCredentials()),grpc.ChainUnaryInterceptor(tokenHandler())) <span class="hljs-comment">//添加拦截器</span></code></pre></div>
+
+
             </div>
             <hr>
             <div>
@@ -469,6 +503,12 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/03/25/MYDB/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MYDB</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

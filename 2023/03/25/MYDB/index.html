@@ -1,0 +1,1382 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>MYDB - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-03-25 22:01" pubdate>
+        2023年3月25日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      5.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      79
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">MYDB</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="MYDB项目的总结"><a href="#MYDB项目的总结" class="headerlink" title="MYDB项目的总结"></a>MYDB项目的总结</h1><p>花了一周从头到尾看了整个项目，在此做个总结，真是太复杂了，实在佩服作者。如果有错误，请指正。</p>
+<h2 id="MYDB的每个部分的作用"><a href="#MYDB的每个部分的作用" class="headerlink" title="MYDB的每个部分的作用"></a>MYDB的每个部分的作用</h2><ul>
+<li><p>TM 通过维护 XID 文件来维护事务的状态，并提供接口供其他模块来查询某个事务的状态。</p>
+</li>
+<li><p>DM 直接管理数据库 DB 文件和日志文件。DM 的主要职责有：</p>
+<ul>
+<li><p>分页管理 DB 文件，并进行缓存；</p>
+</li>
+<li><p>管理日志文件，保证在发生错误时可以根据日志进行恢复；</p>
+</li>
+<li><p>抽象 DB 文件为 DataItem 供上层模块使用，并提供缓存。</p>
+</li>
+</ul>
+</li>
+<li><p>VM 基于两段锁协议实现了调度序列的可串行化，并实现了 MVCC 以消除读写阻塞。同时实现了两种隔离级别。</p>
+</li>
+<li><p>IM 实现了基于 B+ 树的索引，BTW，目前 where 只支持已索引字段。</p>
+</li>
+<li><p>TBM 实现了对字段和表的管理。同时，解析 SQL 语句，并根据语句操作表。</p>
+</li>
+</ul>
+<h2 id="服务端执行流程"><a href="#服务端执行流程" class="headerlink" title="服务端执行流程"></a>服务端执行流程</h2><h3 id="1-创建对底层的tm模块"><a href="#1-创建对底层的tm模块" class="headerlink" title="1.创建对底层的tm模块"></a>1.创建对底层的tm模块</h3><div class="hljs"><pre><code class="hljs java">TransactionManagerImpl tm= TransactionManager.create(<span class="hljs-string">&quot;cun/tm&quot;</span>);</code></pre></div>
+
+<p>此时会创建一个tm.xid文件，所有的事务xid存放在此</p>
+<h3 id="2-基于tm创建dm模块"><a href="#2-基于tm创建dm模块" class="headerlink" title="2.基于tm创建dm模块"></a>2.基于tm创建dm模块</h3><div class="hljs"><pre><code class="hljs java">DataManager dm=DataManager.create(<span class="hljs-string">&quot;cun/dm&quot;</span>,<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>,tm);</code></pre></div>
+
+<p>DataManager创建过程中，会创建PageCache，Logger</p>
+<div class="hljs"><pre><code class="hljs java">PageCache pc = PageCache.create(path, mem);  
+Logger lg = Logger.create(path);  
+<span class="hljs-comment">// 此时创建了dm.db和dm.log，分别存储数据库数据 和 日志记录</span>
+DataManagerImpl dm = <span class="hljs-keyword">new</span> DataManagerImpl(pc, lg, tm);  
+dm.initPageOne();
+<span class="hljs-comment">//并对pageOne进行初始化</span></code></pre></div>
+
+<h3 id="3-创建VM模块，此处要tm-dm"><a href="#3-创建VM模块，此处要tm-dm" class="headerlink" title="3.创建VM模块，此处要tm,dm"></a>3.创建VM模块，此处要tm,dm</h3><div class="hljs"><pre><code class="hljs java">VersionManager vm= VersionManager.newVersionManager(tm,dm);</code></pre></div>
+
+<p>首先会初始化缓存框架中的信息，初始化成员变量，将SUPER_XID(0)加入到活跃事务列表</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">VersionManagerImpl</span><span class="hljs-params">(TransactionManager tm, DataManager dm)</span> </span>&#123;  
+    <span class="hljs-keyword">super</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 调用父类AbstractCache的构造方法 初始maxResource</span>
+    <span class="hljs-keyword">this</span>.tm = tm;  
+    <span class="hljs-keyword">this</span>.dm = dm;  
+    <span class="hljs-keyword">this</span>.activeTransaction = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();  
+    <span class="hljs-comment">// 初始化 活跃事务列表，并将超级事务 就xid为0的</span>
+    activeTransaction.put(TransactionManagerImpl.SUPER_XID, Transaction.newTransaction(TransactionManagerImpl.SUPER_XID, <span class="hljs-number">0</span>, <span class="hljs-keyword">null</span>));  
+    <span class="hljs-keyword">this</span>.lock = <span class="hljs-keyword">new</span> ReentrantLock();  
+    <span class="hljs-keyword">this</span>.lt = <span class="hljs-keyword">new</span> LockTable();  
+&#125;</code></pre></div>
+
+<h4 id="4-创建TM模块，此处基于VM-DM"><a href="#4-创建TM模块，此处基于VM-DM" class="headerlink" title="4.创建TM模块，此处基于VM,DM"></a>4.创建TM模块，此处基于VM,DM</h4><div class="hljs"><pre><code class="hljs java">TableManager tbm=TableManager.create(<span class="hljs-string">&quot;cun/&quot;</span>,vm,dm);</code></pre></div>
+
+<p>创建文件.tb用于存放表信息</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> TableManager <span class="hljs-title">create</span><span class="hljs-params">(String path, VersionManager vm, DataManager dm)</span> </span>&#123;  
+    Booter booter = Booter.create(path);  
+    booter.update(Parser.long2Byte(<span class="hljs-number">0</span>));  
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TableManagerImpl(vm, dm, booter);  
+&#125;</code></pre></div>
+
+<h3 id="5-开启事务"><a href="#5-开启事务" class="headerlink" title="5.开启事务"></a>5.开启事务</h3><div class="hljs"><pre><code class="hljs java">BeginRes br=tbm.begin(<span class="hljs-keyword">new</span> Begin());</code></pre></div>
+
+
+<h3 id="6-解析SQL语句"><a href="#6-解析SQL语句" class="headerlink" title="6.解析SQL语句"></a>6.解析SQL语句</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">long</span> xid=br.xid;  
+<span class="hljs-comment">//建立一张新表  </span>
+String ss=<span class="hljs-string">&quot;create table students &quot;</span> +  
+        <span class="hljs-string">&quot;name string,age int32 &quot;</span> +  
+        <span class="hljs-string">&quot;(index name age)&quot;</span>;  
+<span class="hljs-keyword">byte</span> b[]=ss.getBytes(StandardCharsets.UTF_8);  
+Object stat = Parser.Parse(b);</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324174126.png" srcset="/img/loading.gif" alt><br>可以看到，解析后会返回一个Object对象，其包含了表名，字段名，字段类型以及索引</p>
+<h3 id="7-执行创建表的SQL语句"><a href="#7-执行创建表的SQL语句" class="headerlink" title="7.执行创建表的SQL语句"></a>7.执行创建表的SQL语句</h3><p>分为四种情况<br>     开启一个事务sql语句为 begin<br>     提交一个事务sql语句为 commit<br>     回滚事务sql语句为abort<br>     其他sql语句 CRUD</p>
+<blockquote>
+<p>MYDB执行sql时，默认是开启事务的，即一条sql语句也是需要提交事务的，也开启手动即begin，保持多个操作的原子性</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs java">Object stat = Parser.Parse(sql);  
+<span class="hljs-keyword">if</span>(Begin.class.isInstance(stat)) &#123;  
+    <span class="hljs-keyword">if</span>(xid != <span class="hljs-number">0</span>) &#123;  
+        <span class="hljs-keyword">throw</span> Error.NestedTransactionException;  
+    &#125;  
+    BeginRes r = tbm.begin((Begin)stat);  
+    xid = r.xid;  
+    <span class="hljs-keyword">return</span> r.result;  
+&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(Commit.class.isInstance(stat)) &#123;  
+    <span class="hljs-keyword">if</span>(xid == <span class="hljs-number">0</span>) &#123;  
+        <span class="hljs-keyword">throw</span> Error.NoTransactionException;  
+    &#125;  
+    <span class="hljs-keyword">byte</span>[] res = tbm.commit(xid);  
+    xid = <span class="hljs-number">0</span>;  
+    <span class="hljs-keyword">return</span> res;  
+&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(Abort.class.isInstance(stat)) &#123;  
+    <span class="hljs-keyword">if</span>(xid == <span class="hljs-number">0</span>) &#123;  
+        <span class="hljs-keyword">throw</span> Error.NoTransactionException;  
+    &#125;  
+    <span class="hljs-keyword">byte</span>[] res = tbm.abort(xid);  
+    xid = <span class="hljs-number">0</span>;  
+    <span class="hljs-keyword">return</span> res;  
+&#125; <span class="hljs-keyword">else</span> &#123;  
+	<span class="hljs-comment">// execute2就是执行CRUD操作的sql</span>
+    <span class="hljs-keyword">return</span> execute2(stat);  
+&#125;</code></pre></div>
+
+<h4 id="创建一张表"><a href="#创建一张表" class="headerlink" title="创建一张表"></a>创建一张表</h4><blockquote>
+<p>假设execute2此时执行的是下面的sql语句</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// create table students  name string,age int32  (index name age)</span>
+String ss=<span class="hljs-string">&quot;create table students &quot;</span> +  
+        <span class="hljs-string">&quot;name string,age int32 &quot;</span> +  
+        <span class="hljs-string">&quot;(index name age)&quot;</span>;  
+<span class="hljs-keyword">byte</span> b[]=ss.getBytes(StandardCharsets.UTF_8);  
+Object stat = Parser.Parse(b);
+tbm.create(xid,(Create) stat);</code></pre></div>
+
+<h4 id="首先会到表的缓存查询是否存在该表名"><a href="#首先会到表的缓存查询是否存在该表名" class="headerlink" title="首先会到表的缓存查询是否存在该表名"></a>首先会到表的缓存查询是否存在该表名</h4><p>也就是第一个if语句中的代码</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] create(<span class="hljs-keyword">long</span> xid, Create create) <span class="hljs-keyword">throws</span> Exception &#123;  
+    lock.lock();  
+    <span class="hljs-keyword">try</span> &#123;  
+	    <span class="hljs-comment">// 此处代码</span>
+        <span class="hljs-keyword">if</span>(tableCache.containsKey(create.tableName)) &#123;  
+            <span class="hljs-keyword">throw</span> Error.DuplicatedTableException;  
+        &#125;  
+        Table table = Table.createTable(<span class="hljs-keyword">this</span>, firstTableUid(), xid, create);
+        updateFirstTableUid(table.uid);  
+        tableCache.put(create.tableName, table);  
+        <span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  
+            xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+        &#125;  
+        xidTableCache.get(xid).add(table);  
+        <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;create &quot;</span> + create.tableName).getBytes();  
+    &#125; <span class="hljs-keyword">finally</span> &#123;  
+        lock.unlock();  
+    &#125;  
+&#125;</code></pre></div>
+
+<ul>
+<li>如果存在，说明表名重复，抛出异常</li>
+<li>如果没有，则创建一张新表</li>
+</ul>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] create(<span class="hljs-keyword">long</span> xid, Create create) <span class="hljs-keyword">throws</span> Exception &#123;  
+    lock.lock();  
+    <span class="hljs-keyword">try</span> &#123;  
+        <span class="hljs-keyword">if</span>(tableCache.containsKey(create.tableName)) &#123;  
+            <span class="hljs-keyword">throw</span> Error.DuplicatedTableException;  
+        &#125;  
+        <span class="hljs-comment">// 接下来解释的是这一行代码的执行过程  </span>
+        Table table = Table.createTable(<span class="hljs-keyword">this</span>, firstTableUid(), xid, create);
+        updateFirstTableUid(table.uid);  
+        tableCache.put(create.tableName, table);  
+        <span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  
+            xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+        &#125;  
+        xidTableCache.get(xid).add(table);  
+        <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;create &quot;</span> + create.tableName).getBytes();  
+    &#125; <span class="hljs-keyword">finally</span> &#123;  
+        lock.unlock();  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>接下来将进入最核心的代码块中<code>Table table = Table.createTable(this, firstTableUid(), xid, create);</code></p>
+<h4 id="进入Table-createTable"><a href="#进入Table-createTable" class="headerlink" title="进入Table.createTable"></a>进入Table.createTable</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 创建一个新的Table对象，并根据传入的Create对象创建字段  nextUid = 0</span>
+Table tb = <span class="hljs-keyword">new</span> Table(tbm, create.tableName, nextUid);  
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; create.fieldName.length; i ++) &#123;  
+    String fieldName = create.fieldName[i];  
+    String fieldType = create.fieldType[i];  
+    <span class="hljs-keyword">boolean</span> indexed = <span class="hljs-keyword">false</span>;  
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; create.index.length; j ++) &#123;  
+        <span class="hljs-keyword">if</span>(fieldName.equals(create.index[j])) &#123;  
+            indexed = <span class="hljs-keyword">true</span>;  
+            <span class="hljs-keyword">break</span>;  
+        &#125;  
+    &#125;
+    <span class="hljs-comment">// 创建字段</span>
+        tb.fields.add(Field.createField(tb, xid, fieldName, fieldType, indexed));  
+    <span class="hljs-comment">// 将新建的Field对象添加到Table对象的fields列表中  </span>
+&#125;
+</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324175248.png" srcset="/img/loading.gif" alt><br>在for循环中取出表的所有字段信息和类型，并判断是否为索引类型，接着创建字段信息</p>
+<h4 id="进入Field-createField代码逻辑"><a href="#进入Field-createField代码逻辑" class="headerlink" title="进入Field.createField代码逻辑"></a>进入Field.createField代码逻辑</h4><div class="hljs"><pre><code class="hljs java">typeCheck(fieldType);  
+Field f = <span class="hljs-keyword">new</span> Field(tb, fieldName, fieldType, <span class="hljs-number">0</span>);  
+<span class="hljs-keyword">if</span>(indexed) &#123;  
+    <span class="hljs-keyword">long</span> index = BPlusTree.create(((TableManagerImpl)tb.tbm).dm);  
+    BPlusTree bt = BPlusTree.load(index, ((TableManagerImpl)tb.tbm).dm);  
+    f.index = index;  
+    f.bt = bt;  
+&#125;  
+f.persistSelf(xid);  
+<span class="hljs-keyword">return</span> f;</code></pre></div>
+
+<p>如果该字段是索引类型，将会为该索引创建B+树，以上参数信息如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324180543.png" srcset="/img/loading.gif" alt></p>
+<p>![]</p>
+<h4 id="persistSelf"><a href="#persistSelf" class="headerlink" title="persistSelf()"></a>persistSelf()</h4><p>最后会执行<code>persistSelf()</code>，将字段数据写入磁盘</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">persistSelf</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-keyword">byte</span>[] nameRaw = Parser.string2Byte(fieldName);  
+    <span class="hljs-keyword">byte</span>[] typeRaw = Parser.string2Byte(fieldType);  
+    <span class="hljs-keyword">byte</span>[] indexRaw = Parser.long2Byte(index);  
+    <span class="hljs-keyword">this</span>.uid = ((TableManagerImpl)tb.tbm).vm.insert(xid, Bytes.concat(nameRaw, typeRaw, indexRaw));  
+&#125;</code></pre></div>
+
+<p>将字段名、类型以及索引值转换为byte类型，交给vm插入<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/1679654859017.jpg" srcset="/img/loading.gif" alt></p>
+<h4 id="进入-TableManagerImpl-tb-tbm-vm-insert逻辑"><a href="#进入-TableManagerImpl-tb-tbm-vm-insert逻辑" class="headerlink" title="进入((TableManagerImpl)tb.tbm).vm.insert逻辑"></a>进入((TableManagerImpl)tb.tbm).vm.insert逻辑</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    lock.lock();  
+    Transaction t = activeTransaction.get(xid);   <span class="hljs-comment">//从活跃的事务列表中取出该事务</span>
+    lock.unlock();  
+  
+    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">throw</span> t.err;  
+    &#125;  
+	<span class="hljs-comment">// 将数据拼接成一个Entry</span>
+    <span class="hljs-keyword">byte</span>[] raw = Entry.wrapEntryRaw(xid, data);  
+    <span class="hljs-comment">// 插入DataItem的Data位置</span>
+    <span class="hljs-keyword">return</span> dm.insert(xid, raw);  
+&#125;</code></pre></div>
+
+<p>该段中raw的数据如下，就是在VM模块中介绍的Entry的存储结构<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324181517.png" srcset="/img/loading.gif" alt></p>
+<h4 id="进入dm-insert-执行流程"><a href="#进入dm-insert-执行流程" class="headerlink" title="进入dm.insert()执行流程"></a>进入dm.insert()执行流程</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">byte</span>[] raw = DataItem.wrapDataItemRaw(data);  
+<span class="hljs-keyword">if</span>(raw.length &gt; PageX.MAX_FREE_SPACE) &#123;  
+    <span class="hljs-keyword">throw</span> Error.DataTooLargeException;  
+&#125;</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324185356.png" srcset="/img/loading.gif" alt><br>使用<code>PageIndex</code>选择合适的页面进行存储</p>
+<div class="hljs"><pre><code class="hljs java">PageInfo pi = <span class="hljs-keyword">null</span>;  
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i ++) &#123;  
+    pi = pIndex.select(raw.length);  
+    <span class="hljs-keyword">if</span> (pi != <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">break</span>;  
+    &#125; <span class="hljs-keyword">else</span> &#123;  
+        <span class="hljs-keyword">int</span> newPgno = pc.newPage(PageX.initRaw());  
+        pIndex.add(newPgno, PageX.MAX_FREE_SPACE);  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>取出page，插入insertLog，用于恢复时使用</p>
+<div class="hljs"><pre><code class="hljs java">pg = pc.getPage(pi.pgno);  
+<span class="hljs-keyword">byte</span>[] log = Recover.insertLog(xid, pg, raw);  <span class="hljs-comment">// 解析出log返回，log的格式如下图</span>
+logger.log(log);  <span class="hljs-comment">// 向.log文件中写入log，并更行日志文件的校验和，用于数据恢复</span>
+<span class="hljs-keyword">short</span> offset = PageX.insert(pg, raw);  <span class="hljs-comment">// .db文件中写入真正的数据</span>
+  
+pg.release();  
+<span class="hljs-keyword">return</span> Types.addressToUid(pi.pgno, offset);
+
+
+<span class="hljs-keyword">finally</span> &#123;  
+    <span class="hljs-comment">// 将取出的pg重新插入pIndex  </span>
+    <span class="hljs-keyword">if</span>(pg != <span class="hljs-keyword">null</span>) &#123;  
+        pIndex.add(pi.pgno, PageX.getFreeSpace(pg));  
+    &#125; <span class="hljs-keyword">else</span> &#123;  
+        pIndex.add(pi.pgno, freeSpace);  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>==以上代码都在dm.insert()中==<br>log变量的存储结构如下所示<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324191950.png" srcset="/img/loading.gif" alt><br>最后返回插入位置的偏移量<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324192830.png" srcset="/img/loading.gif" alt><br><code>PageX.inset()</code>的代码逻辑</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">short</span> <span class="hljs-title">insert</span><span class="hljs-params">(Page pg, <span class="hljs-keyword">byte</span>[] raw)</span> </span>&#123;  
+    pg.setDirty(<span class="hljs-keyword">true</span>); <span class="hljs-comment">// 此时该位置数据更新 所以为脏数据  </span>
+    <span class="hljs-keyword">short</span> offset = getFSO(pg.getData()); <span class="hljs-comment">// 获取空闲位置的偏移 在之后插入数据  </span>
+    System.arraycopy(raw, <span class="hljs-number">0</span>, pg.getData(), offset, raw.length);  <span class="hljs-comment">// 将数据拷贝到指定的内存地址</span>
+    setFSO(pg.getData(), (<span class="hljs-keyword">short</span>)(offset + raw.length));  <span class="hljs-comment">// 更新FSO</span>
+    <span class="hljs-keyword">return</span> offset;  
+&#125;</code></pre></div>
+
+<p>完成上面的一系列操作后，sql的执行过程已经持久化到磁盘中。</p>
+<h4 id="回到tbm-create-xid-Create-stat-中"><a href="#回到tbm-create-xid-Create-stat-中" class="headerlink" title="回到tbm.create(xid,(Create) stat);`中"></a>回到tbm.create(xid,(Create) stat);`中</h4><div class="hljs"><pre><code class="hljs java">updateFirstTableUid(table.uid);  <span class="hljs-comment">// 更新.tb文件</span>
+tableCache.put(create.tableName, table);  
+<span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  
+    xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+&#125;  
+xidTableCache.get(xid).add(table);  
+<span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;create &quot;</span> + create.tableName).getBytes();</code></pre></div>
+
+<p><code>updateFirstTableUid()</code>用于将新增表的uid更新到<code>.tb</code>文件中，该函数会调用<code>Booter.update()</code>函数，该函数在更新<code>.tb</code>文件时，用创建一个新文件其后缀为<code>.bt_tmp</code><br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324215438.png" srcset="/img/loading.gif" alt><br>之后，将新数据写入该文件，再将<code>.bt</code>文件中的内容拷贝到临时文件<code>.bt_tmp</code>中，准备好全部数据后，会用<code>.bt_tmp</code>将原来的<code>.bt</code>文件覆盖。如此更新数据，是为了保证更新数据的原子性。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] data)</span> </span>&#123;  
+    File tmp = <span class="hljs-keyword">new</span> File(path + BOOTER_TMP_SUFFIX);  
+    <span class="hljs-keyword">try</span> &#123;  
+        tmp.createNewFile();  
+    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;  
+        Panic.panic(e);  
+    &#125;  
+    <span class="hljs-keyword">if</span>(!tmp.canRead() || !tmp.canWrite()) &#123;  
+        Panic.panic(Error.FileCannotRWException);  
+    &#125;  
+    <span class="hljs-keyword">try</span>(FileOutputStream out = <span class="hljs-keyword">new</span> FileOutputStream(tmp)) &#123;  
+        out.write(data);  
+        out.flush();  
+    &#125; <span class="hljs-keyword">catch</span>(IOException e) &#123;  
+        Panic.panic(e);  
+    &#125;  
+    <span class="hljs-keyword">try</span> &#123;  
+    <span class="hljs-comment">// 覆盖原文件</span>
+        Files.move(tmp.toPath(), <span class="hljs-keyword">new</span> File(path+BOOTER_SUFFIX).toPath(), StandardCopyOption.REPLACE_EXISTING);  
+    &#125; <span class="hljs-keyword">catch</span>(IOException e) &#123;  
+        Panic.panic(e);  
+    &#125;  
+    <span class="hljs-comment">// 返回新的File对象</span>
+    file = <span class="hljs-keyword">new</span> File(path+BOOTER_SUFFIX);  
+    <span class="hljs-keyword">if</span>(!file.canRead() || !file.canWrite()) &#123;  
+        Panic.panic(Error.FileCannotRWException);  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>接着继续回到<code>tbm.create(xid,(Create) stat)</code>中，后面的代码相对简单。</p>
+<div class="hljs"><pre><code class="hljs java">tableCache.put(create.tableName, table);  <span class="hljs-comment">// 将创建好的表名放进 表缓存tableCache，方便下次创建表时，进行表名重复的检查</span>
+
+<span class="hljs-comment">// xidTableCache 存放的是事务xid创建的table集合</span>
+<span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  <span class="hljs-comment">// 如果该事务xid 不在xidTableCache中，则将其加入</span>
+	xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+&#125;  
+<span class="hljs-comment">// 将创建的表名加入 </span>
+xidTableCache.get(xid).add(table);  
+<span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;create &quot;</span> + create.tableName).getBytes();  <span class="hljs-comment">// 返回此次sql语句执行的结果</span></code></pre></div>
+
+<h3 id="8-执行插入的SQL语句"><a href="#8-执行插入的SQL语句" class="headerlink" title="8.执行插入的SQL语句"></a>8.执行插入的SQL语句</h3><div class="hljs"><pre><code class="hljs java">ss=<span class="hljs-string">&quot;insert into students values xiaohong 18&quot;</span>;  
+b=ss.getBytes(StandardCharsets.UTF_8);  
+stat = Parser.Parse(b);  
+tbm.insert(xid,(Insert) stat);</code></pre></div>
+
+<p>解析出的sql语句<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324223619.png" srcset="/img/loading.gif" alt><br><code>tbm.insert()</code>中的代码</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>  
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] insert(<span class="hljs-keyword">long</span> xid, Insert insert) <span class="hljs-keyword">throws</span> Exception &#123;  
+    lock.lock();  
+    Table table = tableCache.get(insert.tableName);  
+    lock.unlock();  
+    <span class="hljs-keyword">if</span>(table == <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">throw</span> Error.TableNotFoundException;  
+    &#125;  
+    table.insert(xid, insert);  
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;insert&quot;</span>.getBytes();  
+&#125;</code></pre></div>
+
+<p>首先检查表名是否存在，不在则抛出<code>TableNotFoundException</code>异常<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324224735.png" srcset="/img/loading.gif" alt><br>如果存在，则进入<code>table.insert(xid, insert)</code>,代码如下</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, Insert insert)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    Map&lt;String, Object&gt; entry = string2Entry(insert.values);  
+    <span class="hljs-keyword">byte</span>[] raw = entry2Raw(entry);  
+    <span class="hljs-keyword">long</span> uid = ((TableManagerImpl)tbm).vm.insert(xid, raw);  
+    <span class="hljs-keyword">for</span> (Field field : fields) &#123;  
+        <span class="hljs-keyword">if</span>(field.isIndexed()) &#123;  
+            field.insert(entry.get(field.fieldName), uid);  
+        &#125;  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>首先将SQL语句转换成一条Entry<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324230818.png" srcset="/img/loading.gif" alt><br>接着进入<code>long uid = ((TableManagerImpl)tbm).vm.insert(xid, raw);</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>  
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    lock.lock();  
+    Transaction t = activeTransaction.get(xid);  
+    lock.unlock();  
+  
+    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">throw</span> t.err;  
+    &#125;  
+  
+    <span class="hljs-keyword">byte</span>[] raw = Entry.wrapEntryRaw(xid, data);  
+    <span class="hljs-keyword">return</span> dm.insert(xid, raw);  
+&#125;</code></pre></div>
+
+<p><code>raw</code>的数据结构如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324231556.png" srcset="/img/loading.gif" alt><br>进入<code>dm.insert(xid, raw)</code>，与创建表的过程一样</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-keyword">byte</span>[] raw = DataItem.wrapDataItemRaw(data);  
+    <span class="hljs-keyword">if</span>(raw.length &gt; PageX.MAX_FREE_SPACE) &#123;  
+        <span class="hljs-keyword">throw</span> Error.DataTooLargeException;  
+    &#125;  
+  
+    PageInfo pi = <span class="hljs-keyword">null</span>;  
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i ++) &#123;  
+        pi = pIndex.select(raw.length);  
+        <span class="hljs-keyword">if</span> (pi != <span class="hljs-keyword">null</span>) &#123;  
+            <span class="hljs-keyword">break</span>;  
+        &#125; <span class="hljs-keyword">else</span> &#123;  
+            <span class="hljs-keyword">int</span> newPgno = pc.newPage(PageX.initRaw());  
+            pIndex.add(newPgno, PageX.MAX_FREE_SPACE);  
+        &#125;  
+    &#125;  
+    <span class="hljs-keyword">if</span>(pi == <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">throw</span> Error.DatabaseBusyException;  
+    &#125;</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324232309.png" srcset="/img/loading.gif" alt></p>
+<div class="hljs"><pre><code class="hljs java">    Page pg = <span class="hljs-keyword">null</span>;  
+    <span class="hljs-keyword">int</span> freeSpace = <span class="hljs-number">0</span>;  
+    <span class="hljs-keyword">try</span> &#123;  
+        pg = pc.getPage(pi.pgno);  
+        <span class="hljs-keyword">byte</span>[] log = Recover.insertLog(xid, pg, raw);  
+        logger.log(log);  
+  
+        <span class="hljs-keyword">short</span> offset = PageX.insert(pg, raw);  
+  
+        pg.release();  
+        <span class="hljs-keyword">return</span> Types.addressToUid(pi.pgno, offset);  
+  
+    &#125; <span class="hljs-keyword">finally</span> &#123;  
+        <span class="hljs-comment">// 将取出的pg重新插入pIndex  </span>
+        <span class="hljs-keyword">if</span>(pg != <span class="hljs-keyword">null</span>) &#123;  
+            pIndex.add(pi.pgno, PageX.getFreeSpace(pg));  
+        &#125; <span class="hljs-keyword">else</span> &#123;  
+            pIndex.add(pi.pgno, freeSpace);  
+        &#125;  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>log的数据结构如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324232631.png" srcset="/img/loading.gif" alt><br><code>logger.log(log)</code>中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] data)</span> </span>&#123;  
+    <span class="hljs-keyword">byte</span>[] log = wrapLog(data);  
+    ByteBuffer buf = ByteBuffer.wrap(log);  
+    lock.lock();  
+    <span class="hljs-keyword">try</span> &#123;  
+        fc.position(fc.size());  
+        fc.write(buf);  
+    &#125; <span class="hljs-keyword">catch</span>(IOException e) &#123;  
+        Panic.panic(e);  
+    &#125; <span class="hljs-keyword">finally</span> &#123;  
+        lock.unlock();  
+    &#125;  
+    <span class="hljs-comment">// 添加log后需要对log文件的头部的校验和进行更新  </span>
+    updateXChecksum(log);  
+&#125;</code></pre></div>
+
+<p>log被进一步被打包成下面的结构<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324233431.png" srcset="/img/loading.gif" alt><br>接着将log写入到<code>.log</code>文件中，最后更新整个文件的校验和<code>updateXChecksum(log)</code>，之后回到</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">short</span> offset = PageX.insert(pg, raw);  
+
+pg.release();  
+<span class="hljs-keyword">return</span> Types.addressToUid(pi.pgno, offset);</code></pre></div>
+
+<p>进入<code>short offset = PageX.insert(pg, raw);</code>,将<code>raw</code>数据写入磁盘中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">short</span> <span class="hljs-title">insert</span><span class="hljs-params">(Page pg, <span class="hljs-keyword">byte</span>[] raw)</span> </span>&#123;  
+    pg.setDirty(<span class="hljs-keyword">true</span>); <span class="hljs-comment">// 此时该位置数据更新 所以为脏数据  </span>
+    <span class="hljs-keyword">short</span> offset = getFSO(pg.getData()); <span class="hljs-comment">// 获取空闲位置的偏移 在之后插入数据  </span>
+    System.arraycopy(raw, <span class="hljs-number">0</span>, pg.getData(), offset, raw.length);  
+    setFSO(pg.getData(), (<span class="hljs-keyword">short</span>)(offset + raw.length));  
+    <span class="hljs-keyword">return</span> offset;  
+&#125;</code></pre></div>
+
+<p>写入 磁盘后将page,放回pageIndex中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">finally</span> &#123;  
+    <span class="hljs-comment">// 将取出的pg重新插入pIndex  </span>
+   <span class="hljs-keyword">if</span>(pg != <span class="hljs-keyword">null</span>) &#123;  
+        pIndex.add(pi.pgno, PageX.getFreeSpace(pg));  
+    &#125; <span class="hljs-keyword">else</span> &#123;  
+        pIndex.add(pi.pgno, freeSpace);  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>以上是将sql的执行日志保存下来，用于recover，<br>回到<code>table.insert(xid, insert)</code>中<br>接下来才是真正写数据的过程</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (Field field : fields) &#123;  
+    <span class="hljs-keyword">if</span>(field.isIndexed()) &#123;  
+        field.insert(entry.get(field.fieldName), uid);  
+    &#125;  
+&#125;</code></pre></div>
+
+<p><code>field.insert()</code>向b+树插入数据</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(Object key, <span class="hljs-keyword">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-keyword">long</span> uKey = value2Uid(key);  
+    bt.insert(uKey, uid);  
+&#125;</code></pre></div>
+
+<p>执行完以上步骤回到<code>tbm.insert()</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">return</span> <span class="hljs-string">&quot;insert&quot;</span>.getBytes();</code></pre></div>
+
+<p>返回到主函数，执行结束。</p>
+<h3 id="9-查询语句执行流程"><a href="#9-查询语句执行流程" class="headerlink" title="9.查询语句执行流程"></a>9.查询语句执行流程</h3><p>以下面的的sql语句作为例子</p>
+<div class="hljs"><pre><code class="hljs java">ss=<span class="hljs-string">&quot;select name,age from students where age=18&quot;</span>;  
+b=ss.getBytes(StandardCharsets.UTF_8);  
+stat = Parser.Parse(b);  
+<span class="hljs-keyword">byte</span>[] output=tbm.read(xid,(Select) stat);</code></pre></div>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325105353.png" srcset="/img/loading.gif" alt></p>
+<p>进入<code>tbm.read(xid, (Select) stat)</code>，同样先查询是否存在该表<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325105541.png" srcset="/img/loading.gif" alt><br>进入<code>table.read(xid, read);</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">read</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, Select read)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-comment">// 解析where条件并得到需要查询的uid列表  </span>
+    List&lt;Long&gt; uids = parseWhere(read.where);  
+    StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();  
+    <span class="hljs-comment">// 循环遍历uids列表，逐个查询对应的记录，并输出结果  </span>
+    <span class="hljs-keyword">for</span> (Long uid : uids) &#123;  
+        <span class="hljs-keyword">byte</span>[] raw = ((TableManagerImpl)tbm).vm.read(xid, uid);  
+        <span class="hljs-keyword">if</span>(raw == <span class="hljs-keyword">null</span>) <span class="hljs-keyword">continue</span>;  
+        Map&lt;String, Object&gt; entry = parseEntry(raw);  
+        sb.append(printEntry(entry)).append(<span class="hljs-string">&quot;\n&quot;</span>);  
+    &#125;  
+    <span class="hljs-keyword">return</span> sb.toString();  
+&#125;</code></pre></div>
+
+<p>首先解析where条件中的字段以及数据<code>parseWhere(Where where)</code>，这一步主要就是找到where条件查询的字段，交给<code>calWhere(fd, where)</code>查找出条件的上下界，其中逻辑比较简单，不在赘述。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> CalWhereRes <span class="hljs-title">calWhere</span><span class="hljs-params">(Field fd, Where where)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    CalWhereRes res = <span class="hljs-keyword">new</span> CalWhereRes();  
+    <span class="hljs-keyword">switch</span>(where.logicOp) &#123;  
+        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;&quot;</span>:  <span class="hljs-comment">// 单个where条件</span>
+            res.single = <span class="hljs-keyword">true</span>;  
+            FieldCalRes r = fd.calExp(where.singleExp1);  
+            res.l0 = r.left; res.r0 = r.right;  
+            <span class="hljs-keyword">break</span>;  
+        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;or&quot;</span>:  <span class="hljs-comment">// or查询，两次查询结果取并集</span>
+            res.single = <span class="hljs-keyword">false</span>;  
+            r = fd.calExp(where.singleExp1);  
+            res.l0 = r.left; res.r0 = r.right;  
+            r = fd.calExp(where.singleExp2);  
+            res.l1 = r.left; res.r1 = r.right;  
+            <span class="hljs-keyword">break</span>;  
+        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;and&quot;</span>:  <span class="hljs-comment">// and查询 最后两个结果取交集</span>
+            res.single = <span class="hljs-keyword">true</span>;  
+            r = fd.calExp(where.singleExp1);  
+            res.l0 = r.left; res.r0 = r.right;  
+            r = fd.calExp(where.singleExp2);  
+            res.l1 = r.left; res.r1 = r.right;  
+            <span class="hljs-keyword">if</span>(res.l1 &gt; res.l0) res.l0 = res.l1;  
+            <span class="hljs-keyword">if</span>(res.r1 &lt; res.r0) res.r0 = res.r1;  
+            <span class="hljs-keyword">break</span>;  
+        <span class="hljs-keyword">default</span>:  
+            <span class="hljs-keyword">throw</span> Error.InvalidLogOpException;  
+    &#125;  
+    <span class="hljs-keyword">return</span> res;  
+&#125;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CalWhereRes</span> </span>&#123;  
+    <span class="hljs-keyword">long</span> l0, r0, l1, r1;  
+    <span class="hljs-keyword">boolean</span> single;  
+&#125;</code></pre></div>
+
+<p>在<code>calWhere(fd, where)</code>中，会使用<code>fd.calExp(where.singleExp1)</code>，其作用返回一个<code>CalWhereRes</code>类型的结果，其中包含结果的范围。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> FieldCalRes <span class="hljs-title">calExp</span><span class="hljs-params">(SingleExpression exp)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    Object v = <span class="hljs-keyword">null</span>;  
+    FieldCalRes res = <span class="hljs-keyword">new</span> FieldCalRes();  
+    <span class="hljs-keyword">switch</span>(exp.compareOp) &#123;  
+        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;&lt;&quot;</span>:  
+            res.left = <span class="hljs-number">0</span>;  
+            v = string2Value(exp.value);  
+            res.right = value2Uid(v);  
+            <span class="hljs-keyword">if</span>(res.right &gt; <span class="hljs-number">0</span>) &#123;  
+                res.right --;  
+            &#125;  
+            <span class="hljs-keyword">break</span>;  
+        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;=&quot;</span>:  
+            v = string2Value(exp.value);  
+            res.left = value2Uid(v);  
+            res.right = res.left;  
+            <span class="hljs-keyword">break</span>;  
+        <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;&gt;&quot;</span>:  
+            res.right = Long.MAX_VALUE;  
+            v = string2Value(exp.value);  
+            res.left = value2Uid(v) + <span class="hljs-number">1</span>;  
+            <span class="hljs-keyword">break</span>;  
+    &#125;  
+    <span class="hljs-keyword">return</span> res;  
+&#125;</code></pre></div>
+
+<p><code>v = string2Value(exp.value);</code>在insert操作时也会使用<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325122525.png" srcset="/img/loading.gif" alt><br>将字段数据转换为数字ukey，便于精准查询和范围查询。所以经过<code>calExp()</code>函数的处理后便能够得到响应的左右边界，再到b+树中查询即可。<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325123244.png" srcset="/img/loading.gif" alt><br>此时的函数调用栈如下图<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325123147.png" srcset="/img/loading.gif" alt></p>
+<p>接着回到<code>parseWhere(Where where)</code>函数中</p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Long&gt; uids = fd.search(l0, r0);  
+<span class="hljs-keyword">if</span>(!single) &#123; <span class="hljs-comment">// 若为or查询 还要查询l1,r1范围并加入到结果集中 也就是并集  </span>
+    List&lt;Long&gt; tmp = fd.search(l1, r1);  
+    uids.addAll(tmp);  
+&#125;  
+<span class="hljs-keyword">return</span> uids;</code></pre></div>
+
+<p>进入feild中查找<code>fd.search()</code>会调用b+tree的<code>searchRange()</code>方法</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Long&gt; <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-keyword">long</span> left, <span class="hljs-keyword">long</span> right)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-keyword">return</span> bt.searchRange(left, right);  
+&#125;</code></pre></div>
+
+<p><code>searchRange()</code>代码逻辑如下</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Long&gt; <span class="hljs-title">searchRange</span><span class="hljs-params">(<span class="hljs-keyword">long</span> leftKey, <span class="hljs-keyword">long</span> rightKey)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-keyword">long</span> rootUid = rootUid(); <span class="hljs-comment">// 获取根节点的UID  </span>
+    <span class="hljs-keyword">long</span> leafUid = searchLeaf(rootUid, leftKey); <span class="hljs-comment">// 搜索左边界所在的叶子节点  </span>
+    List&lt;Long&gt; uids = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();  
+    <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;  
+        Node leaf = Node.loadNode(<span class="hljs-keyword">this</span>, leafUid); <span class="hljs-comment">// 加载叶子节点  </span>
+        LeafSearchRangeRes res = leaf.leafSearchRange(leftKey, rightKey); <span class="hljs-comment">// 在叶子节点中搜索符合条件的数据项  </span>
+        leaf.release(); <span class="hljs-comment">// 释放叶子节点  </span>
+        uids.addAll(res.uids); <span class="hljs-comment">// 将符合条件的数据项的UID添加到结果列表中  </span>
+        <span class="hljs-keyword">if</span>(res.siblingUid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">// 如果没有兄弟节点，则说明已经搜完了所有符合条件的数据项  </span>
+            <span class="hljs-keyword">break</span>;  
+        &#125; <span class="hljs-keyword">else</span> &#123;  
+            leafUid = res.siblingUid; <span class="hljs-comment">// 否则，继续搜索下一个兄弟节点  </span>
+        &#125;  
+    &#125;  
+    <span class="hljs-keyword">return</span> uids;  
+&#125;</code></pre></div>
+
+<p>经过<code>leaf.leafSearchRange(leftKey, rightKey);</code>便可以得到符合条件的uid<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325125823.png" srcset="/img/loading.gif" alt><br>再返回到<code>searchRange()</code>中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;  
+    Node leaf = Node.loadNode(<span class="hljs-keyword">this</span>, leafUid); <span class="hljs-comment">// 加载叶子节点  </span>
+    LeafSearchRangeRes res = leaf.leafSearchRange(leftKey, rightKey); <span class="hljs-comment">// 在叶子节点中搜索符合条件的数据项  </span>
+    leaf.release(); <span class="hljs-comment">// 释放叶子节点  </span>
+    uids.addAll(res.uids); <span class="hljs-comment">// 将符合条件的数据项的UID添加到结果列表中  </span>
+    <span class="hljs-keyword">if</span>(res.siblingUid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">// 如果没有兄弟节点，则说明已经搜完了所有符合条件的数据项  </span>
+        <span class="hljs-keyword">break</span>;  
+    &#125; <span class="hljs-keyword">else</span> &#123;  
+        leafUid = res.siblingUid; <span class="hljs-comment">// 否则，继续搜索下一个兄弟节点  </span>
+    &#125;  
+&#125;  
+<span class="hljs-keyword">return</span> uids;</code></pre></div>
+
+<p>释放叶子节点，将满足条件的uid加入到集合，返回给<code>feild.search()</code>，再返回到<code>table.search()</code>，此时回到<code>table.read(xid, read)</code>中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 执行完的代码注释了</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">read</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, Select read)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-comment">// 解析where条件并得到需要查询的uid列表  </span>
+    <span class="hljs-comment">//List&lt;Long&gt; uids = parseWhere(read.where);  </span>
+    StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();  
+    <span class="hljs-comment">// 循环遍历uids列表，逐个查询对应的记录，并输出结果  </span>
+    <span class="hljs-keyword">for</span> (Long uid : uids) &#123;  
+        <span class="hljs-keyword">byte</span>[] raw = ((TableManagerImpl)tbm).vm.read(xid, uid);  
+        <span class="hljs-keyword">if</span>(raw == <span class="hljs-keyword">null</span>) <span class="hljs-keyword">continue</span>;  
+        Map&lt;String, Object&gt; entry = parseEntry(raw);  
+        sb.append(printEntry(entry)).append(<span class="hljs-string">&quot;\n&quot;</span>);  
+    &#125;  
+    <span class="hljs-keyword">return</span> sb.toString();  
+&#125;</code></pre></div>
+
+<p>接下来遍历uids列表，交给vm模块，读取uid。<code>vm.read(xid, uid)</code>代码如下，VM继承了计数缓存框架，会先到缓存中查找数据，也就是<code>entry = super.get(uid);</code>这行代码。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] read(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">long</span> uid) <span class="hljs-keyword">throws</span> Exception &#123;  
+    lock.lock();  
+    Transaction t = activeTransaction.get(xid);  
+    lock.unlock();  
+  
+    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">throw</span> t.err;  
+    &#125;  
+  
+    Entry entry = <span class="hljs-keyword">null</span>;  
+    <span class="hljs-keyword">try</span> &#123;  
+        entry = <span class="hljs-keyword">super</span>.get(uid);  <span class="hljs-comment">// VM继承了计数缓存框架，会先到缓存中查找数据</span>
+    &#125; <span class="hljs-keyword">catch</span>(Exception e) &#123;  
+        <span class="hljs-keyword">if</span>(e == Error.NullEntryException) &#123;  
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;  
+        &#125; <span class="hljs-keyword">else</span> &#123;  
+            <span class="hljs-keyword">throw</span> e;  
+        &#125;  
+    &#125;  
+    <span class="hljs-keyword">try</span> &#123;  
+        <span class="hljs-keyword">if</span>(Visibility.isVisible(tm, t, entry)) &#123;  
+            <span class="hljs-keyword">return</span> entry.data();  
+        &#125; <span class="hljs-keyword">else</span> &#123;  
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;  
+        &#125;  
+    &#125; <span class="hljs-keyword">finally</span> &#123;  
+        entry.release();  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>接下来进入<code>AbstractCache.get()</code>,代码很长。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">protected</span> T <span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-keyword">long</span> key)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;  
+        lock.lock();  
+        <span class="hljs-keyword">if</span>(getting.containsKey(key)) &#123; <span class="hljs-comment">// getting为正在获取某资源的线程  </span>
+            <span class="hljs-comment">// 请求的资源正在被其他线程获取  </span>
+            lock.unlock();  
+            <span class="hljs-keyword">try</span> &#123;  
+                Thread.sleep(<span class="hljs-number">1</span>);  
+            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;  
+                e.printStackTrace();  
+                <span class="hljs-keyword">continue</span>;  
+            &#125;  
+            <span class="hljs-keyword">continue</span>;  
+        &#125;  
+  
+        <span class="hljs-keyword">if</span>(cache.containsKey(key)) &#123;  
+            <span class="hljs-comment">// 资源在缓存中，直接返回  </span>
+            T obj = cache.get(key);  
+            <span class="hljs-comment">// 将事务xid加入到引用了该uid的列表中</span>
+            references.put(key, references.get(key) + <span class="hljs-number">1</span>);  
+            lock.unlock();  
+            <span class="hljs-keyword">return</span> obj;  
+        &#125;  
+  
+        <span class="hljs-comment">// 尝试获取该资源  maxResource是缓存的最大缓存资源数  </span>
+        <span class="hljs-keyword">if</span>(maxResource &gt; <span class="hljs-number">0</span> &amp;&amp; count == maxResource) &#123;  
+            lock.unlock();  
+            <span class="hljs-keyword">throw</span> Error.CacheFullException;  
+        &#125;  
+        count ++;  
+        getting.put(key, <span class="hljs-keyword">true</span>);  
+        lock.unlock();  
+        <span class="hljs-keyword">break</span>;  
+    &#125;  
+  
+    T obj = <span class="hljs-keyword">null</span>;  
+    <span class="hljs-keyword">try</span> &#123;  
+        <span class="hljs-comment">// 资源不在缓存中时  </span>
+        obj = getForCache(key);  
+    &#125; <span class="hljs-keyword">catch</span>(Exception e) &#123;  
+        lock.lock();  
+        count --;  
+        getting.remove(key);  
+        lock.unlock();  
+        <span class="hljs-keyword">throw</span> e;  
+    &#125;  
+  
+    lock.lock();  
+    getting.remove(key);  
+    cache.put(key, obj);  <span class="hljs-comment">// 将从磁盘中加载的</span>
+    references.put(key, <span class="hljs-number">1</span>);  
+    lock.unlock();  
+      
+    <span class="hljs-keyword">return</span> obj;  
+&#125;</code></pre></div>
+
+<p>因为是第一次查询所以，肯定不在缓存中，需要到磁盘中查找<code>obj = getForCache(key)</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">protected</span> Entry <span class="hljs-title">getForCache</span><span class="hljs-params">(<span class="hljs-keyword">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    Entry entry = Entry.loadEntry(<span class="hljs-keyword">this</span>, uid);  
+    <span class="hljs-keyword">if</span>(entry == <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">throw</span> Error.NullEntryException;  
+    &#125;  
+    <span class="hljs-keyword">return</span> entry;  
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Entry <span class="hljs-title">loadEntry</span><span class="hljs-params">(VersionManager vm, <span class="hljs-keyword">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+    DataItem di = ((VersionManagerImpl)vm).dm.read(uid);  
+    <span class="hljs-keyword">return</span> newEntry(vm, di, uid);  
+&#125;</code></pre></div>
+
+<p>获取到entry后,回到<code>AbstractCache.get()</code></p>
+<div class="hljs"><pre><code class="hljs java">lock.lock();  
+getting.remove(key);  
+cache.put(key, obj);  <span class="hljs-comment">// 将从磁盘中加载的entry放入缓存</span>
+references.put(key, <span class="hljs-number">1</span>);  
+lock.unlock();</code></pre></div>
+
+<p>此时的调用栈如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325132416.png" srcset="/img/loading.gif" alt><br>继续返回，回到<code>vm.read(xid, uid)</code>中，判断可见性后返回记录。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] read(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">long</span> uid) <span class="hljs-keyword">throws</span> Exception &#123;  
+	... <span class="hljs-comment">//已执行的代码</span>
+    <span class="hljs-keyword">try</span> &#123;  
+        <span class="hljs-keyword">if</span>(Visibility.isVisible(tm, t, entry)) &#123;  
+            <span class="hljs-keyword">return</span> entry.data();  
+        &#125; <span class="hljs-keyword">else</span> &#123;  
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;  
+        &#125;  
+    &#125; <span class="hljs-keyword">finally</span> &#123;  
+        entry.release();</code></pre></div>
+
+<p>返回到<code>table.read()</code>中,获取的记录如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325133026.png" srcset="/img/loading.gif" alt><br>继续向上返回到<code>tbm.read()</code>，继续返回到主函数，控制台打印结果如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325133301.png" srcset="/img/loading.gif" alt></p>
+<p>整个过程有亿点点的复杂，<a target="_blank" rel="noopener" href="https://ziyang.moe">真佩服作者</a></p>
+<h2 id="分析隔离级别"><a href="#分析隔离级别" class="headerlink" title="分析隔离级别"></a>分析隔离级别</h2><h3 id="读已提交"><a href="#读已提交" class="headerlink" title="读已提交"></a>读已提交</h3><p>准备两个测试用例，第一个为创建表后向其中插入一条数据</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+
+        TransactionManagerImpl tm= TransactionManager.create(<span class="hljs-string">&quot;cun/tm&quot;</span>);
+        DataManager dm=DataManager.create(<span class="hljs-string">&quot;cun/dm&quot;</span>,<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>,tm);
+        VersionManager vm= VersionManager.newVersionManager(tm,dm);
+        TableManager tbm=TableManager.create(<span class="hljs-string">&quot;cun/&quot;</span>,vm,dm);
+
+        <span class="hljs-keyword">byte</span>[] res;
+        Executor executor = <span class="hljs-keyword">new</span> Executor(tbm);
+        String begin = <span class="hljs-string">&quot;begin&quot;</span>;
+        <span class="hljs-keyword">byte</span>[] beginBytes = begin.getBytes(StandardCharsets.UTF_8);
+        String createTB=<span class="hljs-string">&quot;create table students &quot;</span> +
+                <span class="hljs-string">&quot;name string,age int32 &quot;</span> +
+                <span class="hljs-string">&quot;(index name age)&quot;</span>;
+        <span class="hljs-keyword">byte</span>[] createTBBytes=createTB.getBytes(StandardCharsets.UTF_8);
+
+        String insertSQL=<span class="hljs-string">&quot;insert into students values xiaosun 18&quot;</span>;
+        <span class="hljs-keyword">byte</span>[] insertSQLBytes = insertSQL.getBytes(StandardCharsets.UTF_8);
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-keyword">byte</span>[] bytes = executor.execute(beginBytes);
+            res = executor.execute(createTBBytes);
+            System.out.println(<span class="hljs-keyword">new</span> String(res));
+            executor.execute(insertSQLBytes);
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;</code></pre></div>
+
+<p>第二测试用例为查询上述插入的数据</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+
+        TransactionManagerImpl tm= TransactionManager.open(<span class="hljs-string">&quot;cun/tm&quot;</span>);
+        DataManager dm=DataManager.open(<span class="hljs-string">&quot;cun/dm&quot;</span>,<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>,tm);
+        VersionManager vm= VersionManager.newVersionManager(tm,dm);
+        TableManager tbm=TableManager.open(<span class="hljs-string">&quot;cun/&quot;</span>,vm,dm);
+
+        <span class="hljs-comment">//开启事务</span>
+<span class="hljs-comment">//        BeginRes br=tbm.begin(new Begin());</span>
+        <span class="hljs-keyword">byte</span>[] res;
+        Executor executor = <span class="hljs-keyword">new</span> Executor(tbm);
+        String begin = <span class="hljs-string">&quot;begin&quot;</span>;
+        <span class="hljs-keyword">byte</span>[] beginBytes = begin.getBytes(StandardCharsets.UTF_8);
+        String selectSQL=<span class="hljs-string">&quot;select name,age from students where age=18&quot;</span>;
+        <span class="hljs-keyword">byte</span>[] selectSQLBytes=selectSQL.getBytes(StandardCharsets.UTF_8);
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-keyword">byte</span>[] bytes = executor.execute(beginBytes);
+            res = executor.execute(selectSQLBytes);
+            System.out.println(<span class="hljs-keyword">new</span> String(res));
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;</code></pre></div>
+
+<p>首先执行test1，执行到<code>byte[] execute = executor.execute(commitSQLBytes);</code>,停止，在test2中查看是否可以查询到该记录</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230325214413974.png" srcset="/img/loading.gif" alt="image-20230325214413974"></p>
+<p>再将test1中的commit语句放行，再次运行test2，可以成功查询到，也就是实现了读已提交的隔离级别</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230325214623529.png" srcset="/img/loading.gif" alt="image-20230325214623529"></p>
+<h3 id="可重复读"><a href="#可重复读" class="headerlink" title="可重复读"></a>可重复读</h3><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2>
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/02/07/grpc/">
+                        <span class="hidden-mobile">grpc</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MYDB&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
