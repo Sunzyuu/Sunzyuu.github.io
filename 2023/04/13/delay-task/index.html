@@ -1,0 +1,986 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>delay_task - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-04-13 09:56" pubdate>
+        2023年4月13日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      37
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">delay_task</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：4 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="在Springboot中使用RabbitMQ实现倒计时执行任务"><a href="#在Springboot中使用RabbitMQ实现倒计时执行任务" class="headerlink" title="在Springboot中使用RabbitMQ实现倒计时执行任务"></a>在Springboot中使用RabbitMQ实现倒计时执行任务</h1><p> <code>死信</code>顾名思义，就是死掉的信息，英文是Dead Letter。<code>死信交换机（Dead-Letter-Exchange）</code>和普通交换机没有区别，都是可以接受信息并转发到与之绑定并能路由到的队列，区别在于<code>死信交换机</code>是转发<code>死信</code>的，而和该<code>死信交换机</code>绑定的队列就是<code>死信队列</code>。说的再通俗一点，死信交换机和死信队列其实都只是普通的交换机和队列，只不过接受、转发的信息是<code>死信</code>，其他操作并没有区别。</p>
+<h2 id="1-配置RabbitMQ"><a href="#1-配置RabbitMQ" class="headerlink" title="1.配置RabbitMQ"></a>1.配置RabbitMQ</h2><h3 id="1-1-创建交换机"><a href="#1-1-创建交换机" class="headerlink" title="1.1 创建交换机"></a>1.1 创建交换机</h3><p>交换机的存在可以将生产者发送的消息，路由到不同的queue</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413095908823.png" srcset="/img/loading.gif" alt="image-20230413095908823"></p>
+<h3 id="1-2-创建死信队列"><a href="#1-2-创建死信队列" class="headerlink" title="1.2 创建死信队列"></a>1.2 创建死信队列</h3><ul>
+<li>x-message-ttl: 消息的存活时间，单位是ms</li>
+<li>x-dead-letter-exchange: 指定死信队列的交换机为之前创建的delay_exchange</li>
+<li>x-dead-letter-routing-key:  当消息过期之后转发到交换机key(k2)对应的队列queue</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413100411042.png" srcset="/img/loading.gif" alt="image-20230413100411042"></p>
+<h3 id="1-3-创建普通队列"><a href="#1-3-创建普通队列" class="headerlink" title="1.3 创建普通队列"></a>1.3 创建普通队列</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413153741198.png" srcset="/img/loading.gif" alt="image-20230413153741198"></p>
+<h3 id="1-4-绑定交换机和队列"><a href="#1-4-绑定交换机和队列" class="headerlink" title="1.4 绑定交换机和队列"></a>1.4 绑定交换机和队列</h3><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413100759703.png" srcset="/img/loading.gif" alt="image-20230413100759703"></p>
+<h3 id="1-5-代码实现"><a href="#1-5-代码实现" class="headerlink" title="1.5 代码实现"></a>1.5 代码实现</h3><p>以上步骤也能使用代码实现</p>
+<h2 id="2-springboot整合RabbitMQ"><a href="#2-springboot整合RabbitMQ" class="headerlink" title="2 springboot整合RabbitMQ"></a>2 springboot整合RabbitMQ</h2><h3 id="2-1导入依赖"><a href="#2-1导入依赖" class="headerlink" title="2.1导入依赖"></a>2.1导入依赖</h3><div class="hljs"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--raabbitmq客户端--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-amqp<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+
+
+<h3 id="2-2-添加配置"><a href="#2-2-添加配置" class="headerlink" title="2.2 添加配置"></a>2.2 添加配置</h3><div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">rabbitmq:</span>
+  <span class="hljs-attr">host:</span> <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>
+  <span class="hljs-attr">port:</span> <span class="hljs-number">5672</span>
+  <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
+  <span class="hljs-attr">password:</span> <span class="hljs-number">123456</span>
+  <span class="hljs-attr">virtual-host:</span> <span class="hljs-string">host1</span>
+  <span class="hljs-attr">listener:</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">simple</span>
+    <span class="hljs-attr">simple:</span>
+      <span class="hljs-attr">default-requeue-rejected:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 消息被拒绝</span>
+      <span class="hljs-attr">acknowledge-mode:</span> <span class="hljs-string">manual</span>		<span class="hljs-comment"># 手动确认消息</span></code></pre></div>
+
+
+
+<h3 id="2-3-创建交换机、队列并绑定"><a href="#2-3-创建交换机、队列并绑定" class="headerlink" title="2.3 创建交换机、队列并绑定"></a>2.3 创建交换机、队列并绑定</h3><p>第一节的实现，也可以使用代码实现</p>
+<p>队列名、交换机名与key</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RabbitConstants</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_EXCHANGE = <span class="hljs-string">&quot;delay_exchange&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_ROUTING_KEY = <span class="hljs-string">&quot;k1&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_QUEUE = <span class="hljs-string">&quot;delay_queue1&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String QUEUE = <span class="hljs-string">&quot;delay_queue2&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String ROUTING_KEY = <span class="hljs-string">&quot;k2&quot;</span>;
+&#125;</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.sunzy.vulfocus.common.RabbitConstants;
+<span class="hljs-keyword">import</span> org.springframework.amqp.core.*;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;
+
+<span class="hljs-keyword">import</span> java.util.HashMap;
+<span class="hljs-keyword">import</span> java.util.Map;
+<span class="hljs-comment">//@Configuration</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RabbitConfig</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 死信队列</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Queue&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Queue <span class="hljs-title">Queue1</span><span class="hljs-params">()</span> </span>&#123;
+        Map&lt;String, Object&gt; argments = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        argments.put(<span class="hljs-string">&quot;x-message-ttl&quot;</span>, <span class="hljs-number">60000</span>);<span class="hljs-comment">// 一分钟的延时</span>
+        argments.put(<span class="hljs-string">&quot;x-dead-letter-exchange&quot;</span>, RabbitConstants.DLX_EXCHANGE);
+        argments.put(<span class="hljs-string">&quot;x-dead-letter-routing-key&quot;</span>, RabbitConstants.ROUTING_KEY);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Queue(RabbitConstants.DLX_QUEUE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>, argments);
+    &#125;
+
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Queue <span class="hljs-title">Queue2</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Queue(RabbitConstants.QUEUE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 交换机</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Exchange&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Exchange <span class="hljs-title">orderExchange</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DirectExchange(RabbitConstants.DLX_EXCHANGE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">null</span>);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 路由键</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Binding&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Binding <span class="hljs-title">Routing</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> BindingBuilder.bind(Queue2()).to(orderExchange()).with(RabbitConstants.ROUTING_KEY).noargs();
+    &#125;
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 死信路由键</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Binding&#125;</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Binding <span class="hljs-title">DlxRouting</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> BindingBuilder.bind(Queue1()).to(orderExchange()).with(RabbitConstants.DLX_ROUTING_KEY).noargs();
+    &#125;
+&#125;
+</code></pre></div>
+
+<h3 id="2-4-测试代码"><a href="#2-4-测试代码" class="headerlink" title="2.4 测试代码"></a>2.4 测试代码</h3><p>生产者向交换机<code>delay_exchange</code>发送消息，并且key为k1，交换机接收消息后，会将该消息路由到<code>delay_queue1</code>，该消息会在死信队列中待60s后，转发到<code>delay_queue2</code>中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testSendAmqp</span><span class="hljs-params">()</span> </span>&#123;
+    String taskId = <span class="hljs-string">&quot;cfdf21cd13f248d3885ec47329bbb3bf&quot;</span>;
+    amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
+            RabbitConstants.DLX_ROUTING_KEY,
+            taskId);
+    System.out.println(<span class="hljs-string">&quot;发送时间：&quot;</span> + LocalDateTime.now());
+    System.out.println(<span class="hljs-string">&quot;send message success&quot;</span>);
+&#125;</code></pre></div>
+
+<p>消费者这边监听<code>delay_queue2</code>中的消息</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@RabbitListener(queues = RabbitConstants.QUEUE, ackMode = &quot;MANUAL&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+    System.out.println(<span class="hljs-string">&quot;接收死信队列传递的消息...&quot;</span>);
+    System.out.println(<span class="hljs-string">&quot;时间：&quot;</span> + LocalDateTime.now());
+    String taskId = <span class="hljs-keyword">new</span> String(message.getBody());
+    System.out.println(taskId);
+    channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-keyword">false</span>);
+&#125;</code></pre></div>
+
+<p>测试效果如下</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413160512237.png" srcset="/img/loading.gif" alt="image-20230413160512237"></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230413160457446.png" srcset="/img/loading.gif" alt="image-20230413160457446"></p>
+<p>从测试结果可以看出来，时间正好相差60s，已经实现了延时执行任务的操作。</p>
+<h2 id="3-实现倒计时关闭docker容器"><a href="#3-实现倒计时关闭docker容器" class="headerlink" title="3 实现倒计时关闭docker容器"></a>3 实现倒计时关闭docker容器</h2><p>上面的延时消息的实现，主要服务于这个倒计时执行任务。</p>
+<p>有了上面的实现，再实现倒计时关闭docker容器就简单很多</p>
+<h3 id="3-1-启动容器"><a href="#3-1-启动容器" class="headerlink" title="3.1 启动容器"></a>3.1 启动容器</h3><p>首先在启动容器时，如果容器启动成功，此时需要创建一个关闭容器的任务，并将关闭容器的任务发送到死信队列中。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Async</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">runContainer</span><span class="hljs-params">(String containerId, UserDTO user, String taskId, <span class="hljs-keyword">int</span> countdown)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+    ContainerVul containerVul = containerService.query().eq(<span class="hljs-string">&quot;container_id&quot;</span>, containerId).one();
+    <span class="hljs-keyword">if</span> (containerVul == <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">throw</span> ErrorClass.ContainerNotExistsException;
+    &#125;
+    String dockerContainerId = <span class="hljs-keyword">null</span>;
+    UserUserprofile userInfo = userService.getById(user.getId());
+    dockerContainerId = containerVul.getDockerContainerId();
+    ImageInfo imageInfo = imageService.query().eq(<span class="hljs-string">&quot;image_id&quot;</span>, containerVul.getImageIdId()).one();
+    String imageName = imageInfo.getImageName();
+    String imagePort = imageInfo.getImagePort();
+    Integer userId = userInfo.getId();
+
+    Result msg = <span class="hljs-keyword">null</span>;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">         * 创建启动任务</span>
+<span class="hljs-comment">         */</span>
+    HashMap&lt;String, Object&gt; args = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    args.put(<span class="hljs-string">&quot;imageName&quot;</span>, imageName);
+    args.put(<span class="hljs-string">&quot;userId&quot;</span>, userId);
+    args.put(<span class="hljs-string">&quot;imagePort&quot;</span>, imagePort);
+    TaskInfo taskInfo = query().eq(<span class="hljs-string">&quot;task_id&quot;</span>, taskId).one();
+    String command = <span class="hljs-string">&quot;&quot;</span>;
+    String vulFlag = containerVul.getContainerFlag();
+    String containerPort = containerVul.getContainerPort();
+
+    String vulPort = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">if</span> (containerVul.getVulPort() != <span class="hljs-keyword">null</span>) &#123;
+        vulPort = containerVul.getVulPort();
+    &#125;
+    String vulHost = containerVul.getVulHost();
+    Container container = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">if</span> (!StrUtil.isBlank(dockerContainerId)) &#123;
+        CheckResp checkResp = checkContainer(dockerContainerId);
+        <span class="hljs-keyword">if</span> (checkResp.isFlag()) &#123;
+            container = checkResp.getContainer();
+            vulFlag = containerVul.getContainerFlag();
+        &#125;
+    &#125;
+
+    <span class="hljs-comment">// 容器被删除，此时要创建一个容器</span>
+    <span class="hljs-keyword">if</span> (container == <span class="hljs-keyword">null</span>) &#123;
+        String[] portList = imagePort.split(<span class="hljs-string">&quot;,&quot;</span>);
+        ArrayList&lt;String&gt; randomList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        HashMap&lt;String, Integer&gt; portDict = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        <span class="hljs-keyword">for</span> (String port : portList) &#123;
+            String randomPort = <span class="hljs-string">&quot;&quot;</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;
+                randomPort = DockerTools.getRandomPort();
+                <span class="hljs-keyword">if</span> (randomList.contains(randomPort) || containerService.query().eq(<span class="hljs-string">&quot;container_port&quot;</span>, randomPort).one() != <span class="hljs-keyword">null</span>) &#123;
+                    <span class="hljs-keyword">continue</span>;
+                &#125;
+                <span class="hljs-keyword">break</span>;
+            &#125;
+            <span class="hljs-keyword">if</span> (StrUtil.isBlank(randomPort)) &#123;
+                msg = Result.fail(<span class="hljs-string">&quot;端口无效&quot;</span>);
+                <span class="hljs-keyword">break</span>;
+            &#125;
+            randomList.add(randomPort);
+            portDict.put(port + <span class="hljs-string">&quot;/tcp&quot;</span>, Integer.valueOf(randomPort));
+        &#125;
+        <span class="hljs-comment">// 端口重复无法创建</span>
+        <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span>) &#123;
+            taskInfo.setTaskMsg(JSON.toJSONString(msg));
+            taskInfo.setUpdateDate(LocalDateTime.now());
+            taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
+            save(taskInfo);
+            <span class="hljs-comment">//                return taskInfo.getTaskId();</span>
+        &#125;
+        <span class="hljs-comment">// 记录端口映射</span>
+        <span class="hljs-comment">// &#123;&quot;3306&quot;: &quot;24471&quot;, &quot;80&quot;: &quot;29729&quot;&#125;</span>
+        <span class="hljs-comment">// &#123;&quot;3306&quot;:&quot;22113&quot;,&quot;8080&quot;:&quot;12345&quot;&#125;</span>
+        vulPort = JSON.toJSONString(portDict);
+        HashMap&lt;String, Integer&gt; vulPorts = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        Set&lt;Map.Entry&lt;String, Integer&gt;&gt; entries = portDict.entrySet();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : entries) &#123;
+            String port = entry.getKey().split(<span class="hljs-string">&quot;/&quot;</span>)[<span class="hljs-number">0</span>];
+            Integer tmpRandomPort = entry.getValue();
+            vulPorts.put(port, tmpRandomPort);
+        &#125;
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-comment">// 只创建不启动</span>
+            dockerContainerId = DockerTools.runContainerWithPorts(imageName, vulPorts);
+            container = DockerTools.getContainerById(dockerContainerId);
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            <span class="hljs-comment">// 修改任务状态</span>
+            msg = Result.build(<span class="hljs-string">&quot;镜像不存在&quot;</span>, <span class="hljs-keyword">null</span>);
+            taskInfo.setTaskMsg(JSON.toJSONString(msg));
+            taskInfo.setUpdateDate(LocalDateTime.now());
+            taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
+            save(taskInfo);
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(e);
+        &#125;
+        vulFlag = <span class="hljs-string">&quot;flag&#123;&quot;</span> + UUID.randomUUID().toString() + <span class="hljs-string">&quot;&#125;&quot;</span>;
+        <span class="hljs-keyword">if</span> (!StrUtil.isBlank(containerVul.getContainerFlag())) &#123;
+            vulFlag = containerVul.getContainerFlag();
+        &#125;
+        command = <span class="hljs-string">&quot;touch /tmp/&quot;</span> + vulFlag;
+        vulHost = DockerTools.getLocalIp();
+    &#125;   <span class="hljs-comment">// 容器存在</span>
+    LocalDateTime taskStartDate = LocalDateTime.now();
+    LocalDateTime taskEndDate = <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">if</span> (countdown &gt;= <span class="hljs-number">60</span>) &#123;
+        taskEndDate = taskStartDate.plusSeconds(countdown);
+    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (countdown == <span class="hljs-number">0</span>) &#123;
+
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        countdown = SystemConstants.DOCKER_CONTAINER_TIME;
+        taskEndDate = taskStartDate.plusSeconds(countdown);
+    &#125;
+    <span class="hljs-keyword">assert</span> container != <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">if</span> (container.getState().equals(<span class="hljs-string">&quot;running&quot;</span>)) &#123;
+        HashMap&lt;String, Object&gt; data = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        data.put(<span class="hljs-string">&quot;host&quot;</span>, vulHost);
+        data.put(<span class="hljs-string">&quot;port&quot;</span>, vulPort);
+        data.put(<span class="hljs-string">&quot;id&quot;</span>, containerId);
+        data.put(<span class="hljs-string">&quot;status&quot;</span>, <span class="hljs-string">&quot;running&quot;</span>);
+        data.put(<span class="hljs-string">&quot;start_data&quot;</span>, taskStartDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli());
+        data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-keyword">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
+        LambdaQueryWrapper&lt;TaskInfo&gt; wrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getUserId, userId);
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskMsg, JSON.toJSONString(data));
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getOperationType, <span class="hljs-number">2</span>);
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getOperationArgs, JSON.toJSONString(args));
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskEndDate, taskEndDate);
+        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskName, <span class="hljs-string">&quot;运行容器：&quot;</span> + imageName);
+        TaskInfo searchTaskInfo = getOne(wrapper);
+        <span class="hljs-keyword">if</span> (searchTaskInfo == <span class="hljs-keyword">null</span>) &#123;
+            taskInfo.setTaskId(taskId);
+            taskInfo.setTaskStatus(<span class="hljs-number">3</span>);
+            taskInfo.setTaskMsg(JSON.toJSONString(data));
+            taskInfo.setOperationArgs(JSON.toJSONString(args));
+            taskInfo.setUpdateDate(LocalDateTime.now());
+            taskId = taskInfo.getTaskId();
+            LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+            updateWrapperTask.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+            update(taskInfo, updateWrapperTask);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            LambdaQueryWrapper&lt;TaskInfo&gt; removeWapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+            removeWapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+            remove(removeWapper);
+            searchTaskInfo.setTaskId(taskId);
+            searchTaskInfo.setUpdateDate(LocalDateTime.now());
+            searchTaskInfo.setTaskStatus(<span class="hljs-number">3</span>);
+            save(searchTaskInfo);
+        &#125;
+
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        DockerTools.startContainer(dockerContainerId);
+        <span class="hljs-comment">// 写入flag</span>
+        msg = dockerContainerRun(container, command);
+        <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span> &amp;&amp; msg.getStatus() == SystemConstants.HTTP_ERROR) &#123;
+            <span class="hljs-keyword">try</span> &#123;
+                DockerTools.deleteContainer(container.getId());
+            &#125; <span class="hljs-keyword">catch</span> (Exception ignored) &#123;
+                log.info(<span class="hljs-string">&quot;删除容器失败！&quot;</span>);
+            &#125;
+            taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            HashMap&lt;String, Object&gt; data = (HashMap&lt;String, Object&gt;) msg.getData();
+            String status = (String) data.get(<span class="hljs-string">&quot;status&quot;</span>);
+            data.put(<span class="hljs-string">&quot;host&quot;</span>, vulHost);
+            data.put(<span class="hljs-string">&quot;port&quot;</span>, vulPort);
+            data.put(<span class="hljs-string">&quot;id&quot;</span>, containerId);
+            data.put(<span class="hljs-string">&quot;start_data&quot;</span>, taskStartDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli());
+            data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-keyword">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
+
+            containerVul.setContainerStatus(status);
+            containerVul.setDockerContainerId(dockerContainerId);
+            containerVul.setVulHost(vulHost);
+            containerVul.setVulPort(vulPort);
+            containerVul.setContainerFlag(vulFlag);
+            containerVul.setContainerPort(containerPort);
+            containerVul.setCreateDate(LocalDateTime.now());
+            containerVul.setUserId(userId);
+            containerVul.setIScheck(<span class="hljs-keyword">false</span>);
+            LambdaQueryWrapper&lt;ContainerVul&gt; updateWrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+            updateWrapper.eq(<span class="hljs-keyword">true</span>, ContainerVul::getContainerId, containerVul.getContainerId());
+            containerService.update(containerVul, updateWrapper);
+
+            taskInfo.setTaskStartDate(LocalDateTime.now());
+            taskInfo.setTaskEndDate(LocalDateTime.now());
+            taskInfo.setTaskStatus(<span class="hljs-number">3</span>);
+        &#125;
+
+        taskInfo.setTaskMsg(JSON.toJSONString(msg));
+        taskInfo.setUpdateDate(LocalDateTime.now());
+
+        LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+        updateWrapperTask.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+        update(taskInfo, updateWrapperTask);
+    &#125;
+    log.info(<span class="hljs-string">&quot;启动漏洞容器成功，任务ID：&quot;</span> + taskId);
+    <span class="hljs-comment">// 创建关闭容器任务 半小时后关闭</span>
+    String stopContainerTaskId = createStopContainerTask(containerVul, user);
+    <span class="hljs-comment">// 发送到RabbitMQ的死信队列</span>
+    log.info(<span class="hljs-string">&quot;向死信队列发送任务id&quot;</span>);
+    amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
+                                RabbitConstants.DLX_ROUTING_KEY,
+                                stopContainerTaskId);
+&#125;</code></pre></div>
+
+<p>重点代码就是，就很简单。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 发送到RabbitMQ的死信队列</span>
+log.info(<span class="hljs-string">&quot;向死信队列发送任务id&quot;</span>);
+amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
+                            RabbitConstants.DLX_ROUTING_KEY,
+                            stopContainerTaskId);</code></pre></div>
+
+<h3 id="3-2-关闭容器"><a href="#3-2-关闭容器" class="headerlink" title="3.2 关闭容器"></a>3.2 关闭容器</h3><p>在consumer的监听器中执行关闭容器的步骤</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.rabbitmq.client.Channel;
+<span class="hljs-keyword">import</span> com.sunzy.vulfocus.common.RabbitConstants;
+<span class="hljs-keyword">import</span> com.sunzy.vulfocus.service.impl.TaskInfoServiceImpl;
+<span class="hljs-keyword">import</span> org.springframework.amqp.core.Message;
+<span class="hljs-keyword">import</span> org.springframework.amqp.rabbit.annotation.RabbitListener;
+<span class="hljs-keyword">import</span> org.springframework.context.annotation.Lazy;
+<span class="hljs-keyword">import</span> org.springframework.stereotype.Component;
+
+<span class="hljs-keyword">import</span> javax.annotation.Resource;
+<span class="hljs-keyword">import</span> java.io.IOException;
+<span class="hljs-keyword">import</span> java.time.LocalDateTime;
+
+<span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StopContainerListener</span> </span>&#123;
+
+    <span class="hljs-meta">@Resource</span>
+    <span class="hljs-meta">@Lazy</span> <span class="hljs-comment">// 加这个注释，是因为在启动时，出现了Bean循环依赖的错误</span>
+    <span class="hljs-keyword">private</span> TaskInfoServiceImpl taskInfoService;
+
+    <span class="hljs-meta">@RabbitListener(queues = RabbitConstants.QUEUE, ackMode = &quot;MANUAL&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+        System.out.println(<span class="hljs-string">&quot;接收死信队列传递的消息...&quot;</span>);
+        System.out.println(<span class="hljs-string">&quot;时间：&quot;</span> + LocalDateTime.now());
+        String taskId = <span class="hljs-keyword">new</span> String(message.getBody());
+        System.out.println(taskId);
+        <span class="hljs-comment">//</span>
+        taskInfoService.stopContainer(taskId);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-keyword">false</span>);
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>一开始启动时出现报错，类似如下信息，增加<code>@Lazy</code>解决Bean循环依赖的错误</p>
+<div class="hljs"><pre><code class="hljs java">org.springframework.beans.factory.BeanCurrentlyInCreationException: Error creating bean with name <span class="hljs-string">&#x27;AService&#x27;</span>: Bean with name <span class="hljs-string">&#x27;AService&#x27;</span> has been injected into other beans [BService] in its raw version as part of a circular reference, but has eventually been wrapped. This means that said other beans <span class="hljs-keyword">do</span> not use the <span class="hljs-keyword">final</span> version of the bean. This is often the result of over-eager type matching - consider using <span class="hljs-string">&#x27;getBeanNamesForType&#x27;</span> with the <span class="hljs-string">&#x27;allowEagerInit&#x27;</span> flag turned off, <span class="hljs-keyword">for</span> example.</code></pre></div>
+
+<p>完整代码在<a target="_blank" rel="noopener" href="https://github.com/sunzhengyu99/vulfocus">vulfocus_java</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/springboot-rabbitmq/">springboot, rabbitmq</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/03/25/MYDB/">
+                        <span class="hidden-mobile">MYDB</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "delay_task&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
