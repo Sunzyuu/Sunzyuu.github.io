@@ -189,6 +189,57 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/09/30/vulnhub/">vulnhub</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/09/30/vulnhub/">
+          
+          
+            
+          
+          AI-web1搭建环境只要使靶机与kali处于同一网段即可
+网络嗅探在kali中使用
+netdiscover  # 可以探测出与kali处于同一网段中存活的主机
+
+
+由图中的信息可以看到靶机的ip地址为192.168.152.133
+端口扫描使用nmap扫描指定的ip
+nmap -sS -sV -A -n 192.168.152.133
+
+
+扫描结果显示靶机的80端口开放，并且探测到url，使用的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-30 00:22" pubdate>
+              2022-09-30
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/09/27/mysql/">MySql进阶学习</a>
       </h1>
 
@@ -614,63 +665,6 @@ Spring框架在spring-web包中对文件上传进行了封装，大大简化了�
             <i class="iconfont icon-category"></i>
             
               <a href="/categories/javaweb/">javaweb</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/springboot/">springboot</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2022/04/17/springboot-demo/">springboot_demo</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/04/17/springboot-demo/">
-          
-          
-            
-          
-          springboot demo使用springboot整合SSMP
-1.项目需求项目最终实现的页面
-
-​    整体案例中需要采用的技术如下：
-
-
-Dao开发————整合MyBatisPlus，制作数据层测试
-Service开发————基于MyBatisPlus进行增量开发，制作业务层测试类
-Controller开发————基于Restful开发，使用PostMan测试接口功能
-Controlle
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-04-17 21:32" pubdate>
-              2022-04-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/java/">java</a>
             
           </div>
         

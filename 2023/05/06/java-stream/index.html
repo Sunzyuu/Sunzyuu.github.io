@@ -1,0 +1,1225 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>java_stream - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-05-06 20:14" pubdate>
+        2023年5月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      4.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      68
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">java_stream</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 小时前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="1-lambda表达式"><a href="#1-lambda表达式" class="headerlink" title="1.lambda表达式"></a>1.lambda表达式</h1><h2 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h2><p>Lambda是JDK8的语法糖。可以对某些匿名内部类的写法进行简化。是函数式编程的重要体现，不用关心是什么对象，而是更加关注对数据进行什么操作</p>
+<h2 id="1-2-核心原则"><a href="#1-2-核心原则" class="headerlink" title="1.2 核心原则"></a>1.2 核心原则</h2><blockquote>
+<p>可推导可省略</p>
+</blockquote>
+<h2 id="1-3-基本格式"><a href="#1-3-基本格式" class="headerlink" title="1.3 基本格式"></a>1.3 基本格式</h2><div class="hljs"><pre><code class="hljs java">(参数列表) -&gt; &#123;代码&#125;</code></pre></div>
+
+<p>例子</p>
+<p>针对只有一个抽象方法的匿名内部类</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">&quot;hello world!&quot;</span>);
+    &#125;
+&#125;).start();
+
+<span class="hljs-keyword">new</span> Thread(() -&gt; System.out.println(<span class="hljs-string">&quot;hello world!&quot;</span>)).start();
+</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calculate</span><span class="hljs-params">(IntBinaryOperator operator)</span></span>&#123;
+    <span class="hljs-keyword">int</span> a = <span class="hljs-number">10</span>;
+    <span class="hljs-keyword">int</span> b = <span class="hljs-number">20</span>;
+    <span class="hljs-keyword">return</span> operator.applyAsInt(a, b);
+&#125;
+
+<span class="hljs-keyword">int</span> calculate = calculate(<span class="hljs-keyword">new</span> IntBinaryOperator() &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">applyAsInt</span><span class="hljs-params">(<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> left + right;
+    &#125;
+&#125;);
+
+
+<span class="hljs-keyword">int</span> calculate = calculate((a, b) -&gt; a + b);
+
+<span class="hljs-keyword">int</span> calculate = calculate(Integer::sum);</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">intPrint</span><span class="hljs-params">(IntPredicate intPredicate)</span></span>&#123;
+    <span class="hljs-keyword">int</span>[] arr = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : arr) &#123;
+        <span class="hljs-keyword">if</span>(intPredicate.test(i))&#123;
+            System.out.println(i);
+        &#125;
+    &#125;
+&#125;
+
+
+intPrint(<span class="hljs-keyword">new</span> IntPredicate() &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">test</span><span class="hljs-params">(<span class="hljs-keyword">int</span> value)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> value % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>;
+    &#125;
+&#125;);
+
+intPrint( (value -&gt; &#123;
+    <span class="hljs-keyword">return</span> value % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>;
+&#125;));</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;R&gt; <span class="hljs-function">R <span class="hljs-title">typeCover</span><span class="hljs-params">(Function&lt;String, R&gt; function)</span></span>&#123;
+    String str = <span class="hljs-string">&quot;12345&quot;</span>;
+    R result = function.apply(str);
+    <span class="hljs-keyword">return</span> result;
+&#125;        
+
+Integer integer = typeCover(<span class="hljs-keyword">new</span> Function&lt;String, Integer&gt;() &#123;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">apply</span><span class="hljs-params">(String s)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> Integer.valueOf(s);
+    &#125;
+&#125;);
+Integer integer1 = typeCover((s) -&gt; &#123;
+    <span class="hljs-keyword">return</span> Integer.valueOf(s);
+&#125;);
+System.out.println(integer);</code></pre></div>
+
+
+
+
+
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">foreachArr</span><span class="hljs-params">(IntConsumer intConsumer)</span></span>&#123;
+    <span class="hljs-keyword">int</span>[] arr = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : arr) &#123;
+        intConsumer.accept(i);
+    &#125;
+&#125;
+
+foreachArr(<span class="hljs-keyword">new</span> IntConsumer() &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(<span class="hljs-keyword">int</span> value)</span> </span>&#123;
+        System.out.println(value + <span class="hljs-number">2</span>);
+    &#125;
+&#125;);
+
+foreachArr((value -&gt; &#123;
+    System.out.println(value + <span class="hljs-number">2</span>);
+&#125;));
+
+foreachArr(System.out::println);</code></pre></div>
+
+<h2 id="1-4-省略规则"><a href="#1-4-省略规则" class="headerlink" title="1.4 省略规则"></a>1.4 省略规则</h2><ul>
+<li><p>参数类型可以省略</p>
+</li>
+<li><p>方法体只有一句代码时大括号return和唯一一句代码的分号可以省略</p>
+</li>
+<li><p>方法只有一个参数时小括号可以省略</p>
+</li>
+<li><p>以上这些规则都记不住也可以省略不记</p>
+</li>
+</ul>
+<h1 id="2-stream"><a href="#2-stream" class="headerlink" title="2.stream"></a>2.stream</h1><h2 id="2-1-概述"><a href="#2-1-概述" class="headerlink" title="2.1 概述"></a>2.1 概述</h2><p>Java8的Stream使用的是函数式编程模式，如同它的名字一样，它可以被用来对集合或数组进行链状流式的操作。可以更方便的让我们<br>对集合或数组操作。</p>
+<h2 id="2-2-数据准备"><a href="#2-2-数据准备" class="headerlink" title="2.2 数据准备"></a>2.2 数据准备</h2><div class="hljs"><pre><code class="hljs java">
+<span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-meta">@EqualsAndHashCode</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Author</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Long id;
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> String introduction;
+    <span class="hljs-keyword">private</span> Integer age;
+    <span class="hljs-keyword">private</span> List&lt;Book&gt; bookList;
+&#125;</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-meta">@NoArgsConstructor</span>
+<span class="hljs-meta">@EqualsAndHashCode</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span> </span>&#123;
+    <span class="hljs-keyword">private</span> Long id;
+    <span class="hljs-keyword">private</span> String category;
+    <span class="hljs-keyword">private</span> String name;
+    <span class="hljs-keyword">private</span> Double score;
+    <span class="hljs-keyword">private</span> String introduction;
+
+&#125;</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 初始化一些数据</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> List&lt;Author&gt; <span class="hljs-title">getAuthors</span><span class="hljs-params">()</span> </span>&#123;
+    Author author1 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">1L</span>, <span class="hljs-string">&quot;杨杰炜&quot;</span>, <span class="hljs-string">&quot;my introduction 1&quot;</span>, <span class="hljs-number">18</span>, <span class="hljs-keyword">null</span>);
+    Author author2 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">2L</span>, <span class="hljs-string">&quot;yjw&quot;</span>, <span class="hljs-string">&quot;my introduction 2&quot;</span>, <span class="hljs-number">19</span>, <span class="hljs-keyword">null</span>);
+    Author author3 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">3L</span>, <span class="hljs-string">&quot;yjw&quot;</span>, <span class="hljs-string">&quot;my introduction 3&quot;</span>, <span class="hljs-number">14</span>, <span class="hljs-keyword">null</span>);
+    Author author4 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">4L</span>, <span class="hljs-string">&quot;wdt&quot;</span>, <span class="hljs-string">&quot;my introduction 4&quot;</span>, <span class="hljs-number">29</span>, <span class="hljs-keyword">null</span>);
+    Author author5 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">5L</span>, <span class="hljs-string">&quot;wtf&quot;</span>, <span class="hljs-string">&quot;my introduction 5&quot;</span>, <span class="hljs-number">12</span>, <span class="hljs-keyword">null</span>);
+
+    List&lt;Book&gt; books1 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    List&lt;Book&gt; books2 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    List&lt;Book&gt; books3 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+
+    <span class="hljs-comment">// 上面是作者和书</span>
+    books1.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">1L</span>, <span class="hljs-string">&quot;类别,分类啊&quot;</span>, <span class="hljs-string">&quot;书名1&quot;</span>, <span class="hljs-number">45D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books1.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">2L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名2&quot;</span>, <span class="hljs-number">84D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books1.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">3L</span>, <span class="hljs-string">&quot;喜剧&quot;</span>, <span class="hljs-string">&quot;书名3&quot;</span>, <span class="hljs-number">83D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+
+    books2.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">5L</span>, <span class="hljs-string">&quot;天啊&quot;</span>, <span class="hljs-string">&quot;书名4&quot;</span>, <span class="hljs-number">65D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books2.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">6L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名5&quot;</span>, <span class="hljs-number">89D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+
+    books3.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">7L</span>, <span class="hljs-string">&quot;久啊&quot;</span>, <span class="hljs-string">&quot;书名6&quot;</span>, <span class="hljs-number">45D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books3.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">8L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名7&quot;</span>, <span class="hljs-number">44D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books3.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">9L</span>, <span class="hljs-string">&quot;喜剧&quot;</span>, <span class="hljs-string">&quot;书名8&quot;</span>, <span class="hljs-number">81D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+
+    author1.setBookList(books1);
+    author2.setBookList(books2);
+    author3.setBookList(books3);
+    author4.setBookList(books3);
+    author5.setBookList(books2);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(Arrays.asList(author1, author2, author3, author4, author5));
+&#125;</code></pre></div>
+
+<h2 id="2-3-快速入门"><a href="#2-3-快速入门" class="headerlink" title="2.3 快速入门"></a>2.3 快速入门</h2><h3 id="2-3-1-需求"><a href="#2-3-1-需求" class="headerlink" title="2.3.1 需求"></a>2.3.1 需求</h3><p>我们可以调用getAuthors方法获取到作家的集合。现在需要打印所有年龄小于18的作家的名字，并且要注意去重。</p>
+<h3 id="2-3-2-实现"><a href="#2-3-2-实现" class="headerlink" title="2.3.2 实现"></a>2.3.2 实现</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 我们可以调用getAuthors方法获取到作家的集合。现在需要打印所有年龄小于18的作家的名字，并且要注意去重。</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span></span>&#123;
+    List&lt;Author&gt; authors = getAuthors();
+    authors.stream().distinct() <span class="hljs-comment">//去重</span>
+        .filter(author -&gt; author.getAge() &lt; <span class="hljs-number">18</span>)
+        .forEach(author -&gt; System.out.println(author.getName()));
+
+&#125;
+</code></pre></div>
+
+
+
+
+
+<h2 id="2-4-常用操作"><a href="#2-4-常用操作" class="headerlink" title="2.4 常用操作"></a>2.4 常用操作</h2><h3 id="2-4-1-创建流"><a href="#2-4-1-创建流" class="headerlink" title="2.4.1 创建流"></a>2.4.1 创建流</h3><p>单列集合:集合对象.stream()</p>
+<div class="hljs"><pre><code class="hljs java"> List&lt;Author&gt; authors = getAuthors();
+Stream&lt;Author&gt; stream = authors.stream();</code></pre></div>
+
+<p>数组: <code>Arrays.stream(数据)</code>或者使用<code>Stream.of</code>创建</p>
+<div class="hljs"><pre><code class="hljs java">Integer[] arr = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;
+
+Stream&lt;Integer&gt; stream = Arrays.stream(arr);
+Stream&lt;Integer&gt; arr1 = Stream.of(arr);</code></pre></div>
+
+<p>双列集合:转换为单列集合后创建</p>
+<div class="hljs"><pre><code class="hljs java">HashMap&lt;String, String&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+map.put(<span class="hljs-string">&quot;111&quot;</span>, <span class="hljs-string">&quot;111&quot;</span>);
+map.put(<span class="hljs-string">&quot;222&quot;</span>, <span class="hljs-string">&quot;222&quot;</span>);
+Stream&lt;Map.Entry&lt;String, String&gt;&gt; stream1 = map.entrySet().stream();</code></pre></div>
+
+
+
+<h3 id="2-4-2-中间操作"><a href="#2-4-2-中间操作" class="headerlink" title="2.4.2 中间操作"></a>2.4.2 中间操作</h3><h4 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h4><p>可以对流中的元素进行条件过滤，符合条件的才能继续留在流中。</p>
+<p>例子：</p>
+<p>打印所有姓名长度大于2的作家姓名</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream().distinct() <span class="hljs-comment">//去重</span>
+    .filter(author -&gt; author.getAge() &lt; <span class="hljs-number">18</span>)
+    .forEach(author -&gt; System.out.println(author.getName()));</code></pre></div>
+
+
+
+<h4 id="map"><a href="#map" class="headerlink" title="map"></a>map</h4><p>对元素进行计算或转换</p>
+<p>打印所有作家的姓名</p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
+Stream&lt;Author&gt; stream = authors.stream();
+
+stream.map(<span class="hljs-keyword">new</span> Function&lt;Author, String&gt;() &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> author.getName();
+    &#125;
+&#125;).forEach(name -&gt; System.out.println(name));
+
+
+authors.stream()
+    .map(author -&gt; author.getName())
+    .forEach(name -&gt; System.out.println(name));
+
+
+authors.stream()
+    .map(Author::getName)
+    .forEach(System.out::println);</code></pre></div>
+
+
+
+<h4 id="dictinct"><a href="#dictinct" class="headerlink" title="dictinct"></a>dictinct</h4><p>对流中的元素进行去重操作</p>
+<p>注意: distinct方法是依赖Object的equals方法来判断是否是相同对象的。所以需要注意重新equals方法。</p>
+<p>例子</p>
+<p>打印所有作家的姓名，不能包含重复的元素 </p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
+
+authors.stream()
+    .distinct()
+    .forEach(author -&gt; System.out.println(author.getName())</code></pre></div>
+
+<h4 id="sorted"><a href="#sorted" class="headerlink" title="sorted"></a>sorted</h4><p>对流中的元素按照规则进行排序</p>
+<p>注意：如果调用空参<code>sorted()</code>方法，需要流中的元素实现了Comparable接口</p>
+<p>例子</p>
+<p>按照年龄排序，并且不能有重复的元素</p>
+<p>升序排序</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream()
+    .distinct()
+    .sorted(<span class="hljs-keyword">new</span> Comparator&lt;Author&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Author o1, Author o2)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> o1.getAge() - o2.getAge();
+        &#125;
+    &#125;)
+    .forEach(author -&gt; System.out.println(author.getAge()));
+
+
+authors.stream()
+    .distinct()
+    .sorted((o1, o2) -&gt; o1.getAge() - o2.getAge())
+    .forEach(author -&gt; System.out.println(author.getAge()));
+authors.stream()
+    .distinct()
+    .sorted(Comparator.comparingInt(Author::getAge)) <span class="hljs-comment">// 默认是升序排序 </span>
+    .forEach(author -&gt; System.out.println(author.getAge()));</code></pre></div>
+
+<p>降序排序</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream()
+    .distinct()
+    .sorted((o1, o2) -&gt; o2.getAge() - o1.getAge())
+    .forEach(author -&gt; System.out.println(author.getAge()));</code></pre></div>
+
+<h4 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h4><p>可以限制流的最大长度，超出部分将被抛弃</p>
+<p>例如:<br>对流中的元素按照年龄进行降序排序，并且要求不能有重复的元素,然后打印其中年龄最大的两个作家的姓名。</p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
+
+authors.stream()
+    .distinct()
+    .sorted((o1, o2) -&gt; o2.getAge() - o1.getAge())
+    .limit(<span class="hljs-number">2</span>)
+    .forEach(author -&gt; System.out.println(author.getName()));
+</code></pre></div>
+
+<h4 id="skip"><a href="#skip" class="headerlink" title="skip"></a>skip</h4><p>跳过流中的前n个元素，处理剩下的元素</p>
+<p>例子</p>
+<p>打印除了年龄最大的作家外的其他作家，要求不能有重复元素，并且按照年龄降序排序</p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
+
+authors.stream()
+    .distinct()
+    .sorted((o1, o2) -&gt; o2.getAge() - o1.getAge())
+    .skip(<span class="hljs-number">1</span>)
+    .forEach(System.out::println);</code></pre></div>
+
+
+
+<h4 id="flatMap"><a href="#flatMap" class="headerlink" title="flatMap"></a>flatMap</h4><p>map只能将一个对象转换成另一个对象来作为流中的元素，而<code>flatMap</code>可以把一个对象转换成多个对象作为流中的元素</p>
+<p>例一</p>
+<p>打印所有书籍名字，要求对重复的元素进行去重</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream()
+    .distinct()
+    .flatMap(<span class="hljs-keyword">new</span> Function&lt;Author, Stream&lt;Book&gt;&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> Stream&lt;Book&gt; <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> author.getBookList().stream();
+        &#125;
+    &#125;)
+    .distinct()
+    .forEach(<span class="hljs-keyword">new</span> Consumer&lt;Book&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(Book book)</span> </span>&#123;
+            System.out.println(book.getName());
+        &#125;
+    &#125;);
+
+authors.stream()
+    .distinct()
+    .flatMap(author -&gt; author.getBookList().stream())
+    .distinct()
+    .forEach(book -&gt; System.out.println(book.getName()));</code></pre></div>
+
+<p>例二:<br>打印现有数据的所有分类。要求对分类进行去重。不能出现这种格式:哲学,爱情</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream()
+    .distinct()
+    .flatMap(author -&gt; author.getBookList().stream())
+    .distinct()
+    .flatMap(book -&gt; Arrays.stream(book.getCategory().split(<span class="hljs-string">&quot;,&quot;</span>)))
+    .distinct()
+    .forEach(System.out::println);</code></pre></div>
+
+
+
+<h3 id="2-4-3-终结操作"><a href="#2-4-3-终结操作" class="headerlink" title="2.4.3 终结操作"></a>2.4.3 终结操作</h3><h4 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h4><p>对流中的元素进行遍历操作，我们通过传入的参数去指定对追历到的元素进行什么具体操作。</p>
+<p>上面的例子中一直在使用，就不在赘述</p>
+<h4 id="count"><a href="#count" class="headerlink" title="count"></a>count</h4><p>获取当前流中元素的个数</p>
+<p>例子</p>
+<p>打印这些作家所处书籍的数量，删除重复元素</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">long</span> count = authors.stream()
+    .distinct()
+    .flatMap(author -&gt; author.getBookList().stream())
+    .distinct()
+    .count();
+System.out.println(count);</code></pre></div>
+
+<h4 id="max-amp-min"><a href="#max-amp-min" class="headerlink" title="max&amp;min"></a>max&amp;min</h4><p>计算流中元素的最值</p>
+<p>例子</p>
+<p>分别获取作家所出书籍的最高分和最低分并打印</p>
+<div class="hljs"><pre><code class="hljs java">Optional&lt;Double&gt; max = authors.stream()
+    .distinct()
+    .flatMap(author -&gt; author.getBookList().stream())
+    .distinct()
+    .map(book -&gt; book.getScore())
+    .max(<span class="hljs-keyword">new</span> Comparator&lt;Double&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Double o1, Double o2)</span> </span>&#123;
+            <span class="hljs-keyword">if</span> (o1 - o2 &gt; <span class="hljs-number">0</span>) &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o1 &lt; o2) &#123;
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            &#125;
+        &#125;
+    &#125;);
+
+Optional&lt;Double&gt; min = authors.stream()
+    .distinct()
+    .flatMap(author -&gt; author.getBookList().stream())
+    .distinct()
+    .map(book -&gt; book.getScore())
+    .min((o1, o2) -&gt; &#123;
+        <span class="hljs-keyword">if</span> (o1 - o2 &gt; <span class="hljs-number">0</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o1 &lt; o2) &#123;
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        &#125;
+    &#125;);
+System.out.println(max.get());
+System.out.println(min.get());</code></pre></div>
+
+
+
+<h4 id="collect"><a href="#collect" class="headerlink" title="collect"></a>collect</h4><p>把当前流转换成集合</p>
+<p>例子</p>
+<p>获取一个存放作者名字的集合</p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
+List&lt;String&gt; nameList = authors.stream()
+    .distinct()
+    .map(Author::getName)
+    .collect(Collectors.toList());
+System.out.println(nameList);</code></pre></div>
+
+<p>获取所有书名的Set集合</p>
+<div class="hljs"><pre><code class="hljs java">Set&lt;String&gt; nameList = authors.stream()
+    .distinct()
+    .flatMap((Function&lt;Author, Stream&lt;Book&gt;&gt;) author -&gt; author.getBookList().stream())
+    .map(Book::getName)
+    .collect(Collectors.toSet());
+
+System.out.println(nameList);</code></pre></div>
+
+<p>获取一个Map集合，key为作者名，value为<code>List&lt;Book&gt;</code></p>
+<div class="hljs"><pre><code class="hljs java">Map&lt;String, List&lt;Book&gt;&gt; map = authors.stream()
+    .distinct()
+    .collect(Collectors.toMap(<span class="hljs-keyword">new</span> Function&lt;Author, String&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> author.getName();
+        &#125;
+    &#125;, <span class="hljs-keyword">new</span> Function&lt;Author, List&lt;Book&gt;&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> author.getBookList();
+        &#125;
+    &#125;));
+map.forEach((key, value) -&gt; System.out.println(key + <span class="hljs-string">&quot;:&quot;</span> + value));
+
+
+Map&lt;String, List&lt;Book&gt;&gt; map = authors.stream()
+    .distinct()
+    .collect(Collectors.toMap(Author::getName, Author::getBookList));
+map.forEach((key, value) -&gt; System.out.println(key + <span class="hljs-string">&quot;:&quot;</span> + value));</code></pre></div>
+
+
+
+<h4 id="查找与匹配"><a href="#查找与匹配" class="headerlink" title="查找与匹配"></a>查找与匹配</h4><h5 id="anyMatch"><a href="#anyMatch" class="headerlink" title="anyMatch"></a>anyMatch</h5><p>可以用来判断是否有任意匹配符合匹配条件按的元素，返回结果是Boolean类型</p>
+<p>例子判断是否有年龄在29岁以上的作家</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">boolean</span> anyMatch = authors.stream().distinct()
+    .anyMatch(author -&gt; author.getAge() &gt; <span class="hljs-number">30</span>);</code></pre></div>
+
+
+
+<h5 id="allMatch"><a href="#allMatch" class="headerlink" title="allMatch"></a>allMatch</h5><p>可以用来判断是否都符合匹配条件，结果为boolean类型。如果都符合结果为true，否则结果为false。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">boolean</span> allMatch = authors.stream().distinct()
+    .allMatch(author -&gt; author.getAge() &gt; <span class="hljs-number">10</span>);</code></pre></div>
+
+<h5 id="noneMatch"><a href="#noneMatch" class="headerlink" title="noneMatch"></a>noneMatch</h5><p>可以判断流中元素是否都不符合匹配条件，如果都不符合返回true,否则返回false</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">boolean</span> noneMatch = authors.stream().distinct()
+    .noneMatch(author -&gt; author.getAge() &gt; <span class="hljs-number">100</span>);</code></pre></div>
+
+
+
+<h5 id="findAny"><a href="#findAny" class="headerlink" title="findAny"></a>findAny</h5><p>获取流中任意一个元素，该方法没有办法保证获取的一定是流中的第一个元素</p>
+<p>例子</p>
+<p>获取任意一个大于18的作家，如果存在就输出他的名字</p>
+<div class="hljs"><pre><code class="hljs java">Optional&lt;Author&gt; authorOptional = authors.stream().distinct()
+    .filter(author -&gt; author.getAge() &gt; <span class="hljs-number">18</span>)
+    .findAny();
+authorOptional.ifPresent(author -&gt; System.out.println(author.getName()));</code></pre></div>
+
+<h5 id="findFirst"><a href="#findFirst" class="headerlink" title="findFirst"></a>findFirst</h5><p>获取流中任意一个元素，该方法保证获取的一定是流中的第一个元素</p>
+<p> 例子</p>
+<p>获取年龄最小的作家，如果存在就输出他的名字</p>
+<div class="hljs"><pre><code class="hljs java">Optional&lt;Author&gt; authorOptional = authors.stream().distinct()
+    .sorted((o1, o2) -&gt; o1.getAge() - o2.getAge())
+    .findFirst();
+authorOptional.ifPresent(author -&gt; System.out.println(author.getName()));</code></pre></div>
+
+<h5 id="reduce归并"><a href="#reduce归并" class="headerlink" title="reduce归并"></a>reduce归并</h5><p>对流中的教据按照你指定的计算方式计算出一个结果。（缩减操作）</p>
+<p>reduce的作用是把stream中的元素给组合起来，我们可以传入一个初始值，它会按照我们的计算方式依次拿流中的元素和在初始化值的基础上进行计算，计算结果再和后面的元素计算。</p>
+<p>例子</p>
+<p>使用reduce操作求出所有作家的年龄的和</p>
+<div class="hljs"><pre><code class="hljs java">Integer sum = authors.stream()
+    .map(Author::getAge)
+    .reduce(<span class="hljs-number">0</span>, (result, element) -&gt; result + element);
+System.out.println(sum);</code></pre></div>
+
+<p>使用reduce求所有作者中年龄的最大值</p>
+<div class="hljs"><pre><code class="hljs java">Integer max = authors.stream()
+    .map(Author::getAge)
+    .reduce(Integer.MIN_VALUE, <span class="hljs-keyword">new</span> BinaryOperator&lt;Integer&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">apply</span><span class="hljs-params">(Integer result, Integer element)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> result &gt; element ? result : element;
+        &#125;
+    &#125;);</code></pre></div>
+
+
+
+<p>使用reduce求所有作者中年龄的最小值</p>
+<div class="hljs"><pre><code class="hljs java">Integer min = authors.stream()
+    .map(Author::getAge)
+    .reduce(Integer.MAX_VALUE, <span class="hljs-keyword">new</span> BinaryOperator&lt;Integer&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">apply</span><span class="hljs-params">(Integer result, Integer element)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> result &lt; element ? result : element;
+        &#125;
+    &#125;);</code></pre></div>
+
+<p>reduce一个参数的重载形式内部计算</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230507161438243.png" srcset="/img/loading.gif" alt="image-20230507161438243"></p>
+<h3 id="2-5-注意事项"><a href="#2-5-注意事项" class="headerlink" title="2.5 注意事项"></a>2.5 注意事项</h3><ul>
+<li>惰性求值(如果没有终结操作，没有中间提作是不会得到执行的)</li>
+<li>流是一次性的 (一旦一个流对象经过一个终结操作后这个流就不能再被使用)</li>
+<li>不会影响原数据(我们在流中可以多数据做很多处理。但是正常情况下是不会影响原来集合中的元素的。这往往也是我们期望的)</li>
+</ul>
+<h1 id="3-Optional"><a href="#3-Optional" class="headerlink" title="3. Optional"></a>3. Optional</h1><h2 id="3-1-概述"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述</h2><p>我们在编写代码的时候出现最多的就是空指针异常。所以在很多情况下我们需要做各种非空的判断。</p>
+<p>尤其是对象中的属性还是一个对象的情况下。这种判断会更多。而过多的判断语句会让我们的代码显得臃肿不堪。所以在IDK8中引入了Optional,养成使用Optional的习惯后你可以写出更优雅的代码来避免空指针异常并且在很多函数式编程相关的AP中也都用到了Optional，如果不会使用Optional也会对函数式编程的学习造成影响。</p>
+<h2 id="3-2-使用"><a href="#3-2-使用" class="headerlink" title="3.2 使用"></a>3.2 使用</h2><h3 id="3-2-1-创建对象"><a href="#3-2-1-创建对象" class="headerlink" title="3.2.1 创建对象"></a>3.2.1 创建对象</h3><p>Optional就像是包装类，可以将我们的具体数据封装到Optional内部。然后使用optional获取数据可以非常优雅的避免空指针异常。</p>
+<p>一般使用Optional的静态方法<code>ofNullable</code>把数据封装成一个Optional对象。无论传入的参数是否为null都不会出现问题</p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
+Optional&lt;List&lt;Author&gt;&gt; optionalAuthors = Optional.ofNullable(authors);</code></pre></div>
+
+<p>你可能会觉得还要加一行代码来封装数据比较麻烦。但是如果改造下getAuthor方法，让其的返回值就是封装好的Optional的话，我们在使用时就会方便很多。<br>而且在实际开发中我们的数据很多是从数据库获取的。Mybatis从3.5版本可以也已经支持ptional了。我们可以直接把dao方法的返回值类型定义成Optional类型，MyBastis会自己把数据封装成Optional对象返回。封装的过程也不需要我们自己操作。</p>
+<p>如果你确定一个对象不是空的则可以使用Optional的静态方法of来把数据封装成Optional对象。</p>
+<div class="hljs"><pre><code class="hljs java">Optional&lt;List&lt;Author&gt;&gt; optionalAuthors = Optional.of(authors);</code></pre></div>
+
+<p>如果一个方法的返回值是Optional类型，而如果经过我们判断后，发现返回值为null,这时候需要将null封装成Optional对象返回。需要调用Optional的静态方法<code>empty()</code>进行封装</p>
+<div class="hljs"><pre><code class="hljs java">Optional.empty()</code></pre></div>
+
+
+
+<h3 id="3-2-2-安全消费数据"><a href="#3-2-2-安全消费数据" class="headerlink" title="3.2.2 安全消费数据"></a>3.2.2 安全消费数据</h3><p>我们获取到一个Optional对象后肯定需要对其中的数据进行使用。这时候我们可以使用其ifPresent方法对来消费其中的值.<br>这个方法会判断其内封装的数据是否为空，不为空时才会执行具体的消费代码。这样使用起来就更加安全了。<br>例如,以下写法就优雅的避免了空指针异常。</p>
+<div class="hljs"><pre><code class="hljs java">Optional&lt;List&lt;Author&gt;&gt; optionalAuthors = Optional.of(authors);
+optionalAuthors.ifPresent(authors1 -&gt; System.out.println(authors1.size()));</code></pre></div>
+
+<h3 id="3-2-3-获取值"><a href="#3-2-3-获取值" class="headerlink" title="3.2.3 获取值"></a>3.2.3 获取值</h3><p>直接使用<code>get()</code>函数即可获取被封装的数据，但是当存入的数据是null时，会出现异常</p>
+<h3 id="3-2-4-安全地获取值"><a href="#3-2-4-安全地获取值" class="headerlink" title="3.2.4 安全地获取值"></a>3.2.4 安全地获取值</h3><p>如果我们期望安全的获取值。我们不推荐使用get方法，而是使用Optional提供的以下方法。</p>
+<h4 id="orElseGet"><a href="#orElseGet" class="headerlink" title="orElseGet"></a>orElseGet</h4><p>获取数据并且设置数据为空时的默认值。如果数据不为空就能获取到该数据。如果为空则根据你传入的参数来创建对象作为默认值返回。</p>
+<div class="hljs"><pre><code class="hljs java">Optional&lt;Author&gt; authoroptional = optional.ofNullable(getAuthor());
+authoroptional.filter(author -&gt; author,getAge()&gt;<span class="hljs-number">100</span>)ifpresent(author -&gt;system.out.print1n(author .getName()));</code></pre></div>
+
+<p>orElseThrow<br>获取数据，如果数据不为空就能获取到该数据。如果为空则根据你传入的参数来创建异常抛出。</p>
+<h3 id="3-2-5-过滤"><a href="#3-2-5-过滤" class="headerlink" title="3.2.5 过滤"></a>3.2.5 过滤</h3><p>我们可以使用filter方法对数据进行过滤。如果原本是有数据的，但是不符合判断，也会变成一个无数据的Optional对象。</p>
+<h3 id="3-2-6-判断"><a href="#3-2-6-判断" class="headerlink" title="3.2.6 判断"></a>3.2.6 判断</h3><p>我们可以使用isPresent方法进行是否存在数据的判断。如果为空返回值为false,如果不为空，返回值为true。但是这种方式并不能体现<br>Optional的好处，更推荐使用ifPresent方法。</p>
+<h3 id="3-2-7-数据转换"><a href="#3-2-7-数据转换" class="headerlink" title="3.2.7 数据转换"></a>3.2.7 数据转换</h3><p>Optional还提供了map可以让我们的对数据进行转换，并且转换得到的数据也还是被Optional包装好的，保证了我们的使用安全。<br>例如我们想获取作家的书籍集合。</p>
+<h1 id="4-函数式接口的常用方法"><a href="#4-函数式接口的常用方法" class="headerlink" title="4.函数式接口的常用方法"></a>4.函数式接口的常用方法</h1><h2 id="and"><a href="#and" class="headerlink" title="and"></a>and</h2><p>在使用predicate接口时，可能需要进行条件的拼接。and方法就相当于&amp;&amp;符号实现拼接两个判断条件</p>
+<p>例如</p>
+<p>打印作家中年龄大于17并且姓名长度大于2的作家</p>
+<div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
+authors.stream().filter(<span class="hljs-keyword">new</span> Predicate&lt;Author&gt;() &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">test</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> author.getAge() &gt; <span class="hljs-number">17</span>;
+    &#125;
+&#125;.and(<span class="hljs-keyword">new</span> Predicate&lt;Author&gt;() &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">test</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> author.getName().length() &gt; <span class="hljs-number">2</span>;
+    &#125;
+&#125;)).forEach(System.out::println);
+
+
+        authors.stream().filter(((Predicate&lt;Author&gt;) author -&gt; author.getAge() &gt; <span class="hljs-number">17</span>).and(author -&gt; author.getName().length() &gt; <span class="hljs-number">2</span>)).forEach(System.out::println);
+</code></pre></div>
+
+
+
+<h2 id="or"><a href="#or" class="headerlink" title="or"></a>or</h2><p>而or方法相当于是使用||来拼接两个判断条件。</p>
+<p>例子</p>
+<p>打印作家中年龄大于17或者姓名长度大于2的作家</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream().filter(((Predicate&lt;Author&gt;) author -&gt; author.getAge() &gt; <span class="hljs-number">17</span>).or(author -&gt; author.getName().length() &gt; <span class="hljs-number">2</span>)).forEach(System.out::println);
+</code></pre></div>
+
+
+
+<h2 id="negat"><a href="#negat" class="headerlink" title="negat"></a>negat</h2><p>就是取反操作，相当于<code>!</code></p>
+<h1 id="5-stream的高级用法"><a href="#5-stream的高级用法" class="headerlink" title="5.stream的高级用法"></a>5.stream的高级用法</h1><h2 id="基本数据类型优化"><a href="#基本数据类型优化" class="headerlink" title="基本数据类型优化"></a>基本数据类型优化</h2><p>之前用到的很多Stream的方法由于都使用了泛型。所以涉及到的参数和返回值都是引用数据类型。<br>即使我们操作的是整教小数，但是实际用的都是他们的包装类。IDK5中引入的自动装箱和自动拆箱让我们在使用对应的包装类时就好像使用基本数据类型一样方便。但是你一定要知道装箱和拆箱肯定是要消耗时间的。虽然这个时间消耗很下。但是在大量的数据不断的重复装箱拆箱的时候，你就不能无视这个时间损耗了<br>所以为了让我们能够对这部分的时间消耗进行优化。Stream还提供了很多专门针对基本数据类型的方法。例如: mapTolnt,mapToLong,mapToDouble,flatMapTolnt,flatMapToDouble等</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream()
+    .map(Author::getAge)
+    .map(age -&gt; age + <span class="hljs-number">10</span>)
+    .filter(age -&gt; age &gt; <span class="hljs-number">18</span>)
+    .forEach(System.out::println);
+
+authors.stream()
+    .mapToInt(Author::getAge)
+    .map(age -&gt; age + <span class="hljs-number">10</span>)
+    .filter(age -&gt; age &gt; <span class="hljs-number">18</span>)
+    .forEach(System.out::println);</code></pre></div>
+
+<h2 id="并行流"><a href="#并行流" class="headerlink" title="并行流"></a>并行流</h2><p>当流中有大量元素时，我们可以使用并行流去提高操作的效率。其实并行流就是把任务分配给多个线程去完全。如果我们自己去用代码实现的话其实会非常的复杂，并且要求你对并发编程有足够的理解和认识。而如果我们使用Stream的话，我们只需要修改一个方法的调用就可以使用并行流来帮我们实现，从而提高效率。</p>
+<div class="hljs"><pre><code class="hljs java">authors.stream().parallel()
+    .peek(<span class="hljs-keyword">new</span> Consumer&lt;Author&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(Author author)</span> </span>&#123;
+            System.out.println(author.getName() + Thread.currentThread().getName());
+        &#125;
+    &#125;)
+    .map(Author::getAge)
+    .map(age -&gt; age + <span class="hljs-number">10</span>)
+    .filter(age -&gt; age &gt; <span class="hljs-number">18</span>)
+    .forEach(System.out::println);
+
+authors.parallelStream()
+    .peek(<span class="hljs-keyword">new</span> Consumer&lt;Author&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(Author author)</span> </span>&#123;
+            System.out.println(author.getName() + Thread.currentThread().getName());
+        &#125;
+    &#125;)
+    .map(Author::getAge)
+    .map(age -&gt; age + <span class="hljs-number">10</span>)
+    .filter(age -&gt; age &gt; <span class="hljs-number">18</span>)
+    .forEach(System.out::println);</code></pre></div>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/java/">java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/stream/">stream</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/13/delay-task/">
+                        <span class="hidden-mobile">delay_task</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "java_stream&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
