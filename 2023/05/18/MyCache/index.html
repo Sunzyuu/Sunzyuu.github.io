@@ -1,0 +1,1917 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>MyCache - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-05-18 22:46" pubdate>
+        2023年5月18日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      91
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">MyCache</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2 分钟前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <p>使用Map开发一个类似于redis的缓存工具</p>
+<h1 id="实现固定缓存"><a href="#实现固定缓存" class="headerlink" title="实现固定缓存"></a>实现固定缓存</h1><h2 id="相关接口"><a href="#相关接口" class="headerlink" title="相关接口"></a>相关接口</h2><p>为了方便后续扩展首先定义接口<code>ICache</code>继承于Map</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICache</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">Map</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+&#125;</code></pre></div>
+
+<p>因为缓存的大小有限，所以不能无限制的像cache（也就是Map集合）中添加元素 ，当到达容量上限时，需要从cache中淘汰元素，所以需要添加驱逐策略。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICacheEvict</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+        <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 驱除策略</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> context 上下文</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.2</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 被移除的明细，没有时返回 null</span>
+<span class="hljs-comment">     */</span>
+   evict(<span class="hljs-keyword">final</span> ICacheEvictContext&lt;K, V&gt; context);
+&#125;</code></pre></div>
+
+<p>其中<code>ICacheEvictContext</code>,包含了缓存对象，缓存大小限制，以及需要添加到缓存中的key</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 缓存驱逐上下文</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &lt;K&gt;</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &lt;V&gt;</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICacheEvictContext</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 待缓存的key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">K <span class="hljs-title">key</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 缓存对象</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    ICache&lt;K, V &gt; cache();
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 缓存大小</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">size</span><span class="hljs-params">()</span></span>;
+&#125;
+</code></pre></div>
+
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="CacheEvictContext"><a href="#CacheEvictContext" class="headerlink" title="CacheEvictContext"></a>CacheEvictContext</h3><p>该类的实现比较简单，实现对单个成员变量的初始化，并返回该对象本身，便于实现fluent流式编程</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheEvictContext</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheEvictContext</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 新加的 key</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> K key;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * cache 实现</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> ICache&lt;K,V&gt; cache;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 最大的大小</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> size;
+
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> K <span class="hljs-title">key</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> key;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheEvictContext&lt;K, V&gt; <span class="hljs-title">key</span><span class="hljs-params">(K key)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.key = key;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ICache&lt;K, V&gt; <span class="hljs-title">cache</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> cache;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheEvictContext&lt;K, V&gt; <span class="hljs-title">cache</span><span class="hljs-params">(ICache&lt;K, V&gt; cache)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.cache = cache;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">size</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> size;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheEvictContext&lt;K, V&gt; <span class="hljs-title">size</span><span class="hljs-params">(<span class="hljs-keyword">int</span> size)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.size = size;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<p>淘汰策略实现<code>cacheEvict.evict(context);</code>如下</p>
+<h3 id="CacheEvictFIFO"><a href="#CacheEvictFIFO" class="headerlink" title="CacheEvictFIFO"></a>CacheEvictFIFO</h3><p>淘汰策略可以有多种，比如 LRU/LFU/FIFO 等等，我们此处实现一个最基本的 FIFO。</p>
+<p>拥有FIFO特性的数据结构就是queue的，那么就用java中<code>LinkedList</code>集合实现该方法。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheEvictFIFO</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheEvict</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * queue按添加顺序保存key信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Queue&lt;K&gt; queue = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">evict</span><span class="hljs-params">(ICacheEvictContext&lt;K, V&gt; context)</span> </span>&#123;
+        <span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache = context.cache();
+        <span class="hljs-comment">// 超过限制，执行移除</span>
+        <span class="hljs-keyword">if</span>(cache.size() &gt;= context.size()) &#123;
+            K evictKey = queue.remove();
+            <span class="hljs-comment">// 移除最开始的元素</span>
+            cache.remove(evictKey);
+        &#125;
+
+        <span class="hljs-comment">// 将新加的元素放入队尾</span>
+        <span class="hljs-keyword">final</span> K key = context.key();
+        queue.add(key);
+    &#125;
+&#125;</code></pre></div>
+
+<h3 id="cache"><a href="#cache" class="headerlink" title="cache"></a>cache</h3><p>核心的cache类，向其中添加一些关键属性</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cache</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICache</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * map信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Map&lt;K,V&gt; map;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 缓存大小限制</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> sizeLimit;
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 驱除策略</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> ICacheEvict&lt;K,V&gt; evict;
+  
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Cache</span><span class="hljs-params">(Map&lt;K, V&gt; map, <span class="hljs-keyword">int</span> sizeLimit, ICacheEvict&lt;K, V&gt; evict)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.map = map;
+        <span class="hljs-keyword">this</span>.sizeLimit = sizeLimit;
+        <span class="hljs-keyword">this</span>.evict = evict;
+    &#125;
+    
+    <span class="hljs-comment">// Override Map method</span>
+&#125;</code></pre></div>
+
+<p>一些方法的重写没有在此贴出，使用快捷键补全后，调用map参数对应的方法即可。</p>
+<p>对于put方法的改动比较大</p>
+<ul>
+<li>驱逐旧元素</li>
+<li>添加新元素</li>
+</ul>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">put</span><span class="hljs-params">(K key, V value)</span> </span>&#123;
+    <span class="hljs-comment">//1.1 尝试驱除</span>
+    CacheEvictContext&lt;K,V&gt; context = <span class="hljs-keyword">new</span> CacheEvictContext&lt;&gt;();
+    context.key(key).size(sizeLimit).cache(<span class="hljs-keyword">this</span>);
+    cacheEvict.evict(context);
+    <span class="hljs-comment">//2. 判断驱除后的信息</span>
+    <span class="hljs-keyword">if</span>(isSizeLimit()) &#123;
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> CacheRuntimeException(<span class="hljs-string">&quot;当前队列已满，数据添加失败！&quot;</span>);
+    &#125;
+    <span class="hljs-comment">//3. 执行添加</span>
+    <span class="hljs-keyword">return</span> map.put(key, value);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isSizeLimit</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> currentSize = <span class="hljs-keyword">this</span>.size();
+    <span class="hljs-keyword">return</span> currentSize &gt;= <span class="hljs-keyword">this</span>.sizeLimit;
+&#125;
+</code></pre></div>
+
+<p>可以让用户动态指定大小，但是指定大小肯就要有对应的淘汰策略。否则，固定大小的 map 肯定无法放入元素。</p>
+<h3 id="CacheBs"><a href="#CacheBs" class="headerlink" title="CacheBs"></a>CacheBs</h3><p>为了方便用户创建客户端，可以创建一个引导类，这里使用到了fluent流式写法。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 缓存引导类</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheBs</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">CacheBs</span><span class="hljs-params">()</span></span>&#123;&#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 创建对象实例</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;K&gt; key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;V&gt; value</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> this</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;K,V&gt; <span class="hljs-function">CacheBs&lt;K,V&gt; <span class="hljs-title">newInstance</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CacheBs&lt;&gt;();
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * map 实现</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Map&lt;K,V&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 大小限制</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> size = Integer.MAX_VALUE;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 驱除策略</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> ICacheEvict&lt;K,V&gt; evict = CacheEvicts.fifo();
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * map 实现</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> map map</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> this</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheBs&lt;K, V&gt; <span class="hljs-title">map</span><span class="hljs-params">(Map&lt;K, V&gt; map)</span> </span>&#123;
+        ArgUtil.notNull(map, <span class="hljs-string">&quot;map&quot;</span>);
+
+        <span class="hljs-keyword">this</span>.map = map;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 设置 size 信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> size size</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> this</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheBs&lt;K, V&gt; <span class="hljs-title">size</span><span class="hljs-params">(<span class="hljs-keyword">int</span> size)</span> </span>&#123;
+        ArgUtil.notNegative(size, <span class="hljs-string">&quot;size&quot;</span>);
+
+        <span class="hljs-keyword">this</span>.size = size;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 设置驱除策略</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> evict 驱除策略</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> this</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheBs&lt;K, V&gt; <span class="hljs-title">evict</span><span class="hljs-params">(ICacheEvict&lt;K, V&gt; evict)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.evict = evict;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 构建缓存信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 缓存信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ICache&lt;K,V&gt; <span class="hljs-title">build</span><span class="hljs-params">()</span> </span>&#123;
+        CacheContext&lt;K,V&gt; context = <span class="hljs-keyword">new</span> CacheContext&lt;&gt;();
+        context.cacheEvict(evict);
+        context.map(map);
+        context.size(size);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Cache&lt;&gt;(context);
+    &#125;
+
+&#125;</code></pre></div>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><div class="hljs"><pre><code class="hljs java">ICache&lt;String, String&gt; cache = CacheBs.&lt;String,String&gt;newInstance()
+        .size(<span class="hljs-number">2</span>)
+        .build();
+cache.put(<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;1&quot;</span>);
+cache.put(<span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-string">&quot;2&quot;</span>);
+cache.put(<span class="hljs-string">&quot;3&quot;</span>, <span class="hljs-string">&quot;3&quot;</span>);
+cache.put(<span class="hljs-string">&quot;4&quot;</span>, <span class="hljs-string">&quot;4&quot;</span>);
+System.out.println(cache.keySet());</code></pre></div>
+
+<p>默认为先进先出的策略，此时输出 keys，内容如下：</p>
+<div class="hljs"><pre><code class="hljs json">[<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]</code></pre></div>
+
+
+
+<h1 id="实现key过期"><a href="#实现key过期" class="headerlink" title="实现key过期"></a>实现key过期</h1><p>redis中可以设置key的过期时间，这是一个非常有用的功能，比如将短信的验证码设置5分钟的过期时间；登录凭证设置一天有效等，这些场景都需要使用。</p>
+<h2 id="相关接口-1"><a href="#相关接口-1" class="headerlink" title="相关接口"></a>相关接口</h2><h3 id="ICache"><a href="#ICache" class="headerlink" title="ICache"></a>ICache</h3><p>首先在ICache中添加两个方法</p>
+<ul>
+<li><p><code>expire()</code>多久后过期</p>
+</li>
+<li><p><code>expireAt()</code>在什么时间过期</p>
+</li>
+</ul>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICache</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">Map</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 设置过期时间</span>
+<span class="hljs-comment">     * （1）如果 key 不存在，则什么都不做。</span>
+<span class="hljs-comment">     * （2）暂时不提供新建 key 指定过期时间的方式，会破坏原来的方法。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 会做什么：</span>
+<span class="hljs-comment">     * 类似于 redis</span>
+<span class="hljs-comment">     * （1）惰性删除。</span>
+<span class="hljs-comment">     * 在执行下面的方法时，如果过期则进行删除。</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@link</span> ICache#get(Object)&#125; 获取</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@link</span> ICache#values()&#125; 获取所有值</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@link</span> ICache#entrySet()&#125; 获取所有明细</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 【数据的不一致性】</span>
+<span class="hljs-comment">     * 调用其他方法，可能得到的不是使用者的预期结果，因为此时的 expire 信息可能没有被及时更新。</span>
+<span class="hljs-comment">     * 比如</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@link</span> ICache#isEmpty()&#125; 是否为空</span>
+<span class="hljs-comment">     * &#123;<span class="hljs-doctag">@link</span> ICache#size()&#125; 当前大小</span>
+<span class="hljs-comment">     * 同时会导致以 size() 作为过期条件的问题。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 解决方案：考虑添加 refresh 等方法，暂时不做一致性的考虑。</span>
+<span class="hljs-comment">     * 对于实际的使用，我们更关心 K/V 的信息。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * （2）定时删除</span>
+<span class="hljs-comment">     * 启动一个定时任务。每次随机选择指定大小的 key 进行是否过期判断。</span>
+<span class="hljs-comment">     * 类似于 redis，为了简化，可以考虑设定超时时间，频率与超时时间成反比。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 其他拓展性考虑：</span>
+<span class="hljs-comment">     * 后期考虑提供原子性操作，保证事务性。暂时不做考虑。</span>
+<span class="hljs-comment">     * 此处默认使用 TTL 作为比较的基准，暂时不想支持 LastAccessTime 的淘汰策略。会增加复杂度。</span>
+<span class="hljs-comment">     * 如果增加 lastAccessTime 过期，本方法可以不做修改。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key         key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeInMills 毫秒时间之后过期</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> this</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">ICache&lt;K, V&gt; <span class="hljs-title">expire</span><span class="hljs-params">(<span class="hljs-keyword">final</span> K key, <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> timeInMills)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 在指定的时间过期</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeInMills 时间戳</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> this</span>
+<span class="hljs-comment">    ICache&lt;K, V&gt; expireAt(final K key, final long timeInMills);</span>
+<span class="hljs-comment"></span>
+<span class="hljs-comment">&#125;</span></code></pre></div>
+
+<h3 id="ICacheExpire"><a href="#ICacheExpire" class="headerlink" title="ICacheExpire"></a>ICacheExpire</h3><p>定义缓存过期的处理结构</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICacheExpire</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 指定过期信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> expireAt 什么时候过期</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">expire</span><span class="hljs-params">(<span class="hljs-keyword">final</span> K key, <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> expireAt)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 惰性删除中需要处理的 keys</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> keyList keys</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">refreshExpire</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Collection&lt;K&gt; keyList)</span></span>;
+&#125;</code></pre></div>
+
+
+
+<h2 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="CacheExpire"><a href="#CacheExpire" class="headerlink" title="CacheExpire"></a>CacheExpire</h3><p>实现定期删除过期key的思路，开一个线程定时执行，从cache种删除过期的key</p>
+<ul>
+<li>需要创建一个集合保存key于expiretime之间的关系</li>
+<li>创建一个线程用于清除过期的key</li>
+</ul>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;K, Long&gt; expireMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+<span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">expire</span><span class="hljs-params">(K key, <span class="hljs-keyword">long</span> expireAt)</span> </span>&#123;
+    expireMap.put(key, expireAt);
+&#125;</code></pre></div>
+
+<p>为了防止每次清理的时间占用过长时间，这里限制每次最多清理100</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 单次清空的数量限制</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> LIMIT = <span class="hljs-number">100</span>;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 缓存实现</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache;
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 线程执行类</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">CacheExpire</span><span class="hljs-params">(ICache&lt;K, V&gt; cache)</span> </span>&#123;
+    <span class="hljs-keyword">this</span>.cache = cache;
+    <span class="hljs-keyword">this</span>.init();
+&#125;
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 初始化任务</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;
+    EXECUTOR_SERVICE.scheduleAtFixedRate(<span class="hljs-keyword">new</span> ExpireThread(), <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, TimeUnit.MILLISECONDS);
+&#125;</code></pre></div>
+
+<p>创建清理过期key的线程类ExpireThread</p>
+<p>此类作为CacheExpire的内部了</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ExpireThread</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span> </span>&#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-comment">//1.判断是否为空</span>
+        <span class="hljs-keyword">if</span>(MapUtil.isEmpty(expireMap)) &#123;
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-comment">//2. 获取 key 进行处理</span>
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(Map.Entry&lt;K, Long&gt; entry : expireMap.entrySet()) &#123;
+            <span class="hljs-keyword">if</span>(count &gt;= LIMIT) &#123;
+                <span class="hljs-keyword">return</span>;
+            &#125;
+            expireKey(entry);
+            count++;
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>执行清除的函数</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 执行过期操作</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> entry 明细</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">expireKey</span><span class="hljs-params">(Map.Entry&lt;K, Long&gt; entry)</span> </span>&#123;
+    <span class="hljs-keyword">final</span> K key = entry.getKey();
+    <span class="hljs-keyword">final</span> Long expireAt = entry.getValue();
+    <span class="hljs-comment">// 删除的逻辑处理</span>
+    <span class="hljs-keyword">long</span> currentTime = System.currentTimeMillis();
+    <span class="hljs-keyword">if</span>(currentTime &gt;= expireAt) &#123;
+        expireMap.remove(key);
+        <span class="hljs-comment">// 再移除缓存，后续可以通过惰性删除做补偿</span>
+        cache.remove(key);
+    &#125;
+&#125;</code></pre></div>
+
+<h4 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h4><ul>
+<li>当<code>CacheExpire</code>被创建时，会启动定时清除的子线程</li>
+<li>当调用cache.expire()和cache.expireAt()方法时，会将key与expiretime保存到expireMap</li>
+<li>子线程不断执行，检查expireMap是否为空<ul>
+<li>为空，则结束本次执行</li>
+<li>不为空，检查清除操作</li>
+</ul>
+</li>
+</ul>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><p>如果过期的应用场景不多，那么经常轮训的意义实际不大。</p>
+<p>比如我们的任务 99% 都是在凌晨清空数据，白天无论怎么轮询，纯粹是浪费资源。</p>
+<p>那有没有什么方法，可以快速的判断有没有需要处理的过期元素呢？</p>
+<p>答案是有的，那就是排序的 MAP。</p>
+<p>我们换一种思路，让过期的时间做 key，相同时间的需要过期的信息放在一个列表中，作为 value。</p>
+<p>然后对过期时间排序，轮询的时候就可以快速判断出是否有过期的信息了。</p>
+<h3 id="CacheExpireSort"><a href="#CacheExpireSort" class="headerlink" title="CacheExpireSort"></a>CacheExpireSort</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheExpireSort</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheExpire</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 单次清空的数量限制</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">int</span> LIMIT = <span class="hljs-number">100</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 排序缓存存储</span>
+<span class="hljs-comment">     * 使用按照时间排序的缓存处理。</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;Long, List&lt;K&gt;&gt; sortMap = <span class="hljs-keyword">new</span> TreeMap&lt;&gt;(<span class="hljs-keyword">new</span> Comparator&lt;Long&gt;() &#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Long o1, Long o2)</span> </span>&#123;
+            <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>) (o1-o2);
+        &#125;
+    &#125;);
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 过期 map</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 空间换时间</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;K, Long&gt; expireMap = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 缓存实现</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 线程执行类</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">CacheExpireSort</span><span class="hljs-params">(ICache&lt;K, V&gt; cache)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.cache = cache;
+        <span class="hljs-keyword">this</span>.init();
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 初始化任务</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;
+        EXECUTOR_SERVICE.scheduleAtFixedRate(<span class="hljs-keyword">new</span> ExpireThread(), <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, TimeUnit.SECONDS);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 定时执行任务</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ExpireThread</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Runnable</span> </span>&#123;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+            <span class="hljs-comment">//1.判断是否为空</span>
+            <span class="hljs-keyword">if</span>(MapUtil.isEmpty(sortMap)) &#123;
+                <span class="hljs-keyword">return</span>;
+            &#125;
+
+            <span class="hljs-comment">//2. 获取 key 进行处理</span>
+            <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span>(Map.Entry&lt;Long, List&lt;K&gt;&gt; entry : sortMap.entrySet()) &#123;
+                <span class="hljs-keyword">final</span> Long expireAt = entry.getKey();
+                List&lt;K&gt; expireKeys = entry.getValue();
+
+                <span class="hljs-comment">// 判断队列是否为空</span>
+                <span class="hljs-keyword">if</span>(CollectionUtil.isEmpty(expireKeys)) &#123;
+                    sortMap.remove(expireAt);
+                    <span class="hljs-keyword">continue</span>;
+                &#125;
+                <span class="hljs-keyword">if</span>(count &gt;= LIMIT) &#123;
+                    <span class="hljs-keyword">return</span>;
+                &#125;
+
+                <span class="hljs-comment">// 删除的逻辑处理</span>
+                <span class="hljs-keyword">long</span> currentTime = System.currentTimeMillis();
+                <span class="hljs-keyword">if</span>(currentTime &gt;= expireAt) &#123;
+                    Iterator&lt;K&gt; iterator = expireKeys.iterator();
+                    <span class="hljs-keyword">while</span> (iterator.hasNext()) &#123;
+                        K key = iterator.next();
+                        <span class="hljs-comment">// 先移除本身</span>
+                        iterator.remove();
+                        expireMap.remove(key);
+
+                        <span class="hljs-comment">// 再移除缓存，后续可以通过惰性删除做补偿</span>
+                        cache.remove(key);
+
+                        count++;
+                    &#125;
+                &#125; <span class="hljs-keyword">else</span> &#123;
+                    <span class="hljs-comment">// 直接跳过，没有过期的信息</span>
+                    <span class="hljs-keyword">return</span>;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">expire</span><span class="hljs-params">(K key, <span class="hljs-keyword">long</span> expireAt)</span> </span>&#123;
+        List&lt;K&gt; keys = sortMap.get(expireAt);
+        <span class="hljs-keyword">if</span>(keys == <span class="hljs-keyword">null</span>) &#123;
+            keys = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        &#125;
+        keys.add(key);
+
+        <span class="hljs-comment">// 设置对应的信息</span>
+        sortMap.put(expireAt, keys);
+        expireMap.put(key, expireAt);
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h3 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h3><p>添加成员变量</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> ICacheExpire&lt;K,V&gt; expire;</code></pre></div>
+
+<p>构造方法</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Cache</span><span class="hljs-params">(Map&lt;K, V&gt; map, <span class="hljs-keyword">int</span> sizeLimit, ICacheEvict&lt;K, V&gt; evict)</span> </span>&#123;
+    <span class="hljs-keyword">this</span>.map = map;
+    <span class="hljs-keyword">this</span>.sizeLimit = sizeLimit;
+    <span class="hljs-keyword">this</span>.evict = evict;
+    <span class="hljs-comment">// 修改过期策略时，修改此处即可</span>
+    <span class="hljs-keyword">this</span>.expire = <span class="hljs-keyword">new</span> CacheExpire&lt;&gt;(<span class="hljs-keyword">this</span>);
+&#125;</code></pre></div>
+
+<p>方法实现，为了方便起见，将两种过期方式转换为一种,多长时间后过期</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ICache&lt;K, V&gt; <span class="hljs-title">expire</span><span class="hljs-params">(K key, <span class="hljs-keyword">long</span> timeInMills)</span> </span>&#123;
+    <span class="hljs-keyword">long</span> expireTime = System.currentTimeMillis() + timeInMills;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.expireAt(key, expireTime);
+&#125;
+
+<span class="hljs-meta">@Override</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> ICache&lt;K, V&gt; <span class="hljs-title">expireAt</span><span class="hljs-params">(K key, <span class="hljs-keyword">long</span> timeInMills)</span> </span>&#123;
+    <span class="hljs-keyword">this</span>.cacheExpire.expire(key, timeInMills);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+&#125;</code></pre></div>
+
+
+
+<h2 id="惰性删除"><a href="#惰性删除" class="headerlink" title="惰性删除"></a>惰性删除</h2><p>类似于 redis，我们采用定时删除的方案，就有一个问题：可能数据清理的不及时。那当我们查询时，可能获取到到是脏数据。</p>
+<p>当我们关心某些数据时，才对数据做对应的删除判断操作，这样压力会小很多。</p>
+<p>需要惰性删除的方法：各种数据查询的方法</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-meta">@SuppressWarnings(&quot;unchecked&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">get</span><span class="hljs-params">(Object key)</span> </span>&#123;
+    <span class="hljs-comment">//1. 刷新所有过期信息</span>
+    K genericKey = (K) key;
+    <span class="hljs-keyword">this</span>.cacheExpire.refreshExpire(Collections.singletonList(genericKey));
+    <span class="hljs-keyword">return</span> map.get(key);
+&#125;</code></pre></div>
+
+<p>在获取数据之前对数据进行刷新，就是<code>refreshExpire()</code>函数</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">refreshExpire</span><span class="hljs-params">(Collection&lt;K&gt; keyList)</span> </span>&#123;
+    <span class="hljs-keyword">if</span>(CollectionUtil.isEmpty(keyList)) &#123;
+        <span class="hljs-keyword">return</span>;
+    &#125;
+    <span class="hljs-comment">// 判断大小。一般都是过期的 keys 比较小。</span>
+    <span class="hljs-keyword">if</span>(keyList.size() &lt;= expireMap.size()) &#123;
+        <span class="hljs-keyword">for</span>(K key : keyList) &#123;
+            expireKey(key);
+        &#125;
+    &#125; <span class="hljs-keyword">else</span> &#123;
+        <span class="hljs-keyword">for</span>(Map.Entry&lt;K, Long&gt; entry : expireMap.entrySet()) &#123;
+            <span class="hljs-keyword">this</span>.expireKey(entry);
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<h1 id="创建代理对象"><a href="#创建代理对象" class="headerlink" title="创建代理对象"></a>创建代理对象</h1><h2 id="相关接口-2"><a href="#相关接口-2" class="headerlink" title="相关接口"></a>相关接口</h2><h3 id="ICacheProxy"><a href="#ICacheProxy" class="headerlink" title="ICacheProxy"></a>ICacheProxy</h3><p>因为后面要实现几种类型的代理对象，所以先抽象出一个接口，方便使用</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICacheProxy</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 获取代理实现</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 代理</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">Object <span class="hljs-title">proxy</span><span class="hljs-params">()</span></span>;
+
+&#125;
+</code></pre></div>
+
+<h3 id="ICacheProxyBsContext"><a href="#ICacheProxyBsContext" class="headerlink" title="ICacheProxyBsContext"></a>ICacheProxyBsContext</h3><div class="hljs"><pre><code class="hljs java">  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 拦截器信息</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span> 拦截器</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function">CacheInterceptor <span class="hljs-title">interceptor</span><span class="hljs-params">()</span></span>;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 获取代理对象信息</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span> 代理</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function">ICache <span class="hljs-title">target</span><span class="hljs-params">()</span></span>;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 目标对象</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@param</span> target 对象</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span> 结果</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function">ICacheProxyBsContext <span class="hljs-title">target</span><span class="hljs-params">(<span class="hljs-keyword">final</span> ICache target)</span></span>;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 参数信息</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span> 参数信息</span>
+<span class="hljs-comment">   */</span>
+  Object[] params();
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 方法信息</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span> 方法信息</span>
+<span class="hljs-comment">   */</span>
+  <span class="hljs-function">Method <span class="hljs-title">method</span><span class="hljs-params">()</span></span>;
+
+  <span class="hljs-comment">/**</span>
+<span class="hljs-comment">   * 方法执行</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@return</span> 执行</span>
+<span class="hljs-comment">   * <span class="hljs-doctag">@throws</span> Throwable 异常信息</span>
+<span class="hljs-comment">   */</span>
+<span class="hljs-function">Object <span class="hljs-title">process</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Throwable</span>;</code></pre></div>
+
+
+
+<h2 id="接口实现"><a href="#接口实现" class="headerlink" title="接口实现"></a>接口实现</h2><h3 id="CacheProxyBsContext"><a href="#CacheProxyBsContext" class="headerlink" title="CacheProxyBsContext"></a>CacheProxyBsContext</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheProxyBsContext</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheProxyBsContext</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 代理目标对象</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> ICache target;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 方法执行的参数</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Object[] params;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 方法</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.4</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Method method;
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 新建对象</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 对象</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> CacheProxyBsContext <span class="hljs-title">newInstance</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CacheProxyBsContext();
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheInterceptor <span class="hljs-title">interceptor</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> interceptor;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ICache <span class="hljs-title">target</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> target;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ICacheProxyBsContext <span class="hljs-title">target</span><span class="hljs-params">(ICache target)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.target = target;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> Object[] params() &#123;
+        <span class="hljs-keyword">return</span>  params;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheProxyBsContext <span class="hljs-title">params</span><span class="hljs-params">(Object[] params)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.params = params;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Method <span class="hljs-title">method</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> method;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheProxyBsContext <span class="hljs-title">method</span><span class="hljs-params">(Method method)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.method = method;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">process</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+        <span class="hljs-comment">//通过反射调用方法 也就是目标代理对象要执行的方法</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.method.invoke(target, params);
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h2 id="引导类代理对象"><a href="#引导类代理对象" class="headerlink" title="引导类代理对象"></a>引导类代理对象</h2><p>创建</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheProxyBs</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">CacheProxyBs</span><span class="hljs-params">()</span></span>&#123;&#125;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 代理上下文</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> ICacheProxyBsContext context;
+
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> CacheProxyBs <span class="hljs-title">newInstance</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CacheProxyBs();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheProxyBs <span class="hljs-title">context</span><span class="hljs-params">(ICacheProxyBsContext context)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.context = context;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 该方法在每个方法执行之前会获取其执行的具体信息</span>
+<span class="hljs-comment">     * 包括执方法名，参数，执行结果，执行结果</span>
+<span class="hljs-comment">     * 在执行前会打印执行时间</span>
+<span class="hljs-comment">     * 然后记录执行时间</span>
+<span class="hljs-comment">     * 打印最后的执行时间</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> Throwable</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@SuppressWarnings(&quot;all&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">execute</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+        <span class="hljs-keyword">long</span> startMills = System.currentTimeMillis();
+        <span class="hljs-keyword">final</span> ICache cache = context.target();
+        Object result = context.process();
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h2 id="代理对象"><a href="#代理对象" class="headerlink" title="代理对象"></a>代理对象</h2><p>创建代理对象的目的是为了对Map的原方法进行一些增强，比如统计某次调用的执行时间，可以在调用前记录下时间后，再调用目标对象的方法，之后再用当前时间减去调用前的时间，即可获取本次调用花费的时间。这个可以用于统计慢操作日志，后续会进行开发。</p>
+<p>此外结合自定义注解，可以在一些需要加监听器的方法上添加对应注解，即可在调用此方法时，进行一些操作，比如刷新操作。</p>
+<h3 id="jdk动态代理"><a href="#jdk动态代理" class="headerlink" title="jdk动态代理"></a>jdk动态代理</h3><p>在java动态代理机制中，<code>InvocationHandler</code>接口和<code>Proxy</code> 类是核心。</p>
+<p>Proxy 类中使用频率最高的方法是：newProxyInstance() ，这个方法主要用来生成一个代理对象。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@CallerSensitive</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Object <span class="hljs-title">newProxyInstance</span><span class="hljs-params">(ClassLoader loader,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                      Class&lt;?&gt;[] interfaces,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                      InvocationHandler h)</span></span></code></pre></div>
+
+<p>这个方法一共有 3 个参数：</p>
+<ul>
+<li>loader :类加载器，用于加载代理对象。</li>
+<li>interfaces : 被代理类实现的一些接口；</li>
+<li>h : 实现了 InvocationHandler 接口的对象；</li>
+</ul>
+<p>要实现动态代理的话，还必须需要实现InvocationHandler 来自定义处理逻辑。 当我们的动态代理对象调用一个方法时候，这个方法的调用就会被转发到实现InvocationHandler 接口类的 invoke 方法来调用。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">InvocationHandler</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 当你使用代理对象调用方法的时候实际会调用到这个方法</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">invoke</span><span class="hljs-params">(Object proxy, Method method, Object[] args)</span></span>
+<span class="hljs-function">        <span class="hljs-keyword">throws</span> Throwable</span>;
+&#125;</code></pre></div>
+
+<p><code>invoke()</code>有三个参数</p>
+<ul>
+<li>proxy :动态生成的代理类</li>
+<li>method : 与代理类对象调用的方法相对应</li>
+<li>args : 当前 method 方法的参数</li>
+</ul>
+<p>也就是说：通过Proxy 类的 newProxyInstance() 创建的代理对象在调用方法的时候，实际会调用到实现InvocationHandler 接口的类的 invoke()方法。 你可以在 invoke() 方法中自定义处理逻辑，比如在方法执行前后做什么事情。</p>
+<p>JDK 动态代理类使用步骤</p>
+<ul>
+<li>定义一个接口及其实现类；</li>
+<li>自定义<code>InvocationHandler</code>并重写<code>invoke</code>方法，在 <code>invoke</code> 方法中我们会调用原生方法（被代理类的方法）并自定义一些处理逻辑；</li>
+<li>通过 <code>Proxy.newProxyInstance(ClassLoader loader,Class&lt;?&gt;[] interfaces,InvocationHandler h)</code>方法创建代理对象；</li>
+</ul>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DynamicProxy</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">InvocationHandler</span>, <span class="hljs-title">ICacheProxy</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 被代理的目标对象</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICache target;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">DynamicProxy</span><span class="hljs-params">(ICache target)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.target = target;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 这种方式虽然实现了异步执行，但是存在一个缺陷：</span>
+<span class="hljs-comment">     * 强制用户返回值为 Future 的子类。</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 如何实现不影响原来的值，要怎么实现呢？</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> proxy 原始对象</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> method 方法</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> args 入参</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 结果</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> Throwable 异常</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-meta">@SuppressWarnings(&quot;all&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">invoke</span><span class="hljs-params">(Object proxy, Method method, Object[] args)</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+        ICacheProxyBsContext context = CacheProxyBsContext.newInstance()
+                .method(method).params(args).target(target);
+        <span class="hljs-keyword">return</span> CacheProxyBs.newInstance().context(context).execute();
+        <span class="hljs-comment">// execute()</span>
+        <span class="hljs-comment">/*</span>
+<span class="hljs-comment">        public Object execute() throws Throwable &#123;</span>
+<span class="hljs-comment">        long startMills = System.currentTimeMillis();</span>
+<span class="hljs-comment">        final ICache cache = context.target();</span>
+<span class="hljs-comment">        Object result = context.process();</span>
+<span class="hljs-comment">        return result;</span>
+<span class="hljs-comment">        */</span>
+        
+        <span class="hljs-comment">// process() 就是通过反射的方式调用目标对象的方法</span>
+        <span class="hljs-comment">// this.method.invoke(target, params);</span>
+    &#125;
+        
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">proxy</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-comment">// 我们要代理哪个真实对象，就将该对象传进去，最后是通过该真实对象来调用其方法的</span>
+        InvocationHandler handler = <span class="hljs-keyword">new</span> DynamicProxy(target);
+
+        <span class="hljs-keyword">return</span> Proxy.newProxyInstance(handler.getClass().getClassLoader(),
+                target.getClass().getInterfaces(), handler);
+    &#125;
+&#125;</code></pre></div>
+
+<h3 id="cglib动态代理"><a href="#cglib动态代理" class="headerlink" title="cglib动态代理"></a>cglib动态代理</h3><p><strong>JDK 动态代理有一个最致命的问题是其只能代理实现了接口的类。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/cglib/cglib">CGLIB</a>(Code Generation Library)是一个基于<a target="_blank" rel="noopener" href="http://www.baeldung.com/java-asm">ASM</a>的字节码生成库，它允许我们在运行时对字节码进行修改和动态生成。CGLIB 通过继承方式实现代理。很多知名的开源框架都使用到了<a target="_blank" rel="noopener" href="https://github.com/cglib/cglib">CGLIB</a>， 例如 Spring 中的 AOP 模块中：如果目标对象实现了接口，则默认采用 JDK 动态代理，否则采用 CGLIB 动态代理。</p>
+<p>在CGLIB动态代理机制中<code>MethodInterceptor</code>接口和<code>Enhancer</code>类的核心</p>
+<p>所以要自定义自定义 <code>MethodInterceptor</code>并重写<code>intercept</code>方法，<code>intercept</code>用于拦截增强被代理类的方法。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">MethodInterceptor</span></span>
+<span class="hljs-class"><span class="hljs-keyword">extends</span> <span class="hljs-title">Callback</span></span>&#123;
+    <span class="hljs-comment">// 拦截被代理类中的方法</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">intercept</span><span class="hljs-params">(Object obj, java.lang.reflect.Method method, Object[] args,</span></span>
+<span class="hljs-function"><span class="hljs-params">                               MethodProxy proxy)</span> <span class="hljs-keyword">throws</span> Throwable</span>;
+&#125;</code></pre></div>
+
+<ul>
+<li>obj :被代理的对象（需要增强的对象）</li>
+<li>method :被拦截的方法（需要增强的方法）</li>
+<li>args :方法入参</li>
+<li>methodProxy :用于调用原始方法</li>
+</ul>
+<p>你可以通过 Enhancer类来动态获取被代理类，当代理类调用方法的时候，实际调用的是 MethodInterceptor 中的 intercept 方法。</p>
+<p><strong>CGLIB 动态代理类使用步骤</strong></p>
+<ul>
+<li>定义一个类；</li>
+<li>自定义<code>MethodInterceptor</code> 并重写<code>intercept</code>方法，intercept 用于拦截增强被代理类的方法，和 JDK 动态代理中的 invoke 方法类似；</li>
+<li>通过 Enhancer 类的 create()创建代理类；</li>
+</ul>
+<p>添加maven依赖</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>cglib<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>cglib<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.3.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<p>代理实现</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CglibProxy</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">MethodInterceptor</span>, <span class="hljs-title">ICacheProxy</span> </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 被代理的对象</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICache target;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">CglibProxy</span><span class="hljs-params">(ICache target)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.target = target;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">intercept</span><span class="hljs-params">(Object o, Method method, Object[] params, MethodProxy methodProxy)</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+        ICacheProxyBsContext context = CacheProxyBsContext.newInstance()
+                .method(method).params(params).target(target);
+
+        <span class="hljs-keyword">return</span> CacheProxyBs.newInstance().context(context).execute();
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">proxy</span><span class="hljs-params">()</span> </span>&#123;
+        Enhancer enhancer = <span class="hljs-keyword">new</span> Enhancer();
+        <span class="hljs-comment">//目标对象类</span>
+        enhancer.setSuperclass(target.getClass());
+        enhancer.setCallback(<span class="hljs-keyword">this</span>);
+        <span class="hljs-comment">//通过字节码技术创建目标对象类的子类实例作为代理</span>
+        <span class="hljs-keyword">return</span> enhancer.create();
+    &#125;
+
+&#125;</code></pre></div>
+
+<h2 id="获取代理对象"><a href="#获取代理对象" class="headerlink" title="获取代理对象"></a>获取代理对象</h2><p>创建一个获取代理对象的工厂类</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheProxy</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">CacheProxy</span><span class="hljs-params">()</span></span>&#123;&#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 获取对象代理</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;K&gt; 泛型 key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> &lt;V&gt; 泛型 value</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> cache 对象代理</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 代理信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@SuppressWarnings(&quot;all&quot;)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;K,V&gt; <span class="hljs-function">ICache&lt;K,V&gt; <span class="hljs-title">getProxy</span><span class="hljs-params">(<span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(ObjectUtil.isNull(cache)) &#123;
+            <span class="hljs-keyword">return</span> (ICache&lt;K,V&gt;) <span class="hljs-keyword">new</span> NoneProxy(cache).proxy();
+        &#125;
+
+        <span class="hljs-keyword">final</span> Class clazz = cache.getClass();
+
+        <span class="hljs-comment">// 如果targetClass本身是个接口或者targetClass是JDK Proxy生成的,则使用JDK动态代理。</span>
+        <span class="hljs-comment">// 参考 spring 的 AOP 判断</span>
+        <span class="hljs-keyword">if</span> (clazz.isInterface() || Proxy.isProxyClass(clazz)) &#123;
+            <span class="hljs-keyword">return</span> (ICache&lt;K,V&gt;) <span class="hljs-keyword">new</span> DynamicProxy(cache).proxy();
+        &#125;
+
+        <span class="hljs-keyword">return</span> (ICache&lt;K,V&gt;) <span class="hljs-keyword">new</span> CglibProxy(cache).proxy();
+    &#125;
+
+&#125;</code></pre></div>
+
+
+
+<h1 id="实现监听器"><a href="#实现监听器" class="headerlink" title="实现监听器"></a>实现监听器</h1><h2 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h2><p>该注解的作用域是方法</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 缓存拦截器注解</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-meta">@Documented</span>
+<span class="hljs-meta">@Inherited</span>
+<span class="hljs-meta">@Target(ElementType.METHOD)</span>
+<span class="hljs-meta">@Retention(RetentionPolicy.RUNTIME)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> CacheInterceptor &#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 通用拦截器</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 1. 耗时统计</span>
+<span class="hljs-comment">     * 2. 慢日志统计</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * etc.</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 默认开启</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">common</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">true</span></span>;
+&#125;</code></pre></div>
+
+<p>那么如何使用注解呢？</p>
+<p>创建一个测试类，添加两个公用方法</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">test</span> </span>&#123;
+
+    <span class="hljs-meta">@CacheInterceptor</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span></span>&#123;
+        System.out.println(<span class="hljs-string">&quot;test1&quot;</span>);
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test2</span><span class="hljs-params">()</span> </span>&#123;
+        System.out.println(<span class="hljs-string">&quot;test2&quot;</span>);
+    &#125;
+&#125;</code></pre></div>
+
+<p>那么如何判断方法是否加了注解</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    Method[] methods = test.class.getMethods();
+    <span class="hljs-keyword">for</span> (Method method : methods) &#123;
+        System.out.println(method.getName());
+        System.out.println(method.getAnnotation(CacheInterceptor.class));
+    &#125;
+&#125;</code></pre></div>
+
+<p>如果方法上加了<code>@CacheInterceptor</code>注解，那么就能看到一下的打印信息</p>
+<div class="hljs"><pre><code class="hljs kotlin">test2
+<span class="hljs-literal">null</span>
+test1
+<span class="hljs-meta">@com</span>.sunzy.<span class="hljs-keyword">annotation</span>.CacheInterceptor(common=<span class="hljs-literal">true</span>)</code></pre></div>
+
+<p>所以用这种方法判断，在哪些方法执行时，需要进行相应的处理。</p>
+<h2 id="相关接口-3"><a href="#相关接口-3" class="headerlink" title="相关接口"></a>相关接口</h2><h3 id="ICacheInterceptorContext"><a href="#ICacheInterceptorContext" class="headerlink" title="ICacheInterceptorContext"></a>ICacheInterceptorContext</h3><p>为监听器执行时提供相关参数</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICacheInterceptorContext</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt;</span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 缓存信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 缓存信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">ICache&lt;K,V&gt; <span class="hljs-title">cache</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 执行的方法信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 方法</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">Method <span class="hljs-title">method</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 执行的参数</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 参数</span>
+<span class="hljs-comment">     */</span>
+    Object[] params();
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 方法执行的结果</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 结果</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function">Object <span class="hljs-title">result</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 开始时间</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 时间</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">startMills</span><span class="hljs-params">()</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 结束时间</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 时间</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">long</span> <span class="hljs-title">endMills</span><span class="hljs-params">()</span></span>;
+&#125;</code></pre></div>
+
+<h3 id="ICacheInterceptor"><a href="#ICacheInterceptor" class="headerlink" title="ICacheInterceptor"></a>ICacheInterceptor</h3><p>在执行方法前后需要执行的操作</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICacheInterceptor</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 方法执行之前</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> context 上下文</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">before</span><span class="hljs-params">(ICacheInterceptorContext&lt;K,V&gt; context)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 方法执行之后</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> context 上下文</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">after</span><span class="hljs-params">(ICacheInterceptorContext&lt;K,V&gt; context)</span></span>;
+
+&#125;</code></pre></div>
+
+<h2 id="接口实现类"><a href="#接口实现类" class="headerlink" title="接口实现类"></a>接口实现类</h2><h3 id="CacheInterceptorCost"><a href="#CacheInterceptorCost" class="headerlink" title="CacheInterceptorCost"></a>CacheInterceptorCost</h3><p>执行耗时统计监听器，再添加一个慢日志阈值即可实现判断是否为慢操作</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheInterceptorCost</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheInterceptor</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Log log = LogFactory.getLog(CacheInterceptorCost.class);
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">before</span><span class="hljs-params">(ICacheInterceptorContext&lt;K, V&gt; context)</span> </span>&#123;
+        log.debug(<span class="hljs-string">&quot;Cost start, method: &#123;&#125;&quot;</span>, context.method().getName());
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">after</span><span class="hljs-params">(ICacheInterceptorContext&lt;K, V&gt; context)</span> </span>&#123;
+        <span class="hljs-keyword">long</span> costMills = context.endMills() - context.startMills();
+        String methodName = context.method().getName();
+        log.debug(<span class="hljs-string">&quot;Cost end, method: &#123;&#125;, cost: &#123;&#125;ms&quot;</span>, methodName, costMills);
+
+        <span class="hljs-comment">// 添加慢操作日志</span>
+        List&lt;ICacheSlowListener&gt; slowListenerList = context.cache().slowListeners();
+        <span class="hljs-keyword">if</span> (CollectionUtil.isNotEmpty(slowListenerList))&#123;
+            CacheSlowListenerContext listenerContext = CacheSlowListenerContext.newInstance()
+                    .startTimeMills(context.startMills())
+                    .endTimeMills(context.endMills())
+                    .costTimeMills(costMills)
+                    .methodName(methodName)
+                    .params(context.params())
+                    .result(context.result());
+            <span class="hljs-keyword">for</span> (ICacheSlowListener slowListener : slowListenerList) &#123;
+                <span class="hljs-comment">// 超过慢日志的阈值 则认定为满操作</span>
+                <span class="hljs-keyword">if</span>(costMills &gt;= slowListener.slowerThanMills())&#123;
+                    slowListener.listen(listenerContext);
+                &#125;
+            &#125;
+        &#125;
+
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h3 id="CacheInterceptorContext"><a href="#CacheInterceptorContext" class="headerlink" title="CacheInterceptorContext"></a>CacheInterceptorContext</h3><p>监听器执行的上下文</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheInterceptorContext</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheInterceptorContext</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-keyword">private</span> ICache&lt;K,V&gt; cache;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 执行的方法信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Method method;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 执行的参数</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Object[] params;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 方法执行的结果</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Object result;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 开始时间</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> startMills;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 结束时间</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> endMills;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;K,V&gt; <span class="hljs-function">CacheInterceptorContext&lt;K,V&gt; <span class="hljs-title">newInstance</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CacheInterceptorContext&lt;&gt;();
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> ICache&lt;K, V&gt; <span class="hljs-title">cache</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> cache;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheInterceptorContext&lt;K, V&gt; <span class="hljs-title">cache</span><span class="hljs-params">(ICache&lt;K, V&gt; cache)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.cache = cache;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Method <span class="hljs-title">method</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> method;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheInterceptorContext&lt;K, V&gt; <span class="hljs-title">method</span><span class="hljs-params">(Method method)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.method = method;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> Object[] params() &#123;
+        <span class="hljs-keyword">return</span> params;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheInterceptorContext&lt;K, V&gt; <span class="hljs-title">params</span><span class="hljs-params">(Object[] params)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.params = params;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">result</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheInterceptorContext&lt;K, V&gt; <span class="hljs-title">result</span><span class="hljs-params">(Object result)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.result = result;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">startMills</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> startMills;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheInterceptorContext&lt;K, V&gt; <span class="hljs-title">startMills</span><span class="hljs-params">(<span class="hljs-keyword">long</span> startMills)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.startMills = startMills;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">endMills</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">return</span> endMills;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheInterceptorContext&lt;K, V&gt; <span class="hljs-title">endMills</span><span class="hljs-params">(<span class="hljs-keyword">long</span> endMills)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.endMills = endMills;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+&#125;</code></pre></div>
+
+<h3 id="CacheProxyBs"><a href="#CacheProxyBs" class="headerlink" title="CacheProxyBs"></a>CacheProxyBs</h3><p>在CacheProxyBs添加相关监听器</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheProxyBs</span> </span>&#123;
+
+    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-title">CacheProxyBs</span><span class="hljs-params">()</span></span>&#123;&#125;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 代理上下文</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> ICacheProxyBsContext context;
+    
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 默认通用拦截器</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * JDK 的泛型擦除导致这里不能使用泛型</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@SuppressWarnings(&quot;all&quot;)</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;ICacheInterceptor&gt; commonInterceptors = CacheInterceptors.defaultCommonList();
+
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> CacheProxyBs <span class="hljs-title">newInstance</span><span class="hljs-params">()</span></span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CacheProxyBs();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> CacheProxyBs <span class="hljs-title">context</span><span class="hljs-params">(ICacheProxyBsContext context)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.context = context;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 该方法在每个方法执行之前会获取其执行的具体信息</span>
+<span class="hljs-comment">     * 包括执方法名，参数，执行结果，执行结果</span>
+<span class="hljs-comment">     * 在执行前会打印执行时间</span>
+<span class="hljs-comment">     * 然后记录执行时间</span>
+<span class="hljs-comment">     * 打印最后的执行时间</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> Throwable</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@SuppressWarnings(&quot;all&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">execute</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+        <span class="hljs-keyword">long</span> startMills = System.currentTimeMillis();
+        <span class="hljs-keyword">final</span> ICache cache = context.target();
+        Object result = context.process();
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+&#125;</code></pre></div>
+
+<p>通过注解判断，需要执行什么监听器</p>
+<div class="hljs"><pre><code class="hljs java"> <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">interceptorHandler</span><span class="hljs-params">(CacheInterceptor cacheInterceptor,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                    CacheInterceptorContext interceptorContext,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                    ICache cache,</span></span>
+<span class="hljs-function"><span class="hljs-params">                                    <span class="hljs-keyword">boolean</span> before)</span> </span>&#123;
+     <span class="hljs-keyword">if</span>(cacheInterceptor != <span class="hljs-keyword">null</span>) &#123;
+         <span class="hljs-comment">//1. 通用</span>
+         <span class="hljs-keyword">if</span>(cacheInterceptor.common()) &#123;
+             <span class="hljs-keyword">for</span>(ICacheInterceptor interceptor : commonInterceptors) &#123;
+                 <span class="hljs-keyword">if</span>(before) &#123;
+                     interceptor.before(interceptorContext);
+                 &#125; <span class="hljs-keyword">else</span> &#123;
+                     interceptor.after(interceptorContext);
+                 &#125;
+             &#125;
+         &#125;
+     &#125;
+&#125;</code></pre></div>
+
+<p>修改代理对象调用的方法<code>execute()</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">execute</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;
+    <span class="hljs-comment">//1. 开始的时间</span>
+    <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> startMills = System.currentTimeMillis();
+    <span class="hljs-keyword">final</span> ICache cache = context.target();
+    CacheInterceptorContext interceptorContext = CacheInterceptorContext.newInstance()
+        .startMills(startMills)
+        .method(context.method())
+        .params(context.params())
+        .cache(context.target());
+
+    <span class="hljs-comment">//1. 获取刷新注解信息</span>
+    CacheInterceptor cacheInterceptor = context.interceptor();
+    <span class="hljs-keyword">this</span>.interceptorHandler(cacheInterceptor, interceptorContext, cache, <span class="hljs-keyword">true</span>);
+
+    <span class="hljs-comment">//2. 正常执行</span>
+    Object result = context.process();
+
+    <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> endMills = System.currentTimeMillis();
+    interceptorContext.endMills(endMills).result(result);
+
+    <span class="hljs-comment">// 方法执行完成</span>
+    <span class="hljs-keyword">this</span>.interceptorHandler(cacheInterceptor, interceptorContext, cache, <span class="hljs-keyword">false</span>);
+    <span class="hljs-keyword">return</span> result;
+&#125;</code></pre></div>
+
+<h3 id="CacheBs-1"><a href="#CacheBs-1" class="headerlink" title="CacheBs"></a>CacheBs</h3><p>修改引导类对象中的<code>build()</code>方法</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> ICache&lt;K,V&gt; <span class="hljs-title">build</span><span class="hljs-params">()</span> </span>&#123;
+    Cache&lt;K,V&gt; cache = <span class="hljs-keyword">new</span> Cache&lt;&gt;();
+    cache.map(map);
+    cache.evict(evict);
+    cache.sizeLimit(size);
+
+    <span class="hljs-comment">// 初始化</span>
+    cache.init();
+    <span class="hljs-comment">// 创建代理对象</span>
+    <span class="hljs-keyword">return</span> CacheProxy.getProxy(cache);
+&#125;</code></pre></div>
+
+<h2 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h2><div class="hljs"><pre><code class="hljs java">ICache&lt;String, String&gt; cache = CacheBs.&lt;String,String&gt;newInstance()
+        .size(<span class="hljs-number">3</span>)
+        .build();
+cache.put(<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;1&quot;</span>);
+cache.put(<span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-string">&quot;2&quot;</span>);
+
+cache.expire(<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-number">10</span>);
+TimeUnit.MILLISECONDS.sleep(<span class="hljs-number">50</span>);
+
+System.out.println(cache.keySet());</code></pre></div>
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/java/">java</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/05/06/java-stream/">
+                        <span class="hidden-mobile">java_stream</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MyCache&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
