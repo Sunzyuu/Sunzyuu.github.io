@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      8.2k 字
+      9.3k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      121
+      135
        分钟
     </span>
   
@@ -1931,6 +1931,188 @@ System.out.println(cache.keySet());</code></pre></div>
 [DEBUG] [<span class="hljs-number">2023</span>-<span class="hljs-number">05</span>-<span class="hljs-number">26</span> <span class="hljs-number">11</span>:<span class="hljs-number">27</span>:<span class="hljs-number">03.250</span>] [main] [c.g.h.c.c.s.l.r.CacheRemoveListener.listen] - Remove key: <span class="hljs-number">1</span>, value: <span class="hljs-number">1</span>, type: evict
 【删除提示】：<span class="hljs-number">1</span>
 [DEBUG] [<span class="hljs-number">2023</span>-<span class="hljs-number">05</span>-<span class="hljs-number">26</span> <span class="hljs-number">11</span>:<span class="hljs-number">27</span>:<span class="hljs-number">03.250</span>] [main] [c.g.h.c.c.s.i.c.CacheInterceptorCost.after] - Cost end, method: put, cost: 42ms</code></pre></div>
+
+
+
+
+
+<h1 id="LRU-缓存淘汰策略"><a href="#LRU-缓存淘汰策略" class="headerlink" title="LRU 缓存淘汰策略"></a>LRU 缓存淘汰策略</h1><p>LRU 是由 Least Recently Used 的首字母组成，表示最近最少使用的含义，一般使用在对象淘汰算法上。</p>
+<p>也是比较常见的一种淘汰算法。</p>
+<p>其核心思想是<strong>如果数据最近被访问过，那么将来被访问的几率也更高</strong>。</p>
+<p>以上的理论是基于连续性准则。</p>
+<ul>
+<li><p>时间连续性</p>
+<p>对于信息的访问，最近被访问过，再次被访问的可能性会很高。LRU就是基于这个理念</p>
+</li>
+<li><p>空间连续性</p>
+<p>对于磁盘信息的访问，将很有访问连续的空间信息。所有会有page预取来提升性能</p>
+</li>
+</ul>
+<h2 id="java的实现步骤"><a href="#java的实现步骤" class="headerlink" title="java的实现步骤"></a>java的实现步骤</h2><ul>
+<li>新数据插入到链表头部</li>
+<li>每当缓存命中（即缓存数据被访问），就将数据移到链表的头部</li>
+<li>当链表满的时候，将链表尾部的数据丢弃</li>
+</ul>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><h4 id="1-如何判断是新数据？"><a href="#1-如何判断是新数据？" class="headerlink" title="1.如何判断是新数据？"></a>1.如何判断是新数据？</h4><p>每当缓存命中（即缓存数据被访问），则将数据移到链表头部；</p>
+<h4 id="2-什么是缓存命中"><a href="#2-什么是缓存命中" class="headerlink" title="2.什么是缓存命中"></a>2.什么是缓存命中</h4><ul>
+<li>put(key, value)的情况，就是新元素。如果已经有这个元素，可以先删除，再加入</li>
+<li>get(key)的情况，对于元素的访问，删除已有的元素，将新元素再放到链表的头部</li>
+<li>remove(key)移除一个元素，直接删除已有的元素</li>
+<li>keySet() valueSet() entrySet() 这些属于无差别访问，我们不对队列做调整。</li>
+</ul>
+<h4 id="3-移除"><a href="#3-移除" class="headerlink" title="3.移除"></a>3.移除</h4><p>当链表满的时候，将链表尾部的数据丢弃。</p>
+<p>链表满只有一种场景，那就是添加元素的时候，也就是执行 put(key, value) 的时候。</p>
+<p>直接删除对应的 key 即可。</p>
+<h2 id="相关接口-5"><a href="#相关接口-5" class="headerlink" title="相关接口"></a>相关接口</h2><p>和FIFO的接口保持一致，调用地方不变</p>
+<p>为了后续的LRU/LRU实现，新增remove/update两个方法</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ICacheEvict</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 驱除策略</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> context 上下文</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 是否执行驱除</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">evict</span><span class="hljs-params">(<span class="hljs-keyword">final</span> ICacheEvictContext&lt;K, V&gt; context)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 更新 key 信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key key</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">final</span> K key)</span></span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 删除 key 信息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key key</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">remove</span><span class="hljs-params">(<span class="hljs-keyword">final</span> K key)</span></span>;
+
+&#125;</code></pre></div>
+
+<h2 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="CacheEvictLRU"><a href="#CacheEvictLRU" class="headerlink" title="CacheEvictLRU"></a>CacheEvictLRU</h3><p>直接基于 LinkedList 实现：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 丢弃策略-LRU 最近最少使用</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> binbin.hou</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 0.0.11</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheEvictLRU</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheEvict</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Log log = LogFactory.getLog(CacheEvictLRU.class);
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * list 信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;K&gt; list = <span class="hljs-keyword">new</span> LinkedList&lt;&gt;();
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">evict</span><span class="hljs-params">(ICacheEvictContext&lt;K, V&gt; context)</span> </span>&#123;
+        <span class="hljs-keyword">boolean</span> result = <span class="hljs-keyword">false</span>;
+        <span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache = context.cache();
+        <span class="hljs-comment">// 超过限制，移除队尾的元素</span>
+        <span class="hljs-keyword">if</span>(cache.size() &gt;= context.size()) &#123;
+            K evictKey = list.get(list.size()-<span class="hljs-number">1</span>);
+            <span class="hljs-comment">// 移除对应的元素</span>
+            cache.remove(evictKey);
+            result = <span class="hljs-keyword">true</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 放入元素</span>
+<span class="hljs-comment">     * （1）删除已经存在的</span>
+<span class="hljs-comment">     * （2）新元素放到元素头部</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 元素</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">final</span> K key)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.list.remove(key);
+        <span class="hljs-keyword">this</span>.list.add(<span class="hljs-number">0</span>, key);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 移除元素</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key 元素</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">remove</span><span class="hljs-params">(<span class="hljs-keyword">final</span> K key)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.list.remove(key);
+    &#125;
+
+&#125;</code></pre></div>
+
+<p>实现的比较简单，相对FiFO多了三个方法</p>
+<ul>
+<li>update(): 做了一点简化，认为只要是访问就是删除，然后插入到队首</li>
+<li>remove()：删除就是直接从链表中删除</li>
+</ul>
+<h3 id="CacheInterceptor"><a href="#CacheInterceptor" class="headerlink" title="CacheInterceptor"></a>CacheInterceptor</h3><p>方法已经写好，但是什么方法需要调用，如何调用？</p>
+<p>这里还是基于注解的实现</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 是否执行驱除更新</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * 主要用于 LRU/LFU 等驱除策略</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 是否</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">evict</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">false</span></span>;</code></pre></div>
+
+<h3 id="cache-1"><a href="#cache-1" class="headerlink" title="cache"></a>cache</h3><p>上面思考中，什么是缓存命中，说明了哪些方法需要添加注释</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
+<span class="hljs-meta">@CacheInterceptor(refresh = true, evict = true)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">containsKey</span><span class="hljs-params">(Object key)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> map.containsKey(key);
+&#125;
+
+<span class="hljs-meta">@Override</span>
+<span class="hljs-meta">@CacheInterceptor(evict = true)</span>
+<span class="hljs-meta">@SuppressWarnings(&quot;unchecked&quot;)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">get</span><span class="hljs-params">(Object key)</span> </span>&#123;
+    <span class="hljs-comment">//1. 刷新所有过期信息</span>
+    K genericKey = (K) key;
+    <span class="hljs-keyword">this</span>.expire.refreshExpire(Collections.singletonList(genericKey));
+    <span class="hljs-keyword">return</span> map.get(key);
+&#125;
+
+<span class="hljs-meta">@Override</span>
+<span class="hljs-meta">@CacheInterceptor(aof = true, evict = true)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">put</span><span class="hljs-params">(K key, V value)</span> </span>&#123;
+    <span class="hljs-comment">//...</span>
+&#125;
+
+<span class="hljs-meta">@Override</span>
+<span class="hljs-meta">@CacheInterceptor(aof = true, evict = true)</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> V <span class="hljs-title">remove</span><span class="hljs-params">(Object key)</span> </span>&#123;
+    <span class="hljs-keyword">return</span> map.remove(key);
+&#125;</code></pre></div>
+
+<h2 id="注解驱逐拦截器实现"><a href="#注解驱逐拦截器实现" class="headerlink" title="注解驱逐拦截器实现"></a>注解驱逐拦截器实现</h2><p>执行顺序：放在方法之后更新，不然每次当前操作的 key 都会被放在最前面。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CacheInterceptorEvict</span>&lt;<span class="hljs-title">K</span>,<span class="hljs-title">V</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">ICacheInterceptor</span>&lt;<span class="hljs-title">K</span>, <span class="hljs-title">V</span>&gt; </span>&#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Log log = LogFactory.getLog(CacheInterceptorEvict.class);
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">before</span><span class="hljs-params">(ICacheInterceptorContext&lt;K,V&gt; context)</span> </span>&#123;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-meta">@SuppressWarnings(&quot;all&quot;)</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">after</span><span class="hljs-params">(ICacheInterceptorContext&lt;K,V&gt; context)</span> </span>&#123;
+        ICacheEvict&lt;K,V&gt; evict = context.cache().evict();
+
+        Method method = context.method();
+        <span class="hljs-keyword">final</span> K key = (K) context.params()[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;remove&quot;</span>.equals(method.getName())) &#123;
+            evict.remove(key);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            evict.update(key);
+        &#125;
+    &#125;
+
+&#125;</code></pre></div>
+
+
 
 
             </div>
