@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="sunzy">
   <meta name="keywords" content="">
-  <title>chatroom - 一路走到黑</title>
+  <title>java-openai - 一路走到黑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -177,8 +177,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-12-07 09:43" pubdate>
-        2022年12月7日 上午
+      <time datetime="2023-06-27 19:40" pubdate>
+        2023年6月27日 晚上
       </time>
     </span>
   
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      629 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      10
        分钟
     </span>
   
@@ -237,199 +237,124 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">chatroom</h1>
+            <h1 style="display: none">java-openai</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：7 个月前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="GO语言实现的聊天室"><a href="#GO语言实现的聊天室" class="headerlink" title="GO语言实现的聊天室"></a>GO语言实现的聊天室</h1><p>实现很简单，基于tcp socket,做这个小项目的目的是检测对channel的理解，channel在并发场景中真的好用，但是有时候也是真挺难理解的</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="User"><a href="#User" class="headerlink" title="User"></a>User</h3><p>每个连接的用户需要对应一个账号，因此需要创建一个全局的struct，用户有名字，id，以及接受消息的管道</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
-	<span class="hljs-comment">// 名字</span>
-	name <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// id</span>
-	id <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// msg管道</span>
-	msg <span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>
+              <h1 id="chatbox"><a href="#chatbox" class="headerlink" title="chatbox"></a>chatbox</h1><p>在做一个项目，在springboot中集成openai的聊天机器人，需要通过openai-key调用。</p>
+<p>OPENAI开源openai-java项目地址：<a target="_blank" rel="noopener" href="https://github.com/TheoKanning/openai-java">https://github.com/TheoKanning/openai-java</a></p>
+<p>注意：需要翻墙使用</p>
+<h1 id="使用openai-java"><a href="#使用openai-java" class="headerlink" title="使用openai-java"></a>使用openai-java</h1><h2 id="导入依赖"><a href="#导入依赖" class="headerlink" title="导入依赖"></a>导入依赖</h2><p>在springboot项目中引入相关依赖</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.theokanning.openai-gpt3-java<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>client<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.12.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.squareup.retrofit2<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>retrofit<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.squareup.retrofit2<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>adapter-rxjava2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.squareup.retrofit2<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>converter-jackson<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+			<span class="hljs-tag">&lt;<span class="hljs-name">exclusions</span>&gt;</span>
+				<span class="hljs-tag">&lt;<span class="hljs-name">exclusion</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+					<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-databind<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+				<span class="hljs-tag">&lt;/<span class="hljs-name">exclusion</span>&gt;</span>
+			<span class="hljs-tag">&lt;/<span class="hljs-name">exclusions</span>&gt;</span>
+		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<p>准备好openai-key，官网<a target="_blank" rel="noopener" href="https://platform.openai.com/account/api-keys">https://platform.openai.com/account/api-keys</a></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230627195547417.png" srcset="/img/loading.gif" alt="image-20230627195547417"></p>
+<h2 id="使用openai-gpt3-java"><a href="#使用openai-gpt3-java" class="headerlink" title="使用openai-gpt3-java"></a>使用openai-gpt3-java</h2><p>代码如下</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> GlobalResult <span class="hljs-title">chat</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> JSONObject jsonObject)</span> </span>&#123;
+    String message = jsonObject.getString(<span class="hljs-string">&quot;message&quot;</span>);
+    <span class="hljs-keyword">if</span> (StringUtils.isBlank(message)) &#123;
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;参数异常！&quot;</span>);
+    &#125;
+    ChatMessage chatMessage = <span class="hljs-keyword">new</span> ChatMessage(<span class="hljs-string">&quot;user&quot;</span>, message);
+    List&lt;ChatMessage&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(<span class="hljs-number">4</span>);
+    list.add(chatMessage);
+    OpenAiService service = <span class="hljs-keyword">new</span> OpenAiService(token, Duration.ofSeconds(<span class="hljs-number">180</span>));
+    ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
+        .model(<span class="hljs-string">&quot;gpt-3.5-turbo&quot;</span>)
+        .stream(<span class="hljs-keyword">true</span>)
+        .messages(list)
+        .build();
+    service.streamChatCompletion(completionRequest).doOnError(Throwable::printStackTrace)
+        .blockingForEach(chunk -&gt; &#123;
+            String text = chunk.getChoices().get(<span class="hljs-number">0</span>).getMessage().getContent();
+            <span class="hljs-keyword">if</span> (text == <span class="hljs-keyword">null</span>) &#123;
+                <span class="hljs-keyword">return</span>;
+            &#125;
+            System.out.print(text);
+
+        &#125;);
+    service.shutdownExecutor();
+    <span class="hljs-keyword">return</span> GlobalResultGenerator.genSuccessResult();
 &#125;</code></pre></div>
 
-<h3 id="map-amp-message"><a href="#map-amp-message" class="headerlink" title="map&amp;message"></a>map&amp;message</h3><p>还需要一个全局的map保存所有的用户信息，以便服务器端向所有的用户转发消息</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-comment">// 需要一个全局的map存储所有user信息</span>
-<span class="hljs-keyword">var</span> allUsers = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>] User)</code></pre></div>
+<p>但是上述代码出现错误，原因是连接超时，应该就是代理出现了问题，虽然我开启了全局系统代理也没法解决。</p>
+<p>解决方法如下，添加请求代理的配置</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testOpenAi</span><span class="hljs-params">()</span> </span>&#123;
+    ObjectMapper mapper = defaultObjectMapper();
+    Proxy proxy = <span class="hljs-keyword">new</span> Proxy(Proxy.Type.HTTP, <span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">7890</span>));
+    OkHttpClient client =  defaultClient(token,Duration.ofSeconds(<span class="hljs-number">10000</span>))
+        .newBuilder()
+        .proxy(proxy)
+        .build();
+    Retrofit retrofit = defaultRetrofit(client, mapper);
+    OpenAiApi api = retrofit.create(OpenAiApi.class);
+    String message = <span class="hljs-string">&quot;hello!&quot;</span>;
+    <span class="hljs-keyword">if</span> (StringUtils.isBlank(message)) &#123;
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;参数异常！&quot;</span>);
+    &#125;
+    ChatMessage chatMessage = <span class="hljs-keyword">new</span> ChatMessage(<span class="hljs-string">&quot;user&quot;</span>, message);
+    List&lt;ChatMessage&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(<span class="hljs-number">4</span>);
+    list.add(chatMessage);
+    OpenAiService service = <span class="hljs-keyword">new</span> OpenAiService(api);
+    <span class="hljs-comment">//        CompletionRequest completionRequest = CompletionRequest.builder()</span>
+    <span class="hljs-comment">//                .model(&quot;gpt-3.5-turbo&quot;)</span>
+    <span class="hljs-comment">//                .prompt(&quot;你知道java中的泛型是什么吗&quot;)</span>
+    <span class="hljs-comment">//                .temperature(0.5)</span>
+    <span class="hljs-comment">//                .maxTokens(2048)</span>
+    <span class="hljs-comment">//                .topP(1D)</span>
+    <span class="hljs-comment">//                .build();</span>
 
-<p>转发消息时又需要一个管道接收用户发送的消息后转发给所有用户</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-comment">// 需要一个全局的管道message 向所有用户发送消息</span>
-<span class="hljs-keyword">var</span> message = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">10</span>)</code></pre></div>
-
-
-
-<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><p>需要一个广播函数，开启该goroutine后可以一直监听message管道中的消息，然后向用户转发消息</p>
-<p>需要一个业务处理函数，当用户发送消息后，通过该函数处理</p>
-<p>需要一个消息反馈函数，将User.msg中的消息返回到客户端</p>
-<h3 id="broadcast"><a href="#broadcast" class="headerlink" title="broadcast"></a>broadcast</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">broadcast</span><span class="hljs-params">()</span></span>&#123;
-	fmt.Println(<span class="hljs-string">&quot;[+]:广播go协程启动成功...&quot;</span>)
-	<span class="hljs-keyword">for</span>&#123;
-		<span class="hljs-comment">// 从message中读取数据</span>
-		info := &lt;- message
-		<span class="hljs-comment">// 将消息发送给所有用户</span>
-		<span class="hljs-keyword">if</span> info != <span class="hljs-string">&quot;&quot;</span>&#123;
-			<span class="hljs-keyword">for</span> _, user := <span class="hljs-keyword">range</span> allUsers&#123;
-				user.msg &lt;- info
-			&#125;
-		&#125;
-	&#125;
+    ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
+        .model(<span class="hljs-string">&quot;gpt-3.5-turbo&quot;</span>)
+        .stream(<span class="hljs-keyword">true</span>)
+        .messages(list)
+        .build();
+    <span class="hljs-comment">//        service.createChatCompletion(completionRequest).getChoices().forEach(System.out::println);</span>
+    service.streamChatCompletion(completionRequest).doOnError(Throwable::printStackTrace)
+        .blockingForEach(chunk -&gt; &#123;
+            String text = chunk.getChoices().get(<span class="hljs-number">0</span>).getMessage().getContent();
+            <span class="hljs-keyword">if</span> (text == <span class="hljs-keyword">null</span>) &#123;
+                <span class="hljs-keyword">return</span>;
+            &#125;
+            System.out.print(text);
+            <span class="hljs-comment">//                    sseService.send(user.getIdUser(), text);</span>
+        &#125;);
 &#125;</code></pre></div>
 
-<h3 id="handler"><a href="#handler" class="headerlink" title="handler"></a>handler</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(conn net.Conn)</span></span> &#123;
-	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;
-		fmt.Println(<span class="hljs-string">&quot;[+]:启动业务...&quot;</span>)
-		<span class="hljs-comment">// 每次建立新连接需要创建一个user</span>
-		clientAddr := conn.RemoteAddr().String()
-		newUser := User&#123;
-			name : clientAddr,
-			id : clientAddr,
-			msg: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>),  <span class="hljs-comment">// 一定要使用make，否则没有空间写人</span>
-		&#125;
-		fmt.Println(clientAddr)
-
-		_, ok := allUsers[clientAddr]
-		<span class="hljs-keyword">if</span> !ok&#123;
-			<span class="hljs-comment">//将新创建的用户添加到map中</span>
-			allUsers[newUser.id] = newUser
-			<span class="hljs-comment">// 向广播中写入消息 通知其他人你已经上线</span>
-			loginInfo := fmt.Sprintf(<span class="hljs-string">&quot;[%s]:[%s] ====&gt; online now!&quot;</span>, newUser.name, newUser.id)
-			message &lt;- loginInfo
-			time.Sleep(time.Second)
-			<span class="hljs-keyword">go</span> writeToClient(newUser, conn)
-		&#125;
-		buf:= <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">1024</span>)
-		cnt, err := conn.Read(buf)
-		<span class="hljs-keyword">if</span> err!=<span class="hljs-literal">nil</span>&#123;
-			fmt.Println(<span class="hljs-string">&quot;conn.Read error: &quot;</span> , err)
-		&#125;
-		<span class="hljs-comment">//fmt.Println(&quot;服务器端接受的数据为：&quot;,  string(buf[:cnt]), &quot;, cnt:&quot;, cnt)</span>
-		userInfo:= fmt.Sprintf(<span class="hljs-string">&quot;[%s] say:&quot;</span>, clientAddr)
-		message &lt;- userInfo + <span class="hljs-keyword">string</span>(buf[:cnt])
-	&#125;
-&#125;</code></pre></div>
-
-<h3 id="writeToClient"><a href="#writeToClient" class="headerlink" title="writeToClient"></a>writeToClient</h3><div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">writeToClient</span><span class="hljs-params">(user User, conn net.Conn)</span></span>&#123;
-	<span class="hljs-keyword">for</span> msg := <span class="hljs-keyword">range</span> user.msg&#123;
-		conn.Write([]<span class="hljs-keyword">byte</span>(msg + <span class="hljs-string">&quot;\n&quot;</span>))
-	&#125;
-&#125;</code></pre></div>
-
-
-
-<p>完整程序</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main
-
-<span class="hljs-keyword">import</span> (
-	<span class="hljs-string">&quot;fmt&quot;</span>
-	<span class="hljs-string">&quot;net&quot;</span>
-	<span class="hljs-string">&quot;time&quot;</span>
-)
-
-<span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span> &#123;
-	<span class="hljs-comment">// 名字</span>
-	name <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// id</span>
-	id <span class="hljs-keyword">string</span>
-	<span class="hljs-comment">// msg管道</span>
-	msg <span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>
-&#125;
-<span class="hljs-comment">// 需要一个全局的map存储所有user信息</span>
-<span class="hljs-keyword">var</span> allUsers = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>] User)
-<span class="hljs-comment">// 需要一个全局的管道message 向所有用户发送消息</span>
-<span class="hljs-keyword">var</span> message = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>, <span class="hljs-number">10</span>)
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
-	listen, err := net.Listen(<span class="hljs-string">&quot;tcp&quot;</span>, <span class="hljs-string">&quot;:8080&quot;</span>)
-	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-		fmt.Println(<span class="hljs-string">&quot;net.listen err: &quot;</span>, err)
-	&#125;
-	fmt.Println(<span class="hljs-string">&quot;[+]:服务器监听成功&quot;</span>)
-	<span class="hljs-comment">// 启动全局唯一的 广播协程</span>
-	<span class="hljs-keyword">go</span> broadcast()
-	<span class="hljs-keyword">for</span>&#123;
-		accept, err := listen.Accept()
-		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
-			fmt.Println(<span class="hljs-string">&quot;[+]:listen.accept err: &quot;</span>, err)
-		&#125;
-		fmt.Println(<span class="hljs-string">&quot;[+]:建立连接成功...&quot;</span>)
-		<span class="hljs-keyword">go</span> handler(accept)
-
-	&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">handler</span><span class="hljs-params">(conn net.Conn)</span></span> &#123;
-	<span class="hljs-keyword">for</span> <span class="hljs-literal">true</span> &#123;
-		fmt.Println(<span class="hljs-string">&quot;[+]:启动业务...&quot;</span>)
-		<span class="hljs-comment">// 每次建立新连接需要创建一个user</span>
-		clientAddr := conn.RemoteAddr().String()
-		newUser := User&#123;
-			name : clientAddr,
-			id : clientAddr,
-			msg: <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">string</span>),  <span class="hljs-comment">// 一定要使用make，否则没有空间写人</span>
-		&#125;
-		fmt.Println(clientAddr)
-
-		_, ok := allUsers[clientAddr]
-		<span class="hljs-keyword">if</span> !ok&#123;
-			<span class="hljs-comment">//将新创建的用户添加到map中</span>
-			allUsers[newUser.id] = newUser
-			<span class="hljs-comment">// 向广播中写入消息 通知其他人你已经上线</span>
-			loginInfo := fmt.Sprintf(<span class="hljs-string">&quot;[%s]:[%s] ====&gt; online now!&quot;</span>, newUser.name, newUser.id)
-			message &lt;- loginInfo
-			time.Sleep(time.Second)
-			<span class="hljs-keyword">go</span> writeToClient(newUser, conn)
-		&#125;
-		buf:= <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">1024</span>)
-		cnt, err := conn.Read(buf)
-		<span class="hljs-keyword">if</span> err!=<span class="hljs-literal">nil</span>&#123;
-			fmt.Println(<span class="hljs-string">&quot;conn.Read error: &quot;</span> , err)
-		&#125;
-		<span class="hljs-comment">//fmt.Println(&quot;服务器端接受的数据为：&quot;,  string(buf[:cnt]), &quot;, cnt:&quot;, cnt)</span>
-		userInfo:= fmt.Sprintf(<span class="hljs-string">&quot;[%s] say:&quot;</span>, clientAddr)
-		message &lt;- userInfo + <span class="hljs-keyword">string</span>(buf[:cnt])
-	&#125;
-&#125;
-
-<span class="hljs-comment">// 向所有用户广播消息， 全局唯一</span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">broadcast</span><span class="hljs-params">()</span></span>&#123;
-	fmt.Println(<span class="hljs-string">&quot;[+]:广播go协程启动成功...&quot;</span>)
-	<span class="hljs-keyword">for</span>&#123;
-		<span class="hljs-comment">// 从message中读取数据</span>
-		info := &lt;- message
-		<span class="hljs-comment">// 将消息发送给所有用户</span>
-		<span class="hljs-keyword">if</span> info != <span class="hljs-string">&quot;&quot;</span>&#123;
-			<span class="hljs-keyword">for</span> _, user := <span class="hljs-keyword">range</span> allUsers&#123;
-				user.msg &lt;- info
-			&#125;
-		&#125;
-	&#125;
-&#125;
-
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">writeToClient</span><span class="hljs-params">(user User, conn net.Conn)</span></span>&#123;
-	<span class="hljs-keyword">for</span> msg := <span class="hljs-keyword">range</span> user.msg&#123;
-		conn.Write([]<span class="hljs-keyword">byte</span>(msg + <span class="hljs-string">&quot;\n&quot;</span>))
-	&#125;
-&#125;
-
-</code></pre></div>
-
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>用户一</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103317397.png" srcset="/img/loading.gif" alt="image-20221207103317397"></p>
-<p>用户二</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103251004.png" srcset="/img/loading.gif" alt="image-20221207103251004"></p>
-<p>用户三</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103427557.png" srcset="/img/loading.gif" alt="image-20221207103427557"></p>
-<p>控制台消息</p>
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20221207103500122.png" srcset="/img/loading.gif" alt></p>
-<p>后续再对聊天室进一步优化</p>
+<p>添加代理后，就能正常使用openai的api了</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230627200620750.png" srcset="/img/loading.gif" alt="image-20230627200620750"></p>
+<h1 id="实现每个用户独占一个对话框"><a href="#实现每个用户独占一个对话框" class="headerlink" title="实现每个用户独占一个对话框"></a>实现每个用户独占一个对话框</h1><p>TODO</p>
 
             </div>
             <hr>
@@ -439,7 +364,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/go/">go</a>
+                      <a class="hover-with-bg" href="/categories/openai/">openai</a>
                     
                   </div>
                 
@@ -447,11 +372,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/socket/">socket</a>
-                    
-                      <a class="hover-with-bg" href="/tags/go/">go</a>
-                    
-                      <a class="hover-with-bg" href="/tags/tcp/">tcp</a>
+                      <a class="hover-with-bg" href="/tags/java/">java</a>
                     
                   </div>
                 
@@ -464,18 +385,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/12/07/vblog1/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">半年杭州体验卡即将到期</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/30/vulnhub/">
-                        <span class="hidden-mobile">vulnhub</span>
+                      <a href="/2023/05/18/MyCache/">
+                        <span class="hidden-mobile">MyCache</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -678,7 +593,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "chatroom&nbsp;",
+        "java-openai&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
