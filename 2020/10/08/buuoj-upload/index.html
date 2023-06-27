@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      506 字
+      504 字
     </span>
   
 
@@ -255,13 +255,13 @@
 <p>首先尝试的是，将<code>Content-Type: image/jpeg</code>改为图片类型，但是还是无法上传</p>
 <p>再尝试一下.htaccess文件</p>
 <p>文件内容</p>
-<div class="hljs"><pre><div class="caption"><span>"a.jpg"></span></div><code class="hljs <FilesMatch">SetHandler application&#x2F;x-httpd-php
-&lt;&#x2F;FilesMatch&gt;</code></pre></div>
+<div class="hljs"><pre><div class="caption"><span>"a.jpg"></span></div><code class="hljs <FilesMatch">SetHandler application/x-httpd-php
+&lt;/FilesMatch&gt;</code></pre></div>
 
-<p><img src="https://i.loli.net/2020/11/30/Hi3YGuQoWCzg1P2.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/Hi3YGuQoWCzg1P2.png" srcset="/img/loading.gif"></p>
 <p>上传成功后，再上传包含一句话木马的 a.jpg文件，<code>.htaccess</code>文件的作用就是将指定类型的文件当作php文件运行</p>
 <p>所以表面上是jpg类型的文件，但是是当作php文件</p>
-<p><img src="https://i.loli.net/2020/11/30/83GHiZg5Ao7IbnF.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/83GHiZg5Ao7IbnF.png" srcset="/img/loading.gif"></p>
 <p>上传成功后，蚁剑访问<code>url+/upload/3af588e32ac72180588d18d5c3b470b4/a.jpg</code></p>
 <p>密码为：cmd</p>
 <h2 id="SUCTF-2019-CheckIn"><a href="#SUCTF-2019-CheckIn" class="headerlink" title="[SUCTF 2019]CheckIn"></a>[SUCTF 2019]CheckIn</h2><p>试着上传php文件，提示非法后缀名，继续修改后缀名，发现php3,php5,phtml等可执行文件后不可上传</p>
@@ -278,12 +278,12 @@
 <p><a target="_blank" rel="noopener" href="https://wooyun.js.org/drops/user.ini%E6%96%87%E4%BB%B6%E6%9E%84%E6%88%90%E7%9A%84PHP%E5%90%8E%E9%97%A8.html">传送门</a></p>
 <p><strong>开始做题</strong></p>
 <p>上传.user.ini文件</p>
-<p><img src="https://i.loli.net/2020/11/30/5zEkKtamYMgWoTh.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/5zEkKtamYMgWoTh.png" srcset="/img/loading.gif"></p>
 <p>GIF89a是GIF文件内容开头的几个字符，其作用是为类绕过<code>exif_imagetype()</code></p>
 <p>上传1.gif</p>
-<p><img src="https://i.loli.net/2020/11/30/6sJc1x7viwNqa3Y.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/6sJc1x7viwNqa3Y.png" srcset="/img/loading.gif"></p>
 <p>文件保存的路径已经给出，开始蚁剑链接的连接是</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">url</span>/uploads/<span class="hljs-number">04</span>b<span class="hljs-number">0951938</span>d<span class="hljs-number">905</span>b<span class="hljs-number">41348</span>c<span class="hljs-number">1548</span>f<span class="hljs-number">9</span>c<span class="hljs-number">338</span>b/<span class="hljs-number">1</span>.gif</code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">url</span>/uploads/<span class="hljs-number">04</span>b0951938d905b41348c1548f9c338b/<span class="hljs-number">1</span>.gif</code></pre></div>
 
 <p>但是一直连接不上</p>
 <p>后来链接index.php才连接上，这里想到了<code>.user.ini</code>作用，是让所有的php文件包含整个一句话木马，而这里文件路径存在一个index.php，所有说index.php中也存在这个一句话木马</p>

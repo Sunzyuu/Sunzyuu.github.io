@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -251,13 +251,13 @@
 <h2 id="SQL注入1"><a href="#SQL注入1" class="headerlink" title="SQL注入1"></a>SQL注入1</h2><p>题目源码给出</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-keyword">if</span>(<span class="hljs-variable">$_POST</span>[user] &amp;&amp; <span class="hljs-variable">$_POST</span>[pass]) &#123;
-    mysql_connect(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
-  mysql_select_db(SAE_MYSQL_DB);
-  <span class="hljs-variable">$user</span> = trim(<span class="hljs-variable">$_POST</span>[user]);
-  <span class="hljs-variable">$pass</span> = md5(trim(<span class="hljs-variable">$_POST</span>[pass]));
+    <span class="hljs-title function_ invoke__">mysql_connect</span>(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
+  <span class="hljs-title function_ invoke__">mysql_select_db</span>(SAE_MYSQL_DB);
+  <span class="hljs-variable">$user</span> = <span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$_POST</span>[user]);
+  <span class="hljs-variable">$pass</span> = <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$_POST</span>[pass]));
   <span class="hljs-variable">$sql</span>=<span class="hljs-string">&quot;select user from ctf where (user=&#x27;&quot;</span>.<span class="hljs-variable">$user</span>.<span class="hljs-string">&quot;&#x27;) and (pw=&#x27;&quot;</span>.<span class="hljs-variable">$pass</span>.<span class="hljs-string">&quot;&#x27;)&quot;</span>;
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;/br&gt;&#x27;</span>.<span class="hljs-variable">$sql</span>;
-  <span class="hljs-variable">$query</span> = mysql_fetch_array(mysql_query(<span class="hljs-variable">$sql</span>));
+  <span class="hljs-variable">$query</span> = <span class="hljs-title function_ invoke__">mysql_fetch_array</span>(<span class="hljs-title function_ invoke__">mysql_query</span>(<span class="hljs-variable">$sql</span>));
   <span class="hljs-keyword">if</span>(<span class="hljs-variable">$query</span>[user]==<span class="hljs-string">&quot;admin&quot;</span>) &#123;
       <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;Logged in! flag:******************** &lt;/p&gt;&quot;</span>;
   &#125;
@@ -279,7 +279,7 @@
 <span class="hljs-variable">$pass1</span>=***********;<span class="hljs-comment">//被隐藏起来的密码</span>
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$pass</span>))
 &#123;
-<span class="hljs-keyword">if</span>(@!strcmp(<span class="hljs-variable">$pass</span>,<span class="hljs-variable">$pass1</span>))&#123;
+<span class="hljs-keyword">if</span>(@!<span class="hljs-title function_ invoke__">strcmp</span>(<span class="hljs-variable">$pass</span>,<span class="hljs-variable">$pass1</span>))&#123;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;flag:nctf&#123;*&#125;&quot;</span>;
 &#125;<span class="hljs-keyword">else</span>&#123;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;the pass is wrong!&quot;</span>;
@@ -292,20 +292,20 @@
 <p>strcmp() 函数比较两个字符串。</p>
 <p><strong>注释：</strong>strcmp() 函数是二进制安全的，且对大小写敏感。</p>
 <p><strong>提示：</strong>该函数与 <a target="_blank" rel="noopener" href="https://www.w3school.com.cn/php/func_string_strncmp.asp">strncmp()</a> 函数类似，不同的是，通过 strncmp() 您可以指定每个字符串用于比较的字符数。</p>
-<p><img src="https://i.loli.net/2020/11/30/4fUTpLQAMK6eYiX.png" srcset="/img/loading.gif" alt></p>
-<p>只有pass==pass1时才显示flag</p>
+<p><img src="https://i.loli.net/2020/11/30/4fUTpLQAMK6eYiX.png" srcset="/img/loading.gif"></p>
+<p>只有pass&#x3D;&#x3D;pass1时才显示flag</p>
 <p>感觉跟之前的变量覆盖相似</p>
-<p><img src="https://i.loli.net/2020/11/30/AowyefxikHEWvuP.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/AowyefxikHEWvuP.png" srcset="/img/loading.gif"></p>
 <p><strong>知识点：</strong><br>　　strcmp()函数 ：php5.3之前的strcmp的漏洞，当参数中的一个字符串是对象或者数组时，函数会返回0；<br>　　hackbar的使用，post方法<br>　　php弱类型，数组的使用。</p>
 <p>参考： <a target="_blank" rel="noopener" href="https://www.cnblogs.com/islsy/p/10667426.html">https://www.cnblogs.com/islsy/p/10667426.html</a> </p>
 <h2 id="起名字真难"><a href="#起名字真难" class="headerlink" title="起名字真难"></a>起名字真难</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">noother_says_correct</span>(<span class="hljs-params"><span class="hljs-variable">$number</span></span>)</span>
 <span class="hljs-function"></span>&#123;
-       <span class="hljs-variable">$one</span> = ord(<span class="hljs-string">&#x27;1&#x27;</span>);
-       <span class="hljs-variable">$nine</span> = ord(<span class="hljs-string">&#x27;9&#x27;</span>);
-       <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> &lt; strlen(<span class="hljs-variable">$number</span>); <span class="hljs-variable">$i</span>++)
+       <span class="hljs-variable">$one</span> = <span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-string">&#x27;1&#x27;</span>);
+       <span class="hljs-variable">$nine</span> = <span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-string">&#x27;9&#x27;</span>);
+       <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> &lt; <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$number</span>); <span class="hljs-variable">$i</span>++)
        &#123;   
-               <span class="hljs-variable">$digit</span> = ord(<span class="hljs-variable">$number</span>&#123;<span class="hljs-variable">$i</span>&#125;);
+               <span class="hljs-variable">$digit</span> = <span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-variable">$number</span>&#123;<span class="hljs-variable">$i</span>&#125;);
                <span class="hljs-keyword">if</span> ( (<span class="hljs-variable">$digit</span> &gt;= <span class="hljs-variable">$one</span>) &amp;&amp; (<span class="hljs-variable">$digit</span> &lt;= <span class="hljs-variable">$nine</span>) ) <span class="hljs-comment">//number中的数字不能在1-9</span>
                &#123;
                        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
@@ -314,7 +314,7 @@
           <span class="hljs-keyword">return</span> <span class="hljs-variable">$number</span> == <span class="hljs-string">&#x27;54975581388&#x27;</span>; <span class="hljs-comment">//number的值等于54975581388，与之前if语句矛盾</span>
 &#125;
 <span class="hljs-variable">$flag</span>=<span class="hljs-string">&#x27;*******&#x27;</span>;
-<span class="hljs-keyword">if</span>(noother_says_correct(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;key&#x27;</span>]))
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">noother_says_correct</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;key&#x27;</span>]))
    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;
 <span class="hljs-keyword">else</span> 
    <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;access denied&#x27;</span>;
@@ -326,22 +326,22 @@
 <h2 id="sqlinject"><a href="#sqlinject" class="headerlink" title="sqlinject"></a>sqlinject</h2><p>查看源码</p>
 <div class="hljs"><pre><code class="hljs php">&lt;!--
 <span class="hljs-comment">#GOAL: login as admin,then get the flag;</span>
-error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);
 <span class="hljs-keyword">require</span> <span class="hljs-string">&#x27;db.inc.php&#x27;</span>;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">clean</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;  
-	<span class="hljs-keyword">if</span>(get_magic_quotes_gpc())&#123;  <span class="hljs-comment">//防止注入</span>
-		<span class="hljs-variable">$str</span>=stripslashes(<span class="hljs-variable">$str</span>); <span class="hljs-comment">//添加 \</span>
+	<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">get_magic_quotes_gpc</span>())&#123;  <span class="hljs-comment">//防止注入</span>
+		<span class="hljs-variable">$str</span>=<span class="hljs-title function_ invoke__">stripslashes</span>(<span class="hljs-variable">$str</span>); <span class="hljs-comment">//添加 \</span>
 	&#125;
-	<span class="hljs-keyword">return</span> htmlentities(<span class="hljs-variable">$str</span>, ENT_QUOTES);<span class="hljs-comment">//过滤掉单引号，双引号，或者兼而有之</span>
+	<span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">htmlentities</span>(<span class="hljs-variable">$str</span>, ENT_QUOTES);<span class="hljs-comment">//过滤掉单引号，双引号，或者兼而有之</span>
 &#125;
 
-<span class="hljs-variable">$username</span> = @clean((<span class="hljs-keyword">string</span>)<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;username&#x27;</span>]);<span class="hljs-comment">//对获取的参数进行了处理</span>
-<span class="hljs-variable">$password</span> = @clean((<span class="hljs-keyword">string</span>)<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]);
+<span class="hljs-variable">$username</span> = @<span class="hljs-title function_ invoke__">clean</span>((<span class="hljs-keyword">string</span>)<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;username&#x27;</span>]);<span class="hljs-comment">//对获取的参数进行了处理</span>
+<span class="hljs-variable">$password</span> = @<span class="hljs-title function_ invoke__">clean</span>((<span class="hljs-keyword">string</span>)<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;password&#x27;</span>]);
 
 <span class="hljs-variable">$query</span>=<span class="hljs-string">&#x27;SELECT * FROM users WHERE name=\&#x27;&#x27;</span>.<span class="hljs-variable">$username</span>.<span class="hljs-string">&#x27;\&#x27; AND pass=\&#x27;&#x27;</span>.<span class="hljs-variable">$password</span>.<span class="hljs-string">&#x27;\&#x27;;&#x27;</span>;<span class="hljs-comment">//存在注入的语句</span>
-<span class="hljs-variable">$result</span>=mysql_query(<span class="hljs-variable">$query</span>);
-<span class="hljs-keyword">if</span>(!<span class="hljs-variable">$result</span> || mysql_num_rows(<span class="hljs-variable">$result</span>) &lt; <span class="hljs-number">1</span>)&#123;
+<span class="hljs-variable">$result</span>=<span class="hljs-title function_ invoke__">mysql_query</span>(<span class="hljs-variable">$query</span>);
+<span class="hljs-keyword">if</span>(!<span class="hljs-variable">$result</span> || <span class="hljs-title function_ invoke__">mysql_num_rows</span>(<span class="hljs-variable">$result</span>) &lt; <span class="hljs-number">1</span>)&#123;
 	<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Invalid password!&#x27;</span>);
 &#125;
 
@@ -355,16 +355,16 @@ error_reporting(<span class="hljs-number">0</span>);
 <p>这里注入与之前的注入不同，这里针对的是password</p>
 <p><code>SELECT * FROM users WHERE name=&#39; \&#39; AND pass=&#39;  or 1=1 --+&#39;;</code></p>
 <p><code>\&#39; AND pass=</code> 作为name 参数的值</p>
-<p>所以构造?name=&amp;password=or 1=1 –+</p>
-<p><img src="/2020/09/02/nctf-2/sql2.png" srcset="/img/loading.gif" alt></p>
+<p>所以构造?name&#x3D;&amp;password&#x3D;or 1&#x3D;1 –+</p>
+<p><img src="/2020/09/02/nctf-2/sql2.png" srcset="/img/loading.gif"></p>
 <h2 id="SQL注入2"><a href="#SQL注入2" class="headerlink" title="SQL注入2"></a>SQL注入2</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-keyword">if</span>(<span class="hljs-variable">$_POST</span>[user] &amp;&amp; <span class="hljs-variable">$_POST</span>[pass]) &#123; <span class="hljs-comment">//post 方式接收两个参数</span>
-   mysql_connect(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
-  mysql_select_db(SAE_MYSQL_DB);
+   <span class="hljs-title function_ invoke__">mysql_connect</span>(SAE_MYSQL_HOST_M . <span class="hljs-string">&#x27;:&#x27;</span> . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
+  <span class="hljs-title function_ invoke__">mysql_select_db</span>(SAE_MYSQL_DB);
   <span class="hljs-variable">$user</span> = <span class="hljs-variable">$_POST</span>[user];
-  <span class="hljs-variable">$pass</span> = md5(<span class="hljs-variable">$_POST</span>[pass]);<span class="hljs-comment">//对pass  md5加密</span>
-  <span class="hljs-variable">$query</span> = @mysql_fetch_array(mysql_query(<span class="hljs-string">&quot;select pw from ctf where user=&#x27;<span class="hljs-subst">$user</span>&#x27;&quot;</span>));<span class="hljs-comment">//获取pw字段的值</span>
-  <span class="hljs-keyword">if</span> ((<span class="hljs-variable">$query</span>[pw]) &amp;&amp; (!strcasecmp(<span class="hljs-variable">$pass</span>, <span class="hljs-variable">$query</span>[pw]))) &#123; <span class="hljs-comment">// 比较pass和pw</span>
+  <span class="hljs-variable">$pass</span> = <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$_POST</span>[pass]);<span class="hljs-comment">//对pass  md5加密</span>
+  <span class="hljs-variable">$query</span> = @<span class="hljs-title function_ invoke__">mysql_fetch_array</span>(<span class="hljs-title function_ invoke__">mysql_query</span>(<span class="hljs-string">&quot;select pw from ctf where user=&#x27;<span class="hljs-subst">$user</span>&#x27;&quot;</span>));<span class="hljs-comment">//获取pw字段的值</span>
+  <span class="hljs-keyword">if</span> ((<span class="hljs-variable">$query</span>[pw]) &amp;&amp; (!<span class="hljs-title function_ invoke__">strcasecmp</span>(<span class="hljs-variable">$pass</span>, <span class="hljs-variable">$query</span>[pw]))) &#123; <span class="hljs-comment">// 比较pass和pw</span>
       <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;Logged in! Key: ntcf&#123;**************&#125; &lt;/p&gt;&quot;</span>;
   &#125;
   <span class="hljs-keyword">else</span> &#123;
@@ -380,25 +380,25 @@ error_reporting(<span class="hljs-number">0</span>);
 <p>(还没完全理解)</p>
 <h2 id="综合题"><a href="#综合题" class="headerlink" title="综合题"></a>综合题</h2><p> 首页中给出很长的<code>jsfuck</code>，可以使用浏览器的<code>console</code>解码 ,给出一个页面</p>
 <p>访问 <code>1bc29b36f623ba82aaf6724fd3b16718.php</code> </p>
-<p><img src="https://i.loli.net/2020/11/30/wxG2Wpteo6hr1vy.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/wxG2Wpteo6hr1vy.png" srcset="/img/loading.gif"></p>
 <p>提示在header里</p>
-<p><img src="/2020/09/02/nctf-2/ch1.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/09/02/nctf-2/ch1.png" srcset="/img/loading.gif"></p>
 <p>查看header</p>
-<p><img src="https://i.loli.net/2020/11/30/6qnrk7WSDdpAh8L.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/6qnrk7WSDdpAh8L.png" srcset="/img/loading.gif"></p>
 <p> <code>history of bash</code> 如果使用的是<code>bash</code>，在家目录中会生成<code>.bash_history</code>文件用来保存历史命令。<br>访问<code>.bash_history</code>文件，可以得到这样的历史命令 </p>
 <p>url: <a target="_blank" rel="noopener" href="http://teamxlc.sinaapp.com/web3/b0b0ad119f425408fc3d45253137d33d/.bash_history">http://teamxlc.sinaapp.com/web3/b0b0ad119f425408fc3d45253137d33d/.bash_history</a> </p>
 <p>获得<code>zip -r flagbak.zip ./*</code></p>
 <p>访问 <a target="_blank" rel="noopener" href="http://teamxlc.sinaapp.com/web3/b0b0ad119f425408fc3d45253137d33d/flagbak.zip">http://teamxlc.sinaapp.com/web3/b0b0ad119f425408fc3d45253137d33d/flagbak.zip</a></p>
 <h2 id="file-get-contents"><a href="#file-get-contents" class="headerlink" title="file_get_contents"></a>file_get_contents</h2><p>查看源码获取被注释的内容</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$file</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>];
-<span class="hljs-keyword">if</span>(@file_get_contents(<span class="hljs-variable">$file</span>) == <span class="hljs-string">&quot;meizijiu&quot;</span>)&#123;
+<span class="hljs-keyword">if</span>(@<span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$file</span>) == <span class="hljs-string">&quot;meizijiu&quot;</span>)&#123;
     <span class="hljs-keyword">echo</span> <span class="hljs-variable">$nctf</span>;
 &#125;</code></pre></div>
 
 <p>分析可得</p>
-<p><strong>通过get方式传递<code>flle</code>=文件名</strong><br><strong>并且这个文件的内容==‘meizijiu’</strong><br><strong>如果等于就打印flag</strong> </p>
+<p><strong>通过get方式传递<code>flle</code>&#x3D;文件名</strong><br><strong>并且这个文件的内容&#x3D;&#x3D;‘meizijiu’</strong><br><strong>如果等于就打印flag</strong> </p>
 <p>php伪协议<code>php://input</code>来构造原始数据的只读流 </p>
-<p><img src="https://i.loli.net/2020/11/30/gK2Y5WGCklp6qtx.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/gK2Y5WGCklp6qtx.png" srcset="/img/loading.gif"></p>
 <h2 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h2><p>参考 <a target="_blank" rel="noopener" href="https://blog.csdn.net/niexinming/article/details/52637773?utm_source=blogxgwz1">https://blog.csdn.net/niexinming/article/details/52637773?utm_source=blogxgwz1</a> </p>
 <p>源码</p>
 <div class="hljs"><pre><code class="hljs php">&lt;!--<span class="hljs-keyword">foreach</span>(<span class="hljs-variable">$_GET</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>)&#123;  

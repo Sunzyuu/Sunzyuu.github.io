@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -253,9 +253,9 @@
 
 // MYSQL_HOST等参数定义在setting.py中
 // 也可以直接定义在这个文件中
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DBHelper</span>():</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DBHelper</span>():
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         self.settings = get_project_settings()
         self.host = self.settings[<span class="hljs-string">&#x27;MYSQL_HOST&#x27;</span>]
         self.port = self.settings[<span class="hljs-string">&#x27;MYSQL_PORT&#x27;</span>]
@@ -264,7 +264,7 @@
         self.db = self.settings[<span class="hljs-string">&#x27;MYSQL_DBNAME&#x27;</span>]
 
     // 建立数据库连接
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connectMysql</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">connectMysql</span>(<span class="hljs-params">self</span>):
         conn = pymysql.connect(host=self.host,
                                port=self.port,
                                user=self.user,
@@ -273,7 +273,7 @@
         <span class="hljs-keyword">return</span> conn
 
 	// 创建数据库
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connectDatabase</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">connectDatabase</span>(<span class="hljs-params">self</span>):
         conn = pymysql.connect(host=self.host,
                                port=self.port,
                                user=self.user,
@@ -283,7 +283,7 @@
         <span class="hljs-keyword">return</span> conn
 
         <span class="hljs-comment"># 创建要使用到的数据库</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createDatabase</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">createDatabase</span>(<span class="hljs-params">self</span>):
         conn = self.connectMysql()
         sql = <span class="hljs-string">&quot;create database if not exists &quot;</span> + self.db
         cur = conn.cursor()
@@ -292,7 +292,7 @@
         conn.close()
 
         <span class="hljs-comment"># 创建数据表</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable</span>(<span class="hljs-params">self, sql</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">createTable</span>(<span class="hljs-params">self, sql</span>):
         conn = self.connectDatabase()
 
         cur = conn.cursor()
@@ -301,7 +301,7 @@
         conn.close()
 
         <span class="hljs-comment"># 向数据库中插入数据</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insert</span>(<span class="hljs-params">self, sql, *params</span>):</span>  <span class="hljs-comment">#</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, sql, *params</span>):  <span class="hljs-comment">#</span>
         conn = self.connectDatabase()
         cur = conn.cursor();
         cur.execute(sql, params)
@@ -309,7 +309,7 @@
         cur.close()
         conn.close()
         <span class="hljs-comment"># 数据库更新操作</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">update</span>(<span class="hljs-params">self, sql, *params</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, sql, *params</span>):
         conn = self.connectDatabase()
         cur = conn.cursor()
         cur.execute(sql, params)
@@ -318,7 +318,7 @@
         conn.close()
 
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">delete</span>(<span class="hljs-params">self, sql, *params</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">self, sql, *params</span>):
         conn = self.connectDatabase()
         cur = conn.cursor()
         cur.execute(sql, params)
@@ -326,28 +326,28 @@
         cur.close()
         conn.close()
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestDBHelper</span>():</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TestDBHelper</span>():
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         self.dbHelper = DBHelper()
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testCreateDatebase</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">testCreateDatebase</span>(<span class="hljs-params">self</span>):
         self.dbHelper.createDatabase()
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testCreateTable</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">testCreateTable</span>(<span class="hljs-params">self</span>):
         sql = <span class="hljs-string">&quot;create table wordtable(id int primary key auto_increment,word varchar(50),soundmark varchar(100),url varchar(200),translation varchar(100))&quot;</span>
         self.dbHelper.createTable(sql)
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testInsert</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">testInsert</span>(<span class="hljs-params">self</span>):
         sql = <span class="hljs-string">&quot;insert into wordtable(word,soundmark,url,translation) values(%s,%s,%s,%s)&quot;</span>
         params = (<span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>, <span class="hljs-string">&quot;test&quot;</span>)
         self.dbHelper.insert(sql, *params)
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testUpdate</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">testUpdate</span>(<span class="hljs-params">self</span>):
         sql = <span class="hljs-string">&quot;update testtable set word=%s,soundmark=%s,url=%s,translation=%s where id=%s&quot;</span>
         params = (<span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>,<span class="hljs-string">&quot;1&quot;</span>)
         self.dbHelper.update(sql, *params)
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">testDelete</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">testDelete</span>(<span class="hljs-params">self</span>):
         sql = <span class="hljs-string">&quot;delete from wordtable where id=%s&quot;</span>
         params = (<span class="hljs-string">&quot;1&quot;</span>)
         self.dbHelper.delete(sql, *params)
@@ -394,7 +394,7 @@ ITEM_PIPELINES = &#123;
 <h3 id="items-py"><a href="#items-py" class="headerlink" title="items.py"></a>items.py</h3><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> scrapy
 
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WordsItem</span>(<span class="hljs-params">scrapy.Item</span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WordsItem</span>(scrapy.Item):
     <span class="hljs-comment"># define the fields for your item here like:</span>
     <span class="hljs-comment"># name = scrapy.Field()</span>
     word = scrapy.Field()
@@ -416,7 +416,7 @@ ITEM_PIPELINES = &#123;
 <span class="hljs-keyword">from</span> scrapy.http <span class="hljs-keyword">import</span> HtmlResponse,Request
 <span class="hljs-keyword">from</span> words.items <span class="hljs-keyword">import</span> WordsItem
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebWordSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WebWordSpider</span>(scrapy.Spider):
     name = <span class="hljs-string">&#x27;web_word&#x27;</span>
     allowed_domains = [<span class="hljs-string">&#x27;word.iciba.com/&#x27;</span>]
 
@@ -429,15 +429,15 @@ ITEM_PIPELINES = &#123;
     nums = <span class="hljs-number">11</span>  <span class="hljs-comment"># 爬取前10页的单词，一共200个单词</span>
     <span class="hljs-keyword">for</span> page <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,nums):
         start_urls.append(first_url.<span class="hljs-built_in">format</span>(page))
-    print(start_urls)
+    <span class="hljs-built_in">print</span>(start_urls)
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse</span>(<span class="hljs-params">self, response</span>):
         se = Selector(response)
         <span class="hljs-comment"># 先判断页面中是否存在单词</span>
         src = se.xpath(<span class="hljs-string">&quot;//div[@class=&#x27;word_main&#x27;]/ul/li&quot;</span>)
         <span class="hljs-comment"># 提取出url中的页数</span>
         page = re.findall(<span class="hljs-string">r&quot;course=\d+&quot;</span>, response.url)[<span class="hljs-number">0</span>]
-        print(<span class="hljs-string">&quot;===&quot;</span> * <span class="hljs-number">10</span> + <span class="hljs-string">&quot;正在爬取第&quot;</span>+page[<span class="hljs-number">7</span>:]+<span class="hljs-string">&quot;页&quot;</span>+<span class="hljs-string">&quot;===&quot;</span> * <span class="hljs-number">10</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;===&quot;</span> * <span class="hljs-number">10</span> + <span class="hljs-string">&quot;正在爬取第&quot;</span>+page[<span class="hljs-number">7</span>:]+<span class="hljs-string">&quot;页&quot;</span>+<span class="hljs-string">&quot;===&quot;</span> * <span class="hljs-number">10</span>)
         <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(src) &gt; <span class="hljs-number">0</span>:
             <span class="hljs-comment"># 将单词的信息提取出来，word是一个数组，存放的是页面中的所有单词</span>
             word = se.xpath(<span class="hljs-string">&quot;//li/div[@class=&#x27;word_main_list_w&#x27;]/span/@title&quot;</span> ).extract()  <span class="hljs-comment"># 提取节点信息</span>
@@ -474,30 +474,30 @@ ITEM_PIPELINES = &#123;
 <span class="hljs-keyword">from</span> logging <span class="hljs-keyword">import</span> log
 <span class="hljs-keyword">from</span> twisted.enterprise <span class="hljs-keyword">import</span> adbapi
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">JsonWithEncodingPipeline</span>(<span class="hljs-params"><span class="hljs-built_in">object</span></span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">JsonWithEncodingPipeline</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-string">&#x27;&#x27;&#x27;保存到文件中对应的class</span>
 <span class="hljs-string">       1、在settings.py文件中配置</span>
 <span class="hljs-string">       2、在自己实现的爬虫类中yield item,会自动执行</span>
 <span class="hljs-string">    &#x27;&#x27;&#x27;</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
         self.file = codecs.<span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;word.json&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>)  <span class="hljs-comment"># 保存为json文件</span>
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_item</span>(<span class="hljs-params">self, item, spider</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, item, spider</span>):
         line = json.dumps(<span class="hljs-built_in">dict</span>(item)) + <span class="hljs-string">&quot;\n&quot;</span>  <span class="hljs-comment"># 转为json的</span>
         self.file.write(line)                 <span class="hljs-comment"># 写入文件中</span>
         <span class="hljs-keyword">return</span> item
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">spider_closed</span>(<span class="hljs-params">self, spider</span>):</span>  <span class="hljs-comment"># 爬虫结束时关闭文件</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">spider_closed</span>(<span class="hljs-params">self, spider</span>):  <span class="hljs-comment"># 爬虫结束时关闭文件</span>
         self.file.close()
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebcrawlerScrapyPipeline</span>(<span class="hljs-params"><span class="hljs-built_in">object</span></span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">WebcrawlerScrapyPipeline</span>(<span class="hljs-title class_ inherited__">object</span>):
     <span class="hljs-string">&#x27;&#x27;&#x27;</span>
 <span class="hljs-string">       保存到数据库中对应的class</span>
 <span class="hljs-string">       1、在settings.py文件中配置</span>
 <span class="hljs-string">       2、在自己实现的爬虫类中yield item,会自动执行</span>
 <span class="hljs-string">    &#x27;&#x27;&#x27;</span>
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, dbpool</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, dbpool</span>):
         self.dbpool = dbpool  <span class="hljs-comment"># 定义一个数据库连接对象</span>
         <span class="hljs-string">&#x27;&#x27;&#x27; 这里注释中采用写死在代码中的方式连接线程池，可以从settings配置文件中读取，更加灵活</span>
 <span class="hljs-string">            self.dbpool=adbapi.ConnectionPool(&#x27;MySQLdb&#x27;,</span>
@@ -510,7 +510,7 @@ ITEM_PIPELINES = &#123;
 <span class="hljs-string">                                          use_unicode=False)</span>
 <span class="hljs-string">        &#x27;&#x27;&#x27;</span>
 <span class="hljs-meta">    @classmethod</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">from_settings</span>(<span class="hljs-params">cls, settings</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">from_settings</span>(<span class="hljs-params">cls, settings</span>):
         <span class="hljs-string">&#x27;&#x27;&#x27;</span>
 <span class="hljs-string">           1、@classmethod声明一个类方法，而对于平常我们见到的则叫做实例方法。</span>
 <span class="hljs-string">           2、类方法的第一个参数cls（class的缩写，指这个类本身），而实例方法的第一个参数是self，表示该类的一个实例</span>
@@ -529,23 +529,23 @@ ITEM_PIPELINES = &#123;
         <span class="hljs-keyword">return</span> cls(dbpool)                                     <span class="hljs-comment"># 相当于dbpool付给了这个类，self中可以得到</span>
 
     <span class="hljs-comment"># pipeline默认调用</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">process_item</span>(<span class="hljs-params">self, item, spider</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">process_item</span>(<span class="hljs-params">self, item, spider</span>):
         query = self.dbpool.runInteraction(self._conditional_insert, item)  <span class="hljs-comment"># 调用插入的方法</span>
         query.addErrback(self._handle_error, item, spider)                  <span class="hljs-comment"># 调用异常处理方法</span>
         <span class="hljs-keyword">return</span> item
 
     <span class="hljs-comment"># 写入数据库中</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_conditional_insert</span>(<span class="hljs-params">self, tx, item</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_conditional_insert</span>(<span class="hljs-params">self, tx, item</span>):
         <span class="hljs-comment"># print (item[&#x27;word&#x27;])</span>
         sql = <span class="hljs-string">&quot;insert into wordtable(word,soundmark,url,translation) values(%s,%s,%s,%s)&quot;</span>
         params = (item[<span class="hljs-string">&quot;word&quot;</span>], item[<span class="hljs-string">&quot;soundmark&quot;</span>], item[<span class="hljs-string">&quot;url&quot;</span>], item[<span class="hljs-string">&quot;translation&quot;</span>])
         tx.execute(sql, params)
 
     <span class="hljs-comment"># 错误处理方法</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">_handle_error</span>(<span class="hljs-params">self, failue, item, spider</span>):</span>
-        print(<span class="hljs-string">&#x27;--------------database operation exception!!-----------------&#x27;</span>)
-        print(<span class="hljs-string">&#x27;-------------------------------------------------------------&#x27;</span>)
-        print(failue)</code></pre></div>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_handle_error</span>(<span class="hljs-params">self, failue, item, spider</span>):
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;--------------database operation exception!!-----------------&#x27;</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;-------------------------------------------------------------&#x27;</span>)
+        <span class="hljs-built_in">print</span>(failue)</code></pre></div>
 
 <p>pipelines中写了两个方法，分别是将单词的相关性信息写入到数据库，另一个是将单词信息保存到一个json文件中</p>
 <h2 id="运行结果"><a href="#运行结果" class="headerlink" title="运行结果"></a>运行结果</h2><p>运行截图</p>
@@ -570,14 +570,14 @@ ITEM_PIPELINES = &#123;
 <span class="hljs-keyword">from</span> scrapy.http <span class="hljs-keyword">import</span> HtmlResponse,Request
 
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpiderPicSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SpiderPicSpider</span>(scrapy.Spider):
     name = <span class="hljs-string">&#x27;spider_pic&#x27;</span>
     allowed_domains = [<span class="hljs-string">&#x27;desk.zol.com.cn&#x27;</span>] <span class="hljs-comment"># 爬虫搜索的域名范围</span>
     first_url = <span class="hljs-string">&quot;http://desk.zol.com.cn/meinv/1920x1080/&#123;0&#125;.html&quot;</span>
     start_urls = [first_url.<span class="hljs-built_in">format</span>(<span class="hljs-number">1</span>)] <span class="hljs-comment"># 爬虫开始的url</span>
 
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse</span>(<span class="hljs-params">self, response</span>):
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>):
             url = self.first_url.<span class="hljs-built_in">format</span>(i)
 
@@ -586,9 +586,9 @@ ITEM_PIPELINES = &#123;
                 callback=self.parse_one
             )
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_one</span>(<span class="hljs-params">self, response</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_one</span>(<span class="hljs-params">self, response</span>):
         se = Selector(response)  <span class="hljs-comment"># 创建查询对象</span>
-        <span class="hljs-keyword">if</span> (re.match(<span class="hljs-string">&quot;https://desk.zol.com.cn/meinv/\d+x\d+/\d+.html&quot;</span>, response.url)):
+        <span class="hljs-keyword">if</span> (re.<span class="hljs-keyword">match</span>(<span class="hljs-string">&quot;https://desk.zol.com.cn/meinv/\d+x\d+/\d+.html&quot;</span>, response.url)):
             <span class="hljs-comment"># 正则是判断改url是否正确</span>
             src = se.xpath(<span class="hljs-string">&quot;//ul[@class=&#x27;pic-list2  clearfix&#x27;]/li&quot;</span>)  <span class="hljs-comment"># 使用xpath找到所有图片所在的节点</span>
             <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(src)):
@@ -602,7 +602,7 @@ ITEM_PIPELINES = &#123;
 
                     path = os.path.join(<span class="hljs-string">&quot;D:\Sunzh\pic\meinv&quot;</span>, file_name)  <span class="hljs-comment"># 拼接图片的路径</span>
                     <span class="hljs-built_in">type</span> = sys.getfilesystemencoding()
-                    print(file_name.encode(<span class="hljs-built_in">type</span>))
+                    <span class="hljs-built_in">print</span>(file_name.encode(<span class="hljs-built_in">type</span>))
                     item = WordItem()
                     item[<span class="hljs-string">&#x27;name&#x27;</span>] = file_name
                     item[<span class="hljs-string">&#x27;url&#x27;</span>] = realURL

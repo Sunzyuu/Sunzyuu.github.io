@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -282,12 +282,12 @@
 
 <h3 id="2-3-创建交换机、队列并绑定"><a href="#2-3-创建交换机、队列并绑定" class="headerlink" title="2.3 创建交换机、队列并绑定"></a>2.3 创建交换机、队列并绑定</h3><p>第一节的实现，也可以使用代码实现</p>
 <p>队列名、交换机名与key</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RabbitConstants</span> </span>&#123;
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_EXCHANGE = <span class="hljs-string">&quot;delay_exchange&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_ROUTING_KEY = <span class="hljs-string">&quot;k1&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String DLX_QUEUE = <span class="hljs-string">&quot;delay_queue1&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String QUEUE = <span class="hljs-string">&quot;delay_queue2&quot;</span>;
-    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String ROUTING_KEY = <span class="hljs-string">&quot;k2&quot;</span>;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RabbitConstants</span> &#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DLX_EXCHANGE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;delay_exchange&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DLX_ROUTING_KEY</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;k1&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">DLX_QUEUE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;delay_queue1&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">QUEUE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;delay_queue2&quot;</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">ROUTING_KEY</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;k2&quot;</span>;
 &#125;</code></pre></div>
 
 
@@ -299,25 +299,25 @@
 <span class="hljs-keyword">import</span> java.util.HashMap;
 <span class="hljs-keyword">import</span> java.util.Map;
 <span class="hljs-comment">//@Configuration</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RabbitConfig</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RabbitConfig</span> &#123;
 
     <span class="hljs-comment">/**</span>
 <span class="hljs-comment">     * 死信队列</span>
 <span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Queue&#125;</span>
 <span class="hljs-comment">     */</span>
     <span class="hljs-meta">@Bean</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Queue <span class="hljs-title">Queue1</span><span class="hljs-params">()</span> </span>&#123;
-        Map&lt;String, Object&gt; argments = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    <span class="hljs-keyword">public</span> Queue <span class="hljs-title function_">Queue1</span><span class="hljs-params">()</span> &#123;
+        Map&lt;String, Object&gt; argments = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
         argments.put(<span class="hljs-string">&quot;x-message-ttl&quot;</span>, <span class="hljs-number">60000</span>);<span class="hljs-comment">// 一分钟的延时</span>
         argments.put(<span class="hljs-string">&quot;x-dead-letter-exchange&quot;</span>, RabbitConstants.DLX_EXCHANGE);
         argments.put(<span class="hljs-string">&quot;x-dead-letter-routing-key&quot;</span>, RabbitConstants.ROUTING_KEY);
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Queue(RabbitConstants.DLX_QUEUE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>, argments);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Queue</span>(RabbitConstants.DLX_QUEUE, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>, argments);
     &#125;
 
 
     <span class="hljs-meta">@Bean</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Queue <span class="hljs-title">Queue2</span><span class="hljs-params">()</span></span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Queue(RabbitConstants.QUEUE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">false</span>);
+    <span class="hljs-keyword">public</span> Queue <span class="hljs-title function_">Queue2</span><span class="hljs-params">()</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Queue</span>(RabbitConstants.QUEUE, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">false</span>);
     &#125;
 
     <span class="hljs-comment">/**</span>
@@ -326,8 +326,8 @@
 <span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Exchange&#125;</span>
 <span class="hljs-comment">     */</span>
     <span class="hljs-meta">@Bean</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Exchange <span class="hljs-title">orderExchange</span><span class="hljs-params">()</span> </span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DirectExchange(RabbitConstants.DLX_EXCHANGE, <span class="hljs-keyword">true</span>, <span class="hljs-keyword">false</span>, <span class="hljs-keyword">null</span>);
+    <span class="hljs-keyword">public</span> Exchange <span class="hljs-title function_">orderExchange</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DirectExchange</span>(RabbitConstants.DLX_EXCHANGE, <span class="hljs-literal">true</span>, <span class="hljs-literal">false</span>, <span class="hljs-literal">null</span>);
     &#125;
 
     <span class="hljs-comment">/**</span>
@@ -336,7 +336,7 @@
 <span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Binding&#125;</span>
 <span class="hljs-comment">     */</span>
     <span class="hljs-meta">@Bean</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Binding <span class="hljs-title">Routing</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> Binding <span class="hljs-title function_">Routing</span><span class="hljs-params">()</span> &#123;
         <span class="hljs-keyword">return</span> BindingBuilder.bind(Queue2()).to(orderExchange()).with(RabbitConstants.ROUTING_KEY).noargs();
     &#125;
 
@@ -347,7 +347,7 @@
 <span class="hljs-comment">     * <span class="hljs-doctag">@return</span> &#123;<span class="hljs-doctag">@link</span> Binding&#125;</span>
 <span class="hljs-comment">     */</span>
     <span class="hljs-meta">@Bean</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Binding <span class="hljs-title">DlxRouting</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> Binding <span class="hljs-title function_">DlxRouting</span><span class="hljs-params">()</span> &#123;
         <span class="hljs-keyword">return</span> BindingBuilder.bind(Queue1()).to(orderExchange()).with(RabbitConstants.DLX_ROUTING_KEY).noargs();
     &#125;
 &#125;
@@ -355,8 +355,8 @@
 
 <h3 id="2-4-测试代码"><a href="#2-4-测试代码" class="headerlink" title="2.4 测试代码"></a>2.4 测试代码</h3><p>生产者向交换机<code>delay_exchange</code>发送消息，并且key为k1，交换机接收消息后，会将该消息路由到<code>delay_queue1</code>，该消息会在死信队列中待60s后，转发到<code>delay_queue2</code>中</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testSendAmqp</span><span class="hljs-params">()</span> </span>&#123;
-    String taskId = <span class="hljs-string">&quot;cfdf21cd13f248d3885ec47329bbb3bf&quot;</span>;
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">testSendAmqp</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">String</span> <span class="hljs-variable">taskId</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;cfdf21cd13f248d3885ec47329bbb3bf&quot;</span>;
     amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
             RabbitConstants.DLX_ROUTING_KEY,
             taskId);
@@ -366,12 +366,12 @@
 
 <p>消费者这边监听<code>delay_queue2</code>中的消息</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@RabbitListener(queues = RabbitConstants.QUEUE, ackMode = &quot;MANUAL&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException &#123;
     System.out.println(<span class="hljs-string">&quot;接收死信队列传递的消息...&quot;</span>);
     System.out.println(<span class="hljs-string">&quot;时间：&quot;</span> + LocalDateTime.now());
-    String taskId = <span class="hljs-keyword">new</span> String(message.getBody());
+    <span class="hljs-type">String</span> <span class="hljs-variable">taskId</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(message.getBody());
     System.out.println(taskId);
-    channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-keyword">false</span>);
+    channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-literal">false</span>);
 &#125;</code></pre></div>
 
 <p>测试效果如下</p>
@@ -382,40 +382,40 @@
 <p>有了上面的实现，再实现倒计时关闭docker容器就简单很多</p>
 <h3 id="3-1-启动容器"><a href="#3-1-启动容器" class="headerlink" title="3.1 启动容器"></a>3.1 启动容器</h3><p>首先在启动容器时，如果容器启动成功，此时需要创建一个关闭容器的任务，并将关闭容器的任务发送到死信队列中。</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Async</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">runContainer</span><span class="hljs-params">(String containerId, UserDTO user, String taskId, <span class="hljs-keyword">int</span> countdown)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
-    ContainerVul containerVul = containerService.query().eq(<span class="hljs-string">&quot;container_id&quot;</span>, containerId).one();
-    <span class="hljs-keyword">if</span> (containerVul == <span class="hljs-keyword">null</span>) &#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">runContainer</span><span class="hljs-params">(String containerId, UserDTO user, String taskId, <span class="hljs-type">int</span> countdown)</span> <span class="hljs-keyword">throws</span> Exception &#123;
+    <span class="hljs-type">ContainerVul</span> <span class="hljs-variable">containerVul</span> <span class="hljs-operator">=</span> containerService.query().eq(<span class="hljs-string">&quot;container_id&quot;</span>, containerId).one();
+    <span class="hljs-keyword">if</span> (containerVul == <span class="hljs-literal">null</span>) &#123;
         <span class="hljs-keyword">throw</span> ErrorClass.ContainerNotExistsException;
     &#125;
-    String dockerContainerId = <span class="hljs-keyword">null</span>;
-    UserUserprofile userInfo = userService.getById(user.getId());
+    <span class="hljs-type">String</span> <span class="hljs-variable">dockerContainerId</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+    <span class="hljs-type">UserUserprofile</span> <span class="hljs-variable">userInfo</span> <span class="hljs-operator">=</span> userService.getById(user.getId());
     dockerContainerId = containerVul.getDockerContainerId();
-    ImageInfo imageInfo = imageService.query().eq(<span class="hljs-string">&quot;image_id&quot;</span>, containerVul.getImageIdId()).one();
-    String imageName = imageInfo.getImageName();
-    String imagePort = imageInfo.getImagePort();
-    Integer userId = userInfo.getId();
+    <span class="hljs-type">ImageInfo</span> <span class="hljs-variable">imageInfo</span> <span class="hljs-operator">=</span> imageService.query().eq(<span class="hljs-string">&quot;image_id&quot;</span>, containerVul.getImageIdId()).one();
+    <span class="hljs-type">String</span> <span class="hljs-variable">imageName</span> <span class="hljs-operator">=</span> imageInfo.getImageName();
+    <span class="hljs-type">String</span> <span class="hljs-variable">imagePort</span> <span class="hljs-operator">=</span> imageInfo.getImagePort();
+    <span class="hljs-type">Integer</span> <span class="hljs-variable">userId</span> <span class="hljs-operator">=</span> userInfo.getId();
 
-    Result msg = <span class="hljs-keyword">null</span>;
+    <span class="hljs-type">Result</span> <span class="hljs-variable">msg</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
     <span class="hljs-comment">/**</span>
 <span class="hljs-comment">         * 创建启动任务</span>
 <span class="hljs-comment">         */</span>
-    HashMap&lt;String, Object&gt; args = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    HashMap&lt;String, Object&gt; args = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
     args.put(<span class="hljs-string">&quot;imageName&quot;</span>, imageName);
     args.put(<span class="hljs-string">&quot;userId&quot;</span>, userId);
     args.put(<span class="hljs-string">&quot;imagePort&quot;</span>, imagePort);
-    TaskInfo taskInfo = query().eq(<span class="hljs-string">&quot;task_id&quot;</span>, taskId).one();
-    String command = <span class="hljs-string">&quot;&quot;</span>;
-    String vulFlag = containerVul.getContainerFlag();
-    String containerPort = containerVul.getContainerPort();
+    <span class="hljs-type">TaskInfo</span> <span class="hljs-variable">taskInfo</span> <span class="hljs-operator">=</span> query().eq(<span class="hljs-string">&quot;task_id&quot;</span>, taskId).one();
+    <span class="hljs-type">String</span> <span class="hljs-variable">command</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-type">String</span> <span class="hljs-variable">vulFlag</span> <span class="hljs-operator">=</span> containerVul.getContainerFlag();
+    <span class="hljs-type">String</span> <span class="hljs-variable">containerPort</span> <span class="hljs-operator">=</span> containerVul.getContainerPort();
 
-    String vulPort = <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-keyword">if</span> (containerVul.getVulPort() != <span class="hljs-keyword">null</span>) &#123;
+    <span class="hljs-type">String</span> <span class="hljs-variable">vulPort</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">if</span> (containerVul.getVulPort() != <span class="hljs-literal">null</span>) &#123;
         vulPort = containerVul.getVulPort();
     &#125;
-    String vulHost = containerVul.getVulHost();
-    Container container = <span class="hljs-keyword">null</span>;
+    <span class="hljs-type">String</span> <span class="hljs-variable">vulHost</span> <span class="hljs-operator">=</span> containerVul.getVulHost();
+    <span class="hljs-type">Container</span> <span class="hljs-variable">container</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
     <span class="hljs-keyword">if</span> (!StrUtil.isBlank(dockerContainerId)) &#123;
-        CheckResp checkResp = checkContainer(dockerContainerId);
+        <span class="hljs-type">CheckResp</span> <span class="hljs-variable">checkResp</span> <span class="hljs-operator">=</span> checkContainer(dockerContainerId);
         <span class="hljs-keyword">if</span> (checkResp.isFlag()) &#123;
             container = checkResp.getContainer();
             vulFlag = containerVul.getContainerFlag();
@@ -423,15 +423,15 @@
     &#125;
 
     <span class="hljs-comment">// 容器被删除，此时要创建一个容器</span>
-    <span class="hljs-keyword">if</span> (container == <span class="hljs-keyword">null</span>) &#123;
+    <span class="hljs-keyword">if</span> (container == <span class="hljs-literal">null</span>) &#123;
         String[] portList = imagePort.split(<span class="hljs-string">&quot;,&quot;</span>);
-        ArrayList&lt;String&gt; randomList = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
-        HashMap&lt;String, Integer&gt; portDict = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        ArrayList&lt;String&gt; randomList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        HashMap&lt;String, Integer&gt; portDict = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
         <span class="hljs-keyword">for</span> (String port : portList) &#123;
-            String randomPort = <span class="hljs-string">&quot;&quot;</span>;
-            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;
+            <span class="hljs-type">String</span> <span class="hljs-variable">randomPort</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++) &#123;
                 randomPort = DockerTools.getRandomPort();
-                <span class="hljs-keyword">if</span> (randomList.contains(randomPort) || containerService.query().eq(<span class="hljs-string">&quot;container_port&quot;</span>, randomPort).one() != <span class="hljs-keyword">null</span>) &#123;
+                <span class="hljs-keyword">if</span> (randomList.contains(randomPort) || containerService.query().eq(<span class="hljs-string">&quot;container_port&quot;</span>, randomPort).one() != <span class="hljs-literal">null</span>) &#123;
                     <span class="hljs-keyword">continue</span>;
                 &#125;
                 <span class="hljs-keyword">break</span>;
@@ -444,7 +444,7 @@
             portDict.put(port + <span class="hljs-string">&quot;/tcp&quot;</span>, Integer.valueOf(randomPort));
         &#125;
         <span class="hljs-comment">// 端口重复无法创建</span>
-        <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span>) &#123;
+        <span class="hljs-keyword">if</span> (msg != <span class="hljs-literal">null</span>) &#123;
             taskInfo.setTaskMsg(JSON.toJSONString(msg));
             taskInfo.setUpdateDate(LocalDateTime.now());
             taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
@@ -455,11 +455,11 @@
         <span class="hljs-comment">// &#123;&quot;3306&quot;: &quot;24471&quot;, &quot;80&quot;: &quot;29729&quot;&#125;</span>
         <span class="hljs-comment">// &#123;&quot;3306&quot;:&quot;22113&quot;,&quot;8080&quot;:&quot;12345&quot;&#125;</span>
         vulPort = JSON.toJSONString(portDict);
-        HashMap&lt;String, Integer&gt; vulPorts = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        HashMap&lt;String, Integer&gt; vulPorts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
         Set&lt;Map.Entry&lt;String, Integer&gt;&gt; entries = portDict.entrySet();
         <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : entries) &#123;
-            String port = entry.getKey().split(<span class="hljs-string">&quot;/&quot;</span>)[<span class="hljs-number">0</span>];
-            Integer tmpRandomPort = entry.getValue();
+            <span class="hljs-type">String</span> <span class="hljs-variable">port</span> <span class="hljs-operator">=</span> entry.getKey().split(<span class="hljs-string">&quot;/&quot;</span>)[<span class="hljs-number">0</span>];
+            <span class="hljs-type">Integer</span> <span class="hljs-variable">tmpRandomPort</span> <span class="hljs-operator">=</span> entry.getValue();
             vulPorts.put(port, tmpRandomPort);
         &#125;
         <span class="hljs-keyword">try</span> &#123;
@@ -468,12 +468,12 @@
             container = DockerTools.getContainerById(dockerContainerId);
         &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
             <span class="hljs-comment">// 修改任务状态</span>
-            msg = Result.build(<span class="hljs-string">&quot;镜像不存在&quot;</span>, <span class="hljs-keyword">null</span>);
+            msg = Result.build(<span class="hljs-string">&quot;镜像不存在&quot;</span>, <span class="hljs-literal">null</span>);
             taskInfo.setTaskMsg(JSON.toJSONString(msg));
             taskInfo.setUpdateDate(LocalDateTime.now());
             taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
             save(taskInfo);
-            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(e);
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);
         &#125;
         vulFlag = <span class="hljs-string">&quot;flag&#123;&quot;</span> + UUID.randomUUID().toString() + <span class="hljs-string">&quot;&#125;&quot;</span>;
         <span class="hljs-keyword">if</span> (!StrUtil.isBlank(containerVul.getContainerFlag())) &#123;
@@ -482,8 +482,8 @@
         command = <span class="hljs-string">&quot;touch /tmp/&quot;</span> + vulFlag;
         vulHost = DockerTools.getLocalIp();
     &#125;   <span class="hljs-comment">// 容器存在</span>
-    LocalDateTime taskStartDate = LocalDateTime.now();
-    LocalDateTime taskEndDate = <span class="hljs-keyword">null</span>;
+    <span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">taskStartDate</span> <span class="hljs-operator">=</span> LocalDateTime.now();
+    <span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">taskEndDate</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
     <span class="hljs-keyword">if</span> (countdown &gt;= <span class="hljs-number">60</span>) &#123;
         taskEndDate = taskStartDate.plusSeconds(countdown);
     &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (countdown == <span class="hljs-number">0</span>) &#123;
@@ -492,36 +492,36 @@
         countdown = SystemConstants.DOCKER_CONTAINER_TIME;
         taskEndDate = taskStartDate.plusSeconds(countdown);
     &#125;
-    <span class="hljs-keyword">assert</span> container != <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">assert</span> container != <span class="hljs-literal">null</span>;
     <span class="hljs-keyword">if</span> (container.getState().equals(<span class="hljs-string">&quot;running&quot;</span>)) &#123;
-        HashMap&lt;String, Object&gt; data = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+        HashMap&lt;String, Object&gt; data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
         data.put(<span class="hljs-string">&quot;host&quot;</span>, vulHost);
         data.put(<span class="hljs-string">&quot;port&quot;</span>, vulPort);
         data.put(<span class="hljs-string">&quot;id&quot;</span>, containerId);
         data.put(<span class="hljs-string">&quot;status&quot;</span>, <span class="hljs-string">&quot;running&quot;</span>);
         data.put(<span class="hljs-string">&quot;start_data&quot;</span>, taskStartDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli());
-        data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-keyword">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
-        LambdaQueryWrapper&lt;TaskInfo&gt; wrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
-        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getUserId, userId);
-        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskMsg, JSON.toJSONString(data));
-        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getOperationType, <span class="hljs-number">2</span>);
-        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getOperationArgs, JSON.toJSONString(args));
-        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskEndDate, taskEndDate);
-        wrapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskName, <span class="hljs-string">&quot;运行容器：&quot;</span> + imageName);
-        TaskInfo searchTaskInfo = getOne(wrapper);
-        <span class="hljs-keyword">if</span> (searchTaskInfo == <span class="hljs-keyword">null</span>) &#123;
+        data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-literal">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
+        LambdaQueryWrapper&lt;TaskInfo&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();
+        wrapper.eq(<span class="hljs-literal">true</span>, TaskInfo::getUserId, userId);
+        wrapper.eq(<span class="hljs-literal">true</span>, TaskInfo::getTaskMsg, JSON.toJSONString(data));
+        wrapper.eq(<span class="hljs-literal">true</span>, TaskInfo::getOperationType, <span class="hljs-number">2</span>);
+        wrapper.eq(<span class="hljs-literal">true</span>, TaskInfo::getOperationArgs, JSON.toJSONString(args));
+        wrapper.eq(<span class="hljs-literal">true</span>, TaskInfo::getTaskEndDate, taskEndDate);
+        wrapper.eq(<span class="hljs-literal">true</span>, TaskInfo::getTaskName, <span class="hljs-string">&quot;运行容器：&quot;</span> + imageName);
+        <span class="hljs-type">TaskInfo</span> <span class="hljs-variable">searchTaskInfo</span> <span class="hljs-operator">=</span> getOne(wrapper);
+        <span class="hljs-keyword">if</span> (searchTaskInfo == <span class="hljs-literal">null</span>) &#123;
             taskInfo.setTaskId(taskId);
             taskInfo.setTaskStatus(<span class="hljs-number">3</span>);
             taskInfo.setTaskMsg(JSON.toJSONString(data));
             taskInfo.setOperationArgs(JSON.toJSONString(args));
             taskInfo.setUpdateDate(LocalDateTime.now());
             taskId = taskInfo.getTaskId();
-            LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
-            updateWrapperTask.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+            LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();
+            updateWrapperTask.eq(<span class="hljs-literal">true</span>, TaskInfo::getTaskId, taskId);
             update(taskInfo, updateWrapperTask);
         &#125; <span class="hljs-keyword">else</span> &#123;
-            LambdaQueryWrapper&lt;TaskInfo&gt; removeWapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
-            removeWapper.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+            LambdaQueryWrapper&lt;TaskInfo&gt; removeWapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();
+            removeWapper.eq(<span class="hljs-literal">true</span>, TaskInfo::getTaskId, taskId);
             remove(removeWapper);
             searchTaskInfo.setTaskId(taskId);
             searchTaskInfo.setUpdateDate(LocalDateTime.now());
@@ -533,7 +533,7 @@
         DockerTools.startContainer(dockerContainerId);
         <span class="hljs-comment">// 写入flag</span>
         msg = dockerContainerRun(container, command);
-        <span class="hljs-keyword">if</span> (msg != <span class="hljs-keyword">null</span> &amp;&amp; msg.getStatus() == SystemConstants.HTTP_ERROR) &#123;
+        <span class="hljs-keyword">if</span> (msg != <span class="hljs-literal">null</span> &amp;&amp; msg.getStatus() == SystemConstants.HTTP_ERROR) &#123;
             <span class="hljs-keyword">try</span> &#123;
                 DockerTools.deleteContainer(container.getId());
             &#125; <span class="hljs-keyword">catch</span> (Exception ignored) &#123;
@@ -542,12 +542,12 @@
             taskInfo.setTaskStatus(<span class="hljs-number">4</span>);
         &#125; <span class="hljs-keyword">else</span> &#123;
             HashMap&lt;String, Object&gt; data = (HashMap&lt;String, Object&gt;) msg.getData();
-            String status = (String) data.get(<span class="hljs-string">&quot;status&quot;</span>);
+            <span class="hljs-type">String</span> <span class="hljs-variable">status</span> <span class="hljs-operator">=</span> (String) data.get(<span class="hljs-string">&quot;status&quot;</span>);
             data.put(<span class="hljs-string">&quot;host&quot;</span>, vulHost);
             data.put(<span class="hljs-string">&quot;port&quot;</span>, vulPort);
             data.put(<span class="hljs-string">&quot;id&quot;</span>, containerId);
             data.put(<span class="hljs-string">&quot;start_data&quot;</span>, taskStartDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli());
-            data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-keyword">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
+            data.put(<span class="hljs-string">&quot;end_data&quot;</span>, taskEndDate != <span class="hljs-literal">null</span> ? taskEndDate.toInstant(ZoneOffset.ofHours(<span class="hljs-number">8</span>)).toEpochMilli() : <span class="hljs-number">0</span>);
 
             containerVul.setContainerStatus(status);
             containerVul.setDockerContainerId(dockerContainerId);
@@ -557,9 +557,9 @@
             containerVul.setContainerPort(containerPort);
             containerVul.setCreateDate(LocalDateTime.now());
             containerVul.setUserId(userId);
-            containerVul.setIScheck(<span class="hljs-keyword">false</span>);
-            LambdaQueryWrapper&lt;ContainerVul&gt; updateWrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
-            updateWrapper.eq(<span class="hljs-keyword">true</span>, ContainerVul::getContainerId, containerVul.getContainerId());
+            containerVul.setIScheck(<span class="hljs-literal">false</span>);
+            LambdaQueryWrapper&lt;ContainerVul&gt; updateWrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();
+            updateWrapper.eq(<span class="hljs-literal">true</span>, ContainerVul::getContainerId, containerVul.getContainerId());
             containerService.update(containerVul, updateWrapper);
 
             taskInfo.setTaskStartDate(LocalDateTime.now());
@@ -570,13 +570,13 @@
         taskInfo.setTaskMsg(JSON.toJSONString(msg));
         taskInfo.setUpdateDate(LocalDateTime.now());
 
-        LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
-        updateWrapperTask.eq(<span class="hljs-keyword">true</span>, TaskInfo::getTaskId, taskId);
+        LambdaQueryWrapper&lt;TaskInfo&gt; updateWrapperTask = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();
+        updateWrapperTask.eq(<span class="hljs-literal">true</span>, TaskInfo::getTaskId, taskId);
         update(taskInfo, updateWrapperTask);
     &#125;
     log.info(<span class="hljs-string">&quot;启动漏洞容器成功，任务ID：&quot;</span> + taskId);
     <span class="hljs-comment">// 创建关闭容器任务 半小时后关闭</span>
-    String stopContainerTaskId = createStopContainerTask(containerVul, user);
+    <span class="hljs-type">String</span> <span class="hljs-variable">stopContainerTaskId</span> <span class="hljs-operator">=</span> createStopContainerTask(containerVul, user);
     <span class="hljs-comment">// 发送到RabbitMQ的死信队列</span>
     log.info(<span class="hljs-string">&quot;向死信队列发送任务id&quot;</span>);
     amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
@@ -605,21 +605,21 @@ amqpTemplate.convertAndSend(RabbitConstants.DLX_EXCHANGE,
 <span class="hljs-keyword">import</span> java.time.LocalDateTime;
 
 <span class="hljs-meta">@Component</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StopContainerListener</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StopContainerListener</span> &#123;
 
     <span class="hljs-meta">@Resource</span>
     <span class="hljs-meta">@Lazy</span> <span class="hljs-comment">// 加这个注释，是因为在启动时，出现了Bean循环依赖的错误</span>
     <span class="hljs-keyword">private</span> TaskInfoServiceImpl taskInfoService;
 
     <span class="hljs-meta">@RabbitListener(queues = RabbitConstants.QUEUE, ackMode = &quot;MANUAL&quot;)</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getMessage</span><span class="hljs-params">(Message message, Channel channel)</span> <span class="hljs-keyword">throws</span> IOException &#123;
         System.out.println(<span class="hljs-string">&quot;接收死信队列传递的消息...&quot;</span>);
         System.out.println(<span class="hljs-string">&quot;时间：&quot;</span> + LocalDateTime.now());
-        String taskId = <span class="hljs-keyword">new</span> String(message.getBody());
+        <span class="hljs-type">String</span> <span class="hljs-variable">taskId</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(message.getBody());
         System.out.println(taskId);
         <span class="hljs-comment">//</span>
         taskInfoService.stopContainer(taskId);
-        channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-keyword">false</span>);
+        channel.basicAck(message.getMessageProperties().getDeliveryTag(), <span class="hljs-literal">false</span>);
     &#125;
 &#125;
 </code></pre></div>

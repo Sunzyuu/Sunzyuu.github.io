@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -323,7 +323,7 @@ http &#123;
 </code></pre></div>
 
 <p>主要配置内容为</p>
-<div class="hljs"><pre><code class="hljs nginx"><span class="hljs-attribute">upstream</span> myservice &#123;
+<div class="hljs"><pre><code class="hljs nginx"><span class="hljs-section">upstream</span> myservice &#123;
     <span class="hljs-attribute">server</span> <span class="hljs-number">127.0.0.1:8081</span>;
  <span class="hljs-attribute">server</span> <span class="hljs-number">127.0.0.1:8083</span>;
  <span class="hljs-comment"># server 127.0.0.1:8847;</span>
@@ -333,7 +333,7 @@ http &#123;
 <span class="hljs-attribute">listen</span>       <span class="hljs-number">80</span>;
 <span class="hljs-attribute">server_name</span>  localhost;
 
-<span class="hljs-attribute">location</span> / &#123;
+<span class="hljs-section">location</span> / &#123;
     <span class="hljs-attribute">proxy_pass</span> http://myservice;
     &#125;
 &#125;
@@ -342,7 +342,7 @@ http &#123;
 <p>启动nginx即可</p>
 <p>**当启动ngin没反应时，多半是配置文件有问题，可以直接拷贝正确的配置后修改</p>
 <h1 id="Nginx负载均衡策略"><a href="#Nginx负载均衡策略" class="headerlink" title="Nginx负载均衡策略"></a>Nginx负载均衡策略</h1><blockquote>
-<p>前端/用户所有对Tomcat(应用服务器)的请求都是通过Nginx转发的:<br>用户请求发送到nginx，nginx转发的对应的服务器，一个集群中有多个服务器节点，那么Nginx怎么确定转发到哪个服务器节点呢?<br>Nginx提供了四种负载均衡策略，同时也支持配置第三方的负载均衡策略。</p>
+<p>前端&#x2F;用户所有对Tomcat(应用服务器)的请求都是通过Nginx转发的:<br>用户请求发送到nginx，nginx转发的对应的服务器，一个集群中有多个服务器节点，那么Nginx怎么确定转发到哪个服务器节点呢?<br>Nginx提供了四种负载均衡策略，同时也支持配置第三方的负载均衡策略。</p>
 </blockquote>
 <h2 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h2><blockquote>
 <p>根据用户的请求交替的发送到每个服务器节点，是nginx默认的负载均衡策略</p>
@@ -379,7 +379,7 @@ http &#123;
 </ul>
 <h2 id="ip-hash"><a href="#ip-hash" class="headerlink" title="ip_hash"></a>ip_hash</h2><p>指定负载均衡器按照基于客户端IP的分配方式，这个方法确保了相同的客户端的请求一直发送到相同的服务器，以保证session会话。这样每个访客都固定访问一个后端服务器，可以解决session不能跨服务器的问题。</p>
 <div class="hljs"><pre><code class="hljs properties"> <span class="hljs-attr">upstream</span> <span class="hljs-string">myservice &#123;</span>
- 	    <span class="hljs-meta">ip_hash;</span>  <span class="hljs-string"># 保证每个用户固定访问同一个后端服务器</span>
+ 	    <span class="hljs-attr">ip_hash;</span>  <span class="hljs-string"># 保证每个用户固定访问同一个后端服务器</span>
        <span class="hljs-attr">server</span> <span class="hljs-string">127.0.0.1:8081 weight=2;</span>
     <span class="hljs-attr">server</span> <span class="hljs-string">127.0.0.1:8082;</span>
     <span class="hljs-attr">server</span> <span class="hljs-string">127.0.0.1:8083;</span>

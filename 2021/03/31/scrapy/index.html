@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -318,7 +318,7 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
 <span class="hljs-string">&#x27;&#x27;&#x27;</span>
 
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HrSpider</span>(<span class="hljs-params">scrapy.Spider</span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">HrSpider</span>(scrapy.Spider):
     name = <span class="hljs-string">&#x27;hr&#x27;</span>
     allowed_domains = [<span class="hljs-string">&#x27;careers.tencent.com&#x27;</span>]
     <span class="hljs-comment"># start_urls = [&#x27;http://careers.tencent.com/&#x27;]</span>
@@ -328,7 +328,7 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
     detial_url = <span class="hljs-string">&quot;https://careers.tencent.com/tencentcareer/api/post/ByPostId?timestamp=1617181089850&amp;postId=&#123;&#125;&amp;language=zh-cn&quot;</span>
     start_urls = [first_url.<span class="hljs-built_in">format</span>(<span class="hljs-number">1</span>)]
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse</span>(<span class="hljs-params">self, response</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse</span>(<span class="hljs-params">self, response</span>):
         <span class="hljs-keyword">for</span> page <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">9</span>):
             url = self.first_url.<span class="hljs-built_in">format</span>(page)
             <span class="hljs-comment"># 将url发送给parse_one继续处理</span>
@@ -338,7 +338,7 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
                 callback=self.parse_one
             )
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_one</span>(<span class="hljs-params">self, response</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_one</span>(<span class="hljs-params">self, response</span>):
         <span class="hljs-comment"># 将网页的数据json格式化，方便获取数据</span>
         data = json.loads(response.text)
         <span class="hljs-comment"># print(data)</span>
@@ -357,7 +357,7 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
                 callback=self.parse_two
             )
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">parse_two</span>(<span class="hljs-params">self, response</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_two</span>(<span class="hljs-params">self, response</span>):
         item = response.meta.get(<span class="hljs-string">&#x27;item&#x27;</span>) <span class="hljs-comment"># 这里是上面的&#x27;item&#x27;</span>
         data = json.loads(response.text)
         <span class="hljs-comment"># print(data)</span>
@@ -369,11 +369,11 @@ cmdline.execute(<span class="hljs-string">&quot;scrapy crawl 爬虫名字&quot;<
 
 
 <p>request类</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Request</span>(<span class="hljs-params">object_ref</span>):</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Request</span>(<span class="hljs-title class_ inherited__">object_ref</span>):
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, url, callback=<span class="hljs-literal">None</span>, method=<span class="hljs-string">&#x27;GET&#x27;</span>, headers=<span class="hljs-literal">None</span>, body=<span class="hljs-literal">None</span>,</span></span>
-<span class="hljs-function"><span class="hljs-params">                 cookies=<span class="hljs-literal">None</span>, meta=<span class="hljs-literal">None</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>, priority=<span class="hljs-number">0</span>,</span></span>
-<span class="hljs-function"><span class="hljs-params">                 dont_filter=<span class="hljs-literal">False</span>, errback=<span class="hljs-literal">None</span>, flags=<span class="hljs-literal">None</span>, cb_kwargs=<span class="hljs-literal">None</span></span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, url, callback=<span class="hljs-literal">None</span>, method=<span class="hljs-string">&#x27;GET&#x27;</span>, headers=<span class="hljs-literal">None</span>, body=<span class="hljs-literal">None</span>,</span>
+<span class="hljs-params">                 cookies=<span class="hljs-literal">None</span>, meta=<span class="hljs-literal">None</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>, priority=<span class="hljs-number">0</span>,</span>
+<span class="hljs-params">                 dont_filter=<span class="hljs-literal">False</span>, errback=<span class="hljs-literal">None</span>, flags=<span class="hljs-literal">None</span>, cb_kwargs=<span class="hljs-literal">None</span></span>):
         self._encoding = encoding  <span class="hljs-comment"># this one has to be set first</span>
         self.method = <span class="hljs-built_in">str</span>(method).upper()
         self._set_url(url)

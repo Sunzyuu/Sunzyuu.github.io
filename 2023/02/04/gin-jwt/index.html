@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -272,18 +272,18 @@
 <span class="hljs-function"><span class="hljs-title">jti</span> <span class="hljs-params">(JWT ID)</span>：编号</span></code></pre></div>
 
 <p>除了官方字段，你还可以在这个部分定义私有字段，下面就是一个例子。</p>
-<div class="hljs"><pre><code class="hljs json">&#123;
-  <span class="hljs-attr">&quot;sub&quot;</span>: <span class="hljs-string">&quot;1234567890&quot;</span>,
-  <span class="hljs-attr">&quot;name&quot;</span>: <span class="hljs-string">&quot;John Doe&quot;</span>,
-  <span class="hljs-attr">&quot;iat&quot;</span>: <span class="hljs-number">1516239022</span>
-&#125;</code></pre></div>
+<div class="hljs"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span>
+  <span class="hljs-attr">&quot;sub&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1234567890&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;John Doe&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;iat&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1516239022</span>
+<span class="hljs-punctuation">&#125;</span></code></pre></div>
 
 <p>注意，JWT 默认是不加密的，任何人都可以读到，所以不要把秘密信息放在这个部分。这个 JSON 对象也要使用 Base64URL 算法转成字符串。</p>
 <h3 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h3><p>Signature 部分是对前两部分的签名，防止数据篡改。</p>
 <p>首先，需要指定一个密钥（secret）。这个密钥只有服务器才知道，不能泄露给用户。然后，使用 Header 里面指定的签名算法（默认是 HMAC SHA256），按照下面的公式产生签名。</p>
-<div class="hljs"><pre><code class="hljs javascript">HMACSHA256(
-  base64UrlEncode(header) + <span class="hljs-string">&quot;.&quot;</span> +
-  base64UrlEncode(payload),
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-title class_">HMACSHA256</span>(
+  <span class="hljs-title function_">base64UrlEncode</span>(header) + <span class="hljs-string">&quot;.&quot;</span> +
+  <span class="hljs-title function_">base64UrlEncode</span>(payload),
   secret)</code></pre></div>
 
 <p>算出签名以后，把 Header、Payload、Signature 三个部分拼成一个字符串，每个部分之间用”点”（<code>.</code>）分隔，就可以返回给用户。</p>
@@ -300,8 +300,8 @@
 )
 
 <span class="hljs-keyword">type</span> header <span class="hljs-keyword">struct</span> &#123;
-	Alg <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;alg&quot;`</span>
-	Typ <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;typ&quot;`</span>
+	Alg <span class="hljs-type">string</span> <span class="hljs-string">`json:&quot;alg&quot;`</span>
+	Typ <span class="hljs-type">string</span> <span class="hljs-string">`json:&quot;typ&quot;`</span>
 &#125;
 
 <span class="hljs-keyword">const</span> (
@@ -309,9 +309,9 @@
 )
 
 <span class="hljs-keyword">var</span> alg = HS256
-<span class="hljs-keyword">var</span> Secret <span class="hljs-keyword">string</span>
+<span class="hljs-keyword">var</span> Secret <span class="hljs-type">string</span>
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hs256</span><span class="hljs-params">(secret, data []<span class="hljs-keyword">byte</span>)</span> <span class="hljs-params">(ret <span class="hljs-keyword">string</span>, err error)</span></span> &#123;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">hs256</span><span class="hljs-params">(secret, data []<span class="hljs-type">byte</span>)</span></span> (ret <span class="hljs-type">string</span>, err <span class="hljs-type">error</span>) &#123;
 	hasher := hmac.New(sha256.New, secret)
 	_, err = hasher.Write(data)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
@@ -321,7 +321,7 @@
 	<span class="hljs-keyword">return</span> base64.RawURLEncoding.EncodeToString(r), <span class="hljs-literal">nil</span>
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Sign</span><span class="hljs-params">(payload <span class="hljs-keyword">interface</span>&#123;&#125;)</span> <span class="hljs-params">(ret <span class="hljs-keyword">string</span>, err error)</span></span> &#123;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Sign</span><span class="hljs-params">(payload <span class="hljs-keyword">interface</span>&#123;&#125;)</span></span> (ret <span class="hljs-type">string</span>, err <span class="hljs-type">error</span>) &#123;
 	h := header&#123;
 		Alg: alg,
 		Typ: <span class="hljs-string">&quot;JWT&quot;</span>,
@@ -341,7 +341,7 @@
 	<span class="hljs-comment">// 将header和payload 拼接在一起</span>
 	s := fmt.Sprintf(<span class="hljs-string">&quot;%s.%s&quot;</span>, bh, bp)
 
-	ret, err = hs256([]<span class="hljs-keyword">byte</span>(Secret), []<span class="hljs-keyword">byte</span>(s))
+	ret, err = hs256([]<span class="hljs-type">byte</span>(Secret), []<span class="hljs-type">byte</span>(s))
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
 		<span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>, err
 	&#125;
@@ -350,11 +350,11 @@
 
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Verify</span><span class="hljs-params">(token <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(err error)</span></span> &#123;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Verify</span><span class="hljs-params">(token <span class="hljs-type">string</span>)</span></span> (err <span class="hljs-type">error</span>) &#123;
 	parts := strings.Split(token, <span class="hljs-string">&quot;.&quot;</span>)
 	data := strings.Join(parts[<span class="hljs-number">0</span>:<span class="hljs-number">2</span>], <span class="hljs-string">&quot;.&quot;</span>)
-	hasher := hmac.New(sha256.New, []<span class="hljs-keyword">byte</span>(Secret))
-	_, err = hasher.Write([]<span class="hljs-keyword">byte</span>(data))
+	hasher := hmac.New(sha256.New, []<span class="hljs-type">byte</span>(Secret))
+	_, err = hasher.Write([]<span class="hljs-type">byte</span>(data))
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;
 		<span class="hljs-keyword">return</span> err
 	&#125;
@@ -383,13 +383,13 @@
 )
 
 <span class="hljs-keyword">type</span> AccountToken <span class="hljs-keyword">struct</span> &#123;
-	Name <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;name&quot;`</span>
+	Name <span class="hljs-type">string</span> <span class="hljs-string">`json:&quot;name&quot;`</span>
 &#125;
 
 <span class="hljs-keyword">type</span> User <span class="hljs-keyword">struct</span>&#123;
 	gorm.Model
-	Username <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span>
-	Password <span class="hljs-keyword">string</span> <span class="hljs-string">`json:&quot;password&quot;`</span>
+	Username <span class="hljs-type">string</span> <span class="hljs-string">`json:&quot;username&quot;`</span>
+	Password <span class="hljs-type">string</span> <span class="hljs-string">`json:&quot;password&quot;`</span>
 &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;
@@ -475,7 +475,7 @@
 	Db = db
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetDatabase</span><span class="hljs-params">()</span> *<span class="hljs-title">gorm</span>.<span class="hljs-title">DB</span></span>&#123;
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">GetDatabase</span><span class="hljs-params">()</span></span> *gorm.DB&#123;
 	<span class="hljs-keyword">return</span> Db
 &#125;
 </code></pre></div>

@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -251,8 +251,8 @@
 
 <h1 id="一、古典密码"><a href="#一、古典密码" class="headerlink" title="一、古典密码"></a>一、古典密码</h1><h2 id="仿射密码"><a href="#仿射密码" class="headerlink" title="仿射密码"></a>仿射密码</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>仿射加密在本质上还是一个置换密码：如果说移位密码是一个常数级别的置换，那么，仿射加密是一个一次级别的置换</p>
 <h3 id="加密原理"><a href="#加密原理" class="headerlink" title="加密原理"></a>加密原理</h3><p>假设X，Y，A，B是Z26整数环中的元素，A和B为密钥，X是原文，Y是密文</p>
-<p>加密函数：Y=（AX+B）%26</p>
-<p>解密函数：Y=（AX+B）%26，得到：X=（A的逆元）*（Y-B）%26</p>
+<p>加密函数：Y&#x3D;（AX+B）%26</p>
+<p>解密函数：Y&#x3D;（AX+B）%26，得到：X&#x3D;（A的逆元）*（Y-B）%26</p>
 <p>原理很简单，代码实现也比较简单</p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>各个函数作用</p>
 <div class="hljs"><pre><code class="hljs stylus"><span class="hljs-function"><span class="hljs-title">gcd</span><span class="hljs-params">(a,b)</span></span>  求<span class="hljs-selector-tag">a</span>,b的最大公因子
@@ -261,12 +261,12 @@
 <span class="hljs-function"><span class="hljs-title">decode</span><span class="hljs-params">(a,b,s)</span></span>		仿射解密</code></pre></div>
 
 <p>利用扩展的欧几里得算法求逆元</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gcd</span>(<span class="hljs-params">a,b</span>):</span>  <span class="hljs-comment"># 求出最大公因数</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">gcd</span>(<span class="hljs-params">a,b</span>):  <span class="hljs-comment"># 求出最大公因数</span>
     <span class="hljs-keyword">while</span> a!=<span class="hljs-number">0</span>:
         a,b = b%a,a
     <span class="hljs-keyword">return</span> b
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">findModReverse</span>(<span class="hljs-params">a,m</span>):</span> <span class="hljs-comment">#扩展欧几里得算法求模逆</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findModReverse</span>(<span class="hljs-params">a,m</span>): <span class="hljs-comment">#扩展欧几里得算法求模逆</span>
     <span class="hljs-keyword">if</span> gcd(a,m)!=<span class="hljs-number">1</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
     u1,u2,u3 = <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,a
@@ -277,12 +277,12 @@
     <span class="hljs-keyword">return</span> u1%m</code></pre></div>
 
 <p>完整代码如下</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gcd</span>(<span class="hljs-params">a,b</span>):</span>  <span class="hljs-comment"># 求出最大公因数</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">gcd</span>(<span class="hljs-params">a,b</span>):  <span class="hljs-comment"># 求出最大公因数</span>
     <span class="hljs-keyword">while</span> a!=<span class="hljs-number">0</span>:
         a,b = b%a,a
     <span class="hljs-keyword">return</span> b
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">findModReverse</span>(<span class="hljs-params">a,m</span>):</span> <span class="hljs-comment">#扩展欧几里得算法求模逆</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findModReverse</span>(<span class="hljs-params">a,m</span>): <span class="hljs-comment">#扩展欧几里得算法求模逆</span>
     <span class="hljs-keyword">if</span> gcd(a,m)!=<span class="hljs-number">1</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
     u1,u2,u3 = <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,a
@@ -292,24 +292,24 @@
         v1,v2,v3,u1,u2,u3 = (u1-q*v1),(u2-q*v2),(u3-q*v3),v1,v2,v3
     <span class="hljs-keyword">return</span> u1%m
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encode</span>(<span class="hljs-params">a,b,s</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">encode</span>(<span class="hljs-params">a,b,s</span>):
     result = <span class="hljs-string">&quot;&quot;</span>          <span class="hljs-comment"># 保存加密结果</span>
     s = s.upper()		 <span class="hljs-comment"># 全部转换为大写，方便计算</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(s)):
         s2 = <span class="hljs-built_in">chr</span>((a*(<span class="hljs-built_in">ord</span>(s[i])-<span class="hljs-number">65</span>)+b)%<span class="hljs-number">26</span> + <span class="hljs-number">65</span>)  <span class="hljs-comment">#使用加密公式 Y=（AX+B）%26</span>
         result = result +s2
-    print(result.lower())
+    <span class="hljs-built_in">print</span>(result.lower())
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decode</span>(<span class="hljs-params">a,b,s</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">a,b,s</span>):
     a1 = findModReverse(a,<span class="hljs-number">26</span>)
     result = <span class="hljs-string">&quot;&quot;</span>
     s = s.upper()
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s)):
         s2 = <span class="hljs-built_in">chr</span>((a1 * (<span class="hljs-built_in">ord</span>(s[i]) - <span class="hljs-number">65</span> - b)) % <span class="hljs-number">26</span> + <span class="hljs-number">65</span>) <span class="hljs-comment"># 使用解密公式X=（A的逆元）*（Y-B）%26</span>
         result = result + s2
-    print(result.lower())
+    <span class="hljs-built_in">print</span>(result.lower())
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">s_decode</span>(<span class="hljs-params">a,b,s</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">s_decode</span>(<span class="hljs-params">a,b,s</span>):
     letter =<span class="hljs-string">&#x27;abcdefghijklmnopqrstuvwxyz&#x27;</span>
     letter = letter.upper()
     s = s.upper()
@@ -318,9 +318,9 @@
         <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(letter)):
             <span class="hljs-keyword">if</span> i == letter[(a*j+b)%<span class="hljs-number">26</span>]:
                 result = result+letter[j]
-    print(result.lower())
+    <span class="hljs-built_in">print</span>(result.lower())
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>										<span class="hljs-comment"># 主函数入口</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():										<span class="hljs-comment"># 主函数入口</span>
     answer = <span class="hljs-built_in">input</span>(<span class="hljs-string">f&#x27;请输入所需的操作：编码/E or 解码/D: &#x27;</span>)
     <span class="hljs-keyword">try</span>:
         <span class="hljs-keyword">if</span> answer.upper() == <span class="hljs-string">&#x27;E&#x27;</span>:
@@ -335,9 +335,9 @@
             decode(a, b, s)  <span class="hljs-comment"># 利用逆元解密</span>
             <span class="hljs-comment"># s_decode(a,b,s)   # 暴力枚举每一个字符</span>
         <span class="hljs-keyword">else</span>:
-            print(<span class="hljs-string">&#x27;输入错误！&#x27;</span>)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;输入错误！&#x27;</span>)
     <span class="hljs-keyword">except</span> KeyError:
-        print(<span class="hljs-string">&#x27;请勿输入空格！&#x27;</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;请勿输入空格！&#x27;</span>)
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     main()
@@ -349,7 +349,7 @@
 <p><img src="https://i.loli.net/2020/12/23/CqbfOdNB3mxHDt4.png" srcset="/img/loading.gif" alt="image-20201223225306141"></p>
 <p><img src="https://i.loli.net/2020/12/23/CZHiL8cDjlUdvSw.png" srcset="/img/loading.gif" alt="image-20201223225317161"></p>
 <h3 id="破解仿射密码"><a href="#破解仿射密码" class="headerlink" title="破解仿射密码"></a>破解仿射密码</h3><p>这里使用了加解密中的 <code>gcd</code> <code>findModReverse</code>，找出26以内且与26互素的所有数的逆元，并存放在一个列表中</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">findAllre</span>():</span>    <span class="hljs-comment"># 找出所有小于26且与26互素的数</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findAllre</span>():    <span class="hljs-comment"># 找出所有小于26且与26互素的数</span>
     re_all = []
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">26</span>):
         <span class="hljs-keyword">if</span> gcd(i,<span class="hljs-number">26</span>) == <span class="hljs-number">1</span>:
@@ -359,12 +359,12 @@
     <span class="hljs-keyword">return</span> re_all</code></pre></div>
 
 <p>完整代码如下</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gcd</span>(<span class="hljs-params">a,b</span>):</span>  <span class="hljs-comment"># 求出最大公因数</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">gcd</span>(<span class="hljs-params">a,b</span>):  <span class="hljs-comment"># 求出最大公因数</span>
     <span class="hljs-keyword">while</span> a!=<span class="hljs-number">0</span>:
         a,b = b%a,a
     <span class="hljs-keyword">return</span> b
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">findModReverse</span>(<span class="hljs-params">a,m</span>):</span> <span class="hljs-comment">#扩展欧几里得算法求模逆</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findModReverse</span>(<span class="hljs-params">a,m</span>): <span class="hljs-comment">#扩展欧几里得算法求模逆</span>
     <span class="hljs-keyword">if</span> gcd(a,m)!=<span class="hljs-number">1</span>:
         <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
     u1,u2,u3 = <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,a
@@ -374,7 +374,7 @@
         v1,v2,v3,u1,u2,u3 = (u1-q*v1),(u2-q*v2),(u3-q*v3),v1,v2,v3
     <span class="hljs-keyword">return</span> u1%m
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">findAllre</span>():</span>    <span class="hljs-comment"># 找出所有小于26且与26互素的数</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findAllre</span>():    <span class="hljs-comment"># 找出所有小于26且与26互素的数</span>
     re_all = []
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-number">26</span>):
         <span class="hljs-keyword">if</span> gcd(i,<span class="hljs-number">26</span>) == <span class="hljs-number">1</span>:
@@ -383,7 +383,7 @@
     <span class="hljs-comment">#re_all.sort()</span>
     <span class="hljs-keyword">return</span> re_all
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decode</span>(<span class="hljs-params">s</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">s</span>):
     re_all = findAllre()
     <span class="hljs-keyword">for</span> k1 <span class="hljs-keyword">in</span> re_all:
         <span class="hljs-keyword">for</span> k2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">26</span>):
@@ -391,13 +391,13 @@
             <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
                 s2 = <span class="hljs-built_in">chr</span>(((<span class="hljs-built_in">int</span>(k1) * (<span class="hljs-built_in">ord</span>(s[i]) - <span class="hljs-number">97</span> - k2)) % <span class="hljs-number">26</span> + <span class="hljs-number">97</span>))
                 result = result + s2
-            print(<span class="hljs-string">&quot;k1=&quot;</span> + <span class="hljs-built_in">str</span>(findModReverse(k1,<span class="hljs-number">26</span>)) + <span class="hljs-string">&quot;, k2=&quot;</span> + <span class="hljs-built_in">str</span>(k2) + <span class="hljs-string">&quot; plaintext = &quot;</span> + result)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;k1=&quot;</span> + <span class="hljs-built_in">str</span>(findModReverse(k1,<span class="hljs-number">26</span>)) + <span class="hljs-string">&quot;, k2=&quot;</span> + <span class="hljs-built_in">str</span>(k2) + <span class="hljs-string">&quot; plaintext = &quot;</span> + result)
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
    <span class="hljs-comment"># criphertext = &#x27;falszztysyjzyjkywjrztyjztyynaryjkyswarztyegyyj&#x27;</span>
     criphertext = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入要破解的密文: &quot;</span>)
     criphertext = criphertext.lower()
-    print(<span class="hljs-string">&quot;---------&quot;</span>*<span class="hljs-number">3</span>+<span class="hljs-string">&quot;strat attck&quot;</span>+<span class="hljs-string">&quot;---------&quot;</span>*<span class="hljs-number">3</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;---------&quot;</span>*<span class="hljs-number">3</span>+<span class="hljs-string">&quot;strat attck&quot;</span>+<span class="hljs-string">&quot;---------&quot;</span>*<span class="hljs-number">3</span>)
     decode(criphertext)
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
@@ -406,8 +406,8 @@
 <p>效果如下</p>
 <img src="https://i.loli.net/2020/12/23/lrQLWVebkuphvTK.png" srcset="/img/loading.gif" alt="image-20201223170037595" style="zoom:67%;">
 
-<h2 id="维吉尼亚密码"><a href="#维吉尼亚密码" class="headerlink" title="维吉尼亚密码"></a>维吉尼亚密码</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h3><p><strong>维吉尼亚密码</strong>（又译<strong>维热纳尔密码</strong>）是使用一系列<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/凯撒密码">凯撒密码</a>组成密码字母表的加密算法，属于多表密码的一种简单形式。</p>
-<p>维吉尼亚密码曾多次被发明。该方法最早记录在<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/吉奥万·巴蒂斯塔·贝拉索">吉奥万·巴蒂斯塔·贝拉索</a>（ Giovan Battista Bellaso）于1553年所著的书《吉奥万·巴蒂斯塔·贝拉索先生的密码》（<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/意大利语">意大利语</a>：La cifra del. Sig. Giovan Battista Bellaso）中。然而，后来在19世纪时被误传为是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/法国">法国</a>外交官<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/布莱斯·德·维吉尼亚">布莱斯·德·维吉尼亚</a>（Blaise De Vigenère）所创造，因此现在被称为“维吉尼亚密码”。</p>
+<h2 id="维吉尼亚密码"><a href="#维吉尼亚密码" class="headerlink" title="维吉尼亚密码"></a>维吉尼亚密码</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h3><p><strong>维吉尼亚密码</strong>（又译<strong>维热纳尔密码</strong>）是使用一系列<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%87%AF%E6%92%92%E5%AF%86%E7%A0%81">凯撒密码</a>组成密码字母表的加密算法，属于多表密码的一种简单形式。</p>
+<p>维吉尼亚密码曾多次被发明。该方法最早记录在<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%90%89%E5%A5%A5%E4%B8%87%C2%B7%E5%B7%B4%E8%92%82%E6%96%AF%E5%A1%94%C2%B7%E8%B4%9D%E6%8B%89%E7%B4%A2">吉奥万·巴蒂斯塔·贝拉索</a>（ Giovan Battista Bellaso）于1553年所著的书《吉奥万·巴蒂斯塔·贝拉索先生的密码》（<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%84%8F%E5%A4%A7%E5%88%A9%E8%AF%AD">意大利语</a>：La cifra del. Sig. Giovan Battista Bellaso）中。然而，后来在19世纪时被误传为是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%B3%95%E5%9B%BD">法国</a>外交官<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%B8%83%E8%8E%B1%E6%96%AF%C2%B7%E5%BE%B7%C2%B7%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A">布莱斯·德·维吉尼亚</a>（Blaise De Vigenère）所创造，因此现在被称为“维吉尼亚密码”。</p>
 <p>维吉尼亚密码以其简单易用而著称，同时初学者通常难以破解，因而又被称为“不可破译的密码”。这也让很多人使用维吉尼亚密码来加密的目的就是为了将其破解。</p>
 <h3 id="2-加解密原理"><a href="#2-加解密原理" class="headerlink" title="2.加解密原理"></a>2.加解密原理</h3><img src="https://i.loli.net/2020/12/23/DFHntXC9Ysp6dyV.png" srcset="/img/loading.gif" alt="image-20201223225441528" style="zoom:67%;">
 
@@ -415,7 +415,7 @@
 
 <p>加解密代码</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 将密钥处理成和密文/明文一样长</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">solve_key</span>(<span class="hljs-params">s,key</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_key</span>(<span class="hljs-params">s,key</span>):
     nkey = key
     <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(nkey) &lt; <span class="hljs-built_in">len</span>(s):
         nkey = nkey+key
@@ -423,8 +423,8 @@
     <span class="hljs-keyword">return</span> nkey
 
 <span class="hljs-comment"># 加密函数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">encode</span>(<span class="hljs-params">s,key</span>):</span>
-    print(<span class="hljs-string">&#x27;加密后的结果： &#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">encode</span>(<span class="hljs-params">s,key</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;加密后的结果： &#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)
     s1 = s.upper()
     key1 = solve_key(s, key)
     key1 = key1.upper()
@@ -433,11 +433,11 @@
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(s)):
         s2 = <span class="hljs-built_in">chr</span>(<span class="hljs-built_in">abs</span>(((<span class="hljs-built_in">ord</span>(s1[i])-<span class="hljs-number">65</span>)+(<span class="hljs-built_in">ord</span>(key1[i])-<span class="hljs-number">65</span>)) % <span class="hljs-number">26</span>) + <span class="hljs-number">65</span>)
         result = result + s2
-    print(result.lower())
+    <span class="hljs-built_in">print</span>(result.lower())
 
 <span class="hljs-comment"># 解密函数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">decode</span>(<span class="hljs-params">s,key</span>):</span>
-    print(<span class="hljs-string">&#x27;解密后的结果： &#x27;</span>, end=<span class="hljs-string">&#x27;&#x27;</span>)
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">s,key</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;解密后的结果： &#x27;</span>, end=<span class="hljs-string">&#x27;&#x27;</span>)
     s1 = s.upper()
     key1 = solve_key(s, key)
     key1 = key1.upper()
@@ -446,9 +446,9 @@
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s)):
         s2 = <span class="hljs-built_in">chr</span>(((<span class="hljs-built_in">ord</span>(s1[i]) - <span class="hljs-number">65</span>) - (<span class="hljs-built_in">ord</span>(key1[i]) - <span class="hljs-number">65</span>)) % <span class="hljs-number">26</span> + <span class="hljs-number">65</span>)
         result = result + s2
-    print(result.lower())
+    <span class="hljs-built_in">print</span>(result.lower())
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
     <span class="hljs-keyword">while</span> <span class="hljs-number">1</span>:
         <span class="hljs-comment"># 函数入口</span>
         answer = <span class="hljs-built_in">input</span>(<span class="hljs-string">f&#x27;请输入所需的操作：编码/E or 解码/D:  &#x27;</span>)
@@ -467,9 +467,9 @@
                 s = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">filter</span>(<span class="hljs-built_in">str</span>.isalpha, s))
                 decode(s, key)
             <span class="hljs-keyword">else</span>:
-                print(<span class="hljs-string">&#x27;输入错误！&#x27;</span>)
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;输入错误！&#x27;</span>)
         <span class="hljs-keyword">except</span> KeyError:
-            print(<span class="hljs-string">&#x27;请检查输入是否正确！&#x27;</span>)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;请检查输入是否正确！&#x27;</span>)
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     main()</code></pre></div>
@@ -479,7 +479,7 @@
 
 
 <h1 id="二、序列密码"><a href="#二、序列密码" class="headerlink" title="二、序列密码"></a>二、序列密码</h1><h2 id="LFSR"><a href="#LFSR" class="headerlink" title="LFSR"></a>LFSR</h2><p>代码实现</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">lsrf</span>(<span class="hljs-params">inti, top</span>):</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">lsrf</span>(<span class="hljs-params">inti, top</span>):
     <span class="hljs-built_in">sum</span> = <span class="hljs-number">0</span>
     inti2 = <span class="hljs-string">&quot;0&quot;</span>*<span class="hljs-built_in">len</span>(inti)
     inti2 = <span class="hljs-built_in">list</span>(inti2)
@@ -496,7 +496,7 @@
     inti1 = inti1.join(inti2)
     <span class="hljs-keyword">return</span> inti1
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
     inti_str = <span class="hljs-built_in">str</span>(<span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入初始化序列：&quot;</span>))
     inti_str = inti_str[::-<span class="hljs-number">1</span>]
     inti_str_backup = inti_str
@@ -504,21 +504,21 @@
     top = top[::-<span class="hljs-number">1</span>]
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span> ** <span class="hljs-built_in">len</span>(inti_str) + <span class="hljs-number">1</span>):
         <span class="hljs-keyword">if</span> inti_str_backup == inti_str <span class="hljs-keyword">and</span> i != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> i == <span class="hljs-number">2</span> ** <span class="hljs-built_in">len</span>(inti_str) - <span class="hljs-number">1</span>:
-            print(<span class="hljs-string">&quot;第&#123;0&#125;次&quot;</span>.<span class="hljs-built_in">format</span>(i), inti_str_backup)
-            print(<span class="hljs-string">&quot;是本原多项式且周期是&quot;</span> + <span class="hljs-built_in">str</span>(i))
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;第&#123;0&#125;次&quot;</span>.<span class="hljs-built_in">format</span>(i), inti_str_backup)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;是本原多项式且周期是&quot;</span> + <span class="hljs-built_in">str</span>(i))
             <span class="hljs-keyword">break</span>
         <span class="hljs-keyword">elif</span> inti_str_backup == inti_str <span class="hljs-keyword">and</span> i != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> i != <span class="hljs-number">2</span> ** <span class="hljs-built_in">len</span>(inti_str) - <span class="hljs-number">1</span>:
-            print(<span class="hljs-string">&quot;第&#123;0&#125;次&quot;</span>.<span class="hljs-built_in">format</span>(i), inti_str_backup)
-            print(<span class="hljs-string">&quot;不是本原多项式且周期是&quot;</span> + <span class="hljs-built_in">str</span>(i))
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;第&#123;0&#125;次&quot;</span>.<span class="hljs-built_in">format</span>(i), inti_str_backup)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;不是本原多项式且周期是&quot;</span> + <span class="hljs-built_in">str</span>(i))
             <span class="hljs-keyword">break</span>
-        print(<span class="hljs-string">&quot;第&#123;0&#125;次&quot;</span>.<span class="hljs-built_in">format</span>(i), inti_str_backup)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;第&#123;0&#125;次&quot;</span>.<span class="hljs-built_in">format</span>(i), inti_str_backup)
         inti_str_backup = lsrf(inti_str_backup, top)
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     main()</code></pre></div>
 
 <p>选择本原多项式和初始序列如下</p>
-<div class="hljs"><pre><code class="hljs plain">100000000001000000
+<div class="hljs"><pre><code class="hljs">100000000001000000
 011100010100100101</code></pre></div>
 
 <p>程序运行结果</p>
@@ -528,7 +528,7 @@
 <span class="hljs-keyword">import</span> base64
 
 <span class="hljs-comment"># S盒初始化置换,Key为密钥</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Rc4_init</span>(<span class="hljs-params">S, Key</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">Rc4_init</span>(<span class="hljs-params">S, Key</span>):
     j = <span class="hljs-number">0</span>
     Key = Key.encode(<span class="hljs-string">&#x27;UTF-8&#x27;</span>)
     Key = hashlib.md5(Key).hexdigest()  <span class="hljs-comment"># 长度为32的字符串</span>
@@ -540,7 +540,7 @@
         j = (j + S[i] + <span class="hljs-built_in">ord</span>(tmp[i])) % <span class="hljs-number">256</span>
         S[i], S[j] = S[j], S[i]             <span class="hljs-comment"># 交换S[i],S[j]</span>
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rc4_Encode</span>(<span class="hljs-params">S, plaintext</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">rc4_Encode</span>(<span class="hljs-params">S, plaintext</span>):
     i = j = <span class="hljs-number">0</span>
     result = <span class="hljs-string">&#x27;&#x27;</span>
     <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> plaintext:
@@ -555,7 +555,7 @@
     <span class="hljs-keyword">return</span> result
 
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">rc4_Decode</span>(<span class="hljs-params">S, criphtext</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">rc4_Decode</span>(<span class="hljs-params">S, criphtext</span>):
     i = j = <span class="hljs-number">0</span>
     criphtext = base64.b64decode(criphtext)
     criphtext = <span class="hljs-built_in">str</span>(criphtext.decode())
@@ -569,7 +569,7 @@
         result += k
     <span class="hljs-keyword">return</span> result
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
     <span class="hljs-keyword">while</span> <span class="hljs-number">1</span>:
         order = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入指令,加密/E,解密/D :&quot;</span>)
         <span class="hljs-keyword">if</span> order.upper() ==<span class="hljs-string">&#x27;E&#x27;</span>:
@@ -578,8 +578,8 @@
             s = []
             Rc4_init(s, key)
             cryphtext = rc4_Encode(s, plaintext)
-            print(<span class="hljs-string">&quot;密文为: &quot;</span>, cryphtext)
-            print(<span class="hljs-string">&#x27;\n&#x27;</span>)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;密文为: &quot;</span>, cryphtext)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\n&#x27;</span>)
 
         <span class="hljs-keyword">else</span>:
             cryphtext = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入密文: &quot;</span>)
@@ -587,8 +587,8 @@
             s = []
             Rc4_init(s, key)
             plaintext = rc4_Decode(s, cryphtext)
-            print(<span class="hljs-string">&quot;明文为: &quot;</span>, plaintext)
-            print(<span class="hljs-string">&#x27;\n&#x27;</span>)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;明文为: &quot;</span>, plaintext)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;\n&#x27;</span>)
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     main()</code></pre></div>
 
@@ -596,7 +596,7 @@
 
 <h1 id="三、DES"><a href="#三、DES" class="headerlink" title="三、DES"></a>三、DES</h1><p>DEC_ECB模式</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-comment"># 两字符进行异或运算</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">xor</span>(<span class="hljs-params">str1, str2</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">xor</span>(<span class="hljs-params">str1, str2</span>):
     res = <span class="hljs-string">&quot;&quot;</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(str1)):
         xor_res = <span class="hljs-built_in">int</span>(str1[i], <span class="hljs-number">10</span>)^<span class="hljs-built_in">int</span>(str2[i], <span class="hljs-number">10</span>)
@@ -607,7 +607,7 @@
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># 处理字符串，将每个字符串都转成八位二进制数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">str_process</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">str_process</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     res = <span class="hljs-string">&quot;&quot;</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>:
         tmp = <span class="hljs-built_in">bin</span>(<span class="hljs-built_in">ord</span>(i))[<span class="hljs-number">2</span>:]
@@ -616,7 +616,7 @@
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># PC-1盒处理</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">key_change_1</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">key_change_1</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     change_table = [<span class="hljs-number">57</span>,<span class="hljs-number">49</span>,<span class="hljs-number">41</span>,<span class="hljs-number">33</span>,<span class="hljs-number">25</span>,<span class="hljs-number">17</span>,<span class="hljs-number">9</span>,<span class="hljs-number">1</span>,
                  <span class="hljs-number">58</span>,<span class="hljs-number">50</span>,<span class="hljs-number">42</span>,<span class="hljs-number">34</span>,<span class="hljs-number">26</span>,<span class="hljs-number">18</span>,<span class="hljs-number">10</span>,
                  <span class="hljs-number">2</span>,<span class="hljs-number">59</span>,<span class="hljs-number">51</span>,<span class="hljs-number">43</span>,<span class="hljs-number">35</span>,<span class="hljs-number">27</span>,<span class="hljs-number">19</span>,<span class="hljs-number">11</span>,
@@ -630,7 +630,7 @@
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># PC-2盒处理</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">key_change_2</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">key_change_2</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     change_table = [<span class="hljs-number">14</span>,<span class="hljs-number">17</span>,<span class="hljs-number">11</span>,<span class="hljs-number">24</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">28</span>,
                  <span class="hljs-number">15</span>,<span class="hljs-number">6</span>,<span class="hljs-number">21</span>,<span class="hljs-number">10</span>,<span class="hljs-number">23</span>,<span class="hljs-number">19</span>,<span class="hljs-number">12</span>,<span class="hljs-number">4</span>,
                  <span class="hljs-number">26</span>,<span class="hljs-number">8</span>,<span class="hljs-number">16</span>,<span class="hljs-number">7</span>,<span class="hljs-number">27</span>,<span class="hljs-number">20</span>,<span class="hljs-number">13</span>,<span class="hljs-number">2</span>,
@@ -644,14 +644,14 @@
 
 
 <span class="hljs-comment"># 循环左移</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">left_run</span>(<span class="hljs-params"><span class="hljs-built_in">str</span>, num</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">left_run</span>(<span class="hljs-params"><span class="hljs-built_in">str</span>, num</span>):
     tmp_str = <span class="hljs-built_in">str</span>[num:<span class="hljs-built_in">len</span>(<span class="hljs-built_in">str</span>)]
     tmp_str = tmp_str+<span class="hljs-built_in">str</span>[<span class="hljs-number">0</span>:num]
     <span class="hljs-keyword">return</span> tmp_str
 
 
 <span class="hljs-comment"># 生成16个子密钥</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">key_gen</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">key_gen</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     key_list = []
     key_change_res = key_change_1(<span class="hljs-built_in">str</span>)
     key_c = key_change_res[<span class="hljs-number">0</span>:<span class="hljs-number">28</span>]
@@ -666,7 +666,7 @@
     <span class="hljs-keyword">return</span> key_list
 
 <span class="hljs-comment"># IP盒处理</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">begin_change</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">begin_change</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     change_table = [<span class="hljs-number">58</span>,<span class="hljs-number">50</span>,<span class="hljs-number">42</span>,<span class="hljs-number">34</span>,<span class="hljs-number">26</span>,<span class="hljs-number">18</span>,<span class="hljs-number">10</span>,<span class="hljs-number">2</span>,
                    <span class="hljs-number">60</span>,<span class="hljs-number">52</span>,<span class="hljs-number">44</span>,<span class="hljs-number">36</span>,<span class="hljs-number">28</span>,<span class="hljs-number">20</span>,<span class="hljs-number">12</span>,<span class="hljs-number">4</span>,
                    <span class="hljs-number">62</span>,<span class="hljs-number">54</span>,<span class="hljs-number">46</span>,<span class="hljs-number">38</span>,<span class="hljs-number">30</span>,<span class="hljs-number">22</span>,<span class="hljs-number">14</span>,<span class="hljs-number">6</span>,
@@ -682,7 +682,7 @@
 
 
 <span class="hljs-comment"># E盒处理  32位-&gt;48位</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">E_box</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">E_box</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     change_table = [<span class="hljs-number">32</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,
                     <span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-number">11</span>,
                     <span class="hljs-number">12</span>,<span class="hljs-number">13</span>,<span class="hljs-number">12</span>,<span class="hljs-number">13</span>,<span class="hljs-number">14</span>,<span class="hljs-number">15</span>,<span class="hljs-number">16</span>,<span class="hljs-number">17</span>,
@@ -695,7 +695,7 @@
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># s盒处理   48位-&gt;32位</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">S_box</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">S_box</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     j = <span class="hljs-number">0</span>
     s_list = [[<span class="hljs-number">14</span>,<span class="hljs-number">4</span>,<span class="hljs-number">13</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">15</span>,<span class="hljs-number">11</span>,<span class="hljs-number">8</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>,<span class="hljs-number">6</span>,<span class="hljs-number">12</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>,<span class="hljs-number">0</span>,<span class="hljs-number">7</span>,<span class="hljs-number">0</span>,<span class="hljs-number">15</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">14</span>,<span class="hljs-number">2</span>,<span class="hljs-number">13</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>,<span class="hljs-number">6</span>,<span class="hljs-number">12</span>,<span class="hljs-number">11</span>,<span class="hljs-number">9</span>,<span class="hljs-number">5</span>,<span class="hljs-number">3</span>,<span class="hljs-number">8</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">14</span>,<span class="hljs-number">8</span>,<span class="hljs-number">13</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">11</span>,<span class="hljs-number">15</span>,<span class="hljs-number">12</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">3</span>,<span class="hljs-number">10</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">15</span>,<span class="hljs-number">12</span>,<span class="hljs-number">8</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">9</span>,<span class="hljs-number">1</span>,<span class="hljs-number">7</span>,<span class="hljs-number">5</span>,<span class="hljs-number">11</span>,<span class="hljs-number">3</span>,<span class="hljs-number">14</span>,<span class="hljs-number">10</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">13</span>],
               [<span class="hljs-number">15</span>,<span class="hljs-number">1</span>,<span class="hljs-number">8</span>,<span class="hljs-number">14</span>,<span class="hljs-number">6</span>,<span class="hljs-number">11</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">9</span>,<span class="hljs-number">7</span>,<span class="hljs-number">2</span>,<span class="hljs-number">13</span>,<span class="hljs-number">12</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">3</span>,<span class="hljs-number">13</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">15</span>,<span class="hljs-number">2</span>,<span class="hljs-number">8</span>,<span class="hljs-number">14</span>,<span class="hljs-number">12</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">10</span>,<span class="hljs-number">6</span>,<span class="hljs-number">9</span>,<span class="hljs-number">11</span>,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">14</span>,<span class="hljs-number">7</span>,<span class="hljs-number">11</span>,<span class="hljs-number">10</span>,<span class="hljs-number">4</span>,<span class="hljs-number">13</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">8</span>,<span class="hljs-number">12</span>,<span class="hljs-number">6</span>,<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">15</span>,<span class="hljs-number">13</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">15</span>,<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">11</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">12</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>,<span class="hljs-number">14</span>,<span class="hljs-number">9</span>],
@@ -720,7 +720,7 @@
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># p盒处理   置换操作</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">P_box</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">P_box</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     res = <span class="hljs-string">&quot;&quot;</span>
     change_table = [<span class="hljs-number">16</span>,<span class="hljs-number">7</span>,<span class="hljs-number">20</span>,<span class="hljs-number">21</span>,<span class="hljs-number">29</span>,<span class="hljs-number">12</span>,<span class="hljs-number">28</span>,<span class="hljs-number">17</span>,
                     <span class="hljs-number">1</span>,<span class="hljs-number">15</span>,<span class="hljs-number">23</span>,<span class="hljs-number">26</span>,<span class="hljs-number">5</span>,<span class="hljs-number">18</span>,<span class="hljs-number">31</span>,<span class="hljs-number">10</span>,
@@ -731,7 +731,7 @@
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># F函数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">F_function</span>(<span class="hljs-params"><span class="hljs-built_in">str</span>, key</span>):</span>  <span class="hljs-comment"># R(32位)-&gt;E盒(48位)-&gt;与key的子密钥异或-&gt;S盒-&gt;P置换</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">F_function</span>(<span class="hljs-params"><span class="hljs-built_in">str</span>, key</span>):  <span class="hljs-comment"># R(32位)-&gt;E盒(48位)-&gt;与key的子密钥异或-&gt;S盒-&gt;P置换</span>
     str_e_res = E_box(<span class="hljs-built_in">str</span>)            <span class="hljs-comment"># 将 E 异或 S  P 集合到一个函数种，便于调用</span>
     xor_res = xor(str_e_res, key)
     str_s_res = S_box(xor_res)
@@ -739,7 +739,7 @@
     <span class="hljs-keyword">return</span> str_p_res
 
 <span class="hljs-comment"># 逆IP盒</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">IP_re</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">IP_re</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):
     res = <span class="hljs-string">&quot;&quot;</span>
     ip_list = [<span class="hljs-number">40</span>,<span class="hljs-number">8</span>,<span class="hljs-number">48</span>,<span class="hljs-number">16</span>,<span class="hljs-number">56</span>,<span class="hljs-number">24</span>,<span class="hljs-number">64</span>,<span class="hljs-number">32</span>,
                <span class="hljs-number">39</span>,<span class="hljs-number">7</span>,<span class="hljs-number">47</span>,<span class="hljs-number">15</span>,<span class="hljs-number">55</span>,<span class="hljs-number">23</span>,<span class="hljs-number">63</span>,<span class="hljs-number">31</span>,
@@ -755,7 +755,7 @@
 
 
 <span class="hljs-comment"># DES加密操作</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">DESencode</span>(<span class="hljs-params">text, key</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">DESencode</span>(<span class="hljs-params">text, key</span>):
     text_bin = str_process(text)     <span class="hljs-comment"># 将字符转换为二进制数</span>
     text_IP = begin_change(text_bin)  <span class="hljs-comment"># 明文初始置换</span>
     key_bin = str_process(key)      <span class="hljs-comment"># 将密钥转换位二进制数</span>
@@ -776,7 +776,7 @@
     <span class="hljs-keyword">return</span> criph_text
 
 <span class="hljs-comment"># 针对一组的解密程序</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">DESdecode</span>(<span class="hljs-params">text, key</span>):</span>  <span class="hljs-comment">#密文直接输64位2进制</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">DESdecode</span>(<span class="hljs-params">text, key</span>):  <span class="hljs-comment">#密文直接输64位2进制</span>
     key_bin = str_process(key)    <span class="hljs-comment"># 将密钥转换为二进制数</span>
     key_list = key_gen(key_bin)   <span class="hljs-comment"># 生成的十六个子密钥</span>
     text = begin_change(text)   <span class="hljs-comment"># 先初始值换 与加密过程相反</span>
@@ -799,7 +799,7 @@
     <span class="hljs-keyword">return</span> plain_text
 
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Divide_text</span>(<span class="hljs-params">order,text,key</span>):</span>    <span class="hljs-comment"># 将明文或者明文分组 明文分成8个字符一组，密文则分成64bit一组</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">Divide_text</span>(<span class="hljs-params">order,text,key</span>):    <span class="hljs-comment"># 将明文或者明文分组 明文分成8个字符一组，密文则分成64bit一组</span>
     block_text = []
     res = <span class="hljs-string">&quot;&quot;</span>
     length = <span class="hljs-number">0</span>
@@ -822,7 +822,7 @@
             res += DESdecode(text, key)
     <span class="hljs-keyword">return</span> res
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
     <span class="hljs-keyword">while</span> <span class="hljs-number">1</span>:
         plaintext = <span class="hljs-string">&#x27;&#x27;</span>
         ciphertext = <span class="hljs-string">&#x27;&#x27;</span>
@@ -832,14 +832,14 @@
             plaintext = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入明文：&quot;</span>)
             key = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入密钥：&quot;</span>)
             ciphertext = Divide_text(order, plaintext, key)
-            print(<span class="hljs-string">&quot;密文是：&quot;</span>)
-            print(ciphertext)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;密文是：&quot;</span>)
+            <span class="hljs-built_in">print</span>(ciphertext)
         <span class="hljs-keyword">else</span>:
             ciphertext = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入密文：&quot;</span>)
             key = <span class="hljs-built_in">input</span>(<span class="hljs-string">&quot;请输入密钥：&quot;</span>)
             plaintext = Divide_text(order, ciphertext, key)
-            print(<span class="hljs-string">&quot;明文是：&quot;</span>)
-            print(plaintext)
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;明文是：&quot;</span>)
+            <span class="hljs-built_in">print</span>(plaintext)
 
 <span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:
     main()</code></pre></div>
@@ -848,7 +848,7 @@
 
 <p>DES_CBC模式</p>
 <p>只需要修改ECB模式中的 Divide_text 部分</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">Divide_text</span>(<span class="hljs-params">order,text,key</span>):</span>    <span class="hljs-comment"># 将明文或者明文分组 明文分成8个字符一组，密文则分成64bit一组</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">Divide_text</span>(<span class="hljs-params">order,text,key</span>):    <span class="hljs-comment"># 将明文或者明文分组 明文分成8个字符一组，密文则分成64bit一组</span>
     block_text = []
     IV = <span class="hljs-string">&#x27;aaaaaaaa&#x27;</span>                 <span class="hljs-comment"># 初始化向量</span>
     IV_bin = str_process(IV)
@@ -897,7 +897,7 @@
 <span class="hljs-keyword">import</span> random
 
 <span class="hljs-comment"># 模重复平方法</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fast_mod</span>(<span class="hljs-params">p,q,n</span>):</span>     <span class="hljs-comment"># p为底数，p为指数</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">fast_mod</span>(<span class="hljs-params">p,q,n</span>):     <span class="hljs-comment"># p为底数，p为指数</span>
     res = <span class="hljs-number">1</span>
     <span class="hljs-keyword">while</span> q:
         <span class="hljs-keyword">if</span> q &amp; <span class="hljs-number">1</span>:
@@ -908,7 +908,7 @@
 
 <span class="hljs-comment"># 计算出d</span>
 <span class="hljs-comment">#这个扩展欧几里得算法求模逆,用于求d</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">caculateD</span>(<span class="hljs-params">a, m</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">caculateD</span>(<span class="hljs-params">a, m</span>):
     u1,u2,u3 = <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,a
     v1,v2,v3 = <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,m
     <span class="hljs-keyword">while</span> v3!=<span class="hljs-number">0</span>:
@@ -918,12 +918,12 @@
 
 
 <span class="hljs-comment"># 将字符转化为十六进制字符串</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">str2Hex</span>(<span class="hljs-params">m</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">str2Hex</span>(<span class="hljs-params">m</span>):
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-string">&quot;&#123;:02x&#125;&quot;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">ord</span>(x)) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> m)
 
 <span class="hljs-comment"># 素性检验：采用 Miler-Rabin 检验法</span>
 <span class="hljs-comment"># 所有的𝑟 ∈ [0, 𝑠 − 1]，若𝑎^𝑑 ≠ 1(𝑚𝑜𝑑 𝑛)且𝑎^((2^𝑟)*𝑑) ≠ −1(𝑚𝑜𝑑 𝑛)，则𝑛是合数。否则，𝑛有 3/4的概率为素数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">miller_rabin</span>(<span class="hljs-params">n</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">miller_rabin</span>(<span class="hljs-params">n</span>):
     s = n - <span class="hljs-number">1</span>
     t = <span class="hljs-number">0</span>
     <span class="hljs-keyword">while</span> s % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:  <span class="hljs-comment"># n,s,t之间的关系为 n = 2^s * t</span>
@@ -942,7 +942,7 @@
                     v = (v ** <span class="hljs-number">2</span>) % n
     <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 <span class="hljs-comment"># 生成素数 先生成1024位的奇数，再进行素性检验，通过则生成该素数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">genPrime</span>(<span class="hljs-params">b=<span class="hljs-number">1024</span></span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">genPrime</span>(<span class="hljs-params">b=<span class="hljs-number">1024</span></span>):
     <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:                             <span class="hljs-comment"># 设置死循环直到生成素数才退出</span>
         res = <span class="hljs-string">&quot;1&quot;</span>
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(b-<span class="hljs-number">2</span>):
@@ -952,7 +952,7 @@
         <span class="hljs-keyword">if</span> miller_rabin(res):
             <span class="hljs-keyword">return</span> res                          <span class="hljs-comment"># 直到该数通过素数检验才推出循环</span>
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">genE</span>(<span class="hljs-params">phi_n</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">genE</span>(<span class="hljs-params">phi_n</span>):
     <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
         e = genPrime(b=random.randint(<span class="hljs-number">3</span>,<span class="hljs-number">13</span>))  <span class="hljs-comment">#随机生成e</span>
         <span class="hljs-keyword">if</span> e &lt; <span class="hljs-number">2000</span> :                  <span class="hljs-comment"># e不能太小</span>
@@ -960,20 +960,20 @@
         <span class="hljs-keyword">if</span> phi_n%e != <span class="hljs-number">0</span>:               <span class="hljs-comment"># 保证e不能被phi整除</span>
             <span class="hljs-keyword">return</span> e
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">RSAEncode</span>(<span class="hljs-params">m, e, n</span>):</span>               <span class="hljs-comment"># 加密公式 m^e mod n</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">RSAEncode</span>(<span class="hljs-params">m, e, n</span>):               <span class="hljs-comment"># 加密公式 m^e mod n</span>
     m = <span class="hljs-built_in">int</span>(str2Hex(m), <span class="hljs-number">16</span>)           <span class="hljs-comment"># 将字符转换为二进制</span>
     c = fast_mod(m, e, n)
     <span class="hljs-keyword">return</span> c
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">RSADecode</span>(<span class="hljs-params">c, d, n</span>):</span>                 <span class="hljs-comment"># 加密公式 c^d mod n</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">RSADecode</span>(<span class="hljs-params">c, d, n</span>):                 <span class="hljs-comment"># 加密公式 c^d mod n</span>
     plaintext = fast_mod(c,d,n)
     plaintext = <span class="hljs-built_in">str</span>(long_to_bytes(plaintext).decode()) <span class="hljs-comment"># 将数字转换为字符</span>
     <span class="hljs-keyword">return</span> plaintext
 
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
     <span class="hljs-comment"># 生成两个大素数p和q</span>
-    print(<span class="hljs-string">&quot;Generate p,q and e, please wait... &quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Generate p,q and e, please wait... &quot;</span>)
     p = genPrime()
     q = genPrime()
     <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;p = &quot;</span>+<span class="hljs-built_in">str</span>(p))
@@ -1028,32 +1028,32 @@ Ti = []
     Ti.append(result)
 
 <span class="hljs-comment"># 实现x,y的逐比特与</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">and1</span>(<span class="hljs-params">x, y</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">and1</span>(<span class="hljs-params">x, y</span>):
     res = <span class="hljs-string">&#x27;&#x27;</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(x)):
         res += <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(x[i])&amp;<span class="hljs-built_in">int</span>(y[i]))
     <span class="hljs-keyword">return</span> res
 <span class="hljs-comment"># 实现x,y的逐比特或</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">or1</span>(<span class="hljs-params">x, y</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">or1</span>(<span class="hljs-params">x, y</span>):
     res = <span class="hljs-string">&#x27;&#x27;</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(x)):
         res += <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(x[i])|<span class="hljs-built_in">int</span>(y[i]))
     <span class="hljs-keyword">return</span> res
 <span class="hljs-comment"># 实现x,y的逐比特异或</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">xor</span>(<span class="hljs-params">x, y</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">xor</span>(<span class="hljs-params">x, y</span>):
     res = <span class="hljs-string">&#x27;&#x27;</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(x)):
         res += <span class="hljs-built_in">str</span>(<span class="hljs-built_in">int</span>(x[i])^<span class="hljs-built_in">int</span>(y[i]))
     <span class="hljs-keyword">return</span> res
 <span class="hljs-comment"># 实现x的逐比特逻辑反</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reverse</span>(<span class="hljs-params">x</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse</span>(<span class="hljs-params">x</span>):
     res = <span class="hljs-string">&#x27;&#x27;</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(x)):
         res += <span class="hljs-built_in">str</span>((<span class="hljs-built_in">int</span>(x[i], <span class="hljs-number">2</span>) + <span class="hljs-number">1</span>) % <span class="hljs-number">2</span>)
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># 实现x的循环左移</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">shift</span>(<span class="hljs-params">x, i</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">shift</span>(<span class="hljs-params">x, i</span>):
     res = <span class="hljs-string">&#x27;&#x27;</span>
     <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(x) - i):
         res = res + x[t + i:t + i + <span class="hljs-number">1</span>]   <span class="hljs-comment"># 先保存 x[i:]  再保存x[:i]</span>
@@ -1062,7 +1062,7 @@ Ti = []
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># 实现整数模2的三十二次方加法</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">add</span>(<span class="hljs-params">x, y</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">x, y</span>):
     a = <span class="hljs-built_in">int</span>(x,<span class="hljs-number">2</span>)  <span class="hljs-comment">#先将二进制转换成十进制</span>
     b = <span class="hljs-built_in">int</span>(y,<span class="hljs-number">2</span>)
     res = (a + b)%(<span class="hljs-number">2</span>**<span class="hljs-number">32</span>)
@@ -1072,29 +1072,29 @@ Ti = []
     <span class="hljs-keyword">return</span> res
 
 <span class="hljs-comment"># 定义f,g,h,i函数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ffunc</span>(<span class="hljs-params">x, y, z</span>):</span>  <span class="hljs-comment"># ((x&amp;y)|((~x)&amp;z))</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">ffunc</span>(<span class="hljs-params">x, y, z</span>):  <span class="hljs-comment"># ((x&amp;y)|((~x)&amp;z))</span>
     t = and1(x, y)
     t1 = reverse(x)
     t2 = and1(t1, z)
     <span class="hljs-keyword">return</span> or1(t, t2)
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gfunc</span>(<span class="hljs-params">x, y, z</span>):</span>  <span class="hljs-comment"># ((x&amp;z)|(y&amp;(~z)))</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">gfunc</span>(<span class="hljs-params">x, y, z</span>):  <span class="hljs-comment"># ((x&amp;z)|(y&amp;(~z)))</span>
     t = and1(x, z)
     t1 = reverse(z)
     t2 = and1(y, t1)
     <span class="hljs-keyword">return</span> or1(t, t2)
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">hfunc</span>(<span class="hljs-params">x, y, z</span>):</span> <span class="hljs-comment"># (x^y^z)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">hfunc</span>(<span class="hljs-params">x, y, z</span>): <span class="hljs-comment"># (x^y^z)</span>
     t1 = xor(x, y)
     t2 = xor(t1, z)
     <span class="hljs-keyword">return</span> t2
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ifunc</span>(<span class="hljs-params">x, y, z</span>):</span> <span class="hljs-comment"># (y^(x|(~z)))</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">ifunc</span>(<span class="hljs-params">x, y, z</span>): <span class="hljs-comment"># (y^(x|(~z)))</span>
     t = reverse(z)
     t1 = or1(x, t)
     <span class="hljs-keyword">return</span> xor(y, t1)
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">fill</span>(<span class="hljs-params">text</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">fill</span>(<span class="hljs-params">text</span>):
     text1 = <span class="hljs-string">&#x27;&#x27;</span>
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> text:
         t = <span class="hljs-built_in">str</span>(<span class="hljs-built_in">ord</span>(i))
@@ -1116,7 +1116,7 @@ Ti = []
     <span class="hljs-keyword">return</span> text1 + text2
 
 <span class="hljs-comment"># 将最后得到的ABCD逆序输出  最后一步使用</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">reverse_order</span>(<span class="hljs-params">a</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse_order</span>(<span class="hljs-params">a</span>):
     res = a[<span class="hljs-number">24</span>:<span class="hljs-number">32</span>] + a[<span class="hljs-number">16</span>:<span class="hljs-number">24</span>] + a[<span class="hljs-number">8</span>:<span class="hljs-number">16</span>] + a[<span class="hljs-number">0</span>:<span class="hljs-number">8</span>]
     <span class="hljs-keyword">return</span> res
 
@@ -1181,8 +1181,8 @@ ciphertext = reverse_order(A) + reverse_order(B) + reverse_order(C) + reverse_or
 cipher = ciphertext
 ciphertext = <span class="hljs-built_in">str</span>(<span class="hljs-built_in">hex</span>(<span class="hljs-built_in">int</span>(ciphertext, <span class="hljs-number">2</span>))[<span class="hljs-number">2</span>:])   <span class="hljs-comment"># 将二进制数转换为十六进制数</span>
 ciphertext = <span class="hljs-string">&#x27;0&#x27;</span>*(<span class="hljs-number">32</span>-<span class="hljs-built_in">len</span>(ciphertext))+ciphertext <span class="hljs-comment"># 为了避免第一个数字为零时无法显示出来</span>
-print(<span class="hljs-string">&quot;hash值(小写):&quot;</span>,ciphertext)
-print(<span class="hljs-string">&quot;hash值(大写):&quot;</span>,ciphertext.upper())
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;hash值(小写):&quot;</span>,ciphertext)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;hash值(大写):&quot;</span>,ciphertext.upper())
 
 </code></pre></div>
 
@@ -1230,9 +1230,9 @@ client = socket.socket()
 client.connect((<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>,<span class="hljs-number">8888</span>))  <span class="hljs-comment"># 本机地址和端口</span>
 
 data = client.recv(<span class="hljs-number">1024</span>)
-print(<span class="hljs-built_in">str</span>(data, <span class="hljs-string">&quot;utf-8&quot;</span>),end=<span class="hljs-string">&quot;&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-built_in">str</span>(data, <span class="hljs-string">&quot;utf-8&quot;</span>),end=<span class="hljs-string">&quot;&quot;</span>)
 client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
-print(<span class="hljs-string">&quot;等待bob验证自身身份...&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;等待bob验证自身身份...&quot;</span>)
 
 <span class="hljs-comment"># alice送出自己的身份信息和签名值</span>
 client.send(<span class="hljs-built_in">bytes</span>(name,<span class="hljs-string">&#x27;utf-8&#x27;</span>))             <span class="hljs-comment"># alice发送身份明文信息</span>
@@ -1242,9 +1242,9 @@ crpto_name = <span class="hljs-built_in">str</span>(RSAEncode(hash_name, d, n)) 
 crpto_name = <span class="hljs-built_in">bytes</span>(crpto_name,<span class="hljs-string">&#x27;utf-8&#x27;</span>)
 client.send(crpto_name)
 
-print(client.recv(<span class="hljs-number">1024</span>).decode())             <span class="hljs-comment"># 接收身份认证的结果</span>
+<span class="hljs-built_in">print</span>(client.recv(<span class="hljs-number">1024</span>).decode())             <span class="hljs-comment"># 接收身份认证的结果</span>
 <span class="hljs-comment">#接收bob身份hash并验证</span>
-print(<span class="hljs-string">&quot;验证bob身份...&quot;</span>,end=<span class="hljs-string">&quot;&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;验证bob身份...&quot;</span>,end=<span class="hljs-string">&quot;&quot;</span>)
 a=<span class="hljs-built_in">input</span>()
 
 bob_name = client.recv(<span class="hljs-number">512</span>).decode()          <span class="hljs-comment"># bob发送过来的身份明文信息</span>
@@ -1255,8 +1255,8 @@ plain_text = RSADecode(<span class="hljs-built_in">int</span>(hash_name),e,n_bob
 
 client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
 <span class="hljs-keyword">if</span> plain_text == md5(bob_name):          <span class="hljs-comment"># 验证是不是bob</span>
-    print(bob_name)
-    print(<span class="hljs-string">&quot;验证通过!&quot;</span>)
+    <span class="hljs-built_in">print</span>(bob_name)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;验证通过!&quot;</span>)
 <span class="hljs-keyword">else</span>:
     exit(<span class="hljs-string">&quot;验证错误!&quot;</span>)
 
@@ -1265,16 +1265,16 @@ client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
     a = <span class="hljs-built_in">input</span>()
     bin_key = gen_key()         <span class="hljs-comment"># 随机生成64位的 DES加密明文使用的密钥</span>
     int_key = <span class="hljs-built_in">int</span>(bin_key,<span class="hljs-number">2</span>)    <span class="hljs-comment"># 将其转换为十进制数，便于后面使用RSA算法加密</span>
-    print(<span class="hljs-string">&quot;随机产生对称密钥:&quot;</span>,int_key)  <span class="hljs-comment"># 每次传输随机产生一个密钥更加安全</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;随机产生对称密钥:&quot;</span>,int_key)  <span class="hljs-comment"># 每次传输随机产生一个密钥更加安全</span>
 
     plain = read_file()    <span class="hljs-comment"># 读取文件内容</span>
     bin_cipher = DES_encode(plain, bin_key) <span class="hljs-comment"># 使用DES算法加密内容</span>
 
     a = <span class="hljs-built_in">input</span>()
     int_key = fast_mod(int_key,e,n_bob)   <span class="hljs-comment"># 加密DES的密钥 e是bob的公钥</span>
-    print(<span class="hljs-string">&quot;加密对称密钥&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;加密对称密钥&quot;</span>)
 
-    print(<span class="hljs-string">&quot;传输密钥...&quot;</span>)               <span class="hljs-comment"># 传输加密后DES密钥</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;传输密钥...&quot;</span>)               <span class="hljs-comment"># 传输加密后DES密钥</span>
     client.sendall(<span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">str</span>(int_key),<span class="hljs-string">&quot;utf-8&quot;</span>))
     client.recv(<span class="hljs-number">512</span>)
 
@@ -1282,15 +1282,15 @@ client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
     length = <span class="hljs-built_in">bytes</span>(length,<span class="hljs-string">&quot;utf-8&quot;</span>)    <span class="hljs-comment"># 方便其接收</span>
     client.send(length)
 
-    print(<span class="hljs-string">&quot;传输密文...&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;传输密文...&quot;</span>)
     client.sendall(<span class="hljs-built_in">bytes</span>(<span class="hljs-built_in">str</span>(bin_cipher),<span class="hljs-string">&quot;utf-8&quot;</span>)) <span class="hljs-comment">#发送密文</span>
     message = client.recv(<span class="hljs-number">512</span>).decode()
     client.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
     crypt_message = client.recv(<span class="hljs-number">512</span>).decode()
     hash_message = RSADecode(<span class="hljs-built_in">int</span>(crypt_message),e,n_bob)
     <span class="hljs-keyword">if</span> hash_message == md5(message):
-        print(message)
-    print(<span class="hljs-string">&quot;文件传输结束！&quot;</span>)
+        <span class="hljs-built_in">print</span>(message)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;文件传输结束！&quot;</span>)
     <span class="hljs-keyword">break</span>
 client.close()</code></pre></div>
 
@@ -1322,27 +1322,27 @@ server = socket.socket() <span class="hljs-comment">#创建对象</span>
 server.bind((<span class="hljs-string">&quot;localhost&quot;</span>,<span class="hljs-number">8888</span>))<span class="hljs-comment">#绑定 ip和端口</span>
 server.listen()  <span class="hljs-comment">#监听</span>
 <span class="hljs-comment">#等待连接</span>
-print(<span class="hljs-string">&#x27;Waiting connection...&#x27;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Waiting connection...&#x27;</span>)
 <span class="hljs-comment">#接受请求，返回套接字对象和IP+端口号</span>
 con,addr = server.accept()
 con.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-string">&quot;Welcome connect!\n开始加密传输:\n&quot;</span>,<span class="hljs-string">&quot;utf-8&quot;</span>))
 con.recv(<span class="hljs-number">1024</span>)
 
 <span class="hljs-comment"># 验证alice身份</span>
-print(<span class="hljs-string">&quot;验证alice身份...&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;验证alice身份...&quot;</span>)
 a = <span class="hljs-built_in">input</span>()
 alice_name = con.recv(<span class="hljs-number">512</span>).decode()  <span class="hljs-comment"># alice 的明文信息</span>
 con.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
 hash_name = con.recv(<span class="hljs-number">512</span>).decode()   <span class="hljs-comment"># alice 用私钥加密明文的hash值</span>
 plain_text = RSADecode(<span class="hljs-built_in">int</span>(hash_name),e,n_alice) <span class="hljs-comment"># 用alice 的公钥解密出hash值</span>
 <span class="hljs-keyword">if</span> plain_text == md5(alice_name):   <span class="hljs-comment"># 判断上一步的值与md5函数加密是否相同</span>
-    print(alice_name)               <span class="hljs-comment"># 如果二者相同则可以保证对方是alice,这里的安全性是由公钥算法和hash函数保证</span>
-    print(<span class="hljs-string">&quot;验证通过！&quot;</span>)               <span class="hljs-comment"># 因为只有alice有自己的私钥，hash函数的存在防止伪造明文攻击</span>
+    <span class="hljs-built_in">print</span>(alice_name)               <span class="hljs-comment"># 如果二者相同则可以保证对方是alice,这里的安全性是由公钥算法和hash函数保证</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;验证通过！&quot;</span>)               <span class="hljs-comment"># 因为只有alice有自己的私钥，hash函数的存在防止伪造明文攻击</span>
     con.send(<span class="hljs-built_in">bytes</span>(<span class="hljs-string">&quot;您通过了验证!&quot;</span>,<span class="hljs-string">&quot;utf-8&quot;</span>))
 <span class="hljs-keyword">else</span>:
     exit(<span class="hljs-string">&quot;这不是alice,验证错误！&quot;</span>)
 <span class="hljs-comment">#送出自己的身份信息和签名值</span>
-print(<span class="hljs-string">&quot;等待alice验证自身身份...&quot;</span>)
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;等待alice验证自身身份...&quot;</span>)
 
 con.send(<span class="hljs-built_in">bytes</span>(name,<span class="hljs-string">&#x27;utf-8&#x27;</span>))    <span class="hljs-comment"># 向alice发送身份信息的明文</span>
 con.recv(<span class="hljs-number">1024</span>).decode()
@@ -1357,11 +1357,11 @@ con.recv(<span class="hljs-number">1024</span>)
     data = con.recv(<span class="hljs-number">1024</span>)    <span class="hljs-comment"># 接收alice发送的使用公钥算法加密后的DES的密钥</span>
     data = data.decode()
     int_key = <span class="hljs-built_in">int</span>(data)
-    print(<span class="hljs-string">&quot;被加密后的密钥:&quot;</span>,int_key)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;被加密后的密钥:&quot;</span>,int_key)
     int_key = fast_mod(int_key, d, n)  <span class="hljs-comment"># 使用私钥d解密出DES密钥</span>
-    print(<span class="hljs-string">&quot;解密后的密钥&quot;</span>, int_key)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;解密后的密钥&quot;</span>, int_key)
 
-    print(<span class="hljs-string">&quot;----&quot;</span>*<span class="hljs-number">10</span>)         <span class="hljs-comment"># 接收密文的长度（为了方便存储）</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;----&quot;</span>*<span class="hljs-number">10</span>)         <span class="hljs-comment"># 接收密文的长度（为了方便存储）</span>
     con.send(<span class="hljs-string">b&#x27;1&#x27;</span>)
     length = con.recv(<span class="hljs-number">1024</span>)
     length = <span class="hljs-built_in">int</span>(length.decode())
@@ -1376,8 +1376,8 @@ con.recv(<span class="hljs-number">1024</span>)
 
     cipher = bin_to_str(bin_cipher)
     bin_key = <span class="hljs-built_in">bin</span>(int_key)[<span class="hljs-number">2</span>:]      <span class="hljs-comment"># 将密钥转换成二进制数</span>
-    print(<span class="hljs-string">&quot;解密传输内容:&quot;</span>)
-    print(libnum.b2s(DES_decode(cipher, bin_key))) <span class="hljs-comment">#打印出解密后的明文</span>
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;解密传输内容:&quot;</span>)
+    <span class="hljs-built_in">print</span>(libnum.b2s(DES_decode(cipher, bin_key))) <span class="hljs-comment">#打印出解密后的明文</span>
     message = <span class="hljs-string">&quot;Bob received the file successfully!&quot;</span>
     con.send(<span class="hljs-built_in">bytes</span>(message,<span class="hljs-string">&#x27;utf-8&#x27;</span>))
     con.recv(<span class="hljs-number">1024</span>).decode()
@@ -1404,7 +1404,7 @@ server.close()</code></pre></div>
 <span class="hljs-keyword">from</span> DES <span class="hljs-keyword">import</span> *
 <span class="hljs-keyword">from</span> MD5 <span class="hljs-keyword">import</span> *
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">gen_key</span>():</span>  <span class="hljs-comment"># 生成64位的对称加密的密钥</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">gen_key</span>():  <span class="hljs-comment"># 生成64位的对称加密的密钥</span>
     <span class="hljs-built_in">list</span> = []
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">64</span>):
         c = random.choice([<span class="hljs-string">&#x27;0&#x27;</span>, <span class="hljs-string">&#x27;1&#x27;</span>])
@@ -1412,18 +1412,18 @@ server.close()</code></pre></div>
     res = <span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">list</span>)
     <span class="hljs-keyword">return</span> res
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">read_file</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">read_file</span>():
     <span class="hljs-keyword">try</span>:
         f = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;text.txt&#x27;</span>,<span class="hljs-string">&#x27;r&#x27;</span>, encoding = <span class="hljs-string">&#x27;utf-8&#x27;</span>)
         text = f.read()
         f.close()
-        print(<span class="hljs-string">&quot;读取成功!&quot;</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;读取成功!&quot;</span>)
         <span class="hljs-keyword">return</span> text
     <span class="hljs-keyword">except</span> IOError:
-        print(<span class="hljs-string">&quot;读取错误!&quot;</span>)
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;读取错误!&quot;</span>)
 
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">bin_to_str</span>(<span class="hljs-params">bin_str</span>) :</span>   <span class="hljs-comment"># 8位二进制转字符，用于bob收到密后使用</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">bin_to_str</span>(<span class="hljs-params">bin_str</span>) :   <span class="hljs-comment"># 8位二进制转字符，用于bob收到密后使用</span>
     res = <span class="hljs-string">&quot;&quot;</span>
     tmp = re.findall(<span class="hljs-string">r&#x27;.&#123;8&#125;&#x27;</span>,bin_str)
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> tmp :

@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -299,7 +299,7 @@
 	comment = cdit[<span class="hljs-string">&#x27;content&#x27;</span>].replace(<span class="hljs-string">&quot;\n&quot;</span>, <span class="hljs-string">&#x27; &#x27;</span>).replace(<span class="hljs-string">&#x27;\r&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>)
 	comments.append(comment)
 	scores.append(cdit[<span class="hljs-string">&#x27;score&#x27;</span>])
-	print(comment)</code></pre></div>
+	<span class="hljs-built_in">print</span>(comment)</code></pre></div>
 
 <h2 id="数据保存"><a href="#数据保存" class="headerlink" title="数据保存"></a>数据保存</h2><div class="hljs"><pre><code class="hljs python">savepath = <span class="hljs-string">&#x27;./&#x27;</span> + self.categlory + <span class="hljs-string">&#x27;_&#x27;</span> + self.comtype[score] + <span class="hljs-string">&#x27;.csv&#x27;</span>
 logging.warning(<span class="hljs-string">&quot;已爬取%d 条 %s 评价信息&quot;</span> % (<span class="hljs-built_in">len</span>(comments), self.comtype[score]))
@@ -309,9 +309,9 @@ logging.warning(<span class="hljs-string">&quot;已爬取%d 条 %s 评价信息&
 logging.warning(<span class="hljs-string">&quot;数据已保存在 %s&quot;</span> % (savepath))</code></pre></div>
 
 <h1 id="贝叶斯分类"><a href="#贝叶斯分类" class="headerlink" title="贝叶斯分类"></a>贝叶斯分类</h1><blockquote>
-<p>1.加载语料，打乱语料顺序，将语料分为评论和好评/差评<br>2.去除评论中的英文、停用词<br>3.将全部语料按1:4分为测试集与训练集<br>4.使用CountVectorize构造词袋模型<br>5.使用TfidfTransformer计算tf-idf值作为特征                                                                                                                                                6.选择多个分类器进行分类(也可以只用一个，这里只用了多项式)<br>7.选择合适的模型并保存</p>
+<p>1.加载语料，打乱语料顺序，将语料分为评论和好评&#x2F;差评<br>2.去除评论中的英文、停用词<br>3.将全部语料按1:4分为测试集与训练集<br>4.使用CountVectorize构造词袋模型<br>5.使用TfidfTransformer计算tf-idf值作为特征																																				6.选择多个分类器进行分类(也可以只用一个，这里只用了多项式)<br>7.选择合适的模型并保存</p>
 </blockquote>
-<h2 id="加载语料"><a href="#加载语料" class="headerlink" title="加载语料"></a>加载语料</h2><div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_corpus</span>(<span class="hljs-params">file_path_pos,file_path_nag</span>):</span>
+<h2 id="加载语料"><a href="#加载语料" class="headerlink" title="加载语料"></a>加载语料</h2><div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">load_corpus</span>(<span class="hljs-params">file_path_pos,file_path_nag</span>):
     <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path_pos, <span class="hljs-string">&#x27;r&#x27;</span>,encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> f:
         reader = csv.reader(f)
         rows = [row <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> reader]
@@ -337,14 +337,14 @@ logging.warning(<span class="hljs-string">&quot;数据已保存在 %s&quot;</spa
 <p>生成的数据如下</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808144639597.png" srcset="/img/loading.gif" alt="image-20210808144639597"></p>
 <h2 id="去除评论中的英文、停用词"><a href="#去除评论中的英文、停用词" class="headerlink" title="去除评论中的英文、停用词"></a>去除评论中的英文、停用词</h2><p>这一步的目的是方便后面的词频统计</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_stopwords</span>(<span class="hljs-params">file_path</span>):</span>  <span class="hljs-comment"># 加载停顿词</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">load_stopwords</span>(<span class="hljs-params">file_path</span>):  <span class="hljs-comment"># 加载停顿词</span>
     stop_words = []
     <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(file_path, encoding=<span class="hljs-string">&#x27;UTF-8&#x27;</span>) <span class="hljs-keyword">as</span> words:
        stop_words.extend([i.strip() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> words.readlines()])
     <span class="hljs-keyword">return</span> stop_words
 
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">review_to_text</span>(<span class="hljs-params">review</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">review_to_text</span>(<span class="hljs-params">review</span>):
     stop_words = load_stopwords(stopword_path)
     <span class="hljs-comment"># 去除英文</span>
     review = re.sub(<span class="hljs-string">&quot;[^\u4e00-\u9fa5^a-z^A-Z]&quot;</span>, <span class="hljs-string">&#x27;&#x27;</span>, review)
@@ -355,7 +355,7 @@ logging.warning(<span class="hljs-string">&quot;数据已保存在 %s&quot;</spa
     <span class="hljs-keyword">if</span> stop_words:
         all_stop_words = <span class="hljs-built_in">set</span>(stop_words)
         words = [w <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> review <span class="hljs-keyword">if</span> w <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> all_stop_words]
-    print(words[:<span class="hljs-number">4</span>])
+    <span class="hljs-built_in">print</span>(words[:<span class="hljs-number">4</span>])
     <span class="hljs-keyword">return</span> words</code></pre></div>
 
 <p>最后经过处理</p>
@@ -372,8 +372,8 @@ n = <span class="hljs-built_in">len</span>(review_list) // <span class="hljs-num
 train_review_list, train_sentiment_list = review_list[n:], sentiment_list[n:]
 test_review_list, test_sentiment_list = review_list[:n], sentiment_list[:n]
 
-print(<span class="hljs-string">&#x27;训练集数量： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(train_review_list))))
-print(<span class="hljs-string">&#x27;测试集数量： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(test_review_list))))
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;训练集数量： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(train_review_list))))
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;测试集数量： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(<span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(test_review_list))))
 
 <span class="hljs-comment"># 用于训练的评论</span>
 review_train = [<span class="hljs-string">&#x27; &#x27;</span>.join(review_to_text(review)) <span class="hljs-keyword">for</span> review <span class="hljs-keyword">in</span> train_review_list] <span class="hljs-comment"># 将句子中的单词重新拼接，形成无停顿词的句子</span>
@@ -382,7 +382,7 @@ sentiment_train = train_sentiment_list
 
 <span class="hljs-comment"># 用于测试的评论</span>
 review_test = [<span class="hljs-string">&#x27; &#x27;</span>.join(review_to_text(review)) <span class="hljs-keyword">for</span> review <span class="hljs-keyword">in</span> test_review_list]
-print(review_test[:<span class="hljs-number">3</span>])
+<span class="hljs-built_in">print</span>(review_test[:<span class="hljs-number">3</span>])
 <span class="hljs-comment"># 对于测试评论对应的好评/差评</span>
 sentiment_test = test_sentiment_list
 
@@ -403,7 +403,7 @@ clf = MultinomialNB().fit(tfidf, sentiment_train)
     &#125;
     pickle.dump(d, file)
 
-print(<span class="hljs-string">&quot;训练完成&quot;</span>)</code></pre></div>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;训练完成&quot;</span>)</code></pre></div>
 
 
 
@@ -411,7 +411,7 @@ print(<span class="hljs-string">&quot;训练完成&quot;</span>)</code></pre></d
 <div class="hljs"><pre><code class="hljs python">count_vec = CountVectorizer(max_df=<span class="hljs-number">0.8</span>, min_df=<span class="hljs-number">3</span>)
 tfidf_vec = TfidfTransformer()
 <span class="hljs-comment"># 定义Pipeline对全部步骤的流式化封装和管理，可以很方便地使参数集在新数据集（比如测试集）上被重复使用。</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">MNB_Classifier</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">MNB_Classifier</span>():
     <span class="hljs-keyword">return</span> Pipeline([
         (<span class="hljs-string">&#x27;count_vec&#x27;</span>, count_vec),
         (<span class="hljs-string">&#x27;tfidf_vec&#x27;</span>, tfidf_vec),
@@ -421,7 +421,7 @@ mnbc_clf = MNB_Classifier()
 <span class="hljs-comment"># 进行训练</span>
 mnbc_clf.fit(review_train, sentiment_train)
 <span class="hljs-comment"># 测试集准确率</span>
-print(<span class="hljs-string">&#x27;测试集准确率： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(mnbc_clf.score(review_test, sentiment_test)))</code></pre></div>
+<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;测试集准确率： &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(mnbc_clf.score(review_test, sentiment_test)))</code></pre></div>
 
 <p>准确性可以达到88%，是一个不错的结果</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808154411255.png" srcset="/img/loading.gif" alt="image-20210808154411255"></p>
@@ -439,20 +439,20 @@ print(<span class="hljs-string">&#x27;测试集准确率： &#123;&#125;&#x27;</
 <span class="hljs-keyword">import</span> pymysql
 conn = pymysql.connect(host=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>, user=<span class="hljs-string">&#x27;root&#x27;</span>, password=<span class="hljs-string">&#x27;root&#x27;</span>, port=<span class="hljs-number">3306</span>, db=<span class="hljs-string">&#x27;goods&#x27;</span>,
                        charset=<span class="hljs-string">&#x27;utf8mb4&#x27;</span>)
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">createTable</span>():
     sql = <span class="hljs-string">&quot;create table comment(id int primary key auto_increment,comment varchar(800) CHARACTER SET &#x27;utf8&#x27;,type varchar(200) CHARACTER SET &#x27;utf8&#x27;)&quot;</span>
     cur = conn.cursor()
     cur.execute(sql)
     cur.close()
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable1</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">createTable1</span>():
     sql = <span class="hljs-string">&quot;create table user(id int primary key auto_increment,username varchar(80),password varchar(200))&quot;</span>
     cur = conn.cursor()
     cur.execute(sql)
     cur.close()
 
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createTable2</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">createTable2</span>():
     sql = <span class="hljs-string">&quot;create table result(id int primary key auto_increment,comment varchar(800) CHARACTER SET &#x27;utf8&#x27;,type varchar(200) CHARACTER SET &#x27;utf8&#x27;)&quot;</span>
     cur = conn.cursor()
     cur.execute(sql)
@@ -484,7 +484,7 @@ createTable2()
 
 <h2 id="用户注册和登录"><a href="#用户注册和登录" class="headerlink" title="用户注册和登录"></a>用户注册和登录</h2><p>用户的注册和登录逻辑很简单，就是与数据库进行交互</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/addUser&#x27;</span>,methods=[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">addUser</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">addUser</span>():
     get_json = request.get_json()
     name = get_json[<span class="hljs-string">&#x27;name&#x27;</span>]
     password = get_json[<span class="hljs-string">&#x27;password&#x27;</span>]
@@ -500,7 +500,7 @@ createTable2()
     <span class="hljs-keyword">return</span> jsonify(table_result)
 
 <span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/loginByPassword&#x27;</span>,methods=[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">loginByPassword</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">loginByPassword</span>():
     get_json = request.get_json()
     name = get_json[<span class="hljs-string">&#x27;name&#x27;</span>]
     password = get_json[<span class="hljs-string">&#x27;password&#x27;</span>]
@@ -518,25 +518,25 @@ createTable2()
     <span class="hljs-keyword">return</span> jsonify(table_result)</code></pre></div>
 
 <p>用户成功登录后，js脚本会重定向到index.html页面，进入系统主页</p>
-<div class="hljs"><pre><code class="hljs js">form.on(<span class="hljs-string">&#x27;submit(login-submit)&#x27;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) </span>&#123;
-            $.ajax(&#123;
-                type: <span class="hljs-string">&quot;post&quot;</span>,
-                contentType: <span class="hljs-string">&#x27;application/json&#x27;</span>,
-                url: <span class="hljs-string">&quot;http://127.0.0.1:5000/loginByPassword&quot;</span>,
-                data: <span class="hljs-built_in">JSON</span>.stringify(obj.field),
-                dataType: <span class="hljs-string">&#x27;json&#x27;</span>,
-                success: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>&#123;
-                    <span class="hljs-keyword">if</span> (data.code == <span class="hljs-string">&#x27;200&#x27;</span>) &#123;
-                        layer.msg(<span class="hljs-string">&#x27;登录成功&#x27;</span>,
+<div class="hljs"><pre><code class="hljs js">form.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;submit(login-submit)&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params">obj</span>) &#123;
+            $.<span class="hljs-title function_">ajax</span>(&#123;
+                <span class="hljs-attr">type</span>: <span class="hljs-string">&quot;post&quot;</span>,
+                <span class="hljs-attr">contentType</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+                <span class="hljs-attr">url</span>: <span class="hljs-string">&quot;http://127.0.0.1:5000/loginByPassword&quot;</span>,
+                <span class="hljs-attr">data</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(obj.<span class="hljs-property">field</span>),
+                <span class="hljs-attr">dataType</span>: <span class="hljs-string">&#x27;json&#x27;</span>,
+                <span class="hljs-attr">success</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) &#123;
+                    <span class="hljs-keyword">if</span> (data.<span class="hljs-property">code</span> == <span class="hljs-string">&#x27;200&#x27;</span>) &#123;
+                        layer.<span class="hljs-title function_">msg</span>(<span class="hljs-string">&#x27;登录成功&#x27;</span>,
                             &#123;
-                                icon: <span class="hljs-number">1</span>,
-                                time: <span class="hljs-number">1500</span>
-                            &#125;, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;
-                                location.replace(<span class="hljs-string">&#x27;../../index.html&#x27;</span>) <span class="hljs-comment">//重定向到index.html</span>
+                                <span class="hljs-attr">icon</span>: <span class="hljs-number">1</span>,
+                                <span class="hljs-attr">time</span>: <span class="hljs-number">1500</span>
+                            &#125;, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+                                location.<span class="hljs-title function_">replace</span>(<span class="hljs-string">&#x27;../../index.html&#x27;</span>) <span class="hljs-comment">//重定向到index.html</span>
                             &#125;)
                     &#125; <span class="hljs-keyword">else</span> &#123;
-                        layer.alert(data.msg, &#123;<span class="hljs-attr">icon</span>: <span class="hljs-number">2</span>&#125;, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">index</span>) </span>&#123;
-                            layer.close(index);
+                        layer.<span class="hljs-title function_">alert</span>(data.<span class="hljs-property">msg</span>, &#123;<span class="hljs-attr">icon</span>: <span class="hljs-number">2</span>&#125;, <span class="hljs-keyword">function</span> (<span class="hljs-params">index</span>) &#123;
+                            layer.<span class="hljs-title function_">close</span>(index);
                         &#125;);
                     &#125;
                 &#125;
@@ -546,7 +546,7 @@ createTable2()
 
 <h2 id="词云展示"><a href="#词云展示" class="headerlink" title="词云展示"></a>词云展示</h2><p>使用echarts生成词云</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/top&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">top</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">top</span>():
     jsondata = &#123;&#125;
     <span class="hljs-keyword">if</span>(<span class="hljs-built_in">len</span>(request.args)!=<span class="hljs-number">0</span>):
         <span class="hljs-keyword">if</span>(request.args[<span class="hljs-string">&#x27;category&#x27;</span>]==<span class="hljs-string">&#x27;good&#x27;</span>):
@@ -556,7 +556,7 @@ createTable2()
     <span class="hljs-keyword">else</span>:
         jsondata[<span class="hljs-string">&#x27;data&#x27;</span>] = all_datas
     j = jsonify(jsondata)
-    print(j)
+    <span class="hljs-built_in">print</span>(j)
     <span class="hljs-keyword">return</span> j</code></pre></div>
 
 <p>数据获取</p>
@@ -577,50 +577,50 @@ tags = jieba.analyse.extract_tags(content, topK=<span class="hljs-number">100</s
 cursor.close()</code></pre></div>
 
 <p>js脚本</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">init</span>(<span class="hljs-params"></span>) </span>&#123;
-					form.render();
-					$.ajax(&#123;
-						type: <span class="hljs-string">&#x27;GET&#x27;</span>,
-						url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/top&#x27;</span>,
-						beforeSend: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">XMLHttpRequest</span>) </span>&#123;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">init</span>(<span class="hljs-params"></span>) &#123;
+					form.<span class="hljs-title function_">render</span>();
+					$.<span class="hljs-title function_">ajax</span>(&#123;
+						<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;GET&#x27;</span>,
+						<span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://127.0.0.1:5000/top&#x27;</span>,
+						<span class="hljs-attr">beforeSend</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">XMLHttpRequest</span>) &#123;
 							<span class="hljs-comment">//注意，layer.msg默认3秒自动关闭，如果数据加载耗时比较长，需要设置time</span>
-							loadingFlag = layer.msg(<span class="hljs-string">&#x27;正在读取数据，请稍候……&#x27;</span>, &#123;
-								icon: <span class="hljs-number">16</span>,
-								shade: <span class="hljs-number">0.01</span>,
-								shadeClose: <span class="hljs-literal">false</span>,
-								time: <span class="hljs-number">60000</span>
+							loadingFlag = layer.<span class="hljs-title function_">msg</span>(<span class="hljs-string">&#x27;正在读取数据，请稍候……&#x27;</span>, &#123;
+								<span class="hljs-attr">icon</span>: <span class="hljs-number">16</span>,
+								<span class="hljs-attr">shade</span>: <span class="hljs-number">0.01</span>,
+								<span class="hljs-attr">shadeClose</span>: <span class="hljs-literal">false</span>,
+								<span class="hljs-attr">time</span>: <span class="hljs-number">60000</span>
 							&#125;);
 						&#125;,
-						success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>&#123;
-							<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;初始化&#x27;</span>)
-							layer.close(loadingFlag);
-							myCharts2.setOption(&#123;
-								tooltip: &#123;
-									show: <span class="hljs-literal">true</span>
+						<span class="hljs-attr">success</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) &#123;
+							<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;初始化&#x27;</span>)
+							layer.<span class="hljs-title function_">close</span>(loadingFlag);
+							myCharts2.<span class="hljs-title function_">setOption</span>(&#123;
+								<span class="hljs-attr">tooltip</span>: &#123;
+									<span class="hljs-attr">show</span>: <span class="hljs-literal">true</span>
 								&#125;,
-								series: [&#123;
-									type: <span class="hljs-string">&quot;wordCloud&quot;</span>,
-									gridSize: <span class="hljs-number">6</span>,
-									shape: <span class="hljs-string">&#x27;diamond&#x27;</span>,
-									sizeRange: [<span class="hljs-number">12</span>, <span class="hljs-number">50</span>],
-									width: <span class="hljs-number">800</span>,
-									height: <span class="hljs-number">500</span>,
-									textStyle: &#123;
-										normal: &#123;
-											color: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+								<span class="hljs-attr">series</span>: [&#123;
+									<span class="hljs-attr">type</span>: <span class="hljs-string">&quot;wordCloud&quot;</span>,
+									<span class="hljs-attr">gridSize</span>: <span class="hljs-number">6</span>,
+									<span class="hljs-attr">shape</span>: <span class="hljs-string">&#x27;diamond&#x27;</span>,
+									<span class="hljs-attr">sizeRange</span>: [<span class="hljs-number">12</span>, <span class="hljs-number">50</span>],
+									<span class="hljs-attr">width</span>: <span class="hljs-number">800</span>,
+									<span class="hljs-attr">height</span>: <span class="hljs-number">500</span>,
+									<span class="hljs-attr">textStyle</span>: &#123;
+										<span class="hljs-attr">normal</span>: &#123;
+											<span class="hljs-attr">color</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
 												<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;rgb(&#x27;</span> + [
-													<span class="hljs-built_in">Math</span>.round(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">160</span>),
-													<span class="hljs-built_in">Math</span>.round(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">160</span>),
-													<span class="hljs-built_in">Math</span>.round(<span class="hljs-built_in">Math</span>.random() * <span class="hljs-number">160</span>)
-												].join(<span class="hljs-string">&#x27;,&#x27;</span>) + <span class="hljs-string">&#x27;)&#x27;</span>;
+													<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">160</span>),
+													<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">160</span>),
+													<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">round</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * <span class="hljs-number">160</span>)
+												].<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;,&#x27;</span>) + <span class="hljs-string">&#x27;)&#x27;</span>;
 											&#125;
 										&#125;,
-										emphasis: &#123;
-											shadowBlur: <span class="hljs-number">10</span>,
-											shadowColor: <span class="hljs-string">&#x27;#333&#x27;</span>
+										<span class="hljs-attr">emphasis</span>: &#123;
+											<span class="hljs-attr">shadowBlur</span>: <span class="hljs-number">10</span>,
+											<span class="hljs-attr">shadowColor</span>: <span class="hljs-string">&#x27;#333&#x27;</span>
 										&#125;
 									&#125;,
-									data: res.data,
+									<span class="hljs-attr">data</span>: res.<span class="hljs-property">data</span>,
 								&#125;]
 							&#125;);</code></pre></div>
 
@@ -631,7 +631,7 @@ cursor.close()</code></pre></div>
 <h2 id="评论检测"><a href="#评论检测" class="headerlink" title="评论检测"></a>评论检测</h2><p>当用户输入检测文本，系统会调用训练好的模型对文本进行情感分析，并将得到的结果写入数据库，之后在页面中显示</p>
 <p>python代码</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/data1&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">data1</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">data1</span>():
     path = <span class="hljs-built_in">str</span>(request.args[<span class="hljs-string">&#x27;path&#x27;</span>])
     data = []
     <span class="hljs-keyword">if</span>(<span class="hljs-built_in">len</span>(path)==<span class="hljs-number">0</span>):
@@ -648,7 +648,7 @@ cursor.close()</code></pre></div>
     <span class="hljs-keyword">return</span> jsonify(table_result)
 
 <span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/ksh&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">ksh</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">ksh</span>():
     path = <span class="hljs-built_in">str</span>(request.args[<span class="hljs-string">&#x27;path&#x27;</span>])
     good = <span class="hljs-number">0</span>
     bad = <span class="hljs-number">0</span>
@@ -669,31 +669,31 @@ cursor.close()</code></pre></div>
 </code></pre></div>
 
 <p>js脚本</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">var</span> insTb = table.render(&#123;
-	elem: <span class="hljs-string">&#x27;#tableUser&#x27;</span>,
-	url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/data&#x27;</span>,
-	height: <span class="hljs-string">&#x27;full-250&#x27;</span>,
-	page: <span class="hljs-literal">true</span>,
-	toolbar: <span class="hljs-literal">true</span>,
-	cellMinWidth: <span class="hljs-number">100</span>,
-	cols: [
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">var</span> insTb = table.<span class="hljs-title function_">render</span>(&#123;
+	<span class="hljs-attr">elem</span>: <span class="hljs-string">&#x27;#tableUser&#x27;</span>,
+	<span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://127.0.0.1:5000/data&#x27;</span>,
+	<span class="hljs-attr">height</span>: <span class="hljs-string">&#x27;full-250&#x27;</span>,
+	<span class="hljs-attr">page</span>: <span class="hljs-literal">true</span>,
+	<span class="hljs-attr">toolbar</span>: <span class="hljs-literal">true</span>,
+	<span class="hljs-attr">cellMinWidth</span>: <span class="hljs-number">100</span>,
+	<span class="hljs-attr">cols</span>: [
 		[&#123;
-				type: <span class="hljs-string">&#x27;numbers&#x27;</span>,
-				title: <span class="hljs-string">&#x27;#&#x27;</span>
+				<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;numbers&#x27;</span>,
+				<span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;#&#x27;</span>
 			&#125;,
 
 			&#123;
-				field: <span class="hljs-string">&#x27;content&#x27;</span>,
-				sort: <span class="hljs-literal">true</span>,
-				title: <span class="hljs-string">&#x27;内容&#x27;</span>
+				<span class="hljs-attr">field</span>: <span class="hljs-string">&#x27;content&#x27;</span>,
+				<span class="hljs-attr">sort</span>: <span class="hljs-literal">true</span>,
+				<span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;内容&#x27;</span>
 			&#125;,
 			&#123;
-				field: <span class="hljs-string">&#x27;type&#x27;</span>,
-				sort: <span class="hljs-literal">true</span>,
-				title: <span class="hljs-string">&#x27;分类&#x27;</span>,
-				width:<span class="hljs-number">200</span>,
-				templet: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>)</span>&#123;
-					<span class="hljs-keyword">if</span>(d.TYPE == <span class="hljs-number">1</span>)&#123;
+				<span class="hljs-attr">field</span>: <span class="hljs-string">&#x27;type&#x27;</span>,
+				<span class="hljs-attr">sort</span>: <span class="hljs-literal">true</span>,
+				<span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;分类&#x27;</span>,
+				<span class="hljs-attr">width</span>:<span class="hljs-number">200</span>,
+				<span class="hljs-attr">templet</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>)&#123;
+					<span class="hljs-keyword">if</span>(d.<span class="hljs-property">TYPE</span> == <span class="hljs-number">1</span>)&#123;
 						<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;好评&#x27;</span>
 					&#125;<span class="hljs-keyword">else</span>&#123;
 						<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;差评&#x27;</span>
@@ -707,7 +707,7 @@ cursor.close()</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210808175218340.png" srcset="/img/loading.gif" alt="image-20210808175218340"></p>
 <h2 id="批量检测"><a href="#批量检测" class="headerlink" title="批量检测"></a>批量检测</h2><p>批量检测是将多条评论写入txt文件中，实现一次检测多条评论，然后将数据显示在页面中，并呈现可视化结果</p>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&#x27;/data&#x27;</span>,methods=[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">data</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">data</span>():
     limit = <span class="hljs-built_in">int</span>(request.args[<span class="hljs-string">&#x27;limit&#x27;</span>])
     page = <span class="hljs-built_in">int</span>(request.args[<span class="hljs-string">&#x27;page&#x27;</span>])
     page = (page-<span class="hljs-number">1</span>)*limit
@@ -728,66 +728,66 @@ cursor.close()</code></pre></div>
     <span class="hljs-keyword">return</span> jsonify(table_result)</code></pre></div>
 
 <p>js脚本</p>
-<div class="hljs"><pre><code class="hljs js">upload.render(&#123; <span class="hljs-comment">//允许上传的文件后缀</span>
-					elem: <span class="hljs-string">&#x27;#test_upload&#x27;</span>,
-					url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/upload&#x27;</span>,
-					field: <span class="hljs-string">&#x27;myfile&#x27;</span>,
-					accept: <span class="hljs-string">&#x27;file&#x27;</span>, <span class="hljs-comment">//普通文件		</span>
-					exts: <span class="hljs-string">&#x27;txt&#x27;</span>, <span class="hljs-comment">//只允许上传txt文件	</span>
-					before: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>) </span>&#123; <span class="hljs-comment">//obj参数包含的信息，跟 choose回调完全一致，可参见上文。</span>
-						layer.load(); <span class="hljs-comment">//上传loading</span>
+<div class="hljs"><pre><code class="hljs js">upload.<span class="hljs-title function_">render</span>(&#123; <span class="hljs-comment">//允许上传的文件后缀</span>
+					<span class="hljs-attr">elem</span>: <span class="hljs-string">&#x27;#test_upload&#x27;</span>,
+					<span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://127.0.0.1:5000/upload&#x27;</span>,
+					<span class="hljs-attr">field</span>: <span class="hljs-string">&#x27;myfile&#x27;</span>,
+					<span class="hljs-attr">accept</span>: <span class="hljs-string">&#x27;file&#x27;</span>, <span class="hljs-comment">//普通文件		</span>
+					<span class="hljs-attr">exts</span>: <span class="hljs-string">&#x27;txt&#x27;</span>, <span class="hljs-comment">//只允许上传txt文件	</span>
+					<span class="hljs-attr">before</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>) &#123; <span class="hljs-comment">//obj参数包含的信息，跟 choose回调完全一致，可参见上文。</span>
+						layer.<span class="hljs-title function_">load</span>(); <span class="hljs-comment">//上传loading</span>
 					&#125;,
-					done: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>&#123;
-						layer.closeAll(<span class="hljs-string">&#x27;loading&#x27;</span>);
-						layer.msg(<span class="hljs-string">&#x27;上传成功&#x27;</span>);
-						<span class="hljs-built_in">console</span>.log(res)
-						path = res.path
-						insTb.reload(&#123;
-							where: &#123;
+					<span class="hljs-attr">done</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) &#123;
+						layer.<span class="hljs-title function_">closeAll</span>(<span class="hljs-string">&#x27;loading&#x27;</span>);
+						layer.<span class="hljs-title function_">msg</span>(<span class="hljs-string">&#x27;上传成功&#x27;</span>);
+						<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res)
+						path = res.<span class="hljs-property">path</span>
+						insTb.<span class="hljs-title function_">reload</span>(&#123;
+							<span class="hljs-attr">where</span>: &#123;
 								<span class="hljs-string">&#x27;path&#x27;</span>: path
 							&#125;
 						&#125;);
-						$.ajax(&#123;
-							type: <span class="hljs-string">&#x27;GET&#x27;</span>,
-							url: <span class="hljs-string">&#x27;http://127.0.0.1:5000/ksh&#x27;</span>,
-							data: &#123;
+						$.<span class="hljs-title function_">ajax</span>(&#123;
+							<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;GET&#x27;</span>,
+							<span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://127.0.0.1:5000/ksh&#x27;</span>,
+							<span class="hljs-attr">data</span>: &#123;
 								<span class="hljs-string">&#x27;path&#x27;</span>: path
 							&#125;,
-							success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) </span>&#123;
+							<span class="hljs-attr">success</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">result</span>) &#123;
 								<span class="hljs-keyword">var</span> option = &#123;
-									tooltip: &#123;
-										trigger: <span class="hljs-string">&#x27;item&#x27;</span>,
-										formatter: <span class="hljs-string">&#x27;&#123;a&#125; &lt;br/&gt;&#123;b&#125; : &#123;c&#125; (&#123;d&#125;%)&#x27;</span>
+									<span class="hljs-attr">tooltip</span>: &#123;
+										<span class="hljs-attr">trigger</span>: <span class="hljs-string">&#x27;item&#x27;</span>,
+										<span class="hljs-attr">formatter</span>: <span class="hljs-string">&#x27;&#123;a&#125; &lt;br/&gt;&#123;b&#125; : &#123;c&#125; (&#123;d&#125;%)&#x27;</span>
 									&#125;,
-									legend: &#123;
-										orient: <span class="hljs-string">&#x27;vertical&#x27;</span>,
-										left: <span class="hljs-string">&#x27;left&#x27;</span>,
-										data: [<span class="hljs-string">&#x27;有效评论&#x27;</span>, <span class="hljs-string">&#x27;垃圾评论&#x27;</span>]
+									<span class="hljs-attr">legend</span>: &#123;
+										<span class="hljs-attr">orient</span>: <span class="hljs-string">&#x27;vertical&#x27;</span>,
+										<span class="hljs-attr">left</span>: <span class="hljs-string">&#x27;left&#x27;</span>,
+										<span class="hljs-attr">data</span>: [<span class="hljs-string">&#x27;有效评论&#x27;</span>, <span class="hljs-string">&#x27;垃圾评论&#x27;</span>]
 									&#125;,
-									series: [&#123;
-										name: <span class="hljs-string">&#x27;评论比例&#x27;</span>,
-										type: <span class="hljs-string">&#x27;pie&#x27;</span>,
-										radius: <span class="hljs-string">&#x27;55%&#x27;</span>,
-										center: [<span class="hljs-string">&#x27;50%&#x27;</span>, <span class="hljs-string">&#x27;60%&#x27;</span>],
-										data: [&#123;
-												value: result.good,
-												name: <span class="hljs-string">&#x27;有效评论&#x27;</span>
+									<span class="hljs-attr">series</span>: [&#123;
+										<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;评论比例&#x27;</span>,
+										<span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;pie&#x27;</span>,
+										<span class="hljs-attr">radius</span>: <span class="hljs-string">&#x27;55%&#x27;</span>,
+										<span class="hljs-attr">center</span>: [<span class="hljs-string">&#x27;50%&#x27;</span>, <span class="hljs-string">&#x27;60%&#x27;</span>],
+										<span class="hljs-attr">data</span>: [&#123;
+												<span class="hljs-attr">value</span>: result.<span class="hljs-property">good</span>,
+												<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;有效评论&#x27;</span>
 											&#125;,
 											&#123;
-												value: result.bad,
-												name: <span class="hljs-string">&#x27;垃圾评论&#x27;</span>
+												<span class="hljs-attr">value</span>: result.<span class="hljs-property">bad</span>,
+												<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;垃圾评论&#x27;</span>
 											&#125;
 										],
-										emphasis: &#123;
-											itemStyle: &#123;
-												shadowBlur: <span class="hljs-number">10</span>,
-												shadowOffsetX: <span class="hljs-number">0</span>,
-												shadowColor: <span class="hljs-string">&#x27;rgba(0, 0, 0, 0.5)&#x27;</span>
+										<span class="hljs-attr">emphasis</span>: &#123;
+											<span class="hljs-attr">itemStyle</span>: &#123;
+												<span class="hljs-attr">shadowBlur</span>: <span class="hljs-number">10</span>,
+												<span class="hljs-attr">shadowOffsetX</span>: <span class="hljs-number">0</span>,
+												<span class="hljs-attr">shadowColor</span>: <span class="hljs-string">&#x27;rgba(0, 0, 0, 0.5)&#x27;</span>
 											&#125;
 										&#125;
 									&#125;]
 								&#125;;
-								myCharts.setOption(option)
+								myCharts.<span class="hljs-title function_">setOption</span>(option)
 							&#125;
 						&#125;);</code></pre></div>
 

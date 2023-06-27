@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      157
+      158
        分钟
     </span>
   
@@ -348,10 +348,10 @@
        (<span class="hljs-string">&#x27;京东&#x27;</span>, <span class="hljs-string">&#x27;北京京东世纪贸易有限公司&#x27;</span>, <span class="hljs-number">40</span>, <span class="hljs-string">&#x27;就是快&#x27;</span>, <span class="hljs-number">1</span>);</code></pre></div>
 
 <h4 id="2-3-配置信息"><a href="#2-3-配置信息" class="headerlink" title="2.3 配置信息"></a>2.3 配置信息</h4><h5 id="mybatis"><a href="#mybatis" class="headerlink" title="mybatis"></a>mybatis</h5><p>将mybatis的配置文件<code>mybatis-config.xml</code>copy到<code>src/main/resource</code>目录下</p>
-<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>
-<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">configuration</span></span>
-<span class="hljs-meta">        <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span></span>
-<span class="hljs-meta">        <span class="hljs-meta-string">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;</span>&gt;</span>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> ?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">configuration</span></span>
+<span class="hljs-meta">        <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//mybatis.org//DTD Config 3.0//EN&quot;</span></span>
+<span class="hljs-meta">        <span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
 
     <span class="hljs-tag">&lt;<span class="hljs-name">typeAliases</span>&gt;</span>
@@ -378,7 +378,7 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
 
 <h5 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h5><p><code>pom.xml</code></p>
-<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span></span>
 <span class="hljs-tag">         <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span>
 <span class="hljs-tag">         <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span>
@@ -491,7 +491,7 @@
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Select(&quot;select * from tb_brand&quot;)</span>
 <span class="hljs-meta">@ResultMap(&quot;brandResultMap&quot;)</span>
-<span class="hljs-function">List&lt;Brand&gt; <span class="hljs-title">selectAll</span><span class="hljs-params">()</span></span>;</code></pre></div>
+List&lt;Brand&gt; <span class="hljs-title function_">selectAll</span><span class="hljs-params">()</span>;</code></pre></div>
 
 <p>由于表中有些字段名和实体类中的属性名没有对应，所以需要在 <code>com/itheima/mapper/BrandMapper.xml</code> 映射配置文件中定义结果映射 ，使用<code>resultMap</code> 标签。映射配置文件内容如下：</p>
 <div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;brandResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;brand&quot;</span>&gt;</span>
@@ -502,16 +502,16 @@
 <h5 id="service"><a href="#service" class="headerlink" title="service"></a>service</h5><p>在<code>com.itheima.mapper</code>中创建<code>BrandService</code>类</p>
 <div class="hljs"><pre><code class="hljs java">   <span class="hljs-comment">// 获取sqlSessionFactory</span>
 <span class="hljs-comment">// 该类 存放在util包中，封装后方便使用</span>
-   SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+   <span class="hljs-type">SqlSessionFactory</span> <span class="hljs-variable">sqlSessionFactory</span> <span class="hljs-operator">=</span> SqlSessionFactoryUtils.getSqlSessionFactory();
 
    <span class="hljs-comment">/**</span>
 <span class="hljs-comment">    * 查询所有</span>
 <span class="hljs-comment">    * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment">    */</span>
-   <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Brand&gt; <span class="hljs-title">selectAll</span><span class="hljs-params">()</span></span>&#123;
-       SqlSession sqlSession = sqlSessionFactory.openSession();
+   <span class="hljs-keyword">public</span> List&lt;Brand&gt; <span class="hljs-title function_">selectAll</span><span class="hljs-params">()</span>&#123;
+       <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
        <span class="hljs-comment">// 获取 BrandMapper</span>
-       BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+       <span class="hljs-type">BrandMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(BrandMapper.class);
 	<span class="hljs-comment">// 调用方法</span>
        List&lt;Brand&gt; brands = mapper.selectAll();
        sqlSession.close();
@@ -534,16 +534,16 @@
 <span class="hljs-keyword">import</span> java.util.List;
 
 <span class="hljs-meta">@WebServlet(value = &quot;/selectAllServlet&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SelectAllServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SelectAllServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
     <span class="hljs-comment">// 创建BrandService</span>
-    <span class="hljs-keyword">private</span> BrandService service = <span class="hljs-keyword">new</span> BrandService();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">BrandService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BrandService</span>();
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
 		<span class="hljs-comment">// 调用BrandService中的selectAll方法</span>
         List&lt;Brand&gt; brandList = service.selectAll();
         <span class="hljs-comment">// 将brand对象转换为json字符串</span>
-        String string = JSON.toJSONString(brandList);
+        <span class="hljs-type">String</span> <span class="hljs-variable">string</span> <span class="hljs-operator">=</span> JSON.toJSONString(brandList);
 		<span class="hljs-comment">// 设置响应数据类型为json</span>
         response.setContentType(<span class="hljs-string">&quot;text/json;charset=utf-8&quot;</span>);
         <span class="hljs-comment">//响应数据</span>
@@ -551,7 +551,7 @@
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         doGet(request, response);
     &#125;
 &#125;
@@ -562,28 +562,28 @@
 <h4 id="前端实现"><a href="#前端实现" class="headerlink" title="前端实现"></a>前端实现</h4><p>前端需要在页面加载完毕后发送 ajax 请求，所以发送请求的逻辑应该放在 <code>mounted()</code> 钩子函数中。而响应回来的数据需要赋值给表格绑定的数据模型，从代码中可以看出表格绑定的数据模型是 <code>brandlist</code></p>
 <div class="hljs"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!--表格--&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span>
-    &lt;el-table
-            :data=&quot;brandlist&quot;
-            style=&quot;width: 100%&quot;
-            :row-class-name=&quot;tableRowClassName&quot;
-            @selection-change=&quot;handleSelectionChange&quot;
-    &gt;</code></pre></div>
+    <span class="hljs-tag">&lt;<span class="hljs-name">el-table</span></span>
+<span class="hljs-tag">            <span class="hljs-attr">:data</span>=<span class="hljs-string">&quot;brandlist&quot;</span></span>
+<span class="hljs-tag">            <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 100%&quot;</span></span>
+<span class="hljs-tag">            <span class="hljs-attr">:row-class-name</span>=<span class="hljs-string">&quot;tableRowClassName&quot;</span></span>
+<span class="hljs-tag">            @<span class="hljs-attr">selection-change</span>=<span class="hljs-string">&quot;handleSelectionChange&quot;</span></span>
+<span class="hljs-tag">    &gt;</span></code></pre></div>
 
 <p>ajax请求为</p>
-<div class="hljs"><pre><code class="hljs javascript">methods:&#123;
-	<span class="hljs-function"><span class="hljs-title">selectAll</span>(<span class="hljs-params"></span>)</span>&#123;
-            <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
-                axios(&#123;
-                    method: <span class="hljs-string">&#x27;GET&#x27;</span>,
-                    url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/selectAll&#x27;</span>
-                &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
-                    <span class="hljs-keyword">var</span> brandlist = response.data;
-                    _this.brandlist = brandlist;
+<div class="hljs"><pre><code class="hljs javascript"><span class="hljs-attr">methods</span>:&#123;
+	<span class="hljs-title function_">selectAll</span>(<span class="hljs-params"></span>)&#123;
+            <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
+                <span class="hljs-title function_">axios</span>(&#123;
+                    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;GET&#x27;</span>,
+                    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/selectAll&#x27;</span>
+                &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)&#123;
+                    <span class="hljs-keyword">var</span> brandlist = response.<span class="hljs-property">data</span>;
+                    _this.<span class="hljs-property">brandlist</span> = brandlist;
                 &#125;)
         &#125;
     &#125;
-<span class="hljs-function"><span class="hljs-title">mounted</span>(<span class="hljs-params"></span>)</span>&#123;
-    <span class="hljs-built_in">this</span>.selectAll;
+<span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>)&#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">selectAll</span>;
 &#125;
 </code></pre></div>
 
@@ -598,16 +598,16 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Insert(&quot;insert into tb_brand values (null, #&#123;brandName&#125;, #&#123;companyName&#125;, #&#123;ordered&#125;,#&#123;description&#125;, #&#123;status&#125;)&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addBrand</span><span class="hljs-params">(Brand brand)</span></span>;</code></pre></div>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">addBrand</span><span class="hljs-params">(Brand brand)</span>;</code></pre></div>
 
 <h5 id="service-1"><a href="#service-1" class="headerlink" title="service"></a>service</h5><p>在BrandService中实现addBrand()业务逻辑方法</p>
 <div class="hljs"><pre><code class="hljs java">  <span class="hljs-comment">/**</span>
 <span class="hljs-comment">   * 添加</span>
 <span class="hljs-comment">   * <span class="hljs-doctag">@param</span> brand</span>
 <span class="hljs-comment">   */</span>
-  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addBrand</span><span class="hljs-params">(Brand brand)</span></span>&#123;
-      SqlSession sqlSession = sqlSessionFactory.openSession();
-      BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addBrand</span><span class="hljs-params">(Brand brand)</span>&#123;
+      <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+      <span class="hljs-type">BrandMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(BrandMapper.class);
 
       mapper.addBrand(brand);
 <span class="hljs-comment">// 对数据库的增删改 记得提交事务</span>
@@ -632,17 +632,17 @@
 <span class="hljs-keyword">import</span> java.util.List;
 
 <span class="hljs-meta">@WebServlet(value = &quot;/addServlet&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
-    <span class="hljs-keyword">private</span> BrandService service = <span class="hljs-keyword">new</span> BrandService();
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AddServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">BrandService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BrandService</span>();
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         <span class="hljs-comment">// getParamter无法获取json数据</span>
-        BufferedReader reader = request.getReader();
-        String line = reader.readLine();
+        <span class="hljs-type">BufferedReader</span> <span class="hljs-variable">reader</span> <span class="hljs-operator">=</span> request.getReader();
+        <span class="hljs-type">String</span> <span class="hljs-variable">line</span> <span class="hljs-operator">=</span> reader.readLine();
         System.out.println(line);
         <span class="hljs-comment">// 将json数据转换为Brand对象</span>
-        Brand brand = JSON.parseObject(line, Brand.class);
+        <span class="hljs-type">Brand</span> <span class="hljs-variable">brand</span> <span class="hljs-operator">=</span> JSON.parseObject(line, Brand.class);
         System.out.println(brand);
         service.addBrand(brand);
 
@@ -651,7 +651,7 @@
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         doGet(request, response);
     &#125;
 &#125;</code></pre></div>
@@ -660,7 +660,7 @@
 <p>初始时该对话框为隐藏状态，其状态有<code>dialogVisible</code>控制，默认情况下为false</p>
 <div class="hljs"><pre><code class="hljs js">&lt;el-dialog
         title=<span class="hljs-string">&quot;添加品牌&quot;</span>
-        :visible.sync=<span class="hljs-string">&quot;dialogVisible&quot;</span>
+        :visible.<span class="hljs-property">sync</span>=<span class="hljs-string">&quot;dialogVisible&quot;</span>
         width=<span class="hljs-string">&quot;30%&quot;</span>
         &gt;</code></pre></div>
 
@@ -668,17 +668,17 @@
 <div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> <span class="hljs-attr">plain</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;dialogVisible = true&quot;</span>&gt;</span>新增<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></code></pre></div>
 
 <h5 id="提交数据"><a href="#提交数据" class="headerlink" title="提交数据"></a>提交数据</h5><p>对话框实际上是一个form表单，该表单数据与<code>brand</code>模型绑定，所以请求后端时提交brand即可</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">new</span> Vue(&#123;
-	<span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span>&#123;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;
+	<span class="hljs-title function_">data</span>(<span class="hljs-params"></span>)&#123;
 	<span class="hljs-keyword">return</span> &#123;
 		<span class="hljs-comment">// 品牌模型数据</span>
-         brand: &#123;
-                    status: <span class="hljs-string">&#x27;&#x27;</span>,
-                    brandName: <span class="hljs-string">&#x27;&#x27;</span>,
-                    companyName: <span class="hljs-string">&#x27;&#x27;</span>,
-                    id:<span class="hljs-string">&quot;&quot;</span>,
-                    ordered:<span class="hljs-string">&quot;&quot;</span>,
-                    description:<span class="hljs-string">&quot;&quot;</span>
+         <span class="hljs-attr">brand</span>: &#123;
+                    <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+                    <span class="hljs-attr">brandName</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+                    <span class="hljs-attr">companyName</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+                    <span class="hljs-attr">id</span>:<span class="hljs-string">&quot;&quot;</span>,
+                    <span class="hljs-attr">ordered</span>:<span class="hljs-string">&quot;&quot;</span>,
+                    <span class="hljs-attr">description</span>:<span class="hljs-string">&quot;&quot;</span>
                 &#125;,
 	&#125;
 	&#125;
@@ -691,97 +691,97 @@
 
 <p><code>addBrand</code></p>
 <div class="hljs"><pre><code class="hljs js"><span class="hljs-comment">// 添加数据</span>
-            <span class="hljs-function"><span class="hljs-title">addBrand</span>(<span class="hljs-params"></span>)</span>&#123;
-                <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
-                <span class="hljs-built_in">this</span>.currentPage=<span class="hljs-number">1</span>
-                axios(&#123;
-                    method: <span class="hljs-string">&#x27;post&#x27;</span>,
-                    url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/add&#x27;</span>,
-                    data: brand = _this.brand
-                &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
-                    <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+            <span class="hljs-title function_">addBrand</span>(<span class="hljs-params"></span>)&#123;
+                <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">currentPage</span>=<span class="hljs-number">1</span>
+                <span class="hljs-title function_">axios</span>(&#123;
+                    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;post&#x27;</span>,
+                    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/add&#x27;</span>,
+                    <span class="hljs-attr">data</span>: brand = _this.<span class="hljs-property">brand</span>
+                &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)&#123;
+                    <span class="hljs-keyword">if</span>(response.<span class="hljs-property">data</span> == <span class="hljs-string">&quot;success&quot;</span>)&#123;
                     	<span class="hljs-comment">// 隐藏对话框</span>
-                        _this.dialogVisible = <span class="hljs-literal">false</span>;
+                        _this.<span class="hljs-property">dialogVisible</span> = <span class="hljs-literal">false</span>;
                         <span class="hljs-comment">// 重新加载全部数据</span>
-                        _this.selectAll();
-                        _this.msgbox(<span class="hljs-string">&quot;添加成功！&quot;</span>);
+                        _this.<span class="hljs-title function_">selectAll</span>();
+                        _this.<span class="hljs-title function_">msgbox</span>(<span class="hljs-string">&quot;添加成功！&quot;</span>);
                     &#125;
                 &#125;)
             &#125;</code></pre></div>
 
 
 
-<h3 id="Servlet优化"><a href="#Servlet优化" class="headerlink" title="Servlet优化"></a>Servlet优化</h3><p>===Web 层的 Servlet 个数太多了，不利于管理和编写===</p>
+<h3 id="Servlet优化"><a href="#Servlet优化" class="headerlink" title="Servlet优化"></a>Servlet优化</h3><p>&#x3D;&#x3D;&#x3D;Web 层的 Servlet 个数太多了，不利于管理和编写&#x3D;&#x3D;&#x3D;</p>
 <p>通过之前的两个功能，我们发现每一个功能都需要定义一个 <code>servlet</code>，一个模块需要实现增删改查功能，就需要4个 <code>servlet</code>，模块一多就会造成<code>servlet</code> 泛滥。此时我们就想 <code>servlet</code> 能不能像 <code>service</code> 一样，一个模块只定义一个 <code>servlet</code>，而每一个功能只需要在该 <code>servlet</code> 中定义对应的方法。例如下面代码：</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@WebServlet(&quot;/brand/*&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BrandServlet</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BrandServlet</span> &#123;
     <span class="hljs-comment">//查询所有</span>
-	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectAll</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">selectAll</span><span class="hljs-params">(...)</span> &#123;&#125;
     
     <span class="hljs-comment">//添加数据</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(...)</span> &#123;&#125;
     
      <span class="hljs-comment">//修改数据</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(...)</span> &#123;&#125;
     
     <span class="hljs-comment">//删除删除</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(...)</span> &#123;&#125;
 &#125;</code></pre></div>
 
 <p>而我们知道发送请求 <code>servlet</code>，<code>tomcat</code> 会自动的调用 <code>service()</code> 方法，之前我们在自定义的 <code>servlet</code> 中重写 <code>doGet()</code> 方法和 <code>doPost()</code> 方法，当我们访问该 <code>servlet</code> 时会根据请求方式将请求分发给 <code>doGet()</code> 或者 <code>doPost()</code>  方法</p>
 <img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210826184103210.png" srcset="/img/loading.gif" alt="image-20210826184103210" style="zoom:80%;">
 
 <p>那么我们也可以仿照这样请求分发的思想，在 <code>service()</code> 方法中根据具体的操作调用对应的方法，如：查询所有就调用 <code>selectAll()</code> 方法，添加企业信息就调用 <code>add()</code> 方法。</p>
-<p>为了做到通用，我们定义一个通用的 <code>servlet</code> 类，在定义其他的 <code>servlet</code> 是不需要继承 <code>HttpServlet</code>，而继承我们定义的 <code>BaseServlet</code>，在<code>BaseServlet</code> 中调用具体 <code>servlet</code>（如<code>BrandServlet</code>）中的对应方法。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+<p>为了做到通用，我们定义一个通用的 <code>servlet</code> 类，在定义其他的 <code>servlet</code> 是不需要继承 <code>HttpServlet</code>，而继承我们定义的 <code>BaseServlet</code>，在<code> BaseServlet</code> 中调用具体 <code>servlet</code>（如<code>BrandServlet</code>）中的对应方法。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         <span class="hljs-comment">//进行请求的分发</span>
     &#125;
 &#125;</code></pre></div>
 
 <p><code>BrandServlet</code> 定义就需要修改为如下：</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@WebServlet(&quot;/brand/*&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BrandServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseServlet</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BrandServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseServlet</span> &#123;
     <span class="hljs-comment">//用户实现分页查询</span>
-	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectAll</span><span class="hljs-params">(...)</span> </span>&#123;&#125; 
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">selectAll</span><span class="hljs-params">(...)</span> &#123;&#125; 
     
     <span class="hljs-comment">//添加企业信息</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(...)</span> &#123;&#125;
     
     <span class="hljs-comment">//修改企业信息</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(...)</span> &#123;&#125;
     
     <span class="hljs-comment">//删除企业信息</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(...)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(...)</span> &#123;&#125;
 &#125;</code></pre></div>
 
 <p>那么如何在 <code>BaseServlet</code> 中调用对应的方法呢？比如查询所有就调用 <code>selectAll()</code> 方法。</p>
-<p>可以==规定在发送请求时，请求资源的二级路径（/brandServlet/selectAll）和需要调用的方法名相同==，如：</p>
+<p>可以&#x3D;&#x3D;规定在发送请求时，请求资源的二级路径（&#x2F;brandServlet&#x2F;selectAll）和需要调用的方法名相同&#x3D;&#x3D;，如：</p>
 <p>查询所有数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/selectAll</code></p>
 <p>添加数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/add</code></p>
 <p>修改数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/update</code></p>
 <p>删除数据的路径以后就需要写成： <code>http://localhost:8080/brand-case/brandServlet/delete</code></p>
 <p>这样的话，在 <code>BaseServlet</code> 中就需要获取到资源的二级路径作为方法名，然后调用该方法</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         <span class="hljs-comment">//1. 获取请求路径</span>
-        String uri = req.getRequestURI(); <span class="hljs-comment">// 例如路径为：/brand-case/brand/selectAll</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">uri</span> <span class="hljs-operator">=</span> req.getRequestURI(); <span class="hljs-comment">// 例如路径为：/brand-case/brand/selectAll</span>
         <span class="hljs-comment">//2. 获取最后一段路径，方法名</span>
-        <span class="hljs-keyword">int</span> index = uri.lastIndexOf(<span class="hljs-string">&#x27;/&#x27;</span>);
-        String methodName = uri.substring(index + <span class="hljs-number">1</span>); <span class="hljs-comment">//  获取到资源的二级路径  selectAll</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> uri.lastIndexOf(<span class="hljs-string">&#x27;/&#x27;</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">methodName</span> <span class="hljs-operator">=</span> uri.substring(index + <span class="hljs-number">1</span>); <span class="hljs-comment">//  获取到资源的二级路径  selectAll</span>
 
         <span class="hljs-comment">//2. 执行方法</span>
         <span class="hljs-comment">//2.1 获取BrandServlet /UserServlet 字节码对象 Class</span>
         <span class="hljs-comment">//System.out.println(this);</span>
 
-        Class&lt;? extends BaseServlet&gt; cls = <span class="hljs-keyword">this</span>.getClass();
+        Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseServlet</span>&gt; cls = <span class="hljs-built_in">this</span>.getClass();
         <span class="hljs-comment">//2.2 获取方法 Method对象</span>
         <span class="hljs-keyword">try</span> &#123;
-            Method method = cls.getMethod(methodName,？？？);
+            <span class="hljs-type">Method</span> <span class="hljs-variable">method</span> <span class="hljs-operator">=</span> cls.getMethod(methodName,？？？);
             <span class="hljs-comment">//4,调用该方法</span>
-            method.invoke(<span class="hljs-keyword">this</span>,？？？);
+            method.invoke(<span class="hljs-built_in">this</span>,？？？);
         &#125; <span class="hljs-keyword">catch</span> (NoSuchMethodException e) &#123;
             e.printStackTrace();
         &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;
@@ -794,42 +794,42 @@
 
 <p>通过上面代码发现根据方法名获取对应方法的 <code>Method</code> 对象时需要指定方法参数的字节码对象。解决这个问题，可以将方法的参数类型规定死，而方法中可能需要用到 <code>request</code> 对象和 <code>response</code> 对象，所以指定方法的参数为 <code>HttpServletRequest</code> 和 <code>HttpServletResponse</code>，那么 <code>BrandServlet</code> 代码就可以改进为：</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@WebServlet(&quot;/brand/*&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BrandServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseServlet</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BrandServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseServlet</span> &#123;
     <span class="hljs-comment">//用户实现分页查询</span>
-	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectAll</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">selectAll</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> &#123;&#125;
     
     <span class="hljs-comment">//添加企业信息</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> &#123;&#125;
     
     <span class="hljs-comment">//修改企业信息</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> &#123;&#125;
     
     <span class="hljs-comment">//删除企业信息</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">delete</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> </span>&#123;&#125;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> &#123;&#125;
 &#125;</code></pre></div>
 
 <p>BaseServlet代码可以改进为：</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BaseServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
 
     <span class="hljs-comment">//根据请求的最后一段路径来进行方法分发</span>
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">service</span><span class="hljs-params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         <span class="hljs-comment">//1. 获取请求路径</span>
-        String uri = req.getRequestURI(); <span class="hljs-comment">// 例如路径为：/brand-case/brand/selectAll</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">uri</span> <span class="hljs-operator">=</span> req.getRequestURI(); <span class="hljs-comment">// 例如路径为：/brand-case/brand/selectAll</span>
         <span class="hljs-comment">//2. 获取最后一段路径，方法名</span>
-        <span class="hljs-keyword">int</span> index = uri.lastIndexOf(<span class="hljs-string">&#x27;/&#x27;</span>);
-        String methodName = uri.substring(index + <span class="hljs-number">1</span>); <span class="hljs-comment">//  获取到资源的二级路径  selectAll   </span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> uri.lastIndexOf(<span class="hljs-string">&#x27;/&#x27;</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">methodName</span> <span class="hljs-operator">=</span> uri.substring(index + <span class="hljs-number">1</span>); <span class="hljs-comment">//  获取到资源的二级路径  selectAll   </span>
 
         <span class="hljs-comment">//2. 执行方法</span>
         <span class="hljs-comment">//2.1 获取BrandServlet /UserServlet 字节码对象 Class</span>
         <span class="hljs-comment">//System.out.println(this);</span>
 
-        Class&lt;? extends BaseServlet&gt; cls = <span class="hljs-keyword">this</span>.getClass();
+        Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseServlet</span>&gt; cls = <span class="hljs-built_in">this</span>.getClass();
         <span class="hljs-comment">//2.2 获取方法 Method对象</span>
         <span class="hljs-keyword">try</span> &#123;   
-            Method method = cls.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+            <span class="hljs-type">Method</span> <span class="hljs-variable">method</span> <span class="hljs-operator">=</span> cls.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             <span class="hljs-comment">//2.3 执行方法</span>
-            method.invoke(<span class="hljs-keyword">this</span>,req,resp);
+            method.invoke(<span class="hljs-built_in">this</span>,req,resp);
         &#125; <span class="hljs-keyword">catch</span> (NoSuchMethodException e) &#123;
             e.printStackTrace();
         &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;
@@ -851,16 +851,16 @@
 <span class="hljs-comment"> * 批量删除</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> ids</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">deleteByIds</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;ids&quot;)</span> <span class="hljs-keyword">int</span>[] ids)</span></span>;</code></pre></div>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteByIds</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;ids&quot;)</span> <span class="hljs-type">int</span>[] ids)</span>;</code></pre></div>
 
 <h5 id="service-2"><a href="#service-2" class="headerlink" title="service"></a>service</h5><p>在<code>BrandService</code>中实现批量删除的业务逻辑代码</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 批量删除</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> ids</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteByIds</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] ids)</span></span>&#123;
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteByIds</span><span class="hljs-params">(<span class="hljs-type">int</span>[] ids)</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+    <span class="hljs-type">BrandMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(BrandMapper.class);
     mapper.deleteByIds(ids);
     sqlSession.commit();
     sqlSession.close();
@@ -875,13 +875,13 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteByIds</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteByIds</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
 
-    BufferedReader reader = request.getReader();
+    <span class="hljs-type">BufferedReader</span> <span class="hljs-variable">reader</span> <span class="hljs-operator">=</span> request.getReader();
     <span class="hljs-comment">// 获取json字符串</span>
-    String line = reader.readLine();
+    <span class="hljs-type">String</span> <span class="hljs-variable">line</span> <span class="hljs-operator">=</span> reader.readLine();
     System.out.println(line);
-    <span class="hljs-keyword">int</span>[] ids = JSON.parseObject(line, <span class="hljs-keyword">int</span>[].class);
+    <span class="hljs-type">int</span>[] ids = JSON.parseObject(line, <span class="hljs-type">int</span>[].class);
     System.out.println(ids);
 
     service.deleteByIds(ids);
@@ -890,61 +890,61 @@
 &#125;</code></pre></div>
 
 <h4 id="前端实现-2"><a href="#前端实现-2" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="获取选中数据的id值"><a href="#获取选中数据的id值" class="headerlink" title="获取选中数据的id值"></a>获取选中数据的id值</h5><p><code>handleSelectionChange</code></p>
-<div class="hljs"><pre><code class="hljs html">&lt;el-table
-                :data=&quot;brandlist&quot;
-                style=&quot;width: 100%&quot;
-                :row-class-name=&quot;tableRowClassName&quot;
-                @selection-change=&quot;handleSelectionChange&quot;
-        &gt;</code></pre></div>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-table</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">:data</span>=<span class="hljs-string">&quot;brandlist&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 100%&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">:row-class-name</span>=<span class="hljs-string">&quot;tableRowClassName&quot;</span></span>
+<span class="hljs-tag">                @<span class="hljs-attr">selection-change</span>=<span class="hljs-string">&quot;handleSelectionChange&quot;</span></span>
+<span class="hljs-tag">        &gt;</span></code></pre></div>
 
 <p>可以看到当数据被选中后，<code>multipleSelection</code>会存放被选择的数据对象</p>
 <div class="hljs"><pre><code class="hljs js"><span class="hljs-comment">// 复选框选中后执行的方法</span>
-            <span class="hljs-function"><span class="hljs-title">handleSelectionChange</span>(<span class="hljs-params">val</span>)</span> &#123;
-                <span class="hljs-built_in">this</span>.multipleSelection = val;
+            <span class="hljs-title function_">handleSelectionChange</span>(<span class="hljs-params">val</span>) &#123;
+                <span class="hljs-variable language_">this</span>.<span class="hljs-property">multipleSelection</span> = val;
 
-                <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.multipleSelection)
+                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">multipleSelection</span>)
                 <span class="hljs-comment">// console.log(this.multipleSelection)</span>
             &#125;,</code></pre></div>
 
 <p>而我们所需要的只是对象的id值，因此需要遍历<code>multipleSelection</code>获取id值</p>
 <div class="hljs"><pre><code class="hljs js"><span class="hljs-comment">// 从_this.multipleSelection获取brand的id值</span>
-                    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;_this.multipleSelection.length;i++)&#123;
-                        <span class="hljs-keyword">let</span> selectItem = _this.multipleSelection[i];
-                        _this.selectedIds[i] = selectItem.id;
+                    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;_this.<span class="hljs-property">multipleSelection</span>.<span class="hljs-property">length</span>;i++)&#123;
+                        <span class="hljs-keyword">let</span> selectItem = _this.<span class="hljs-property">multipleSelection</span>[i];
+                        _this.<span class="hljs-property">selectedIds</span>[i] = selectItem.<span class="hljs-property">id</span>;
                     &#125;</code></pre></div>
 
 <h5 id="批量删除提示"><a href="#批量删除提示" class="headerlink" title="批量删除提示"></a>批量删除提示</h5><p>删除操作一般比较危险因此需要让用户确认是否删除，在element-ui中找到<code>$confirm</code>组件实现该功能</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">deleteByIds</span>(<span class="hljs-params"></span>)</span>&#123;
-              <span class="hljs-built_in">this</span>.$confirm(<span class="hljs-string">&#x27;确定删除吗？&#x27;</span>, <span class="hljs-string">&#x27;确认信息&#x27;</span>, &#123;
-                  distinguishCancelAndClose: <span class="hljs-literal">true</span>,
-                  confirmButtonText: <span class="hljs-string">&#x27;确定&#x27;</span>,
-                  cancelButtonText: <span class="hljs-string">&#x27;取消&#x27;</span>
-              &#125;).then(<span class="hljs-function">() =&gt;</span> &#123;
-                  <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-title function_">deleteByIds</span>(<span class="hljs-params"></span>)&#123;
+              <span class="hljs-variable language_">this</span>.$confirm(<span class="hljs-string">&#x27;确定删除吗？&#x27;</span>, <span class="hljs-string">&#x27;确认信息&#x27;</span>, &#123;
+                  <span class="hljs-attr">distinguishCancelAndClose</span>: <span class="hljs-literal">true</span>,
+                  <span class="hljs-attr">confirmButtonText</span>: <span class="hljs-string">&#x27;确定&#x27;</span>,
+                  <span class="hljs-attr">cancelButtonText</span>: <span class="hljs-string">&#x27;取消&#x27;</span>
+              &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;
+                  <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
                   <span class="hljs-comment">// 从_this.multipleSelection获取brand的id值</span>
-                  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;_this.multipleSelection.length;i++)&#123;
-                      <span class="hljs-keyword">let</span> selectItem = _this.multipleSelection[i];
-                      _this.selectedIds[i] = selectItem.id;
+                  <span class="hljs-keyword">for</span>(<span class="hljs-keyword">let</span> i=<span class="hljs-number">0</span>; i&lt;_this.<span class="hljs-property">multipleSelection</span>.<span class="hljs-property">length</span>;i++)&#123;
+                      <span class="hljs-keyword">let</span> selectItem = _this.<span class="hljs-property">multipleSelection</span>[i];
+                      _this.<span class="hljs-property">selectedIds</span>[i] = selectItem.<span class="hljs-property">id</span>;
                   &#125;
-                  axios(&#123;
-                      method: <span class="hljs-string">&#x27;post&#x27;</span>,
-                      url:<span class="hljs-string">&quot;http://localhost:8080/brand-case/brand/deleteByIds&quot;</span>,
-                      data: _this.selectedIds
-                  &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
-                      <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+                  <span class="hljs-title function_">axios</span>(&#123;
+                      <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;post&#x27;</span>,
+                      <span class="hljs-attr">url</span>:<span class="hljs-string">&quot;http://localhost:8080/brand-case/brand/deleteByIds&quot;</span>,
+                      <span class="hljs-attr">data</span>: _this.<span class="hljs-property">selectedIds</span>
+                  &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)&#123;
+                      <span class="hljs-keyword">if</span>(response.<span class="hljs-property">data</span> == <span class="hljs-string">&quot;success&quot;</span>)&#123;
                           <span class="hljs-comment">// 重新查询数据</span>
-                          _this.selectAll();
+                          _this.<span class="hljs-title function_">selectAll</span>();
                           <span class="hljs-comment">//显示提示框</span>
                           _this.$message(&#123;
-                              type: <span class="hljs-string">&#x27;success&#x27;</span>,
-                              message: <span class="hljs-string">&#x27;删除成功&#x27;</span>
+                              <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;success&#x27;</span>,
+                              <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;删除成功&#x27;</span>
                           &#125;);
                       &#125;
                   &#125;)
-                  &#125;).catch(<span class="hljs-function">() =&gt;</span> &#123;
-                      <span class="hljs-built_in">this</span>.$message(&#123;
-                          type: <span class="hljs-string">&#x27;info&#x27;</span>,
-                          message: <span class="hljs-string">&quot;取消删除&quot;</span>
+                  &#125;).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =&gt;</span> &#123;
+                      <span class="hljs-variable language_">this</span>.$message(&#123;
+                          <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;info&#x27;</span>,
+                          <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;取消删除&quot;</span>
                       &#125;)
               &#125;);
           &#125;</code></pre></div>
@@ -953,7 +953,7 @@
 
 
 
-<h3 id="4-分页查询"><a href="#4-分页查询" class="headerlink" title="4.分页查询"></a>4.分页查询</h3><h4 id="需求分析-3"><a href="#需求分析-3" class="headerlink" title="需求分析"></a>需求分析</h4><h5 id="分页查询sql"><a href="#分页查询sql" class="headerlink" title="分页查询sql"></a>分页查询sql</h5><p>分页查询也是从数据库进行查询的，所以我们要分页对应的SQL语句应该怎么写。分页查询使用 <code>LIMIT</code> 关键字，格式为：==<code>LIMIT 开始索引 每页显示的条数</code>==。以后前端页面在发送请求携带参数时，它并不明确开始索引是什么，但是它知道查询第几页。所以 <code>开始索引</code> 需要在后端进行计算，计算的公式是 ：==开始索引 = （当前页码 -  1）*  每页显示条数==</p>
+<h3 id="4-分页查询"><a href="#4-分页查询" class="headerlink" title="4.分页查询"></a>4.分页查询</h3><h4 id="需求分析-3"><a href="#需求分析-3" class="headerlink" title="需求分析"></a>需求分析</h4><h5 id="分页查询sql"><a href="#分页查询sql" class="headerlink" title="分页查询sql"></a>分页查询sql</h5><p>分页查询也是从数据库进行查询的，所以我们要分页对应的SQL语句应该怎么写。分页查询使用 <code>LIMIT</code> 关键字，格式为：&#x3D;&#x3D;<code>LIMIT 开始索引 每页显示的条数</code>&#x3D;&#x3D;。以后前端页面在发送请求携带参数时，它并不明确开始索引是什么，但是它知道查询第几页。所以 <code>开始索引</code> 需要在后端进行计算，计算的公式是 ：&#x3D;&#x3D;开始索引 &#x3D; （当前页码 -  1）*  每页显示条数&#x3D;&#x3D;</p>
 <p>比如查询第一页的数据的 SQL 语句是：</p>
 <div class="hljs"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> tb_brand  <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">5</span>;</code></pre></div>
 
@@ -981,33 +981,31 @@
 <li>总共记录数。在上图页面中需要展示总的记录数，所以这部分数据也需要。总的页面 elementUI 的分页组件会自动计算，我们不需要关心</li>
 </ul>
 <p>而这两部分需要封装到 PageBean 对象中，并将该对象转换为 json 格式的数据响应回给浏览器</p>
-<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210826232158234.png" srcset="/img/loading.gif" alt="image-20210826232158234" style="zoom:65%;">
-
-</li>
+<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210826232158234.png" srcset="/img/loading.gif" alt="image-20210826232158234" style="zoom:65%;"></li>
 </ul>
 <p>通过上面的分析我们需要先在 <code>pojo</code> 包下创建 <code>PageBean</code> 类，为了做到通过会将其定义成泛型类，代码如下：</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">//分页查询的JavaBean</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PageBean</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PageBean</span>&lt;T&gt; &#123;
     <span class="hljs-comment">// 总记录数</span>
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> totalCount;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> totalCount;
     <span class="hljs-comment">// 当前页数据</span>
     <span class="hljs-keyword">private</span> List&lt;T&gt; rows;
 
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getTotalCount</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getTotalCount</span><span class="hljs-params">()</span> &#123;
         <span class="hljs-keyword">return</span> totalCount;
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setTotalCount</span><span class="hljs-params">(<span class="hljs-keyword">int</span> totalCount)</span> </span>&#123;
-        <span class="hljs-keyword">this</span>.totalCount = totalCount;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setTotalCount</span><span class="hljs-params">(<span class="hljs-type">int</span> totalCount)</span> &#123;
+        <span class="hljs-built_in">this</span>.totalCount = totalCount;
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;T&gt; <span class="hljs-title">getRows</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> List&lt;T&gt; <span class="hljs-title function_">getRows</span><span class="hljs-params">()</span> &#123;
         <span class="hljs-keyword">return</span> rows;
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setRows</span><span class="hljs-params">(List&lt;T&gt; rows)</span> </span>&#123;
-        <span class="hljs-keyword">this</span>.rows = rows;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setRows</span><span class="hljs-params">(List&lt;T&gt; rows)</span> &#123;
+        <span class="hljs-built_in">this</span>.rows = rows;
     &#125;
 &#125;</code></pre></div>
 
@@ -1019,14 +1017,14 @@
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Select(&quot;select * from tb_brand limit #&#123;begin&#125;, #&#123;size&#125;&quot;)</span>
 <span class="hljs-meta">@ResultMap(&quot;brandResultMap&quot;)</span>
-<span class="hljs-function">List&lt;Brand&gt; <span class="hljs-title">selectByPage</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;begin&quot;)</span> <span class="hljs-keyword">int</span> begin, <span class="hljs-meta">@Param(&quot;size&quot;)</span> <span class="hljs-keyword">int</span> size)</span></span>;
+List&lt;Brand&gt; <span class="hljs-title function_">selectByPage</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;begin&quot;)</span> <span class="hljs-type">int</span> begin, <span class="hljs-meta">@Param(&quot;size&quot;)</span> <span class="hljs-type">int</span> size)</span>;
 
 <span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 查询总记录数</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Select(&quot;select count(*) from tb_brand&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">selectTotalCount</span><span class="hljs-params">()</span></span>;</code></pre></div>
+<span class="hljs-type">int</span> <span class="hljs-title function_">selectTotalCount</span><span class="hljs-params">()</span>;</code></pre></div>
 
 <h5 id="service-3"><a href="#service-3" class="headerlink" title="service"></a>service</h5><div class="hljs"><pre><code class="hljs java">  <span class="hljs-comment">/**</span>
 <span class="hljs-comment">   * 分页查询</span>
@@ -1034,19 +1032,19 @@
 <span class="hljs-comment">   * <span class="hljs-doctag">@param</span> pageSize</span>
 <span class="hljs-comment">   * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment">   */</span>
-  <span class="hljs-function"><span class="hljs-keyword">public</span> PageBean&lt;Brand&gt; <span class="hljs-title">selectByPage</span><span class="hljs-params">(<span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span></span>&#123;
-      SqlSession sqlSession = sqlSessionFactory.openSession();
-      BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+  <span class="hljs-keyword">public</span> PageBean&lt;Brand&gt; <span class="hljs-title function_">selectByPage</span><span class="hljs-params">(<span class="hljs-type">int</span> currentPage, <span class="hljs-type">int</span> pageSize)</span>&#123;
+      <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+      <span class="hljs-type">BrandMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(BrandMapper.class);
 
       <span class="hljs-comment">// 根据公式计算起始值</span>
-      <span class="hljs-keyword">int</span> begin = (currentPage - <span class="hljs-number">1</span>) * pageSize;
-      <span class="hljs-keyword">int</span> size = pageSize;
+      <span class="hljs-type">int</span> <span class="hljs-variable">begin</span> <span class="hljs-operator">=</span> (currentPage - <span class="hljs-number">1</span>) * pageSize;
+      <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> pageSize;
       <span class="hljs-comment">// 获取该页数据</span>
       List&lt;Brand&gt; rows = mapper.selectByPage(begin, size);
 <span class="hljs-comment">// 获取总记录数</span>
-      <span class="hljs-keyword">int</span> totalCount = mapper.selectTotalCount();
+      <span class="hljs-type">int</span> <span class="hljs-variable">totalCount</span> <span class="hljs-operator">=</span> mapper.selectTotalCount();
 <span class="hljs-comment">// 创建PageBean对象</span>
-      PageBean&lt;Brand&gt; pageBean = <span class="hljs-keyword">new</span> PageBean&lt;&gt;();
+      PageBean&lt;Brand&gt; pageBean = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PageBean</span>&lt;&gt;();
       pageBean.setRows(rows);
       pageBean.setTotalCount(totalCount);
 
@@ -1063,19 +1061,19 @@
 <span class="hljs-comment">   * <span class="hljs-doctag">@throws</span> ServletException</span>
 <span class="hljs-comment">   * <span class="hljs-doctag">@throws</span> IOException</span>
 <span class="hljs-comment">   */</span>
-  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">selectByPage</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">selectByPage</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
       request.setCharacterEncoding(<span class="hljs-string">&quot;utf-8&quot;</span>);
       <span class="hljs-comment">// 1.获取当前页码和每页展示条数 url?currentpage=1&amp;pagesize=5</span>
-      String _currentpage = request.getParameter(<span class="hljs-string">&quot;currentpage&quot;</span>);
-      String _pagesize = request.getParameter(<span class="hljs-string">&quot;pagesize&quot;</span>);
+      <span class="hljs-type">String</span> <span class="hljs-variable">_currentpage</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;currentpage&quot;</span>);
+      <span class="hljs-type">String</span> <span class="hljs-variable">_pagesize</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;pagesize&quot;</span>);
 
-      <span class="hljs-keyword">int</span> currentpage = Integer.parseInt(_currentpage);
-      <span class="hljs-keyword">int</span> pagesize = Integer.parseInt(_pagesize);
+      <span class="hljs-type">int</span> <span class="hljs-variable">currentpage</span> <span class="hljs-operator">=</span> Integer.parseInt(_currentpage);
+      <span class="hljs-type">int</span> <span class="hljs-variable">pagesize</span> <span class="hljs-operator">=</span> Integer.parseInt(_pagesize);
 
       <span class="hljs-comment">// 2.转为json</span>
       PageBean&lt;Brand&gt; pageBean = service.selectByPage(currentpage, pagesize);
 
-      String string = JSON.toJSONString(pageBean);
+      <span class="hljs-type">String</span> <span class="hljs-variable">string</span> <span class="hljs-operator">=</span> JSON.toJSONString(pageBean);
 <span class="hljs-comment">// 响应数据</span>
       response.setContentType(<span class="hljs-string">&quot;text/json;charset=utf-8&quot;</span>);
       response.getWriter().write(string);
@@ -1084,8 +1082,8 @@
 
 <h4 id="前端实现-3"><a href="#前端实现-3" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="分页工具条"><a href="#分页工具条" class="headerlink" title="分页工具条"></a>分页工具条</h5><p>放在表单下面</p>
 <div class="hljs"><pre><code class="hljs html"><span class="hljs-comment">&lt;!--分页工具条--&gt;</span>
-&lt;el-pagination
-        @size-change=&quot;handleSizeChange&quot;   <span class="hljs-comment">&lt;!--设置每页显示条数--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">el-pagination</span></span>
+<span class="hljs-tag">        @<span class="hljs-attr">size-change</span>=<span class="hljs-string">&quot;handleSizeChange&quot;</span>   &lt;!<span class="hljs-attr">--设置每页显示条数--</span>&gt;</span>
         @current-change=&quot;handleCurrentChange&quot;  <span class="hljs-comment">&lt;!--修改当前页码--&gt;</span>
         :current-page=&quot;currentPage&quot;         <span class="hljs-comment">&lt;!--绑定currentPage模型--&gt;</span>
         :page-sizes=&quot;[5, 10, 15, 20]&quot;
@@ -1095,20 +1093,20 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">el-pagination</span>&gt;</span></code></pre></div>
 
 <p>修改<code>handleSizeChange</code>和<code>handleCurrentChange</code></p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">handleSizeChange</span>(<span class="hljs-params">val</span>)</span> &#123;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-title function_">handleSizeChange</span>(<span class="hljs-params">val</span>) &#123;
     <span class="hljs-comment">// console.log(`每页 $&#123;val&#125; 条`);</span>
     <span class="hljs-comment">// 设置每页显示条数</span>
-    <span class="hljs-built_in">this</span>.pageSize = val;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">pageSize</span> = val;
     <span class="hljs-comment">// 重新查询</span>
-    <span class="hljs-built_in">this</span>.selectAll();
+    <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">selectAll</span>();
     <span class="hljs-comment">// this.currentPage=1</span>
 &#125;,
-<span class="hljs-function"><span class="hljs-title">handleCurrentChange</span>(<span class="hljs-params">val</span>)</span> &#123;
-    <span class="hljs-built_in">this</span>.currentPage = val;
+<span class="hljs-title function_">handleCurrentChange</span>(<span class="hljs-params">val</span>) &#123;
+    <span class="hljs-variable language_">this</span>.<span class="hljs-property">currentPage</span> = val;
 &#125;,</code></pre></div>
 
 <h5 id="修改selectAll-异步请求方法"><a href="#修改selectAll-异步请求方法" class="headerlink" title="修改selectAll()异步请求方法"></a>修改selectAll()异步请求方法</h5><p>主要修改url和获取响应数据后的处理方式</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">selectAll</span>(<span class="hljs-params"></span>)</span>&#123;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-title function_">selectAll</span>(<span class="hljs-params"></span>)&#123;
                 <span class="hljs-comment">// var _this = this;</span>
                 <span class="hljs-comment">// axios(&#123;</span>
                 <span class="hljs-comment">//     method: &#x27;GET&#x27;,</span>
@@ -1118,17 +1116,17 @@
                 <span class="hljs-comment">//     _this.brandlist = brandlist;</span>
                 <span class="hljs-comment">// &#125;)</span>
 
-                <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
-                axios(&#123;
-                    method: <span class="hljs-string">&#x27;GET&#x27;</span>,
-                    url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/selectByPage?currentpage=&#x27;</span>+ _this.currentPage + <span class="hljs-string">&#x27;&amp;pagesize=&#x27;</span> + _this.pageSize
-                &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+                <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
+                <span class="hljs-title function_">axios</span>(&#123;
+                    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;GET&#x27;</span>,
+                    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/selectByPage?currentpage=&#x27;</span>+ _this.<span class="hljs-property">currentPage</span> + <span class="hljs-string">&#x27;&amp;pagesize=&#x27;</span> + _this.<span class="hljs-property">pageSize</span>
+                &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)&#123;
                     <span class="hljs-comment">// 获取数据   &#123;rows: &#123; &#125;,totalCount:47&#125;</span>
-                    <span class="hljs-keyword">var</span> brandlist = response.data.rows;
+                    <span class="hljs-keyword">var</span> brandlist = response.<span class="hljs-property">data</span>.<span class="hljs-property">rows</span>;
                     <span class="hljs-comment">// 设置表格数据</span>
-                    _this.brandlist = brandlist;
+                    _this.<span class="hljs-property">brandlist</span> = brandlist;
                     <span class="hljs-comment">// 设置总记录数</span>
-                    _this.totalCount = response.data.totalCount;
+                    _this.<span class="hljs-property">totalCount</span> = response.<span class="hljs-property">data</span>.<span class="hljs-property">totalCount</span>;
                 &#125;)
             &#125;,</code></pre></div>
 
@@ -1146,14 +1144,14 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> size</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function">List&lt;Brand&gt; <span class="hljs-title">selectByConditions</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;brand&quot;)</span> Brand brand, <span class="hljs-meta">@Param(&quot;begin&quot;)</span> <span class="hljs-keyword">int</span> begin, <span class="hljs-meta">@Param(&quot;size&quot;)</span> <span class="hljs-keyword">int</span> size)</span></span>;
+List&lt;Brand&gt; <span class="hljs-title function_">selectByConditions</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;brand&quot;)</span> Brand brand, <span class="hljs-meta">@Param(&quot;begin&quot;)</span> <span class="hljs-type">int</span> begin, <span class="hljs-meta">@Param(&quot;size&quot;)</span> <span class="hljs-type">int</span> size)</span>;
 
 <span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 多条件查询的记录条数</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">selectByConditionsCount</span><span class="hljs-params">(Brand brand)</span></span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">selectByConditionsCount</span><span class="hljs-params">(Brand brand)</span>;
 </code></pre></div>
 
 <p>在对应的<code>BrandMapper.xml</code>中实现具体的查询</p>
@@ -1197,29 +1195,29 @@
 <span class="hljs-comment">   * <span class="hljs-doctag">@param</span> pageSize</span>
 <span class="hljs-comment">   * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment">   */</span>
-  <span class="hljs-function"><span class="hljs-keyword">public</span> PageBean&lt;Brand&gt; <span class="hljs-title">selectByConditionsPage</span><span class="hljs-params">(Brand brand, <span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span></span>&#123;
-      SqlSession sqlSession = sqlSessionFactory.openSession();
-      BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+  <span class="hljs-keyword">public</span> PageBean&lt;Brand&gt; <span class="hljs-title function_">selectByConditionsPage</span><span class="hljs-params">(Brand brand, <span class="hljs-type">int</span> currentPage, <span class="hljs-type">int</span> pageSize)</span>&#123;
+      <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+      <span class="hljs-type">BrandMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(BrandMapper.class);
 
-      <span class="hljs-keyword">int</span> begin = (currentPage - <span class="hljs-number">1</span>) * pageSize;
-      <span class="hljs-keyword">int</span> size = pageSize;
+      <span class="hljs-type">int</span> <span class="hljs-variable">begin</span> <span class="hljs-operator">=</span> (currentPage - <span class="hljs-number">1</span>) * pageSize;
+      <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> pageSize;
 
 
       <span class="hljs-comment">// 对数据进行处理加上 % 模糊查询表达式</span>
-      <span class="hljs-keyword">if</span>(brand.getBrandName() != <span class="hljs-keyword">null</span> &amp;&amp; brand.getBrandName().length() &gt; <span class="hljs-number">0</span> )&#123;
+      <span class="hljs-keyword">if</span>(brand.getBrandName() != <span class="hljs-literal">null</span> &amp;&amp; brand.getBrandName().length() &gt; <span class="hljs-number">0</span> )&#123;
           brand.setBrandName(<span class="hljs-string">&quot;%&quot;</span> + brand.getBrandName() + <span class="hljs-string">&quot;%&quot;</span>);
       &#125;
 
-      <span class="hljs-keyword">if</span>(brand.getCompanyName() != <span class="hljs-keyword">null</span> &amp;&amp; brand.getCompanyName().length() &gt; <span class="hljs-number">0</span>)&#123;
+      <span class="hljs-keyword">if</span>(brand.getCompanyName() != <span class="hljs-literal">null</span> &amp;&amp; brand.getCompanyName().length() &gt; <span class="hljs-number">0</span>)&#123;
           brand.setCompanyName(<span class="hljs-string">&quot;%&quot;</span> + brand.getCompanyName() + <span class="hljs-string">&quot;%&quot;</span>);
       &#125;
       System.out.println(brand);
 
       List&lt;Brand&gt; rows = mapper.selectByConditions(brand, begin, size);
 
-      <span class="hljs-keyword">int</span> totalCount = mapper.selectByConditionsCount(brand);
+      <span class="hljs-type">int</span> <span class="hljs-variable">totalCount</span> <span class="hljs-operator">=</span> mapper.selectByConditionsCount(brand);
 
-      PageBean&lt;Brand&gt; pageBean = <span class="hljs-keyword">new</span> PageBean&lt;&gt;();
+      PageBean&lt;Brand&gt; pageBean = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PageBean</span>&lt;&gt;();
       pageBean.setRows(rows);
       pageBean.setTotalCount(totalCount);
 
@@ -1236,19 +1234,19 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">search</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">search</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
     <span class="hljs-comment">// 1.获取当前页码和每页展示条数 url?currentpage=1&amp;pagesize=5</span>
-    String _currentpage = request.getParameter(<span class="hljs-string">&quot;currentpage&quot;</span>);
-    String _pagesize = request.getParameter(<span class="hljs-string">&quot;pagesize&quot;</span>);
-    <span class="hljs-keyword">int</span> currentpage = Integer.parseInt(_currentpage);
-    <span class="hljs-keyword">int</span> pagesize = Integer.parseInt(_pagesize);
+    <span class="hljs-type">String</span> <span class="hljs-variable">_currentpage</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;currentpage&quot;</span>);
+    <span class="hljs-type">String</span> <span class="hljs-variable">_pagesize</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;pagesize&quot;</span>);
+    <span class="hljs-type">int</span> <span class="hljs-variable">currentpage</span> <span class="hljs-operator">=</span> Integer.parseInt(_currentpage);
+    <span class="hljs-type">int</span> <span class="hljs-variable">pagesize</span> <span class="hljs-operator">=</span> Integer.parseInt(_pagesize);
 
     <span class="hljs-comment">// 2.获取json字符串</span>
-    BufferedReader reader = request.getReader();
-    String line = reader.readLine();
+    <span class="hljs-type">BufferedReader</span> <span class="hljs-variable">reader</span> <span class="hljs-operator">=</span> request.getReader();
+    <span class="hljs-type">String</span> <span class="hljs-variable">line</span> <span class="hljs-operator">=</span> reader.readLine();
     System.out.println(line);
     <span class="hljs-comment">// 3.将json字符串转为brand对象</span>
-    Brand brand = JSON.parseObject(line, Brand.class);
+    <span class="hljs-type">Brand</span> <span class="hljs-variable">brand</span> <span class="hljs-operator">=</span> JSON.parseObject(line, Brand.class);
 
     System.out.println(brand);
     <span class="hljs-comment">// 4.调用service方法 获取pageBean对象</span>
@@ -1256,7 +1254,7 @@
 
 
     <span class="hljs-comment">// 5.将PageBean转为Json字符串</span>
-    String string = JSON.toJSONString(pageBean);
+    <span class="hljs-type">String</span> <span class="hljs-variable">string</span> <span class="hljs-operator">=</span> JSON.toJSONString(pageBean);
     <span class="hljs-comment">// 6.发送响应数据</span>
     response.setContentType(<span class="hljs-string">&quot;text/json;charset=utf-8&quot;</span>);
     response.getWriter().write(string);
@@ -1267,30 +1265,30 @@
 
 <p><code>searchBrand</code>数据如下</p>
 <div class="hljs"><pre><code class="hljs js"><span class="hljs-comment">// 搜索数据</span>
-             searchBrand:&#123;
-                 status: <span class="hljs-string">&#x27;&#x27;</span>,
-                 brandName: <span class="hljs-string">&#x27;&#x27;</span>,
-                 companyName: <span class="hljs-string">&#x27;&#x27;</span>,
-                 id:<span class="hljs-string">&quot;&quot;</span>,
-                 ordered:<span class="hljs-string">&quot;&quot;</span>,
-                 description:<span class="hljs-string">&quot;&quot;</span>
+             <span class="hljs-attr">searchBrand</span>:&#123;
+                 <span class="hljs-attr">status</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+                 <span class="hljs-attr">brandName</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+                 <span class="hljs-attr">companyName</span>: <span class="hljs-string">&#x27;&#x27;</span>,
+                 <span class="hljs-attr">id</span>:<span class="hljs-string">&quot;&quot;</span>,
+                 <span class="hljs-attr">ordered</span>:<span class="hljs-string">&quot;&quot;</span>,
+                 <span class="hljs-attr">description</span>:<span class="hljs-string">&quot;&quot;</span>
              &#125;,</code></pre></div>
 
 <p>当用户输入条件后，数据自动绑定到<code>searchBrand</code>模型上，向后台提交数据时，提交<code>searchBrand</code>即可</p>
-<h5 id="查询的异步请求"><a href="#查询的异步请求" class="headerlink" title="查询的异步请求"></a>查询的异步请求</h5><div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">search</span>(<span class="hljs-params"></span>)</span>&#123;
-           <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+<h5 id="查询的异步请求"><a href="#查询的异步请求" class="headerlink" title="查询的异步请求"></a>查询的异步请求</h5><div class="hljs"><pre><code class="hljs js"><span class="hljs-title function_">search</span>(<span class="hljs-params"></span>)&#123;
+           <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
 
-           axios(&#123;
-               method: <span class="hljs-string">&#x27;POST&#x27;</span>,
-               url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/search?currentpage=&#x27;</span>+ _this.currentPage + <span class="hljs-string">&#x27;&amp;pagesize=&#x27;</span> + _this.pageSize,
-               data: <span class="hljs-built_in">this</span>.searchBrand
-           &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
+           <span class="hljs-title function_">axios</span>(&#123;
+               <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+               <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/search?currentpage=&#x27;</span>+ _this.<span class="hljs-property">currentPage</span> + <span class="hljs-string">&#x27;&amp;pagesize=&#x27;</span> + _this.<span class="hljs-property">pageSize</span>,
+               <span class="hljs-attr">data</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">searchBrand</span>
+           &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)&#123;
                    <span class="hljs-comment">// 获取数据   &#123;rows: &#123; &#125; &#125;</span>
                    <span class="hljs-comment">// 设置表格数据</span>
-                   _this.brandlist = response.data.rows;
+                   _this.<span class="hljs-property">brandlist</span> = response.<span class="hljs-property">data</span>.<span class="hljs-property">rows</span>;
                    <span class="hljs-comment">// 设置总记录数</span>
-                   _this.totalCount = response.data.totalCount;
-                   _this.currentPage = <span class="hljs-number">1</span>;
+                   _this.<span class="hljs-property">totalCount</span> = response.<span class="hljs-property">data</span>.<span class="hljs-property">totalCount</span>;
+                   _this.<span class="hljs-property">currentPage</span> = <span class="hljs-number">1</span>;
            &#125;)
        &#125;</code></pre></div>
 
@@ -1305,15 +1303,15 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> id</span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Delete(&quot;delete from tb_brand where id = #&#123;id&#125;&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">deleteById</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;id&quot;)</span> <span class="hljs-keyword">int</span> id)</span></span>;</code></pre></div>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteById</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;id&quot;)</span> <span class="hljs-type">int</span> id)</span>;</code></pre></div>
 
 <h5 id="service-5"><a href="#service-5" class="headerlink" title="service"></a>service</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 删除指定数据</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> id</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteById</span><span class="hljs-params">(<span class="hljs-keyword">int</span> id)</span></span>&#123;
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteById</span><span class="hljs-params">(<span class="hljs-type">int</span> id)</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+    <span class="hljs-type">BrandMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(BrandMapper.class);
 
     mapper.deleteById(id);
     sqlSession.commit();
@@ -1327,17 +1325,17 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">deleteById</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteById</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
 
-    String _id = request.getParameter(<span class="hljs-string">&quot;id&quot;</span>);
-    <span class="hljs-keyword">int</span> id = Integer.parseInt(_id);
+    <span class="hljs-type">String</span> <span class="hljs-variable">_id</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;id&quot;</span>);
+    <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> Integer.parseInt(_id);
     service.deleteById(id);
     response.getWriter().write(<span class="hljs-string">&quot;success&quot;</span>);
 
 &#125;</code></pre></div>
 
 <h4 id="前端实现-5"><a href="#前端实现-5" class="headerlink" title="前端实现"></a>前端实现</h4><h5 id="获取id"><a href="#获取id" class="headerlink" title="获取id"></a>获取id</h5><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/tg928600774/article/details/81945140">参考</a></p>
-<p>在修改和删除按钮位置添加<code>slot-scope=&quot;scope&quot;</code></p>
+<p>在修改和删除按钮位置添加<code> slot-scope=&quot;scope&quot;</code></p>
 <div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-row</span> <span class="hljs-attr">slot-scope</span>=<span class="hljs-string">&quot;scope&quot;</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;update(scope.row)&quot;</span> &gt;</span>修改<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;danger&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;deleteById(scope.row.id)&quot;</span> &gt;</span>删除<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span>
@@ -1345,33 +1343,33 @@
 
 <p>使用<code>scope.row.id</code>即可获取到每行数据的id</p>
 <h5 id="异步请求"><a href="#异步请求" class="headerlink" title="异步请求"></a>异步请求</h5><p>同样使用confirm组件提示用户是否真的想删除</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">deleteById</span>(<span class="hljs-params">id</span>)</span>&#123;
-             <span class="hljs-built_in">this</span>.$confirm(<span class="hljs-string">&#x27;确定删除吗？&#x27;</span>, <span class="hljs-string">&#x27;确认信息&#x27;</span>, &#123;
-                 distinguishCancelAndClose: <span class="hljs-literal">true</span>,
-                 confirmButtonText: <span class="hljs-string">&#x27;确定&#x27;</span>,
-                 cancelButtonText: <span class="hljs-string">&#x27;取消&#x27;</span>
-             &#125;).then(<span class="hljs-function">() =&gt;</span> &#123;
-                 <span class="hljs-built_in">this</span>.currentPage=<span class="hljs-number">1</span>
-                 <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-title function_">deleteById</span>(<span class="hljs-params">id</span>)&#123;
+             <span class="hljs-variable language_">this</span>.$confirm(<span class="hljs-string">&#x27;确定删除吗？&#x27;</span>, <span class="hljs-string">&#x27;确认信息&#x27;</span>, &#123;
+                 <span class="hljs-attr">distinguishCancelAndClose</span>: <span class="hljs-literal">true</span>,
+                 <span class="hljs-attr">confirmButtonText</span>: <span class="hljs-string">&#x27;确定&#x27;</span>,
+                 <span class="hljs-attr">cancelButtonText</span>: <span class="hljs-string">&#x27;取消&#x27;</span>
+             &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;
+                 <span class="hljs-variable language_">this</span>.<span class="hljs-property">currentPage</span>=<span class="hljs-number">1</span>
+                 <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
                  <span class="hljs-keyword">var</span> deleteId = id;
-                 axios(&#123;
-                     method: <span class="hljs-string">&#x27;get&#x27;</span>,
-                     url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/deleteById?id=&#x27;</span>+deleteId,
-                 &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
-                     <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+                 <span class="hljs-title function_">axios</span>(&#123;
+                     <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;get&#x27;</span>,
+                     <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/deleteById?id=&#x27;</span>+deleteId,
+                 &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)&#123;
+                     <span class="hljs-keyword">if</span>(response.<span class="hljs-property">data</span> == <span class="hljs-string">&quot;success&quot;</span>)&#123;
                          <span class="hljs-comment">// 重新查询数据</span>
-                         _this.selectAll();
+                         _this.<span class="hljs-title function_">selectAll</span>();
                          <span class="hljs-comment">//显示提示框</span>
                          _this.$message(&#123;
-                             type: <span class="hljs-string">&#x27;success&#x27;</span>,
-                             message: <span class="hljs-string">&#x27;删除成功&#x27;</span>
+                             <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;success&#x27;</span>,
+                             <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;删除成功&#x27;</span>
                          &#125;);
                      &#125;
                  &#125;)
-             &#125;).catch(<span class="hljs-function">() =&gt;</span> &#123;
-                 <span class="hljs-built_in">this</span>.$message(&#123;
-                     type: <span class="hljs-string">&#x27;info&#x27;</span>,
-                     message: <span class="hljs-string">&quot;取消删除&quot;</span>
+             &#125;).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =&gt;</span> &#123;
+                 <span class="hljs-variable language_">this</span>.$message(&#123;
+                     <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;info&#x27;</span>,
+                     <span class="hljs-attr">message</span>: <span class="hljs-string">&quot;取消删除&quot;</span>
                  &#125;)
              &#125;)
          &#125;,</code></pre></div>
@@ -1387,15 +1385,15 @@
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Update(&quot;update tb_brand set brand_name = #&#123;brandName&#125;,company_name = #&#123;companyName&#125;,ordered = #&#123;ordered&#125;,description = #&#123;description&#125;,status = #&#123;status&#125; where id = #&#123;id&#125;&quot;)</span>
 <span class="hljs-meta">@ResultMap(&quot;brandResultMap&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(Brand brand)</span></span>;</code></pre></div>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(Brand brand)</span>;</code></pre></div>
 
 <h5 id="service-6"><a href="#service-6" class="headerlink" title="service"></a>service</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 更新数据</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> brand</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(Brand brand)</span></span>&#123;
-    SqlSession sqlSession = sqlSessionFactory.openSession();
-    BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(Brand brand)</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">sqlSession</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+    <span class="hljs-type">BrandMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> sqlSession.getMapper(BrandMapper.class);
 
     mapper.update(brand);
     sqlSession.commit();
@@ -1409,13 +1407,13 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> ServletException</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@throws</span> IOException</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
 
 
-    BufferedReader reader = request.getReader();
-    String line = reader.readLine();
+    <span class="hljs-type">BufferedReader</span> <span class="hljs-variable">reader</span> <span class="hljs-operator">=</span> request.getReader();
+    <span class="hljs-type">String</span> <span class="hljs-variable">line</span> <span class="hljs-operator">=</span> reader.readLine();
     System.out.println(line);
-    Brand brand = JSON.parseObject(line, Brand.class);
+    <span class="hljs-type">Brand</span> <span class="hljs-variable">brand</span> <span class="hljs-operator">=</span> JSON.parseObject(line, Brand.class);
     System.out.println(brand);
     service.update(brand);
 
@@ -1426,15 +1424,15 @@
 <div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">el-button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;primary&quot;</span> @<span class="hljs-attr">click</span>=<span class="hljs-string">&quot;update(scope.row)&quot;</span> &gt;</span>修改<span class="hljs-tag">&lt;/<span class="hljs-name">el-button</span>&gt;</span></code></pre></div>
 
 <p>update函数的实现</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">update</span>(<span class="hljs-params">data</span>)</span>&#123;
-              <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
-              <span class="hljs-built_in">this</span>.dialogUpdateVisible = <span class="hljs-literal">true</span>;
-              <span class="hljs-built_in">this</span>.updateBrand.brandName = data.brandName;
-              <span class="hljs-built_in">this</span>.updateBrand.companyName = data.companyName;
-              <span class="hljs-built_in">this</span>.updateBrand.status = data.status;
-              <span class="hljs-built_in">this</span>.updateBrand.ordered = data.ordered;
-              <span class="hljs-built_in">this</span>.updateBrand.description = data.description;
-              <span class="hljs-built_in">this</span>.updateBrand.statusStr = data.statusStr;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-title function_">update</span>(<span class="hljs-params">data</span>)&#123;
+              <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">dialogUpdateVisible</span> = <span class="hljs-literal">true</span>;
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateBrand</span>.<span class="hljs-property">brandName</span> = data.<span class="hljs-property">brandName</span>;
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateBrand</span>.<span class="hljs-property">companyName</span> = data.<span class="hljs-property">companyName</span>;
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateBrand</span>.<span class="hljs-property">status</span> = data.<span class="hljs-property">status</span>;
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateBrand</span>.<span class="hljs-property">ordered</span> = data.<span class="hljs-property">ordered</span>;
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateBrand</span>.<span class="hljs-property">description</span> = data.<span class="hljs-property">description</span>;
+              <span class="hljs-variable language_">this</span>.<span class="hljs-property">updateBrand</span>.<span class="hljs-property">statusStr</span> = data.<span class="hljs-property">statusStr</span>;
           &#125;,</code></pre></div>
 
 <p>updateBrand定义</p>
@@ -1461,18 +1459,18 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">el-form-item</span>&gt;</span></code></pre></div>
 
 <div class="hljs"><pre><code class="hljs js"><span class="hljs-comment">// 修改</span>
-<span class="hljs-function"><span class="hljs-title">updateSubmit</span>(<span class="hljs-params"></span>)</span>&#123;
-    <span class="hljs-keyword">var</span> _this = <span class="hljs-built_in">this</span>;
+<span class="hljs-title function_">updateSubmit</span>(<span class="hljs-params"></span>)&#123;
+    <span class="hljs-keyword">var</span> _this = <span class="hljs-variable language_">this</span>;
 
-    axios(&#123;
-        method:<span class="hljs-string">&#x27;POST&#x27;</span>,
-        url: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/update&#x27;</span>,
-        data: _this.updateBrand
-    &#125;).then(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>&#123;
-        <span class="hljs-keyword">if</span>(response.data == <span class="hljs-string">&quot;success&quot;</span>)&#123;
-            _this.dialogUpdateVisible = <span class="hljs-literal">false</span>;
-            _this.selectAll();
-            _this.msgbox(<span class="hljs-string">&quot;修改成功！&quot;</span>);
+    <span class="hljs-title function_">axios</span>(&#123;
+        <span class="hljs-attr">method</span>:<span class="hljs-string">&#x27;POST&#x27;</span>,
+        <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:8080/brand-case/brand/update&#x27;</span>,
+        <span class="hljs-attr">data</span>: _this.<span class="hljs-property">updateBrand</span>
+    &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)&#123;
+        <span class="hljs-keyword">if</span>(response.<span class="hljs-property">data</span> == <span class="hljs-string">&quot;success&quot;</span>)&#123;
+            _this.<span class="hljs-property">dialogUpdateVisible</span> = <span class="hljs-literal">false</span>;
+            _this.<span class="hljs-title function_">selectAll</span>();
+            _this.<span class="hljs-title function_">msgbox</span>(<span class="hljs-string">&quot;修改成功！&quot;</span>);
         &#125;
     &#125;)
 &#125;,</code></pre></div>
@@ -1487,7 +1485,7 @@
 <span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Param;
 <span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Select;
 
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">UserMapper</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserMapper</span> &#123;
     <span class="hljs-comment">/**</span>
 <span class="hljs-comment">     * 用户登录</span>
 <span class="hljs-comment">     * 检查用户名和密码是否正确</span>
@@ -1496,13 +1494,13 @@
 <span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment">     */</span>
     <span class="hljs-meta">@Select(&quot;select * from tb_user where username = #&#123;username&#125; and password = #&#123;password&#125;&quot;)</span>
-    <span class="hljs-function">User <span class="hljs-title">select</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username, <span class="hljs-meta">@Param(&quot;password&quot;)</span> String password)</span></span>;
+    User <span class="hljs-title function_">select</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username, <span class="hljs-meta">@Param(&quot;password&quot;)</span> String password)</span>;
 
 &#125;
 </code></pre></div>
 
 <h5 id="service-7"><a href="#service-7" class="headerlink" title="service"></a>service</h5><p>在<code>src/main/java/com/itheima/service</code>中创建<code>UserService</code>类</p>
-<div class="hljs"><pre><code class="hljs java">SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">SqlSessionFactory</span> <span class="hljs-variable">sqlSessionFactory</span> <span class="hljs-operator">=</span> SqlSessionFactoryUtils.getSqlSessionFactory();
 
 <span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 用户登录方法</span>
@@ -1510,15 +1508,15 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> password</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> User <span class="hljs-title">Login</span><span class="hljs-params">(String username, String password)</span></span>&#123;
-    SqlSession session = sqlSessionFactory.openSession();
-    UserMapper mapper = session.getMapper(UserMapper.class);
-    User user = mapper.select(username, password);
+<span class="hljs-keyword">public</span> User <span class="hljs-title function_">Login</span><span class="hljs-params">(String username, String password)</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+    <span class="hljs-type">UserMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> session.getMapper(UserMapper.class);
+    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> mapper.select(username, password);
 
-    <span class="hljs-keyword">if</span>(user != <span class="hljs-keyword">null</span>)&#123;
+    <span class="hljs-keyword">if</span>(user != <span class="hljs-literal">null</span>)&#123;
         <span class="hljs-keyword">return</span> user;
     &#125;<span class="hljs-keyword">else</span> &#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     &#125;
 &#125;
 </code></pre></div>
@@ -1535,30 +1533,30 @@
 <span class="hljs-keyword">import</span> java.io.IOException;
 
 <span class="hljs-meta">@WebServlet(value = &quot;/login&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LoginServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoginServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
     <span class="hljs-comment">// 因为BrandService可能多次用到 所以变成成员变量 减少创建的次数</span>
-    UserService userservice = <span class="hljs-keyword">new</span> UserService();
+    <span class="hljs-type">UserService</span> <span class="hljs-variable">userservice</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserService</span>();
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
 
 
         System.out.println(<span class="hljs-string">&quot;login&quot;</span>);
         <span class="hljs-comment">//解决POST请求中文乱码问题</span>
         request.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);
 
-        String username = request.getParameter(<span class="hljs-string">&quot;username&quot;</span>);
-        String password = request.getParameter(<span class="hljs-string">&quot;password&quot;</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;username&quot;</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">password</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;password&quot;</span>);
 
-        User user = userservice.Login(username, password);
+        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userservice.Login(username, password);
 
-        <span class="hljs-keyword">if</span>(user != <span class="hljs-keyword">null</span>)&#123;
+        <span class="hljs-keyword">if</span>(user != <span class="hljs-literal">null</span>)&#123;
             <span class="hljs-comment">// 登录成功，页面跳转到了 brand.jsp</span>
             <span class="hljs-comment">// 保存用户的session信息</span>
             <span class="hljs-comment">// 检查是否勾选记住密码</span>
-            String remember = request.getParameter(<span class="hljs-string">&quot;remember&quot;</span>);
+            <span class="hljs-type">String</span> <span class="hljs-variable">remember</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;remember&quot;</span>);
             <span class="hljs-keyword">if</span>(<span class="hljs-string">&quot;1&quot;</span>.equals(remember))&#123;
-                Cookie c_username = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;username&quot;</span>, username);
-                Cookie c_password = <span class="hljs-keyword">new</span> Cookie(<span class="hljs-string">&quot;password&quot;</span>, password);
+                <span class="hljs-type">Cookie</span> <span class="hljs-variable">c_username</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cookie</span>(<span class="hljs-string">&quot;username&quot;</span>, username);
+                <span class="hljs-type">Cookie</span> <span class="hljs-variable">c_password</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cookie</span>(<span class="hljs-string">&quot;password&quot;</span>, password);
                 c_username.setMaxAge(<span class="hljs-number">3600</span>*<span class="hljs-number">24</span>*<span class="hljs-number">7</span>);
                 c_password.setMaxAge(<span class="hljs-number">3600</span>*<span class="hljs-number">24</span>*<span class="hljs-number">7</span>);
 
@@ -1567,12 +1565,12 @@
                 response.addCookie(c_password);
             &#125;
 
-            HttpSession session = request.getSession();
+            <span class="hljs-type">HttpSession</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> request.getSession();
             session.setAttribute(<span class="hljs-string">&quot;user&quot;</span>, user);
 
 
             <span class="hljs-comment">// 获取项目的虚拟路径</span>
-            String contextPath = request.getContextPath();
+            <span class="hljs-type">String</span> <span class="hljs-variable">contextPath</span> <span class="hljs-operator">=</span> request.getContextPath();
             request.getRequestDispatcher( <span class="hljs-string">&quot;/brand.html&quot;</span>).forward(request,response);
 
         &#125;<span class="hljs-keyword">else</span> &#123;
@@ -1585,7 +1583,7 @@
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         doGet(request, response);
     &#125;
 &#125;
@@ -1615,14 +1613,14 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Select(&quot;select * from tb_user where username = #&#123;username&#125;&quot;)</span>
-<span class="hljs-function">User <span class="hljs-title">selectUser</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username)</span></span>;
+User <span class="hljs-title function_">selectUser</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username)</span>;
 
 <span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 用户注册</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> user</span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Insert(&quot;insert into tb_user values (null, #&#123;username&#125;, #&#123;password&#125;)&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">addUser</span><span class="hljs-params">(User user)</span></span>;
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">addUser</span><span class="hljs-params">(User user)</span>;
 </code></pre></div>
 
 <h5 id="service-8"><a href="#service-8" class="headerlink" title="service"></a>service</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
@@ -1630,17 +1628,17 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> user</span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">Register</span><span class="hljs-params">(User user)</span></span>&#123;
-    SqlSession session = sqlSessionFactory.openSession();
-    UserMapper mapper = session.getMapper(UserMapper.class);
-    User u = mapper.selectUser(user.getUsername());
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">Register</span><span class="hljs-params">(User user)</span>&#123;
+    <span class="hljs-type">SqlSession</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sqlSessionFactory.openSession();
+    <span class="hljs-type">UserMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> session.getMapper(UserMapper.class);
+    <span class="hljs-type">User</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> mapper.selectUser(user.getUsername());
 
-    <span class="hljs-keyword">if</span>(u == <span class="hljs-keyword">null</span>)&#123;
+    <span class="hljs-keyword">if</span>(u == <span class="hljs-literal">null</span>)&#123;
         mapper.addUser(user);
         session.commit();
     &#125;
     session.commit();
-    <span class="hljs-keyword">return</span> u == <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">return</span> u == <span class="hljs-literal">null</span>;
 &#125;</code></pre></div>
 
 <h5 id="servlet-8"><a href="#servlet-8" class="headerlink" title="servlet"></a>servlet</h5><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.itheima.web.servlet;
@@ -1657,26 +1655,26 @@
 <span class="hljs-keyword">import</span> java.io.IOException;
 
 <span class="hljs-meta">@WebServlet(value = &quot;/register&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RegisterServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RegisterServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
     <span class="hljs-comment">// 因为UserService可能多次用到 所以变成成员变量 减少创建的次数</span>
-    UserService userservice = <span class="hljs-keyword">new</span> UserService();
+    <span class="hljs-type">UserService</span> <span class="hljs-variable">userservice</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserService</span>();
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
 
         <span class="hljs-comment">//解决POST请求中文乱码问题</span>
         request.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>);
 
-        String username = request.getParameter(<span class="hljs-string">&quot;username&quot;</span>);
-        String password = request.getParameter(<span class="hljs-string">&quot;password&quot;</span>);
-        String checkCode1 = request.getParameter(<span class="hljs-string">&quot;checkCode&quot;</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;username&quot;</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">password</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;password&quot;</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">checkCode1</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;checkCode&quot;</span>);
 
-        User user = <span class="hljs-keyword">new</span> User();
+        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>();
         user.setUsername(username);
         user.setPassword(password);
 
         <span class="hljs-comment">// 获取生成的验证码信息</span>
-        HttpSession session = request.getSession();
-        String checkCode =(String) session.getAttribute(<span class="hljs-string">&quot;checkCode&quot;</span>);
+        <span class="hljs-type">HttpSession</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> request.getSession();
+        <span class="hljs-type">String</span> <span class="hljs-variable">checkCode</span> <span class="hljs-operator">=</span>(String) session.getAttribute(<span class="hljs-string">&quot;checkCode&quot;</span>);
         <span class="hljs-comment">// 比较用户输入的验证码</span>
         <span class="hljs-comment">// 细节：checkCode为程序中定义的变量 比较时放在前面，否则可能出现空指针错误</span>
         <span class="hljs-keyword">if</span>(!checkCode.equals(checkCode1))&#123;
@@ -1687,7 +1685,7 @@
         &#125;
 
 
-        <span class="hljs-keyword">boolean</span> flag = userservice.Register(user);
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">flag</span> <span class="hljs-operator">=</span> userservice.Register(user);
         <span class="hljs-keyword">if</span>(flag)&#123;
             request.setAttribute(<span class="hljs-string">&quot;register_msg&quot;</span>,<span class="hljs-string">&quot;注册成功，请登录！&quot;</span>);
             request.getRequestDispatcher(<span class="hljs-string">&quot;/login.jsp&quot;</span>).forward(request,response);
@@ -1699,7 +1697,7 @@
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         doGet(request, response);
     &#125;
 &#125;
@@ -1754,12 +1752,12 @@
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
-<span class="javascript">    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;changeImgg&quot;</span>).onclick = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;</span>
-<span class="javascript">        <span class="hljs-comment">//路径后面添加时间戳的目的是避免浏览器进行缓存静态资源</span></span>
-<span class="javascript">        <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;checkCodeImg&quot;</span>).src = <span class="hljs-string">&quot;/checkCode?&quot;</span>+<span class="hljs-keyword">new</span> <span class="hljs-built_in">Date</span>().getMilliseconds();</span>
-    &#125;
-<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">    <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;changeImgg&quot;</span>).<span class="hljs-property">onclick</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;</span>
+<span class="language-javascript">        <span class="hljs-comment">//路径后面添加时间戳的目的是避免浏览器进行缓存静态资源</span></span>
+<span class="language-javascript">        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&quot;checkCodeImg&quot;</span>).<span class="hljs-property">src</span> = <span class="hljs-string">&quot;/checkCode?&quot;</span>+<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>().<span class="hljs-title function_">getMilliseconds</span>();</span>
+<span class="language-javascript">    &#125;</span>
+<span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
 
 <h3 id="验证码模块"><a href="#验证码模块" class="headerlink" title="验证码模块"></a>验证码模块</h3><p>借助验证码生成工具</p>
 <p>在<code>src/main/java/com/itheima/util</code>引入生成验证码的类</p>
@@ -1781,27 +1779,27 @@
 <span class="hljs-keyword">import</span> java.io.IOException;
 
 <span class="hljs-meta">@WebServlet(value = &quot;/checkCode&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CheckCodeServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServlet</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CheckCodeServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpServlet</span> &#123;
     <span class="hljs-comment">// 因为BrandService可能多次用到 所以变成成员变量 减少创建的次数</span>
-    <span class="hljs-keyword">private</span> BrandService brandService = <span class="hljs-keyword">new</span> BrandService();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">BrandService</span> <span class="hljs-variable">brandService</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BrandService</span>();
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doGet</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
 
         <span class="hljs-comment">// 生成验证码</span>
         <span class="hljs-comment">// 获取响应输出流</span>
-        ServletOutputStream os = response.getOutputStream();
+        <span class="hljs-type">ServletOutputStream</span> <span class="hljs-variable">os</span> <span class="hljs-operator">=</span> response.getOutputStream();
         <span class="hljs-comment">// 生成验证码图片显示在jsp页面上</span>
-        String checkCode = CheckCodeUtil.outputVerifyImage(<span class="hljs-number">100</span>, <span class="hljs-number">50</span>, os, <span class="hljs-number">4</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">checkCode</span> <span class="hljs-operator">=</span> CheckCodeUtil.outputVerifyImage(<span class="hljs-number">100</span>, <span class="hljs-number">50</span>, os, <span class="hljs-number">4</span>);
 
         <span class="hljs-comment">// 将生成的验证码信息发送到 /register 用于验证用户输入的验证码是否正确</span>
         <span class="hljs-comment">// 将验证码存入session</span>
-        HttpSession codeSession = request.getSession();
+        <span class="hljs-type">HttpSession</span> <span class="hljs-variable">codeSession</span> <span class="hljs-operator">=</span> request.getSession();
         codeSession.setAttribute(<span class="hljs-string">&quot;checkCode&quot;</span>, checkCode);
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doPost</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         doGet(request, response);
     &#125;
 &#125;</code></pre></div>
@@ -1817,21 +1815,21 @@
 <span class="hljs-keyword">import</span> java.io.IOException;
 
 <span class="hljs-comment">//@WebFilter(&quot;/*&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">LoginFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Filter</span> </span>&#123;
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">(FilterConfig config)</span> <span class="hljs-keyword">throws</span> ServletException </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoginFilter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Filter</span> &#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">(FilterConfig config)</span> <span class="hljs-keyword">throws</span> ServletException &#123;
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">destroy</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">destroy</span><span class="hljs-params">()</span> &#123;
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="hljs-keyword">throws</span> ServletException, IOException </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doFilter</span><span class="hljs-params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="hljs-keyword">throws</span> ServletException, IOException &#123;
         <span class="hljs-comment">// 放行登录相关的资源</span>
         String urls[] = &#123;<span class="hljs-string">&quot;/login.jsp&quot;</span>, <span class="hljs-string">&quot;/css/&quot;</span>, <span class="hljs-string">&quot;/imgs/&quot;</span>, <span class="hljs-string">&quot;register.jsp&quot;</span>,<span class="hljs-string">&quot;/checkCode&quot;</span>,<span class="hljs-string">&quot;/register&quot;</span>,<span class="hljs-string">&quot;/login&quot;</span>&#125;;
 
-        HttpServletRequest req = (HttpServletRequest) request;
-        StringBuffer requestURL = req.getRequestURL();
-        String url = requestURL.toString();
+        <span class="hljs-type">HttpServletRequest</span> <span class="hljs-variable">req</span> <span class="hljs-operator">=</span> (HttpServletRequest) request;
+        <span class="hljs-type">StringBuffer</span> <span class="hljs-variable">requestURL</span> <span class="hljs-operator">=</span> req.getRequestURL();
+        <span class="hljs-type">String</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> requestURL.toString();
         <span class="hljs-keyword">for</span>(String u :urls )&#123;
             <span class="hljs-keyword">if</span>(url.contains(u))&#123;
                 chain.doFilter(request,response);
@@ -1840,9 +1838,9 @@
 
         &#125;
 
-        HttpSession session = req.getSession();
-        Object user = session.getAttribute(<span class="hljs-string">&quot;user&quot;</span>);
-        <span class="hljs-keyword">if</span>(user != <span class="hljs-keyword">null</span>)&#123;
+        <span class="hljs-type">HttpSession</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> req.getSession();
+        <span class="hljs-type">Object</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> session.getAttribute(<span class="hljs-string">&quot;user&quot;</span>);
+        <span class="hljs-keyword">if</span>(user != <span class="hljs-literal">null</span>)&#123;
             chain.doFilter(request, response);
         &#125;<span class="hljs-keyword">else</span> &#123;
 

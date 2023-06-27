@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      5.4k 字
+      5.3k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      60
+      59
        分钟
     </span>
   
@@ -256,38 +256,38 @@
 <div class="hljs"><pre><code class="hljs mysql">drop table if exists account;
 create table account
 (
-    id    int primary key AUTO_INCREMENT comment &#39;ID&#39;,
-    name  varchar(10) comment &#39;姓名&#39;,
-    money double(10, 2) comment &#39;余额&#39;
-) comment &#39;账户表&#39;;
+    id    int primary key AUTO_INCREMENT comment &#x27;ID&#x27;,
+    name  varchar(10) comment &#x27;姓名&#x27;,
+    money double(10, 2) comment &#x27;余额&#x27;
+) comment &#x27;账户表&#x27;;
 insert into account(name, money)
-VALUES (&#39;张三&#39;, 2000),
-       (&#39;李四&#39;, 2000);</code></pre></div>
+VALUES (&#x27;张三&#x27;, 2000),
+       (&#x27;李四&#x27;, 2000);</code></pre></div>
 
 
 
 <p>正常的操作下表数据的变化</p>
 <div class="hljs"><pre><code class="hljs mysql">select * from account;
 
-select * from account where name &#x3D; &#39;张三&#39;;
+select * from account where name = &#x27;张三&#x27;;
 
-update account set money &#x3D; money - 1000 where id &#x3D; 1;
+update account set money = money - 1000 where id = 1;
 
-update account set money &#x3D; money + 1000 where id &#x3D; 2;</code></pre></div>
+update account set money = money + 1000 where id = 2;</code></pre></div>
 
 
 
 <p>操作异常情况下的数据情况</p>
-<div class="hljs"><pre><code class="hljs mysql">update account set money &#x3D; money - 1000 where id &#x3D; 1;
+<div class="hljs"><pre><code class="hljs mysql">update account set money = money - 1000 where id = 1;
 error
-update account set money &#x3D; money + 1000 where id &#x3D; 2;</code></pre></div>
+update account set money = money + 1000 where id = 2;</code></pre></div>
 
 <p>在此情况下，第二句sql无法执行到</p>
 <p>这样就会导致张三用户账户的钱少了，但是李四账号并没有收到钱，那么就会出现问题。</p>
-<h3 id="手动控制事务"><a href="#手动控制事务" class="headerlink" title="手动控制事务"></a>手动控制事务</h3><p>1).查看/设置事务提交方式</p>
+<h3 id="手动控制事务"><a href="#手动控制事务" class="headerlink" title="手动控制事务"></a>手动控制事务</h3><p>1).查看&#x2F;设置事务提交方式</p>
 <div class="hljs"><pre><code class="hljs mysql">select @@autocommit;
 
-set @@autocommit &#x3D; 0;</code></pre></div>
+set @@autocommit = 0;</code></pre></div>
 
 <p><img src="/2022/09/27/mysql/OneDrive%20-%20cumt.edu.cn/LAB/note/mysql.assets/image-20220922154213267.png" srcset="/img/loading.gif" alt="image-20220922154213267"></p>
 <p>2).提交事务</p>
@@ -300,7 +300,7 @@ set @@autocommit &#x3D; 0;</code></pre></div>
 <p>上面的过程是将事务的提交设置为手动提交，此时我们执行的DML语句都不会提交, 需要手动的执行commit进行提交。</p>
 </blockquote>
 <h3 id="自动控制事务"><a href="#自动控制事务" class="headerlink" title="自动控制事务"></a>自动控制事务</h3><p>1).开启事务</p>
-<div class="hljs"><pre><code class="hljs mysql">statr&#x2F;begin tranaction</code></pre></div>
+<div class="hljs"><pre><code class="hljs mysql">statr/begin tranaction</code></pre></div>
 
 <p>2).提交事务</p>
 <div class="hljs"><pre><code class="hljs mysql">commit；</code></pre></div>
@@ -311,9 +311,9 @@ set @@autocommit &#x3D; 0;</code></pre></div>
 <p>转账案例实现</p>
 <div class="hljs"><pre><code class="hljs mysql">start transaction;
 -- 从张三账户中转出钱
-update account set money &#x3D; money - 1000 where id &#x3D; 1;
+update account set money = money - 1000 where id = 1;
 -- 向李四账号中转入钱
-update account set money &#x3D; money + 1000 where id &#x3D; 2;
+update account set money = money + 1000 where id = 2;
 
 -- 执行完毕，提交事务
 commit;</code></pre></div>
@@ -401,14 +401,14 @@ commit;</code></pre></div>
 (
     id   int,
     name varchar(10)
-) engine &#x3D; MyISAM;
+) engine = MyISAM;
 
 
 create table my_myisam
 (
     id   int,
     name varchar(10)
-) engine &#x3D; Memory;</code></pre></div>
+) engine = Memory;</code></pre></div>
 
 <h3 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a><strong>InnoDB</strong></h3><p>1). 介绍</p>
 <p>InnoDB是一种兼顾高可靠性和高性能的通用存储引擎，在 MySQL 5.5 之后，InnoDB是默认的MySQL 存储引擎。</p>
@@ -553,7 +553,7 @@ create table my_myisam
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923113007344.png" srcset="/img/loading.gif" alt="image-20220923113007344"></p>
 <p>特点</p>
 <ul>
-<li><p>Hash索引只能用于对等比较(=，in)，不支持范围查询（between，&gt;，&lt; ，…）</p>
+<li><p>Hash索引只能用于对等比较(&#x3D;，in)，不支持范围查询（between，&gt;，&lt; ，…）</p>
 </li>
 <li><p>无法利用索引完成排序操作</p>
 </li>
@@ -632,15 +632,15 @@ create table my_myisam
 <p>聚集索引与二级索引的结构如下：</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923121417420.png" srcset="/img/loading.gif" alt="image-20220923121417420"></p>
 <p>当执行</p>
-<div class="hljs"><pre><code class="hljs mysql">select * from user where name &#x3D; &#39;Arm&#39;;</code></pre></div>
+<div class="hljs"><pre><code class="hljs mysql">select * from user where name = &#x27;Arm&#x27;;</code></pre></div>
 
 <p>通过二级索引获取到其对应的主键索引，再到聚集索引中获取所有的行数据，这种查询过程叫做回表查询。</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923121626216.png" srcset="/img/loading.gif" alt="image-20220923121626216"></p>
 <p>上述查询详细查询过程如下：</p>
 <ul>
-<li><p>由于是根据name字段进行查询，所以先根据name=’Arm’到name字段的二级索引中进行匹配查找。但是在二级索引中只能查找到 Arm 对应的主键值 10。</p>
+<li><p>由于是根据name字段进行查询，所以先根据name&#x3D;’Arm’到name字段的二级索引中进行匹配查找。但是在二级索引中只能查找到 Arm 对应的主键值 10。</p>
 </li>
-<li><p>由于查询的字段是*，二级索引中没有该字段，所以此时需要根据二级索引中存储的主键id = 10去聚集索引中查询</p>
+<li><p>由于查询的字段是*，二级索引中没有该字段，所以此时需要根据二级索引中存储的主键id &#x3D; 10去聚集索引中查询</p>
 </li>
 <li><p>最后获取主键为10的行，返回所有数据</p>
 </li>
@@ -648,19 +648,20 @@ create table my_myisam
 <p>InnoDB存储引擎最小的存储单元-页(16K)，那么高度为2的B+tree树能存储多少条数据？</p>
 <blockquote>
 <p>这里我们<code>先假设B+树高为2</code>，即存在一个根节点和若干个叶子节点，那么这棵B+树的存放总记录数为：根节点指针数*单个叶子节点记录行数。</p>
-<p>上文我们已经说明单个叶子节点（页）中的记录数=16K/1K=16。（这里假设一行记录的数据大小为1k，<code>实际上</code>现在很多互联网业务<code>数据记录大小通常就是1K左右</code>）。</p>
+<p>上文我们已经说明单个叶子节点（页）中的记录数&#x3D;16K&#x2F;1K&#x3D;16。（这里假设一行记录的数据大小为1k，<code>实际上</code>现在很多互联网业务<code>数据记录大小通常就是1K左右</code>）。</p>
 <p>那么现在我们需要计算出<code>非叶子节点能存放多少指针</code>，其实这也很好算，我们假设<code>主键ID为bigint类型，长度为8字节</code>，而<code>指针大小</code>在InnoDB源码中设置为<code>6字节</code>，这样一共14字节，我们一个页中能存放多少这样的单元，其实就代表有多少指针，即<code>16384/14=1170</code>。那么可以算出一棵<code>高度为2的B+树</code>，能存放<code>1170*16=18720条</code>这样的数据记录。</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923124545908.png" srcset="/img/loading.gif" alt="image-20220923124545908"></p>
 </blockquote>
-<h3 id="索引语法"><a href="#索引语法" class="headerlink" title="索引语法"></a>索引语法</h3><p>1) 创建索引</p>
-   <div class="hljs"><pre><code class="hljs mysql">CREATE [ UNIQUE | FULLTEXT ] INDEX index_name ON table_name ( index_col_name,... );</code></pre></div>
-
-<p>2) 查看索引</p>
-   <div class="hljs"><pre><code class="hljs mysql">show INDEX in account;</code></pre></div>
-
-<p>3) 删除索引</p>
-   <div class="hljs"><pre><code class="hljs mysql">DROP INDEX index_name ON table_name ;</code></pre></div>
-
+<h3 id="索引语法"><a href="#索引语法" class="headerlink" title="索引语法"></a>索引语法</h3><ol>
+<li><p>创建索引</p>
+<div class="hljs"><pre><code class="hljs mysql">CREATE [ UNIQUE | FULLTEXT ] INDEX index_name ON table_name ( index_col_name,... );</code></pre></div>
+</li>
+<li><p>查看索引</p>
+<div class="hljs"><pre><code class="hljs mysql">show INDEX in account;</code></pre></div>
+</li>
+<li><p>删除索引</p>
+<div class="hljs"><pre><code class="hljs mysql">DROP INDEX index_name ON table_name ;</code></pre></div></li>
+</ol>
 <p>索引的使用</p>
 <ul>
 <li><p>name字段为姓名字段，该字段的值可能会重复，为该字段创建索引</p>
@@ -673,14 +674,12 @@ create table my_myisam
 <div class="hljs"><pre><code class="hljs mysql">CREATE INDEX idx_user_profession_age_status ON tb_user(profession, age, status);</code></pre></div>
 </li>
 <li><p>为email建立合适的索引来提升查询效率</p>
-<div class="hljs"><pre><code class="hljs mysql">CREATE INDEX idx_user_email ON tb_user(email);</code></pre></div>
-
-</li>
+<div class="hljs"><pre><code class="hljs mysql">CREATE INDEX idx_user_email ON tb_user(email);</code></pre></div></li>
 </ul>
 <p>查看表中已创建的索引</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923130559040.png" srcset="/img/loading.gif" alt="image-20220923130559040"></p>
-<h2 id="SQL性能分析"><a href="#SQL性能分析" class="headerlink" title="SQL性能分析"></a>SQL性能分析</h2><h3 id="SQL的执行频次"><a href="#SQL的执行频次" class="headerlink" title="SQL的执行频次"></a>SQL的执行频次</h3><div class="hljs"><pre><code class="hljs mysql">SHOW GLOBAL  STATUS LIKE &#39;Com_____&#39;;
-SHOW SESSION  STATUS LIKE &#39;Com_____&#39;;</code></pre></div>
+<h2 id="SQL性能分析"><a href="#SQL性能分析" class="headerlink" title="SQL性能分析"></a>SQL性能分析</h2><h3 id="SQL的执行频次"><a href="#SQL的执行频次" class="headerlink" title="SQL的执行频次"></a>SQL的执行频次</h3><div class="hljs"><pre><code class="hljs mysql">SHOW GLOBAL  STATUS LIKE &#x27;Com_____&#x27;;
+SHOW SESSION  STATUS LIKE &#x27;Com_____&#x27;;</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923131257200.png" srcset="/img/loading.gif" alt="image-20220923131257200"></p>
 <h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>慢查询日志记录了所有执行时间超过指定参数（long_query_time，单位：秒，默认10秒）的所有SQL语句的日志。</p>
@@ -696,7 +695,7 @@ SHOW SESSION  STATUS LIKE &#39;Com_____&#39;;</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220923132917533.png" srcset="/img/loading.gif" alt="image-20220923132917533"></p>
 <p>如果没有开启，则可以使用以下语句开启</p>
-<div class="hljs"><pre><code class="hljs mysql">set profiling  &#x3D; 1</code></pre></div>
+<div class="hljs"><pre><code class="hljs mysql">set profiling  = 1</code></pre></div>
 
 <p>执行一系列的业务SQL的操作，然后通过如下指令查看指令的执行耗时：</p>
 <div class="hljs"><pre><code class="hljs mysql">-- 查看每一条SQL的耗时基本情况 
@@ -711,7 +710,7 @@ show profile cpu for query query_id;</code></pre></div>
 <p>使用覆盖索引可以避免回表查询，提高sql查询的效率。</p>
 <h3 id="索引设计原则"><a href="#索引设计原则" class="headerlink" title="索引设计原则"></a>索引设计原则</h3><blockquote>
 <p>1). 针对于数据量较大，且查询比较频繁的表建立索引。</p>
-<p>2). 针对于常作为查询条件（where）、排序（order by）、分组（group     by）操作的字段建立索引。</p>
+<p>2). 针对于常作为查询条件（where）、排序（order by）、分组（group	 by）操作的字段建立索引。</p>
 <p>3). 尽量选择区分度高的列作为索引，尽量建立唯一索引，区分度越高，使用索引的效率越高。</p>
 <p>4). 如果是字符串类型的字段，字段的长度较长，可以针对于字段的特点，建立前缀索引。</p>
 <p>5). 尽量使用联合索引，减少单列索引，查询时，联合索引很多时候可以覆盖索引，节省存储空间，避免回表，提高查询效率。</p>
@@ -722,9 +721,13 @@ show profile cpu for query query_id;</code></pre></div>
 <h2 id="SQL优化"><a href="#SQL优化" class="headerlink" title="SQL优化"></a>SQL优化</h2><h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>如果我们需要一次性往数据库表中插入多条记录，可以从以下三个方面进行优化。</p>
 <ul>
 <li><p>1). 优化方案一</p>
-<div class="hljs"><pre><code>批量插入数据</code></pre></div></li>
+<div class="hljs"><pre><code>  批量插入数据
+</code></pre></div>
+</li>
 <li><p>2). 优化方案二</p>
-<div class="hljs"><pre><code>手动控制事务</code></pre></div></li>
+<div class="hljs"><pre><code>  手动控制事务
+</code></pre></div>
+</li>
 <li><p>3). 优化方案三</p>
 <p>主键顺序插入，性能要高于乱序插入</p>
 <p>如果一次性需要插入大批量数据(比如: 几百万的记录)，使用insert语句插入性能较低，此时可以使</p>
@@ -732,9 +735,9 @@ show profile cpu for query query_id;</code></pre></div>
 <div class="hljs"><pre><code class="hljs mysql">-- 客户端连接服务端时，加上参数 -–local-infile 
 mysql –-local-infile -u root -p 
 -- 设置全局参数local_infile为1，开启从本地加载文件导入数据的开关 
-set global local_infile &#x3D; 1; 
+set global local_infile = 1; 
 -- 执行load指令将准备好的数据，加载到表结构中 
-load data local infile &#39;&#x2F;root&#x2F;sql1.log&#39; into table tb_user fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39; ;</code></pre></div>
+load data local infile &#x27;/root/sql1.log&#x27; into table tb_user fields terminated by &#x27;,&#x27; lines terminated by &#x27;\n&#x27; ;</code></pre></div>
 </li>
 <li><p>4).主键顺序插入，性能要高于乱序插入</p>
 </li>
@@ -757,9 +760,9 @@ load data local infile &#39;&#x2F;root&#x2F;sql1.log&#39; into table tb_user fie
 <ul>
 <li>A. 根据排序字段建立合适的索引，多字段排序时，也遵循最左前缀法则。</li>
 <li>B. 尽量使用覆盖索引。</li>
-<li>C. 多字段排序, 一个升序一个降序，此时需要注意联合索引在创建时的规则（ASC/DESC）。</li>
+<li>C. 多字段排序, 一个升序一个降序，此时需要注意联合索引在创建时的规则（ASC&#x2F;DESC）。</li>
 <li>D. 如果不可避免的出现filesort，大数据量排序时，可以适当增大排序缓冲区大小</li>
-<li>sort_buffer_size(默认256k)。 </li>
+<li>sort_buffer_size(默认256k)。</li>
 </ul>
 <h3 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h3><p>在分组操作中，我们需要通过以下两点进行优化，以提升性能：</p>
 <ul>
@@ -801,7 +804,7 @@ load data local infile &#39;&#x2F;root&#x2F;sql1.log&#39; into table tb_user fie
 <td align="left">InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行累加。</td>
 </tr>
 </tbody></table>
-<p>按照效率排序的话，count(字段) &lt; count(主键 id) &lt; count(1) ≈ count(<em>)，所以尽量使用 count(\</em>)。 </p>
+<p>按照效率排序的话，count(字段) &lt; count(主键 id) &lt; count(1) ≈ count(*)，所以尽量使用 count(*)。 </p>
 
             </div>
             <hr>

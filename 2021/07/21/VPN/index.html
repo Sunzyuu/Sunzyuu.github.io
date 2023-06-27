@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      82
+      83
        分钟
     </span>
   
@@ -249,24 +249,24 @@
               <p>操作系统大作业</p>
 <span id="more"></span>
 
-<h1 id="一、基于UDP-TCP的VPN"><a href="#一、基于UDP-TCP的VPN" class="headerlink" title="一、基于UDP/TCP的VPN"></a>一、基于UDP/TCP的VPN</h1><h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><ul>
+<h1 id="一、基于UDP-x2F-TCP的VPN"><a href="#一、基于UDP-x2F-TCP的VPN" class="headerlink" title="一、基于UDP&#x2F;TCP的VPN"></a>一、基于UDP&#x2F;TCP的VPN</h1><h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><ul>
 <li>tun 接口</li>
 <li>VPN搭建</li>
 <li>隧道转发数据包</li>
 </ul>
-<h3 id="tun-设备"><a href="#tun-设备" class="headerlink" title="tun 设备"></a>tun 设备</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>tun(/tap) 是 Linux 内核 2.4.x 版本之后实现的虚拟网络设备，不同于物理网卡靠硬件网卡实现，tap/tun 虚拟网卡完全由软件来实现，功能和硬件实现完全没有差别，它们都属于网络设备，都可以配置 IP，都归 Linux 网络设备管理模块统一管理。</p>
+<h3 id="tun-设备"><a href="#tun-设备" class="headerlink" title="tun 设备"></a>tun 设备</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>tun(&#x2F;tap) 是 Linux 内核 2.4.x 版本之后实现的虚拟网络设备，不同于物理网卡靠硬件网卡实现，tap&#x2F;tun 虚拟网卡完全由软件来实现，功能和硬件实现完全没有差别，它们都属于网络设备，都可以配置 IP，都归 Linux 网络设备管理模块统一管理。</p>
 <h4 id="TUN-工作机制"><a href="#TUN-工作机制" class="headerlink" title="TUN 工作机制"></a><strong>TUN 工作机制</strong></h4><p>TUN 设备是一种虚拟网络设备，通过此设备，程序可以方便得模拟网络行为。其工作方式如图</p>
 <img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210707171052692.png" srcset="/img/loading.gif" alt="image-20210707171052692" style="zoom:80%;">
 
-<p>Linux Tun/Tap驱动程序为应用程序提供了两种交互方式：虚拟网络接口和字符设备/dev/net/tun。写入字符设备/dev/net/tun的数据会发送到虚拟网络接口中；发送到虚拟网络接口中的数据也会出现在该字符设备上。</p>
-<p>应用程序可以通过标准的Socket API向Tun/Tap接口发送IP数据包，就好像对一个真实的网卡进行操作一样。除了应用程序以外，操作系统也会根据TCP/IP协议栈的处理向Tun/Tap接口发送IP数据包或者以太网数据包，例如ARP或者ICMP数据包。Tun/Tap驱动程序会将Tun/Tap接口收到的数据包原样写入到/dev/net/tun字符设备上，处理Tun/Tap数据的应用程序如VPN程序可以从该设备上读取到数据包，以进行相应处理。</p>
-<p>应用程序也可以通过/dev/net/tun字符设备写入数据包，这种情况下该字符设备上写入的数据包会被发送到Tun/Tap虚拟接口上，进入操作系统的TCP/IP协议栈进行相应处理，就像从物理网卡进入操作系统的数据一样。</p>
+<p>Linux Tun&#x2F;Tap驱动程序为应用程序提供了两种交互方式：虚拟网络接口和字符设备&#x2F;dev&#x2F;net&#x2F;tun。写入字符设备&#x2F;dev&#x2F;net&#x2F;tun的数据会发送到虚拟网络接口中；发送到虚拟网络接口中的数据也会出现在该字符设备上。</p>
+<p>应用程序可以通过标准的Socket API向Tun&#x2F;Tap接口发送IP数据包，就好像对一个真实的网卡进行操作一样。除了应用程序以外，操作系统也会根据TCP&#x2F;IP协议栈的处理向Tun&#x2F;Tap接口发送IP数据包或者以太网数据包，例如ARP或者ICMP数据包。Tun&#x2F;Tap驱动程序会将Tun&#x2F;Tap接口收到的数据包原样写入到&#x2F;dev&#x2F;net&#x2F;tun字符设备上，处理Tun&#x2F;Tap数据的应用程序如VPN程序可以从该设备上读取到数据包，以进行相应处理。</p>
+<p>应用程序也可以通过&#x2F;dev&#x2F;net&#x2F;tun字符设备写入数据包，这种情况下该字符设备上写入的数据包会被发送到Tun&#x2F;Tap虚拟接口上，进入操作系统的TCP&#x2F;IP协议栈进行相应处理，就像从物理网卡进入操作系统的数据一样。</p>
 <h3 id="搭建-VPN"><a href="#搭建-VPN" class="headerlink" title="搭建 VPN"></a>搭建 VPN</h3><p><strong>其工作流程为：</strong></p>
 <p>通过程序可以从<code>/dev/net/tun</code>字符设备中读取<code>(read)</code>或者写入<code>(write)</code>数据，再通过将Tun结合物理网络设备使用,我们可以创建一个点对点的隧道。如下图所示，左边主机上应用程序发送到Tun虚拟设备上的IP数据包被VPN程序通过字符设备接收，然后再通过一个UDP隧道发送到右端的VPN服务器上，VPN服务器将隧道负载中的原始IP数据包写入字符设备，这些IP包就会出现在右侧的Tun虚拟设备上，最后通过操作系统协议栈和socket接口发送到右侧的应用程序上。</p>
 <img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210707180318134.png" srcset="/img/loading.gif" alt="image-20210707180318134" style="zoom:80%;">
 
-<h3 id="通过隧道发送-接收包"><a href="#通过隧道发送-接收包" class="headerlink" title="通过隧道发送/接收包"></a>通过隧道发送/接收包</h3><blockquote>
-<p>当隧道建立后，如何通过隧道发送/接收数据包是需要解决的问题</p>
+<h3 id="通过隧道发送-x2F-接收包"><a href="#通过隧道发送-x2F-接收包" class="headerlink" title="通过隧道发送&#x2F;接收包"></a>通过隧道发送&#x2F;接收包</h3><blockquote>
+<p>当隧道建立后，如何通过隧道发送&#x2F;接收数据包是需要解决的问题</p>
 </blockquote>
 <ul>
 <li><p>通过隧道发送</p>
@@ -301,11 +301,11 @@
 <div class="hljs"><pre><code class="hljs shell">ip tuntap add dev tun0 mode tun</code></pre></div>
 
 <p>当上面的命令执行完再使用<code>ifconfig -a</code>就可以看到刚刚创建的<code>tun0</code>网卡，再使用如下的命令对其配置</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ifconfig</span> tun<span class="hljs-number">0</span> <span class="hljs-number">192.168.53.5</span>/<span class="hljs-number">24</span> up</code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ifconfig</span> tun0 <span class="hljs-number">192.168.53.5</span>/<span class="hljs-number">24</span> up</code></pre></div>
 
 <p>但是这里为了程序执行方便，直接在程序中创建虚拟网卡</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">createTunDevice</span><span class="hljs-params">()</span> </span>&#123;   <span class="hljs-comment">// 创建 tun0 网卡 </span>
-   <span class="hljs-keyword">int</span> tunfd;
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">createTunDevice</span><span class="hljs-params">()</span> &#123;   <span class="hljs-comment">// 创建 tun0 网卡 </span>
+   <span class="hljs-type">int</span> tunfd;
    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ifreq</span> <span class="hljs-title">ifr</span>;</span>
    <span class="hljs-built_in">memset</span>(&amp;ifr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(ifr));
     
@@ -317,10 +317,10 @@
 &#125;</code></pre></div>
 
 <h3 id="socket连接"><a href="#socket连接" class="headerlink" title="socket连接"></a>socket连接</h3><p><code>VPN server</code></p>
-<h4 id="UDP连接"><a href="#UDP连接" class="headerlink" title="UDP连接"></a>UDP连接</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">initUDPServer</span><span class="hljs-params">()</span> </span>&#123;
-    <span class="hljs-keyword">int</span> sockfd;
+<h4 id="UDP连接"><a href="#UDP连接" class="headerlink" title="UDP连接"></a>UDP连接</h4><div class="hljs"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">initUDPServer</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">int</span> sockfd;
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">server</span>;</span>
-    <span class="hljs-keyword">char</span> buff[<span class="hljs-number">100</span>];
+    <span class="hljs-type">char</span> buff[<span class="hljs-number">100</span>];
 
     <span class="hljs-built_in">memset</span>(&amp;server, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(server));
     server.sin_family = AF_INET;       <span class="hljs-comment">// 服务器地址类型为IPV4            </span>
@@ -328,19 +328,19 @@
     server.sin_port = htons(PORT_NUMBER);        <span class="hljs-comment">// 端口号</span>
 
     sockfd = socket(AF_INET, SOCK_DGRAM, <span class="hljs-number">0</span>);  <span class="hljs-comment">//创建UDP的套接字</span>
-    bind(sockfd, (struct sockaddr*) &amp;server, <span class="hljs-keyword">sizeof</span>(server));  <span class="hljs-comment">// socket绑定地址和端口</span>
+    bind(sockfd, (<span class="hljs-keyword">struct</span> sockaddr*) &amp;server, <span class="hljs-keyword">sizeof</span>(server));  <span class="hljs-comment">// socket绑定地址和端口</span>
     <span class="hljs-comment">// 等待连接</span>
     bzero(buff, <span class="hljs-number">100</span>);   <span class="hljs-comment">//清空缓冲区</span>
-    <span class="hljs-keyword">int</span> peerAddrLen = <span class="hljs-keyword">sizeof</span>(struct sockaddr_in); <span class="hljs-comment">//初始化结构体</span>
-    <span class="hljs-keyword">int</span> len = recvfrom(sockfd, buff, <span class="hljs-number">100</span>, <span class="hljs-number">0</span>,(struct sockaddr *) &amp;peerAddr, &amp;peerAddrLen);      <span class="hljs-comment">// 等待接收数据 </span>
+    <span class="hljs-type">int</span> peerAddrLen = <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> sockaddr_in); <span class="hljs-comment">//初始化结构体</span>
+    <span class="hljs-type">int</span> len = recvfrom(sockfd, buff, <span class="hljs-number">100</span>, <span class="hljs-number">0</span>,(<span class="hljs-keyword">struct</span> sockaddr *) &amp;peerAddr, &amp;peerAddrLen);      <span class="hljs-comment">// 等待接收数据 </span>
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Connected with the client: %s\n&quot;</span>, buff);
     <span class="hljs-keyword">return</span> sockfd;
 &#125;</code></pre></div>
 
 <p><code>VPN client</code></p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">connectToUDPServer</span><span class="hljs-params">()</span></span>&#123;    <span class="hljs-comment">//创建socket连接 连接到vpn服务器</span>
-    <span class="hljs-keyword">int</span> sockfd;
-    <span class="hljs-keyword">char</span> *hello=<span class="hljs-string">&quot;Hello&quot;</span>;
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">connectToUDPServer</span><span class="hljs-params">()</span>&#123;    <span class="hljs-comment">//创建socket连接 连接到vpn服务器</span>
+    <span class="hljs-type">int</span> sockfd;
+    <span class="hljs-type">char</span> *hello=<span class="hljs-string">&quot;Hello&quot;</span>;
 	<span class="hljs-comment">//指定服务器的地址结构</span>
     <span class="hljs-built_in">memset</span>(&amp;peerAddr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(peerAddr));
     peerAddr.sin_family = AF_INET;      <span class="hljs-comment">// 服务器地址类型为IPV4   </span>
@@ -350,15 +350,15 @@
     sockfd = socket(AF_INET, SOCK_DGRAM, <span class="hljs-number">0</span>);
   
     sendto(sockfd, hello, <span class="hljs-built_in">strlen</span>(hello), <span class="hljs-number">0</span>,    <span class="hljs-comment">// 连接服务器后发送一个消息 hello</span>
-                (struct sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
+                (<span class="hljs-keyword">struct</span> sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
     <span class="hljs-keyword">return</span> sockfd;
 &#125;</code></pre></div>
 
 <h4 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h4><p><code>VPN server</code></p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">initTCPServer</span><span class="hljs-params">()</span></span>
-<span class="hljs-function"></span>&#123;
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">initTCPServer</span><span class="hljs-params">()</span>
+&#123;
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">sa_server</span>;</span>
-    <span class="hljs-keyword">int</span> listen_sock;
+    <span class="hljs-type">int</span> listen_sock;
 
     listen_sock= socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     CHK_ERR(listen_sock, <span class="hljs-string">&quot;socket&quot;</span>);
@@ -366,7 +366,7 @@
     sa_server.sin_family      = AF_INET;
     sa_server.sin_addr.s_addr = INADDR_ANY;
     sa_server.sin_port        = htons (<span class="hljs-number">4433</span>);
-    <span class="hljs-keyword">int</span> err = bind(listen_sock, (struct sockaddr*)&amp;sa_server, <span class="hljs-keyword">sizeof</span>(sa_server));
+    <span class="hljs-type">int</span> err = bind(listen_sock, (<span class="hljs-keyword">struct</span> sockaddr*)&amp;sa_server, <span class="hljs-keyword">sizeof</span>(sa_server));
     CHK_ERR(err, <span class="hljs-string">&quot;bind&quot;</span>);
     err = listen(listen_sock, <span class="hljs-number">5</span>);
     CHK_ERR(err, <span class="hljs-string">&quot;listen&quot;</span>);
@@ -374,13 +374,13 @@
 &#125;</code></pre></div>
 
 <p><code>VPN client</code></p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">initTCPClient</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* hostname, <span class="hljs-keyword">int</span> port)</span></span>
-<span class="hljs-function"></span>&#123;
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">initTCPClient</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* hostname, <span class="hljs-type">int</span> port)</span>
+&#123;
    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">server_addr</span>;</span>
 
    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">hostent</span>* <span class="hljs-title">hp</span> =</span> gethostbyname(hostname);
 	<span class="hljs-comment">// 创建TCP socket</span>
-   <span class="hljs-keyword">int</span> sockfd= socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+   <span class="hljs-type">int</span> sockfd= socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
    <span class="hljs-comment">// 填写ip 端口 和协议信息</span>
    <span class="hljs-built_in">memset</span> (&amp;server_addr, <span class="hljs-string">&#x27;\0&#x27;</span>, <span class="hljs-keyword">sizeof</span>(server_addr));
@@ -389,7 +389,7 @@
    server_addr.sin_family = AF_INET;
 
    <span class="hljs-comment">// 连接目的地址</span>
-   connect(sockfd, (struct sockaddr*) &amp;server_addr,
+   connect(sockfd, (<span class="hljs-keyword">struct</span> sockaddr*) &amp;server_addr,
            <span class="hljs-keyword">sizeof</span>(server_addr));
    <span class="hljs-keyword">return</span> sockfd;
 &#125;</code></pre></div>
@@ -404,21 +404,21 @@
 <p>函数说明：recv()用来接收远程主机经指定的socket 传来的数据, 并把数据存到由参数buf 指向的内存空间, 参数len 为可接收数据的最大长度. 参数flags 一般设0,  参数from 用来指定欲传送的网络地址, 结构sockaddr 请参考bind(). 参数fromlen 为sockaddr 的结构长度.</p>
 </blockquote>
 <p>从tun0接收数据转发到tunnel</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">tunSelected</span><span class="hljs-params">(<span class="hljs-keyword">int</span> tunfd, <span class="hljs-keyword">int</span> sockfd)</span></span>&#123;
-    <span class="hljs-keyword">int</span>  len;
-    <span class="hljs-keyword">char</span> buff[BUFF_SIZE];  <span class="hljs-comment">//定义接收数的缓冲区</span>
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">tunSelected</span><span class="hljs-params">(<span class="hljs-type">int</span> tunfd, <span class="hljs-type">int</span> sockfd)</span>&#123;
+    <span class="hljs-type">int</span>  len;
+    <span class="hljs-type">char</span> buff[BUFF_SIZE];  <span class="hljs-comment">//定义接收数的缓冲区</span>
 
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Got a packet from TUN\n&quot;</span>);
     bzero(buff, BUFF_SIZE);  <span class="hljs-comment">// 清空缓冲区</span>
     len = read(tunfd, buff, BUFF_SIZE);   <span class="hljs-comment">// 读取来自tun0网卡的数据，保存在缓冲区中</span>
-    sendto(sockfd, buff, len, <span class="hljs-number">0</span>, (struct sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
+    sendto(sockfd, buff, len, <span class="hljs-number">0</span>, (<span class="hljs-keyword">struct</span> sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
     <span class="hljs-comment">// 通过socket发送数据</span>
 &#125;</code></pre></div>
 
 <p>从tunnel接收数据转发到tun0</p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">socketSelected</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> tunfd, <span class="hljs-keyword">int</span> sockfd)</span></span>&#123;
-    <span class="hljs-keyword">int</span>  len;
-    <span class="hljs-keyword">char</span> buff[BUFF_SIZE];
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">socketSelected</span> <span class="hljs-params">(<span class="hljs-type">int</span> tunfd, <span class="hljs-type">int</span> sockfd)</span>&#123;
+    <span class="hljs-type">int</span>  len;
+    <span class="hljs-type">char</span> buff[BUFF_SIZE];
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Got a packet from the tunnel\n&quot;</span>);
     bzero(buff, BUFF_SIZE);
     len = recvfrom(sockfd, buff, BUFF_SIZE, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>); <span class="hljs-comment">// 接收数据至buff，保存数据的长度</span>
@@ -438,8 +438,8 @@
 <p>fd_set</p>
 <p>可以理解为一个集合，这个集合中存放的是文件描述符(file descriptor)，即文件句柄，它用一位来表示一个fd（下面会仔细介绍）</p>
 </blockquote>
-<div class="hljs"><pre><code class="hljs C"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> * argv[])</span> </span>&#123;
-   <span class="hljs-keyword">int</span> tunfd, sockfd;
+<div class="hljs"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span> <span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> * argv[])</span> &#123;
+   <span class="hljs-type">int</span> tunfd, sockfd;
 
    tunfd  = createTunDevice(); <span class="hljs-comment">// 创建tun0网卡 </span>
    sockfd = connectToUDPServer(); <span class="hljs-comment">// 建立socket连接</span>
@@ -463,22 +463,22 @@
 
 
 <h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><p><code>VPN server</code></p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;fcntl.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;arpa/inet.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;linux/if.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;linux/if_tun.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/ioctl.h&gt;</span></span>
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/if.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/if_tun.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/ioctl.h&gt;</span></span>
 
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> PORT_NUMBER 55555</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> BUFF_SIZE 2000</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> PORT_NUMBER 55555</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> BUFF_SIZE 2000</span>
 
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">peerAddr</span>;</span>
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">createTunDevice</span><span class="hljs-params">()</span> </span>&#123;   <span class="hljs-comment">// 创建 tun0 网卡 </span>
-   <span class="hljs-keyword">int</span> tunfd;
+<span class="hljs-type">int</span> <span class="hljs-title function_">createTunDevice</span><span class="hljs-params">()</span> &#123;   <span class="hljs-comment">// 创建 tun0 网卡 </span>
+   <span class="hljs-type">int</span> tunfd;
    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ifreq</span> <span class="hljs-title">ifr</span>;</span>
    <span class="hljs-built_in">memset</span>(&amp;ifr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(ifr));
     
@@ -489,10 +489,10 @@
     <span class="hljs-comment">// 该函数执行完后 执行命令ifconfig tunX 192.168.53.5/24 up 为tun网卡设置IP并开启</span>
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">initUDPServer</span><span class="hljs-params">()</span> </span>&#123;
-    <span class="hljs-keyword">int</span> sockfd;
+<span class="hljs-type">int</span> <span class="hljs-title function_">initUDPServer</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">int</span> sockfd;
     <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">server</span>;</span>
-    <span class="hljs-keyword">char</span> buff[<span class="hljs-number">100</span>];
+    <span class="hljs-type">char</span> buff[<span class="hljs-number">100</span>];
 
     <span class="hljs-built_in">memset</span>(&amp;server, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(server));
     server.sin_family = AF_INET;       <span class="hljs-comment">// 服务器地址类型为IPV4            </span>
@@ -500,29 +500,29 @@
     server.sin_port = htons(PORT_NUMBER);        <span class="hljs-comment">// 端口号</span>
 
     sockfd = socket(AF_INET, SOCK_DGRAM, <span class="hljs-number">0</span>);  <span class="hljs-comment">//创建UDP的套接字</span>
-    bind(sockfd, (struct sockaddr*) &amp;server, <span class="hljs-keyword">sizeof</span>(server));  <span class="hljs-comment">// socket绑定地址和端口</span>
+    bind(sockfd, (<span class="hljs-keyword">struct</span> sockaddr*) &amp;server, <span class="hljs-keyword">sizeof</span>(server));  <span class="hljs-comment">// socket绑定地址和端口</span>
     <span class="hljs-comment">// 等待连接</span>
     bzero(buff, <span class="hljs-number">100</span>);   <span class="hljs-comment">//清空缓冲区</span>
-    <span class="hljs-keyword">int</span> peerAddrLen = <span class="hljs-keyword">sizeof</span>(struct sockaddr_in); <span class="hljs-comment">//初始化结构体</span>
-    <span class="hljs-keyword">int</span> len = recvfrom(sockfd, buff, <span class="hljs-number">100</span>, <span class="hljs-number">0</span>,(struct sockaddr *) &amp;peerAddr, &amp;peerAddrLen);      <span class="hljs-comment">// 等待接收数据 </span>
+    <span class="hljs-type">int</span> peerAddrLen = <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">struct</span> sockaddr_in); <span class="hljs-comment">//初始化结构体</span>
+    <span class="hljs-type">int</span> len = recvfrom(sockfd, buff, <span class="hljs-number">100</span>, <span class="hljs-number">0</span>,(<span class="hljs-keyword">struct</span> sockaddr *) &amp;peerAddr, &amp;peerAddrLen);      <span class="hljs-comment">// 等待接收数据 </span>
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Connected with the client: %s\n&quot;</span>, buff);
     <span class="hljs-keyword">return</span> sockfd;
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">tunSelected</span><span class="hljs-params">(<span class="hljs-keyword">int</span> tunfd, <span class="hljs-keyword">int</span> sockfd)</span></span>&#123;
-    <span class="hljs-keyword">int</span>  len;
-    <span class="hljs-keyword">char</span> buff[BUFF_SIZE];  <span class="hljs-comment">//定义接收数的缓冲区</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">tunSelected</span><span class="hljs-params">(<span class="hljs-type">int</span> tunfd, <span class="hljs-type">int</span> sockfd)</span>&#123;
+    <span class="hljs-type">int</span>  len;
+    <span class="hljs-type">char</span> buff[BUFF_SIZE];  <span class="hljs-comment">//定义接收数的缓冲区</span>
 
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Got a packet from TUN\n&quot;</span>);
     bzero(buff, BUFF_SIZE);  <span class="hljs-comment">// 清空缓冲区</span>
     len = read(tunfd, buff, BUFF_SIZE);   <span class="hljs-comment">// 读取来自tun0网卡的数据，保存在缓冲区中</span>
-    sendto(sockfd, buff, len, <span class="hljs-number">0</span>, (struct sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
+    sendto(sockfd, buff, len, <span class="hljs-number">0</span>, (<span class="hljs-keyword">struct</span> sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
     <span class="hljs-comment">// 通过socket发送数据</span>
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">socketSelected</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> tunfd, <span class="hljs-keyword">int</span> sockfd)</span></span>&#123;
-    <span class="hljs-keyword">int</span>  len;
-    <span class="hljs-keyword">char</span> buff[BUFF_SIZE];
+<span class="hljs-type">void</span> <span class="hljs-title function_">socketSelected</span> <span class="hljs-params">(<span class="hljs-type">int</span> tunfd, <span class="hljs-type">int</span> sockfd)</span>&#123;
+    <span class="hljs-type">int</span>  len;
+    <span class="hljs-type">char</span> buff[BUFF_SIZE];
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Got a packet from the tunnel\n&quot;</span>);
     bzero(buff, BUFF_SIZE);
     len = recvfrom(sockfd, buff, BUFF_SIZE, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>); <span class="hljs-comment">// 接收数据至buff，保存数据的长度</span>
@@ -530,8 +530,8 @@
 &#125;
 
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> * argv[])</span> </span>&#123;
-   <span class="hljs-keyword">int</span> tunfd, sockfd;
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span> <span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> * argv[])</span> &#123;
+   <span class="hljs-type">int</span> tunfd, sockfd;
 
    tunfd  = createTunDevice(); <span class="hljs-comment">// 创建tun0网卡 </span>
    sockfd = connectToUDPServer(); <span class="hljs-comment">// 建立socket连接</span>
@@ -556,22 +556,22 @@
 
 
 <p><code>VPN client</code></p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;fcntl.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;unistd.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;arpa/inet.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;linux/if.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;linux/if_tun.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;sys/ioctl.h&gt;</span></span>
+<div class="hljs"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;fcntl.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;unistd.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;arpa/inet.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/if.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/if_tun.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/ioctl.h&gt;</span></span>
 
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> BUFF_SIZE 2000</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> PORT_NUMBER 55555</span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> SERVER_IP <span class="hljs-meta-string">&quot;10.0.2.8&quot;</span> <span class="hljs-comment">// VPN 服务器ip</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> BUFF_SIZE 2000</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> PORT_NUMBER 55555</span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> SERVER_IP <span class="hljs-string">&quot;10.0.2.8&quot;</span> <span class="hljs-comment">// VPN 服务器ip</span></span>
 <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sockaddr_in</span> <span class="hljs-title">peerAddr</span>;</span>
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">createTunDevice</span><span class="hljs-params">()</span> </span>&#123;   <span class="hljs-comment">// 创建 tun0 网卡 </span>
-   <span class="hljs-keyword">int</span> tunfd;
+<span class="hljs-type">int</span> <span class="hljs-title function_">createTunDevice</span><span class="hljs-params">()</span> &#123;   <span class="hljs-comment">// 创建 tun0 网卡 </span>
+   <span class="hljs-type">int</span> tunfd;
    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ifreq</span> <span class="hljs-title">ifr</span>;</span>
    <span class="hljs-built_in">memset</span>(&amp;ifr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(ifr));
     
@@ -583,9 +583,9 @@
 &#125;
 
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">connectToUDPServer</span><span class="hljs-params">()</span></span>&#123;    <span class="hljs-comment">//创建socket连接 连接到vpn服务器</span>
-    <span class="hljs-keyword">int</span> sockfd;
-    <span class="hljs-keyword">char</span> *hello=<span class="hljs-string">&quot;Hello&quot;</span>;
+<span class="hljs-type">int</span> <span class="hljs-title function_">connectToUDPServer</span><span class="hljs-params">()</span>&#123;    <span class="hljs-comment">//创建socket连接 连接到vpn服务器</span>
+    <span class="hljs-type">int</span> sockfd;
+    <span class="hljs-type">char</span> *hello=<span class="hljs-string">&quot;Hello&quot;</span>;
   <span class="hljs-comment">//指定服务器的地址结构</span>
     <span class="hljs-built_in">memset</span>(&amp;peerAddr, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(peerAddr));
     peerAddr.sin_family = AF_INET;      <span class="hljs-comment">// 服务器地址类型为IPV4   </span>
@@ -595,26 +595,26 @@
     sockfd = socket(AF_INET, SOCK_DGRAM, <span class="hljs-number">0</span>);
   
     sendto(sockfd, hello, <span class="hljs-built_in">strlen</span>(hello), <span class="hljs-number">0</span>,    <span class="hljs-comment">// 连接服务器后发送一个消息 hello</span>
-                (struct sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
+                (<span class="hljs-keyword">struct</span> sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
     <span class="hljs-keyword">return</span> sockfd;
 &#125;
 
 
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">tunSelected</span><span class="hljs-params">(<span class="hljs-keyword">int</span> tunfd, <span class="hljs-keyword">int</span> sockfd)</span></span>&#123;
-    <span class="hljs-keyword">int</span>  len;
-    <span class="hljs-keyword">char</span> buff[BUFF_SIZE];  <span class="hljs-comment">//定义接收数的缓冲区</span>
+<span class="hljs-type">void</span> <span class="hljs-title function_">tunSelected</span><span class="hljs-params">(<span class="hljs-type">int</span> tunfd, <span class="hljs-type">int</span> sockfd)</span>&#123;
+    <span class="hljs-type">int</span>  len;
+    <span class="hljs-type">char</span> buff[BUFF_SIZE];  <span class="hljs-comment">//定义接收数的缓冲区</span>
 
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Got a packet from TUN\n&quot;</span>);
     bzero(buff, BUFF_SIZE);  <span class="hljs-comment">// 清空缓冲区</span>
     len = read(tunfd, buff, BUFF_SIZE);   <span class="hljs-comment">// 读取来自tun0网卡的数据，保存在缓冲区中</span>
-    sendto(sockfd, buff, len, <span class="hljs-number">0</span>, (struct sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
+    sendto(sockfd, buff, len, <span class="hljs-number">0</span>, (<span class="hljs-keyword">struct</span> sockaddr *) &amp;peerAddr, <span class="hljs-keyword">sizeof</span>(peerAddr));
     <span class="hljs-comment">// 通过socket发送数据</span>
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">socketSelected</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> tunfd, <span class="hljs-keyword">int</span> sockfd)</span></span>&#123;
-    <span class="hljs-keyword">int</span>  len;
-    <span class="hljs-keyword">char</span> buff[BUFF_SIZE];
+<span class="hljs-type">void</span> <span class="hljs-title function_">socketSelected</span> <span class="hljs-params">(<span class="hljs-type">int</span> tunfd, <span class="hljs-type">int</span> sockfd)</span>&#123;
+    <span class="hljs-type">int</span>  len;
+    <span class="hljs-type">char</span> buff[BUFF_SIZE];
     <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Got a packet from the tunnel\n&quot;</span>);
     bzero(buff, BUFF_SIZE);
     len = recvfrom(sockfd, buff, BUFF_SIZE, <span class="hljs-number">0</span>, <span class="hljs-literal">NULL</span>, <span class="hljs-literal">NULL</span>); <span class="hljs-comment">// 接收数据至buff，保存数据的长度</span>
@@ -622,8 +622,8 @@
 &#125;
 
 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span> <span class="hljs-params">(<span class="hljs-keyword">int</span> argc, <span class="hljs-keyword">char</span> * argv[])</span> </span>&#123;
-   <span class="hljs-keyword">int</span> tunfd, sockfd;
+<span class="hljs-type">int</span> <span class="hljs-title function_">main</span> <span class="hljs-params">(<span class="hljs-type">int</span> argc, <span class="hljs-type">char</span> * argv[])</span> &#123;
+   <span class="hljs-type">int</span> tunfd, sockfd;
 
    tunfd  = createTunDevice(); <span class="hljs-comment">// 创建tun0网卡 </span>
    sockfd = connectToUDPServer(); <span class="hljs-comment">// 建立socket连接</span>
@@ -656,9 +656,9 @@
 </blockquote>
 <h3 id="网络拓扑图"><a href="#网络拓扑图" class="headerlink" title="网络拓扑图"></a>网络拓扑图</h3><blockquote>
 <p>本次实验需要三台主机，分别作为host U(VPN 用户)，VPN服务, host V(内网主机)。</p>
-<p>host V处于192.168.60.0/24网段，属于内网。</p>
-<p>host U处于10.0.2.0/24网段，属于外网，host V 和 host U在没有VPN的情况下无法通信。</p>
-<p>VPN server有两张网卡，一张网卡的IP地址为192.168.60.1处于192.168.60.0/24网段，作为host V的网关，并可以与其通信；而另一张网卡地址为10.0.2.8属于外网网段，可以与host U通信，同时其作为host U的VPN服务器，实现与host V通信。</p>
+<p>host V处于192.168.60.0&#x2F;24网段，属于内网。</p>
+<p>host U处于10.0.2.0&#x2F;24网段，属于外网，host V 和 host U在没有VPN的情况下无法通信。</p>
+<p>VPN server有两张网卡，一张网卡的IP地址为192.168.60.1处于192.168.60.0&#x2F;24网段，作为host V的网关，并可以与其通信；而另一张网卡地址为10.0.2.8属于外网网段，可以与host U通信，同时其作为host U的VPN服务器，实现与host V通信。</p>
 </blockquote>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210707152524640.png" srcset="/img/loading.gif" alt="image-20210707152524640"></p>
 <h3 id="主机物理网卡配置"><a href="#主机物理网卡配置" class="headerlink" title="主机物理网卡配置"></a>主机物理网卡配置</h3><table>
@@ -671,18 +671,18 @@
 </thead>
 <tbody><tr>
 <td align="center">客户机</td>
-<td align="center">VPN客户机/host U</td>
-<td align="center">10.0.2.7/24</td>
+<td align="center">VPN客户机&#x2F;host U</td>
+<td align="center">10.0.2.7&#x2F;24</td>
 </tr>
 <tr>
 <td align="center">服务器</td>
-<td align="center">VPN服务器/网关</td>
-<td align="center">10.0.2.8/24<br>192.168.60.1/24</td>
+<td align="center">VPN服务器&#x2F;网关</td>
+<td align="center">10.0.2.8&#x2F;24<br>192.168.60.1&#x2F;24</td>
 </tr>
 <tr>
 <td align="center">内网主机</td>
 <td align="center">host V</td>
-<td align="center">192.168.60.101/24</td>
+<td align="center">192.168.60.101&#x2F;24</td>
 </tr>
 </tbody></table>
 <p><strong>tun0 虚拟网卡配置</strong></p>
@@ -697,12 +697,12 @@
 <tbody><tr>
 <td align="center">服务器</td>
 <td align="center">tun0</td>
-<td align="center">192.168.53.1/24</td>
+<td align="center">192.168.53.1&#x2F;24</td>
 </tr>
 <tr>
 <td align="center">客户机</td>
 <td align="center">tun0</td>
-<td align="center">192.168.53.5/24</td>
+<td align="center">192.168.53.5&#x2F;24</td>
 </tr>
 </tbody></table>
 <h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>运行了三台ubuntu的虚拟机，关系如上面描述</p>
@@ -713,25 +713,25 @@
 <p>运行<code>vpnserver</code>程序，运行后会出现一个<code>tun0</code>网卡</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210707225804438.png" srcset="/img/loading.gif" alt="image-20210707225804438"></p>
 <p>使用命令配置<code>tun0</code></p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ifconfig</span> tun<span class="hljs-number">0</span> <span class="hljs-number">192.168.53.1</span>/<span class="hljs-number">24</span> up</code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ifconfig</span> tun0 <span class="hljs-number">192.168.53.1</span>/<span class="hljs-number">24</span> up</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210707230038034.png" srcset="/img/loading.gif" alt="image-20210707230038034"></p>
 <p>由于 VPN Server 需要在私网和隧道之间转发数据包，因此它也需要充当网关，这是通过在 VPN Server 上启用 IP 转发来实现的。</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sysctl</span> net.ipv<span class="hljs-number">4</span>.ip_forward=<span class="hljs-number">1</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs routeros">sysctl net.ipv4.<span class="hljs-attribute">ip_forward</span>=1</code></pre></div>
 
 <h4 id="host-v"><a href="#host-v" class="headerlink" title="host v"></a>host v</h4><p>客户端运行<code>./vpnclient</code>，之后会出现一个<code>tun0</code>接口，然后对其配置</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ifconfig</span> tun<span class="hljs-number">0</span> <span class="hljs-number">192.168.53.5</span>/<span class="hljs-number">24</span> up</code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ifconfig</span> tun0 <span class="hljs-number">192.168.53.5</span>/<span class="hljs-number">24</span> up</code></pre></div>
 
 <img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210707232611251.png" srcset="/img/loading.gif" alt="image-20210707232611251" style="zoom:67%;">
 
-<h4 id="配置路由"><a href="#配置路由" class="headerlink" title="配置路由"></a>配置路由</h4><p>经过以上两步，隧道就建立起来了，然后我们设置路由路径以将预期流量引导到客户端和服务器机器上的隧道。在 host v上，我们将所有进入专用网络 (192.168.60.0/24) 的数据包定向到 tun0 接口，数据包将从该接口通过 VPN 隧道转发。我们使用 route 命令在 host v 上添加以下路由条目：</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">route</span> add -net <span class="hljs-number">192.168.60.0</span>/<span class="hljs-number">24</span> tun<span class="hljs-number">0</span></code></pre></div>
+<h4 id="配置路由"><a href="#配置路由" class="headerlink" title="配置路由"></a>配置路由</h4><p>经过以上两步，隧道就建立起来了，然后我们设置路由路径以将预期流量引导到客户端和服务器机器上的隧道。在 host v上，我们将所有进入专用网络 (192.168.60.0&#x2F;24) 的数据包定向到 tun0 接口，数据包将从该接口通过 VPN 隧道转发。我们使用 route 命令在 host v 上添加以下路由条目：</p>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">route</span> add -net <span class="hljs-number">192.168.60.0</span>/<span class="hljs-number">24</span> tun0</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210707233335994.png" srcset="/img/loading.gif" alt="image-20210707233335994"></p>
-<p>在服务器主机上，将流向 192.168.53.0/24 网络的流量定向到 tun0 接口</p>
+<p>在服务器主机上，将流向 192.168.53.0&#x2F;24 网络的流量定向到 tun0 接口</p>
 <p><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210707233447176.png" srcset="/img/loading.gif" alt="image-20210707233447176"></p>
 <p>内网主机上为了通过 VPN 隧道将 Host V （内网主机）回复发送到 Host U，我们在 Host V 上添加了一个路由条目，它将去往 Host U 网络的数据包路由到 VPN Serve。从 VPN Server，这个数据包将通过 VPN 隧道到达 VPN Client，最终到达 Host U。 下面显示了 Host V 上的路由条目</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">route</span> add -net <span class="hljs-number">192.168.53.0</span>/<span class="hljs-number">24</span> gw <span class="hljs-number">192.168.60.1</span> ens<span class="hljs-number">33</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">route</span> add -net <span class="hljs-number">192.168.53.0</span>/<span class="hljs-number">24</span> gw <span class="hljs-number">192.168.60.1</span> ens33</code></pre></div>
 
 <p><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210707234034756.png" srcset="/img/loading.gif" alt="image-20210707234034756"></p>
 <h2 id="验证通信"><a href="#验证通信" class="headerlink" title="验证通信"></a>验证通信</h2><h3 id="ping-测试"><a href="#ping-测试" class="headerlink" title="ping 测试"></a>ping 测试</h3><p>cliet ping 内网主机</p>
@@ -766,11 +766,11 @@
 <h1 id="二、TSL-VPN"><a href="#二、TSL-VPN" class="headerlink" title="二、TSL VPN"></a>二、TSL VPN</h1><p>有了上面基于TCP的VPN，再做TSL就会简单很多。</p>
 <h2 id="程序实现-1"><a href="#程序实现-1" class="headerlink" title="程序实现"></a>程序实现</h2><h3 id="ssl初始化"><a href="#ssl初始化" class="headerlink" title="ssl初始化"></a>ssl初始化</h3><p>创建SSL数据结构，用于建立TLS连接</p>
 <p><code>VPN server</code></p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function">SSL* <span class="hljs-title">SSLLibInit</span><span class="hljs-params">()</span> </span>&#123;
+<div class="hljs"><pre><code class="hljs c">SSL* <span class="hljs-title function_">SSLLibInit</span><span class="hljs-params">()</span> &#123;
    SSL_METHOD *meth;
    SSL_CTX* ctx;
    SSL *ssl;
-   <span class="hljs-keyword">int</span> err;
+   <span class="hljs-type">int</span> err;
 
    <span class="hljs-comment">// OpenSSL 初始化</span>
    SSL_library_init();
@@ -789,8 +789,8 @@
 &#125;</code></pre></div>
 
 <p><code>VPN client</code></p>
-<div class="hljs"><pre><code class="hljs c"><span class="hljs-function">SSL* <span class="hljs-title">setupTLSClient</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-keyword">char</span>* hostname)</span></span>
-<span class="hljs-function"></span>&#123;
+<div class="hljs"><pre><code class="hljs c">SSL* <span class="hljs-title function_">setupTLSClient</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* hostname)</span>
+&#123;
     <span class="hljs-comment">// OpenSSL 初始化</span>
    SSL_library_init();
    SSL_load_error_strings();
@@ -824,19 +824,19 @@ ssl   = setupTLSClient(hostname);
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;TLSClientsetup initialisation is successful\n&quot;</span>);
 
 <span class="hljs-comment">/*----------------Create a TCP connection ---------------*/</span>
-<span class="hljs-keyword">int</span> sockfd = setupTCPClient(hostname, port);
+<span class="hljs-type">int</span> sockfd = setupTCPClient(hostname, port);
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;TCPClientsetup is successful\n&quot;</span>);
 
 <span class="hljs-comment">/*----------------TLS handshake ---------------------*/</span>
 SSL_set_fd(ssl, sockfd);  <span class="hljs-comment">//绑定TCP连接</span>
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SSL_set_fd() is successful\n&quot;</span>);
-<span class="hljs-keyword">int</span> err = SSL_connect(ssl); CHK_SSL(err);
+<span class="hljs-type">int</span> err = SSL_connect(ssl); CHK_SSL(err);
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SSL connection is successful\n&quot;</span>);
 <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SSL connection using %s\n&quot;</span>, SSL_get_cipher(ssl));</code></pre></div>
 
-<h3 id="数据转发"><a href="#数据转发" class="headerlink" title="数据转发"></a>数据转发</h3><p>数据转发的原理与基于UDP/TCP的VPN 的原理</p>
-<div class="hljs"><pre><code class="hljs C"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">processRequest</span><span class="hljs-params">(<span class="hljs-keyword">int</span> tunfd, SSL* ssl, <span class="hljs-keyword">int</span> sockfd)</span></span>
-<span class="hljs-function"></span>&#123;
+<h3 id="数据转发"><a href="#数据转发" class="headerlink" title="数据转发"></a>数据转发</h3><p>数据转发的原理与基于UDP&#x2F;TCP的VPN 的原理</p>
+<div class="hljs"><pre><code class="hljs C"><span class="hljs-type">void</span> <span class="hljs-title function_">processRequest</span><span class="hljs-params">(<span class="hljs-type">int</span> tunfd, SSL* ssl, <span class="hljs-type">int</span> sockfd)</span>
+&#123;
    <span class="hljs-keyword">while</span>(<span class="hljs-number">1</span>) &#123;
      fd_set readFDSet;
 
@@ -868,23 +868,23 @@ SSL_set_fd(ssl, sockfd);  <span class="hljs-comment">//绑定TCP连接</span>
 </thead>
 <tbody><tr>
 <td align="center">客户机</td>
-<td align="center">VPN客户机/host U</td>
-<td align="center">10.0.2.7/24</td>
+<td align="center">VPN客户机&#x2F;host U</td>
+<td align="center">10.0.2.7&#x2F;24</td>
 </tr>
 <tr>
 <td align="center">服务器</td>
-<td align="center">VPN服务器/网关</td>
-<td align="center">10.0.2.8/24<br>192.168.60.1/24</td>
+<td align="center">VPN服务器&#x2F;网关</td>
+<td align="center">10.0.2.8&#x2F;24<br>192.168.60.1&#x2F;24</td>
 </tr>
 <tr>
 <td align="center">内网主机</td>
 <td align="center">host V</td>
-<td align="center">192.168.60.101/24</td>
+<td align="center">192.168.60.101&#x2F;24</td>
 </tr>
 </tbody></table>
 <h3 id="连通性测试"><a href="#连通性测试" class="headerlink" title="连通性测试"></a>连通性测试</h3><p>配置完各个网卡的IP地址后</p>
 <ul>
-<li><p>host U 可以 ping 通 VPNserver (10.0.2.0/24)</p>
+<li><p>host U 可以 ping 通 VPNserver (10.0.2.0&#x2F;24)</p>
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717190020679.png" srcset="/img/loading.gif" alt="image-20210717190020679" style="zoom:67%;">
 
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210716203822712.png" srcset="/img/loading.gif" alt="image-20210716203822712" style="zoom: 50%;">
@@ -893,14 +893,10 @@ SSL_set_fd(ssl, sockfd);  <span class="hljs-comment">//绑定TCP连接</span>
 <p><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717185939151.png" srcset="/img/loading.gif" alt="image-20210717185939151" style="zoom: 67%;"><img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717185952701.png" srcset="/img/loading.gif" alt="image-20210717185952701" style="zoom:67%;"></p>
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210716203744476.png" srcset="/img/loading.gif" alt="image-20210716203744476" style="zoom: 50%;">
 </li>
-<li><p>host V可以ping 通VPNserver (192.168.60.0/24)</p>
+<li><p>host V可以ping 通VPNserver (192.168.60.0&#x2F;24)</p>
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717190103613.png" srcset="/img/loading.gif" alt="image-20210717190103613" style="zoom:67%;">
 
-<img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210716203807499.png" srcset="/img/loading.gif" alt="image-20210716203807499" style="zoom: 50%;">
-
-
-
-</li>
+<img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210716203807499.png" srcset="/img/loading.gif" alt="image-20210716203807499" style="zoom: 50%;"></li>
 </ul>
 <h3 id="CA和证书设置"><a href="#CA和证书设置" class="headerlink" title="CA和证书设置"></a>CA和证书设置</h3><p>(1)、为 CA 生成一个自签名证书，它将作为根证书，如下所示：</p>
 <div class="hljs"><pre><code class="hljs vim">openssl req -<span class="hljs-keyword">new</span> -x509 -keyout <span class="hljs-keyword">ca</span>.key -out <span class="hljs-keyword">ca</span>.crt -config openssl.<span class="hljs-keyword">cnf</span>
@@ -911,7 +907,7 @@ SSL_set_fd(ssl, sockfd);  <span class="hljs-comment">//绑定TCP连接</span>
 
 
 <p>(2)、接下来，我们使用以下命令为服务器创建一个 RSA 公私钥对</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">openssl</span> genrsa -aes<span class="hljs-number">128</span> -out server.key <span class="hljs-number">1024</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs pgsql">openssl genrsa -aes128 -<span class="hljs-keyword">out</span> <span class="hljs-keyword">server</span>.key <span class="hljs-number">1024</span></code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717192456568.png" srcset="/img/loading.gif" alt="image-20210717192456568"></p>
 <p>(3)、创建一个包含服务器公钥的证书签名请求 (CSR)。 CSR 具有以下详细信息，服务器的通用名称为 <code>sunzy.com</code>：</p>
@@ -934,9 +930,9 @@ cp <span class="hljs-keyword">server</span>.key <span class="hljs-keyword">serve
 
 <p>VPN Server 程序使用这些文件来加载证书和私钥，如下所示</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717105652371.png" srcset="/img/loading.gif" alt="image-20210717105652371"></p>
-<p>(6)、使用名称作为主题字段的哈希存储服务器的证书。这是因为在接收服务器的证书时，TLS 会根据颁发者的身份信息生成一个哈希值，并使用此哈希值在“./cert”文件夹中查找颁发者的证书，命令如下:(以下命令在ca_client 文件下执行)</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">openssl</span> x<span class="hljs-number">509</span> -in ca.crt -noout -subject_hash
-<span class="hljs-attribute">ln</span> -s ca.crt b<span class="hljs-number">4386</span>d<span class="hljs-number">70</span>.<span class="hljs-number">0</span></code></pre></div>
+<p>(6)、使用名称作为主题字段的哈希存储服务器的证书。这是因为在接收服务器的证书时，TLS 会根据颁发者的身份信息生成一个哈希值，并使用此哈希值在“.&#x2F;cert”文件夹中查找颁发者的证书，命令如下:(以下命令在ca_client 文件下执行)</p>
+<div class="hljs"><pre><code class="hljs vim">openssl x509 -in <span class="hljs-keyword">ca</span>.crt -noout -subject_hash
+<span class="hljs-keyword">ln</span> -s <span class="hljs-keyword">ca</span>.crt b4386d70.<span class="hljs-number">0</span></code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717105919161.png" srcset="/img/loading.gif" alt="image-20210717105919161"></p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717200542030.png" srcset="/img/loading.gif" alt="image-20210717200542030"></p>
@@ -946,14 +942,14 @@ cp <span class="hljs-keyword">server</span>.key <span class="hljs-keyword">serve
 <p>执行编译好的程序，此时该程序处于监听状态等待客户端的连接</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717110722763.png" srcset="/img/loading.gif" alt="image-20210717110722763"></p>
 <p>此时该程序将创建一个<code>tun0</code>虚拟网卡，使用以下命令配置网卡信息</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> ifconfig tun<span class="hljs-number">0</span> <span class="hljs-number">192.168.53.1</span>/<span class="hljs-number">24</span> up</code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> ifconfig tun0 <span class="hljs-number">192.168.53.1</span>/<span class="hljs-number">24</span> up</code></pre></div>
 
 <p>配置完后的网卡信息如图：</p>
 <img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717104726586.png" srcset="/img/loading.gif" alt="image-20210717104726586" style="zoom:67%;">
 
 <p>编辑路由表并将设置为转发模式</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> route add –net <span class="hljs-number">192.168.53.0</span>/<span class="hljs-number">24</span> tun<span class="hljs-number">0</span>
-<span class="hljs-attribute">sudo</span> sysctl net.ipv<span class="hljs-number">4</span>.ip_forward=<span class="hljs-number">1</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs routeros">sudo<span class="hljs-built_in"> route </span><span class="hljs-built_in">add</span> –net 192.168.53.0/24 tun0
+sudo sysctl net.ipv4.<span class="hljs-attribute">ip_forward</span>=1</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717092728424.png" srcset="/img/loading.gif" alt="image-20210717092728424"></p>
 <h3 id="VPN-client"><a href="#VPN-client" class="headerlink" title="VPN client"></a>VPN client</h3><p>与服务器上一样，首先编译c程序</p>
@@ -969,11 +965,11 @@ cp <span class="hljs-keyword">server</span>.key <span class="hljs-keyword">serve
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717111535076.png" srcset="/img/loading.gif" alt="image-20210717111535076"></p>
 <p>此时TLS连接已经建立。</p>
 <p>配置tun0和路由表</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> ifconfig tun<span class="hljs-number">0</span> <span class="hljs-number">192.168.53.5</span>/<span class="hljs-number">24</span> up
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> ifconfig tun0 <span class="hljs-number">192.168.53.5</span>/<span class="hljs-number">24</span> up
 <span class="hljs-attribute">sudo</span> route add -net <span class="hljs-number">192.168.60.0</span>/<span class="hljs-number">24</span></code></pre></div>
 
 <h3 id="Host-V"><a href="#Host-V" class="headerlink" title="Host V"></a>Host V</h3><p>要实现内外网主机之间的通信，还需要在内网主机上添加路由表信息</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> route add -net <span class="hljs-number">192.168.53.0</span>/<span class="hljs-number">24</span> gw <span class="hljs-number">192.168.60.1</span> enp<span class="hljs-number">0</span>s<span class="hljs-number">3</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">sudo</span> route add -net <span class="hljs-number">192.168.53.0</span>/<span class="hljs-number">24</span> gw <span class="hljs-number">192.168.60.1</span> enp0s3</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20210717113001100.png" srcset="/img/loading.gif" alt="image-20210717113001100"></p>
 <h3 id="VPN-server和VPN-client-的连接信息"><a href="#VPN-server和VPN-client-的连接信息" class="headerlink" title="VPN server和VPN client 的连接信息"></a>VPN server和VPN client 的连接信息</h3><p><code>VPN server</code></p>
@@ -986,7 +982,7 @@ cp <span class="hljs-keyword">server</span>.key <span class="hljs-keyword">serve
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717104553457.png" srcset="/img/loading.gif" alt="image-20210717104553457" style="zoom:67%;">
 
 <ul>
-<li>内网主机(192.168.60.101) ping 10.0.2.7 </li>
+<li>内网主机(192.168.60.101) ping 10.0.2.7</li>
 </ul>
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717104633291.png" srcset="/img/loading.gif" alt="image-20210717104633291" style="zoom:67%;">
 
@@ -1002,7 +998,7 @@ cp <span class="hljs-keyword">server</span>.key <span class="hljs-keyword">serve
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717114933233.png" srcset="/img/loading.gif" alt="image-20210717114933233" style="zoom: 67%;">
 
 <ul>
-<li>在内网主机Host V 上telnet 客户端HostU </li>
+<li>在内网主机Host V 上telnet 客户端HostU</li>
 </ul>
 <img src="C:/Users/Sunzh/AppData/Roaming/Typora/typora-user-images/image-20210717115511290.png" srcset="/img/loading.gif" alt="image-20210717115511290" style="zoom: 67%;">
 
@@ -1030,7 +1026,7 @@ sudo ./vpnclient_tls sunzy.com <span class="hljs-number">4433</span></code></pre
 <span class="hljs-symbol">sudo</span> ifconfig tun0 <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">53</span>.<span class="hljs-number">5</span>/<span class="hljs-number">24</span> up
 <span class="hljs-symbol">sudo</span> route <span class="hljs-keyword">add</span> -net <span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">60</span>.<span class="hljs-number">0</span>/<span class="hljs-number">24</span></code></pre></div>
 
-<h3 id="内网主机"><a href="#内网主机" class="headerlink" title="内网主机"></a>内网主机</h3><div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">route</span> add -net <span class="hljs-number">192.168.53.0</span>/<span class="hljs-number">24</span> gw <span class="hljs-number">192.168.60.1</span> enp<span class="hljs-number">0</span>s<span class="hljs-number">3</span></code></pre></div>
+<h3 id="内网主机"><a href="#内网主机" class="headerlink" title="内网主机"></a>内网主机</h3><div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">route</span> add -net <span class="hljs-number">192.168.53.0</span>/<span class="hljs-number">24</span> gw <span class="hljs-number">192.168.60.1</span> enp0s3</code></pre></div>
 
 
             </div>

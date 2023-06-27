@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      32
+      33
        分钟
     </span>
   
@@ -248,7 +248,7 @@
             <div class="markdown-body" id="post-body">
               <h1 id="Docker-py"><a href="#Docker-py" class="headerlink" title="Docker-py"></a>Docker-py</h1><p>使用python第三方库docker-py操作docker</p>
 <p>docker-py的地址：<a target="_blank" rel="noopener" href="https://github.com/docker/docker-py">https://github.com/docker/docker-py</a></p>
-<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="1-安装docker-py"><a href="#1-安装docker-py" class="headerlink" title="1.安装docker-py"></a>1.安装docker-py</h3><p>​    pip安装即可，安装最新版</p>
+<h2 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h2><h3 id="1-安装docker-py"><a href="#1-安装docker-py" class="headerlink" title="1.安装docker-py"></a>1.安装docker-py</h3><p>​	pip安装即可，安装最新版</p>
 <div class="hljs"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> docker</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515135319833.png" srcset="/img/loading.gif" alt="image-20220515135319833"></p>
@@ -258,11 +258,11 @@
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140305267.png" srcset="/img/loading.gif" alt="image-20220515140305267"> </p>
 <p>对于linux中配置远程访问就稍微麻烦一点</p>
 <p><strong>方法一</strong></p>
-<p>在/usr/lib/systemd/system/docker.service，配置远程访问。</p>
+<p>在&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;docker.service，配置远程访问。</p>
 <p>主要是在[Service]这个部分，加上下面两个参数</p>
 <div class="hljs"><pre><code class="hljs ini"><span class="hljs-comment"># vim /usr/lib/systemd/system/docker.service</span>
 <span class="hljs-section">[Service]</span>
-ExecStart=
+<span class="hljs-attr">ExecStart</span>=
 <span class="hljs-attr">ExecStart</span>=/usr/bin/dockerd -H tcp://<span class="hljs-number">0.0</span>.<span class="hljs-number">0.0</span>:<span class="hljs-number">2375</span> -H unix://var/run/docker.sock</code></pre></div>
 
 <p>重启</p>
@@ -278,7 +278,7 @@ systemctl restart docker</code></pre></div>
 &#125;</code></pre></div>
 
 <blockquote>
-<p>“unix:///var/run/docker.sock”：unix socket，本地客户端将通过这个来连接 Docker Daemon。<br>“tcp://0.0.0.0:2375”：tcp socket，表示允许任何远程客户端通过 2375 端口连接 Docker Daemon。</p>
+<p>“unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock”：unix socket，本地客户端将通过这个来连接 Docker Daemon。<br>“tcp:&#x2F;&#x2F;0.0.0.0:2375”：tcp socket，表示允许任何远程客户端通过 2375 端口连接 Docker Daemon。</p>
 </blockquote>
 <p>修改配置以后</p>
 <p>然后让docker重新读取配置文件,并重启docker服务</p>
@@ -292,10 +292,10 @@ root      <span class="hljs-number">44221</span>      <span class="hljs-number">
 <p>Docker守护进程打开一个HTTP Socket,这样才能实现远程通信</p>
 <p>当开启远程访问后，可以再浏览器中查看docker服务器上的相关信息，并且该API遵循RESTful API标准</p>
 <ul>
-<li><p>查看当前版本：<a target="_blank" rel="noopener" href="http://IP:2375/version">http://IP:2375/version</a></p>
+<li><p>查看当前版本：<a target="_blank" rel="noopener" href="http://ip:2375/version">http://IP:2375/version</a></p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141120592.png" srcset="/img/loading.gif" alt="image-20220515141120592"></p>
 </li>
-<li><p>查看所有镜像信息：<a target="_blank" rel="noopener" href="http://IP:2375/images/json">http://IP:2375/images/json</a></p>
+<li><p>查看所有镜像信息：<a target="_blank" rel="noopener" href="http://ip:2375/images/json">http://IP:2375/images/json</a></p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515140906433.png" srcset="/img/loading.gif" alt="image-20220515140906433"></p>
 </li>
 <li><p>查看已启动容器信息：<a target="_blank" rel="noopener" href="http://127.0.0.1:2375/containers/json">http://127.0.0.1:2375/containers/json</a></p>
@@ -316,24 +316,24 @@ root      <span class="hljs-number">44221</span>      <span class="hljs-number">
 bcdedit /set hypervisorlaunchtype off</code></pre></div>
 
 <p>当需要使用VM时，执行关闭Hyper-V命令即可</p>
-<h5 id="配置国内镜像源"><a href="#配置国内镜像源" class="headerlink" title="配置国内镜像源"></a>配置国内镜像源</h5><p>settings=&gt;Dokcer engine修改配置内容</p>
-<div class="hljs"><pre><code class="hljs json">&#123;
-  <span class="hljs-attr">&quot;builder&quot;</span>: &#123;
-    <span class="hljs-attr">&quot;gc&quot;</span>: &#123;
-      <span class="hljs-attr">&quot;defaultKeepStorage&quot;</span>: <span class="hljs-string">&quot;20GB&quot;</span>,
-      <span class="hljs-attr">&quot;enabled&quot;</span>: <span class="hljs-literal">true</span>
-    &#125;
-  &#125;,
-  <span class="hljs-attr">&quot;experimental&quot;</span>: <span class="hljs-literal">false</span>,
-  <span class="hljs-attr">&quot;features&quot;</span>: &#123;
-    <span class="hljs-attr">&quot;buildkit&quot;</span>: <span class="hljs-literal">true</span>
-  &#125;,
-  <span class="hljs-attr">&quot;registry-mirrors&quot;</span>: [
-    <span class="hljs-string">&quot;https://registry.docker-cn.com&quot;</span>,
-    <span class="hljs-string">&quot;http://hub-mirror.c.163.com&quot;</span>,
+<h5 id="配置国内镜像源"><a href="#配置国内镜像源" class="headerlink" title="配置国内镜像源"></a>配置国内镜像源</h5><p>settings&#x3D;&gt;Dokcer engine修改配置内容</p>
+<div class="hljs"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span>
+  <span class="hljs-attr">&quot;builder&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>
+    <span class="hljs-attr">&quot;gc&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>
+      <span class="hljs-attr">&quot;defaultKeepStorage&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;20GB&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;enabled&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+    <span class="hljs-punctuation">&#125;</span>
+  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;experimental&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;features&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span>
+    <span class="hljs-attr">&quot;buildkit&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span>
+  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;registry-mirrors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;https://registry.docker-cn.com&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;http://hub-mirror.c.163.com&quot;</span><span class="hljs-punctuation">,</span>
     <span class="hljs-string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span>
-  ]
-&#125;</code></pre></div>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">&#125;</span></code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515141737016.png" srcset="/img/loading.gif" alt="image-20220515141737016"></p>
 <h5 id="docker配置软链接"><a href="#docker配置软链接" class="headerlink" title="docker配置软链接"></a>docker配置软链接</h5><p>由于Docker Desktop默认安装在C盘，所以下载的镜像也都保存在C盘，由于镜像文件一般很大，很容易爆盘，所以需要为保存镜像的文件夹创建一个软链接，将镜像保存到其他盘。<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/343278599">参考</a></p>
@@ -360,7 +360,7 @@ bcdedit /set hypervisorlaunchtype off</code></pre></div>
 <h3 id="image相关操作"><a href="#image相关操作" class="headerlink" title="image相关操作"></a>image相关操作</h3><p>进入docker库的imges.py中可以看到与镜像相关的所有操作，包括在shell中使用的build、pull、push、search等操作</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515144118231.png" srcset="/img/loading.gif" alt="image-20220515144118231"></p>
 <h4 id="list"><a href="#list" class="headerlink" title="list()"></a>list()</h4><p>查看源码，可知有三个可选参数</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">list</span>(<span class="hljs-params">self, name=<span class="hljs-literal">None</span>, <span class="hljs-built_in">all</span>=<span class="hljs-literal">False</span>, filters=<span class="hljs-literal">None</span></span>):</span>
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">list</span>(<span class="hljs-params">self, name=<span class="hljs-literal">None</span>, <span class="hljs-built_in">all</span>=<span class="hljs-literal">False</span>, filters=<span class="hljs-literal">None</span></span>):
     <span class="hljs-string">&quot;&quot;&quot;</span>
 <span class="hljs-string">    List images on the server.</span>
 <span class="hljs-string"></span>
@@ -387,7 +387,7 @@ bcdedit /set hypervisorlaunchtype off</code></pre></div>
 
 client = docker.from_env()
 imagesList = client.images.<span class="hljs-built_in">list</span>()
-print(imagesList)</code></pre></div>
+<span class="hljs-built_in">print</span>(imagesList)</code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515143446882.png" srcset="/img/loading.gif" alt="image-20220515143446882"></p>
 <h4 id="get"><a href="#get" class="headerlink" title="get()"></a>get()</h4><p>该函数只有一个参数name，镜像名称</p>
@@ -395,7 +395,7 @@ print(imagesList)</code></pre></div>
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> docker
 client = docker.from_env()
 mysqlImage = client.images.get(<span class="hljs-string">&quot;mysql&quot;</span>)
-print(mysqlImage)</code></pre></div>
+<span class="hljs-built_in">print</span>(mysqlImage)</code></pre></div>
 
 <h4 id="search"><a href="#search" class="headerlink" title="search()"></a>search()</h4><p>与docker search 命令相同</p>
 <div class="hljs"><pre><code class="hljs stylus">searchList = client<span class="hljs-selector-class">.images</span><span class="hljs-selector-class">.search</span>(<span class="hljs-string">&quot;nginx&quot;</span>)
@@ -438,8 +438,8 @@ to a single container port. For example,
 <h4 id="get-1"><a href="#get-1" class="headerlink" title="get()"></a>get()</h4><p>获取容器对象</p>
 <div class="hljs"><pre><code class="hljs python">docker_container_id = <span class="hljs-string">&quot;236efe761aeb&quot;</span>
 container = client.containers.get(docker_container_id)
-print(container.<span class="hljs-built_in">id</span>)
-print(container.attrs) <span class="hljs-comment"># 获取容器的详细信息</span></code></pre></div>
+<span class="hljs-built_in">print</span>(container.<span class="hljs-built_in">id</span>)
+<span class="hljs-built_in">print</span>(container.attrs) <span class="hljs-comment"># 获取容器的详细信息</span></code></pre></div>
 
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220515163148958.png" srcset="/img/loading.gif" alt="image-20220515163148958"></p>
 <h4 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h4><p>进入容器内部执行命令，与下面的命令作用相同</p>
@@ -456,7 +456,7 @@ container.exec_run(command)</code></pre></div>
 <h3 id="network相关操作"><a href="#network相关操作" class="headerlink" title="network相关操作"></a>network相关操作</h3><h4 id="create"><a href="#create" class="headerlink" title="create"></a>create</h4><p>使用默认参数，桥接模式创建网卡</p>
 <div class="hljs"><pre><code class="hljs python">client.networks.create(<span class="hljs-string">&quot;net1&quot;</span>, driver=<span class="hljs-string">&quot;bridge&quot;</span>)</code></pre></div>
 
-<p>使用自定义IPAM配置创建更高级的网络。例如，将子网设置为192.168.52.0/24和网关地址为192.168.52.254</p>
+<p>使用自定义IPAM配置创建更高级的网络。例如，将子网设置为192.168.52.0&#x2F;24和网关地址为192.168.52.254</p>
 <div class="hljs"><pre><code class="hljs routeros">ipam_pool = docker.types.IPAMPool(
     <span class="hljs-attribute">subnet</span>=<span class="hljs-string">&#x27;192.168.52.0/24&#x27;</span>,
     <span class="hljs-attribute">gateway</span>=<span class="hljs-string">&#x27;192.168.52.254&#x27;</span>
@@ -473,12 +473,12 @@ client.networks.create(
 
 
 
-<h1 id="创建kali攻击机镜像"><a href="#创建kali攻击机镜像" class="headerlink" title="创建kali攻击机镜像"></a>创建kali攻击机镜像</h1><h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><div class="hljs"><pre><code class="hljs nginx"><span class="hljs-attribute">docker</span> pull kalilinux/kali-rolling</code></pre></div>
+<h1 id="创建kali攻击机镜像"><a href="#创建kali攻击机镜像" class="headerlink" title="创建kali攻击机镜像"></a>创建kali攻击机镜像</h1><h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><div class="hljs"><pre><code class="hljs bash">docker pull kalilinux/kali-rolling</code></pre></div>
 
 <p>查看下载的镜像</p>
 <div class="hljs"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker images</span></code></pre></div>
 
-<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kalilinux/kali-rolling /bin/bash</code></pre></div>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><div class="hljs"><pre><code class="hljs dockerfile">docker <span class="hljs-keyword">run</span><span class="language-bash"> -itd -p 3399:3389 kalilinux/kali-rolling /bin/bash</span></code></pre></div>
 
 <p>查看容器id</p>
 <div class="hljs"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker ps</span></code></pre></div>
@@ -488,9 +488,9 @@ client.networks.create(
 
 <h2 id="安装基础环境包"><a href="#安装基础环境包" class="headerlink" title="安装基础环境包"></a>安装基础环境包</h2><p>❗需要关闭防火墙或者打开3399端口，否则无法连接</p>
 <p>首先安装vim</p>
-<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y upgrade
-apt-<span class="hljs-builtin-name">get</span> update --fix-missing	
-apt-<span class="hljs-builtin-name">get</span> install vim</code></pre></div>
+<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-built_in">get</span> -y update &amp;&amp; apt-<span class="hljs-built_in">get</span> -y<span class="hljs-built_in"> upgrade</span>
+<span class="hljs-built_in"></span>apt-<span class="hljs-built_in">get</span> update --fix-missing	
+apt-<span class="hljs-built_in">get</span> install vim</code></pre></div>
 
 <p>修改镜像源</p>
 <div class="hljs"><pre><code class="hljs awk">vim <span class="hljs-regexp">/etc/</span>apt/sources.list
@@ -500,17 +500,17 @@ deb http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rollin
 deb-src http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-rolling main non-free contrib</code></pre></div>
 
 <p>安装基础环境包</p>
-<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> -y update &amp;&amp; apt-<span class="hljs-builtin-name">get</span> -y<span class="hljs-built_in"> upgrade </span>&amp;&amp; \
-   <span class="hljs-attribute">DEBIAN_FRONTEND</span>=noninteractive apt-<span class="hljs-builtin-name">get</span> install -y \
+<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-built_in">get</span> -y update &amp;&amp; apt-<span class="hljs-built_in">get</span> -y<span class="hljs-built_in"> upgrade </span>&amp;&amp; \
+   <span class="hljs-attribute">DEBIAN_FRONTEND</span>=noninteractive apt-<span class="hljs-built_in">get</span> install -y \
    kali-tools-top10 \
    pciutils \
    iputils-ping \
    bash-completion &amp;&amp; \
-   apt-<span class="hljs-builtin-name">get</span> autoremove -y &amp;&amp; \
-   apt-<span class="hljs-builtin-name">get</span> clean</code></pre></div>
+   apt-<span class="hljs-built_in">get</span> autoremove -y &amp;&amp; \
+   apt-<span class="hljs-built_in">get</span> clean</code></pre></div>
 
 <h2 id="生成新镜像"><a href="#生成新镜像" class="headerlink" title="生成新镜像"></a>生成新镜像</h2><p>待上面的所有程序安装完成后，打包生成新镜像</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> commit f<span class="hljs-number">16618</span>e<span class="hljs-number">0</span>fda<span class="hljs-number">5</span> kali-<span class="hljs-number">2021</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> commit f16618e0fda5 kali-<span class="hljs-number">2021</span></code></pre></div>
 
 
 
@@ -522,9 +522,9 @@ deb-src http:<span class="hljs-regexp">//mi</span>rrors.ustc.edu.cn/kali kali-ro
 <h3 id="安装桌面服务"><a href="#安装桌面服务" class="headerlink" title="安装桌面服务"></a>安装桌面服务</h3><p><strong>●</strong> kali-desktop-xfce ：安装远程桌面环境</p>
 <p><strong>●</strong> xrdp ：远程桌面服务</p>
 <p><strong>●</strong> xorg：xorg是x11的一个实现，xorg提供X server</p>
-<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-builtin-name">get</span> update
+<div class="hljs"><pre><code class="hljs routeros">apt-<span class="hljs-built_in">get</span> update
 
-apt-<span class="hljs-builtin-name">get</span> -y install kali-desktop-xfce xorg xrdp</code></pre></div>
+apt-<span class="hljs-built_in">get</span> -y install kali-desktop-xfce xorg xrdp</code></pre></div>
 
 <p>配置xrdp实现远程连接图形界面：</p>
 <div class="hljs"><pre><code class="hljs 1c">sed -i &#x27;s/port=<span class="hljs-number">3399</span>/port=<span class="hljs-number">3389</span>/g&#x27; /etc/xrdp/xrdp.ini
@@ -546,9 +546,9 @@ service xrdp restart</code></pre></div>
 
 <p>所有使用Dockerfile完成这两步操作</p>
 <div class="hljs"><pre><code class="hljs dockerfile"><span class="hljs-keyword">FROM</span> kali-attack:latest
-<span class="hljs-keyword">COPY</span><span class="bash"> run.sh /home/run.sh</span>
-<span class="hljs-keyword">RUN</span><span class="bash"> chmod +x /home/run.sh</span>
-<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-string">&quot;-c&quot;</span>,<span class="hljs-string">&quot;/home/run.sh &amp;&amp; tail -f /dev/null&quot;</span>]</span></code></pre></div>
+<span class="hljs-keyword">COPY</span><span class="language-bash"> run.sh /home/run.sh</span>
+<span class="hljs-keyword">RUN</span><span class="language-bash"> <span class="hljs-built_in">chmod</span> +x /home/run.sh</span>
+<span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;/bin/bash&quot;</span>,<span class="hljs-string">&quot;-c&quot;</span>,<span class="hljs-string">&quot;/home/run.sh &amp;&amp; tail -f /dev/null&quot;</span>]</span></code></pre></div>
 
 <p> 没有<code>tail -f /dev/null</code>会导致启动容器后自动退出无法使用，<a target="_blank" rel="noopener" href="https://yeasy.gitbook.io/docker_practice/image/dockerfile/cmd">原因</a>可能如下</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220305103247695.png" srcset="/img/loading.gif" alt="image-20220305103247695"></p>
@@ -560,10 +560,10 @@ sed -i <span class="hljs-string">&#x27;s/port=3399/port=3389/g&#x27;</span> /etc
 service xrdp restart</code></pre></div>
 
 <p>使用</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> build -t kali-attack<span class="hljs-number">2</span> .</code></pre></div>
+<div class="hljs"><pre><code class="hljs erlang">docker build -t kali-attack2 .</code></pre></div>
 
 <p>创建镜像，之后创建容器</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-attack<span class="hljs-number">2</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">docker</span> run -itd -p <span class="hljs-number">3399</span>:<span class="hljs-number">3389</span> kali-attack2</code></pre></div>
 
 <p>这样就可以直接使用mstvc.exe连接kali桌面</p>
 <div class="hljs"><pre><code class="hljs avrasm"><span class="hljs-symbol">username:</span>root
@@ -575,9 +575,9 @@ service xrdp restart</code></pre></div>
 <p>本文使用的的windows docker版本大于18.03可以直接使用<code>host.docker.internal</code>访问宿主机网络资源</p>
 <p>其他操作系统的可以<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4a358a120983">参考</a></p>
 <h1 id="docker容器安装vim出错"><a href="#docker容器安装vim出错" class="headerlink" title="docker容器安装vim出错"></a>docker容器安装vim出错</h1><p>报错信息如下</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">ncurses</span>-base : Breaks: libtinfo<span class="hljs-number">5</span> (&lt; <span class="hljs-number">6</span>.<span class="hljs-number">1</span>) but <span class="hljs-number">6</span>.<span class="hljs-number">0</span>+<span class="hljs-number">20161126</span>-<span class="hljs-number">1</span>+deb<span class="hljs-number">9</span>u<span class="hljs-number">2</span> is to be installed
-<span class="hljs-attribute">E</span>: Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages.
-<span class="hljs-attribute">E</span>: Unable to correct dependencies</code></pre></div>
+<div class="hljs"><pre><code class="hljs mipsasm">ncurses-<span class="hljs-keyword">base </span>: <span class="hljs-keyword">Breaks: </span>libtinfo5 (&lt; <span class="hljs-number">6</span>.<span class="hljs-number">1</span>) <span class="hljs-keyword">but </span><span class="hljs-number">6</span>.<span class="hljs-number">0</span>+<span class="hljs-number">20161126</span><span class="hljs-number">-1</span>+deb9u2 is to <span class="hljs-keyword">be </span><span class="hljs-keyword">installed</span>
+<span class="hljs-keyword"></span>E: Error, pkgProblemResolver::Resolve generated <span class="hljs-keyword">breaks, </span>this may <span class="hljs-keyword">be </span>caused <span class="hljs-keyword">by </span>held packages.
+E: Unable to correct dependencies</code></pre></div>
 
 <p>直接使用apt安装此包即可</p>
 <div class="hljs"><pre><code class="hljs vim">apt <span class="hljs-keyword">update</span>

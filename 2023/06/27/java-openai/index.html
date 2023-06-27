@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：37 分钟前
                 
               </p>
             
@@ -280,24 +280,24 @@
 <p>准备好openai-key，官网<a target="_blank" rel="noopener" href="https://platform.openai.com/account/api-keys">https://platform.openai.com/account/api-keys</a></p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230627195547417.png" srcset="/img/loading.gif" alt="image-20230627195547417"></p>
 <h2 id="使用openai-gpt3-java"><a href="#使用openai-gpt3-java" class="headerlink" title="使用openai-gpt3-java"></a>使用openai-gpt3-java</h2><p>代码如下</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> GlobalResult <span class="hljs-title">chat</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> JSONObject jsonObject)</span> </span>&#123;
-    String message = jsonObject.getString(<span class="hljs-string">&quot;message&quot;</span>);
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> GlobalResult <span class="hljs-title function_">chat</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> JSONObject jsonObject)</span> &#123;
+    <span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> jsonObject.getString(<span class="hljs-string">&quot;message&quot;</span>);
     <span class="hljs-keyword">if</span> (StringUtils.isBlank(message)) &#123;
-        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;参数异常！&quot;</span>);
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;参数异常！&quot;</span>);
     &#125;
-    ChatMessage chatMessage = <span class="hljs-keyword">new</span> ChatMessage(<span class="hljs-string">&quot;user&quot;</span>, message);
-    List&lt;ChatMessage&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(<span class="hljs-number">4</span>);
+    <span class="hljs-type">ChatMessage</span> <span class="hljs-variable">chatMessage</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ChatMessage</span>(<span class="hljs-string">&quot;user&quot;</span>, message);
+    List&lt;ChatMessage&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(<span class="hljs-number">4</span>);
     list.add(chatMessage);
-    OpenAiService service = <span class="hljs-keyword">new</span> OpenAiService(token, Duration.ofSeconds(<span class="hljs-number">180</span>));
-    ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
+    <span class="hljs-type">OpenAiService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OpenAiService</span>(token, Duration.ofSeconds(<span class="hljs-number">180</span>));
+    <span class="hljs-type">ChatCompletionRequest</span> <span class="hljs-variable">completionRequest</span> <span class="hljs-operator">=</span> ChatCompletionRequest.builder()
         .model(<span class="hljs-string">&quot;gpt-3.5-turbo&quot;</span>)
-        .stream(<span class="hljs-keyword">true</span>)
+        .stream(<span class="hljs-literal">true</span>)
         .messages(list)
         .build();
     service.streamChatCompletion(completionRequest).doOnError(Throwable::printStackTrace)
         .blockingForEach(chunk -&gt; &#123;
-            String text = chunk.getChoices().get(<span class="hljs-number">0</span>).getMessage().getContent();
-            <span class="hljs-keyword">if</span> (text == <span class="hljs-keyword">null</span>) &#123;
+            <span class="hljs-type">String</span> <span class="hljs-variable">text</span> <span class="hljs-operator">=</span> chunk.getChoices().get(<span class="hljs-number">0</span>).getMessage().getContent();
+            <span class="hljs-keyword">if</span> (text == <span class="hljs-literal">null</span>) &#123;
                 <span class="hljs-keyword">return</span>;
             &#125;
             System.out.print(text);
@@ -310,23 +310,23 @@
 <p>但是上述代码出现错误，原因是连接超时，应该就是代理出现了问题，虽然我开启了全局系统代理也没法解决。</p>
 <p>解决方法如下，添加请求代理的配置</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testOpenAi</span><span class="hljs-params">()</span> </span>&#123;
-    ObjectMapper mapper = defaultObjectMapper();
-    Proxy proxy = <span class="hljs-keyword">new</span> Proxy(Proxy.Type.HTTP, <span class="hljs-keyword">new</span> InetSocketAddress(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">7890</span>));
-    OkHttpClient client =  defaultClient(token,Duration.ofSeconds(<span class="hljs-number">10000</span>))
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testOpenAi</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> defaultObjectMapper();
+    <span class="hljs-type">Proxy</span> <span class="hljs-variable">proxy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Proxy</span>(Proxy.Type.HTTP, <span class="hljs-keyword">new</span> <span class="hljs-title class_">InetSocketAddress</span>(<span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">7890</span>));
+    <span class="hljs-type">OkHttpClient</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span>  defaultClient(token,Duration.ofSeconds(<span class="hljs-number">10000</span>))
         .newBuilder()
         .proxy(proxy)
         .build();
-    Retrofit retrofit = defaultRetrofit(client, mapper);
-    OpenAiApi api = retrofit.create(OpenAiApi.class);
-    String message = <span class="hljs-string">&quot;hello!&quot;</span>;
+    <span class="hljs-type">Retrofit</span> <span class="hljs-variable">retrofit</span> <span class="hljs-operator">=</span> defaultRetrofit(client, mapper);
+    <span class="hljs-type">OpenAiApi</span> <span class="hljs-variable">api</span> <span class="hljs-operator">=</span> retrofit.create(OpenAiApi.class);
+    <span class="hljs-type">String</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;hello!&quot;</span>;
     <span class="hljs-keyword">if</span> (StringUtils.isBlank(message)) &#123;
-        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">&quot;参数异常！&quot;</span>);
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;参数异常！&quot;</span>);
     &#125;
-    ChatMessage chatMessage = <span class="hljs-keyword">new</span> ChatMessage(<span class="hljs-string">&quot;user&quot;</span>, message);
-    List&lt;ChatMessage&gt; list = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;(<span class="hljs-number">4</span>);
+    <span class="hljs-type">ChatMessage</span> <span class="hljs-variable">chatMessage</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ChatMessage</span>(<span class="hljs-string">&quot;user&quot;</span>, message);
+    List&lt;ChatMessage&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(<span class="hljs-number">4</span>);
     list.add(chatMessage);
-    OpenAiService service = <span class="hljs-keyword">new</span> OpenAiService(api);
+    <span class="hljs-type">OpenAiService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OpenAiService</span>(api);
     <span class="hljs-comment">//        CompletionRequest completionRequest = CompletionRequest.builder()</span>
     <span class="hljs-comment">//                .model(&quot;gpt-3.5-turbo&quot;)</span>
     <span class="hljs-comment">//                .prompt(&quot;你知道java中的泛型是什么吗&quot;)</span>
@@ -335,16 +335,16 @@
     <span class="hljs-comment">//                .topP(1D)</span>
     <span class="hljs-comment">//                .build();</span>
 
-    ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
+    <span class="hljs-type">ChatCompletionRequest</span> <span class="hljs-variable">completionRequest</span> <span class="hljs-operator">=</span> ChatCompletionRequest.builder()
         .model(<span class="hljs-string">&quot;gpt-3.5-turbo&quot;</span>)
-        .stream(<span class="hljs-keyword">true</span>)
+        .stream(<span class="hljs-literal">true</span>)
         .messages(list)
         .build();
     <span class="hljs-comment">//        service.createChatCompletion(completionRequest).getChoices().forEach(System.out::println);</span>
     service.streamChatCompletion(completionRequest).doOnError(Throwable::printStackTrace)
         .blockingForEach(chunk -&gt; &#123;
-            String text = chunk.getChoices().get(<span class="hljs-number">0</span>).getMessage().getContent();
-            <span class="hljs-keyword">if</span> (text == <span class="hljs-keyword">null</span>) &#123;
+            <span class="hljs-type">String</span> <span class="hljs-variable">text</span> <span class="hljs-operator">=</span> chunk.getChoices().get(<span class="hljs-number">0</span>).getMessage().getContent();
+            <span class="hljs-keyword">if</span> (text == <span class="hljs-literal">null</span>) &#123;
                 <span class="hljs-keyword">return</span>;
             &#125;
             System.out.print(text);
@@ -360,13 +360,6 @@
             <hr>
             <div>
               <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/openai/">openai</a>
-                    
-                  </div>
                 
                 
                   <div class="post-meta">

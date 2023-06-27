@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -259,7 +259,7 @@
 
 <span class="hljs-meta">@RestController</span>
 <span class="hljs-meta">@RequestMapping(&quot;/common&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CommonController</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CommonController</span> &#123;
 	<span class="hljs-meta">@Value(&quot;$&#123;reggie.path&#125;&quot;)</span> <span class="hljs-comment">// 保存图片的路径</span>
     <span class="hljs-keyword">private</span> String basePath;
 &#125;</code></pre></div>
@@ -270,24 +270,24 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@return</span></span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@PostMapping(&quot;/upload&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> R&lt;String&gt; <span class="hljs-title">upload</span><span class="hljs-params">(MultipartFile file)</span></span>&#123;
+<span class="hljs-keyword">public</span> R&lt;String&gt; <span class="hljs-title function_">upload</span><span class="hljs-params">(MultipartFile file)</span>&#123;
     <span class="hljs-comment">// file是一个临时文件，后续需要进行转存</span>
     <span class="hljs-comment">// file需要与前端上传的参数名保持一致，否则无法获取到上传的文件</span>
     <span class="hljs-comment">// 转存之前需要对文件名进行处理</span>
-    String originalFilename = file.getOriginalFilename();
-    String suffix = originalFilename.substring(originalFilename.lastIndexOf(<span class="hljs-string">&quot;.&quot;</span>));
+    <span class="hljs-type">String</span> <span class="hljs-variable">originalFilename</span> <span class="hljs-operator">=</span> file.getOriginalFilename();
+    <span class="hljs-type">String</span> <span class="hljs-variable">suffix</span> <span class="hljs-operator">=</span> originalFilename.substring(originalFilename.lastIndexOf(<span class="hljs-string">&quot;.&quot;</span>));
 
     <span class="hljs-comment">// 防止文件被覆盖，使用uuid作为文件名</span>
-    String filename = UUID.randomUUID().toString();
+    <span class="hljs-type">String</span> <span class="hljs-variable">filename</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();
     filename = filename + suffix;
 
-    File dir = <span class="hljs-keyword">new</span> File(basePath); <span class="hljs-comment">// 判断文件夹是否存在不存在则创建</span>
+    <span class="hljs-type">File</span> <span class="hljs-variable">dir</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(basePath); <span class="hljs-comment">// 判断文件夹是否存在不存在则创建</span>
     <span class="hljs-keyword">if</span> (!dir.exists())&#123;
         dir.mkdir();
     &#125;
     <span class="hljs-comment">// 将图片保存的指定位置</span>
     <span class="hljs-keyword">try</span> &#123;
-        file.transferTo(<span class="hljs-keyword">new</span> File(basePath + filename));
+        file.transferTo(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(basePath + filename));
     &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;
         e.printStackTrace();
     &#125;
@@ -297,18 +297,18 @@
 
 
 <h3 id="下载图片"><a href="#下载图片" class="headerlink" title="下载图片"></a>下载图片</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/download&quot;)</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">download</span><span class="hljs-params">(String name, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">download</span><span class="hljs-params">(String name, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException &#123;
     <span class="hljs-comment">// 文件输入流读取本地文件</span>
-    FileInputStream fileInputStream = <span class="hljs-keyword">null</span>;
+    <span class="hljs-type">FileInputStream</span> <span class="hljs-variable">fileInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
     <span class="hljs-comment">// 使用响应输出流将图片显示在网页上</span>
-    ServletOutputStream outputStream = <span class="hljs-keyword">null</span>;
+    <span class="hljs-type">ServletOutputStream</span> <span class="hljs-variable">outputStream</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
 
     <span class="hljs-keyword">try</span> &#123;
-        fileInputStream = <span class="hljs-keyword">new</span> FileInputStream(<span class="hljs-keyword">new</span> File(basePath + name));
+        fileInputStream = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileInputStream</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(basePath + name));
         outputStream = response.getOutputStream();
         response.setContentType(<span class="hljs-string">&quot;image/jpeg&quot;</span>);
-        <span class="hljs-keyword">byte</span>[] bytes = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[<span class="hljs-number">1024</span>];
-        <span class="hljs-keyword">int</span> len = <span class="hljs-number">0</span>;
+        <span class="hljs-type">byte</span>[] bytes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">1024</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
         <span class="hljs-comment">// 读取服务器上的图片后 由响应输出流</span>
         <span class="hljs-keyword">while</span>( (len = fileInputStream.read(bytes)) != -<span class="hljs-number">1</span>)&#123;
             outputStream.write(bytes, <span class="hljs-number">0</span>, len);
@@ -325,7 +325,7 @@
 
 
 
-<h2 id="2-前端页面"><a href="#2-前端页面" class="headerlink" title="2.前端页面"></a>2.前端页面</h2><div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<h2 id="2-前端页面"><a href="#2-前端页面" class="headerlink" title="2.前端页面"></a>2.前端页面</h2><div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
@@ -358,37 +358,37 @@
     <span class="hljs-comment">&lt;!-- 引入axios --&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../plugins/axios/axios.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;../../js/index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span>
-<span class="javascript">      <span class="hljs-keyword">new</span> Vue(&#123;</span>
-<span class="javascript">        el: <span class="hljs-string">&#x27;#food-add-app&#x27;</span>,</span>
-<span class="javascript">        <span class="hljs-function"><span class="hljs-title">data</span>(<span class="hljs-params"></span>)</span> &#123;</span>
-<span class="javascript">          <span class="hljs-keyword">return</span> &#123;</span>
-<span class="javascript">            imageUrl: <span class="hljs-string">&#x27;&#x27;</span></span>
-          &#125;
-        &#125;,
-        methods: &#123;
-          handleAvatarSuccess (response, file, fileList) &#123;
-<span class="javascript">              <span class="hljs-built_in">this</span>.imageUrl = <span class="hljs-string">`/common/download?name=<span class="hljs-subst">$&#123;response.data&#125;</span>`</span></span>
-          &#125;,
-          beforeUpload (file) &#123;
-            if(file)&#123;
-<span class="javascript">              <span class="hljs-keyword">const</span> suffix = file.name.split(<span class="hljs-string">&#x27;.&#x27;</span>)[<span class="hljs-number">1</span>]</span>
-<span class="javascript">              <span class="hljs-keyword">const</span> size = file.size / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span> &lt; <span class="hljs-number">2</span></span>
-<span class="javascript">              <span class="hljs-keyword">if</span>([<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;jpeg&#x27;</span>,<span class="hljs-string">&#x27;jpg&#x27;</span>].indexOf(suffix) &lt; <span class="hljs-number">0</span>)&#123;</span>
-<span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;上传图片只支持 png、jpeg、jpg 格式！&#x27;</span>)</span>
-<span class="javascript">                <span class="hljs-built_in">this</span>.$refs.upload.clearFiles()</span>
-<span class="javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
-              &#125;
-              if(!size)&#123;
-<span class="javascript">                <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&#x27;上传文件大小不能超过 2MB!&#x27;</span>)</span>
-<span class="javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
-              &#125;
-<span class="javascript">              <span class="hljs-keyword">return</span> file</span>
-            &#125;
-          &#125;
-        &#125;
-      &#125;)
-    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">      <span class="hljs-keyword">new</span> <span class="hljs-title class_">Vue</span>(&#123;</span>
+<span class="language-javascript">        <span class="hljs-attr">el</span>: <span class="hljs-string">&#x27;#food-add-app&#x27;</span>,</span>
+<span class="language-javascript">        <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) &#123;</span>
+<span class="language-javascript">          <span class="hljs-keyword">return</span> &#123;</span>
+<span class="language-javascript">            <span class="hljs-attr">imageUrl</span>: <span class="hljs-string">&#x27;&#x27;</span></span>
+<span class="language-javascript">          &#125;</span>
+<span class="language-javascript">        &#125;,</span>
+<span class="language-javascript">        <span class="hljs-attr">methods</span>: &#123;</span>
+<span class="language-javascript">          handleAvatarSuccess (response, file, fileList) &#123;</span>
+<span class="language-javascript">              <span class="hljs-variable language_">this</span>.<span class="hljs-property">imageUrl</span> = <span class="hljs-string">`/common/download?name=<span class="hljs-subst">$&#123;response.data&#125;</span>`</span></span>
+<span class="language-javascript">          &#125;,</span>
+<span class="language-javascript">          beforeUpload (file) &#123;</span>
+<span class="language-javascript">            <span class="hljs-keyword">if</span>(file)&#123;</span>
+<span class="language-javascript">              <span class="hljs-keyword">const</span> suffix = file.<span class="hljs-property">name</span>.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27;.&#x27;</span>)[<span class="hljs-number">1</span>]</span>
+<span class="language-javascript">              <span class="hljs-keyword">const</span> size = file.<span class="hljs-property">size</span> / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span> &lt; <span class="hljs-number">2</span></span>
+<span class="language-javascript">              <span class="hljs-keyword">if</span>([<span class="hljs-string">&#x27;png&#x27;</span>,<span class="hljs-string">&#x27;jpeg&#x27;</span>,<span class="hljs-string">&#x27;jpg&#x27;</span>].<span class="hljs-title function_">indexOf</span>(suffix) &lt; <span class="hljs-number">0</span>)&#123;</span>
+<span class="language-javascript">                <span class="hljs-variable language_">this</span>.<span class="hljs-property">$message</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;上传图片只支持 png、jpeg、jpg 格式！&#x27;</span>)</span>
+<span class="language-javascript">                <span class="hljs-variable language_">this</span>.<span class="hljs-property">$refs</span>.<span class="hljs-property">upload</span>.<span class="hljs-title function_">clearFiles</span>()</span>
+<span class="language-javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
+<span class="language-javascript">              &#125;</span>
+<span class="language-javascript">              <span class="hljs-keyword">if</span>(!size)&#123;</span>
+<span class="language-javascript">                <span class="hljs-variable language_">this</span>.<span class="hljs-property">$message</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;上传文件大小不能超过 2MB!&#x27;</span>)</span>
+<span class="language-javascript">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></span>
+<span class="language-javascript">              &#125;</span>
+<span class="language-javascript">              <span class="hljs-keyword">return</span> file</span>
+<span class="language-javascript">            &#125;</span>
+<span class="language-javascript">          &#125;</span>
+<span class="language-javascript">        &#125;</span>
+<span class="language-javascript">      &#125;)</span>
+<span class="language-javascript">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
 
@@ -412,12 +412,12 @@
 <span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * mp代码生成器</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CodeGenreator</span> </span>&#123;
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CodeGenreator</span> &#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
         generator();
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">generator</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">generator</span><span class="hljs-params">()</span>&#123;
         FastAutoGenerator.create(<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/admin_demo?serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowPublicKeyRetrieval=true&quot;</span>,
                 <span class="hljs-string">&quot;username&quot;</span>, <span class="hljs-string">&quot;password&quot;</span>)
                 .globalConfig(builder -&gt; &#123;
@@ -483,15 +483,15 @@
 #<span class="hljs-keyword">else</span>
 <span class="hljs-meta">@Controller</span>
 #end
-<span class="hljs-meta">@RequestMapping(<span class="hljs-meta-string">&quot;#if(<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>)/<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>#end/#if(<span class="hljs-subst">$&#123;controllerMappingHyphenStyle&#125;</span>)<span class="hljs-subst">$&#123;controllerMappingHyphen&#125;</span>#else<span class="hljs-subst">$&#123;table.entityPath&#125;</span>#end&quot;</span>)</span>
+<span class="hljs-meta">@RequestMapping(<span class="hljs-string">&quot;#if(<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>)/<span class="hljs-subst">$&#123;package.ModuleName&#125;</span>#end/#if(<span class="hljs-subst">$&#123;controllerMappingHyphenStyle&#125;</span>)<span class="hljs-subst">$&#123;controllerMappingHyphen&#125;</span>#else<span class="hljs-subst">$&#123;table.entityPath&#125;</span>#end&quot;</span>)</span>
 #<span class="hljs-keyword">if</span>($&#123;kotlin&#125;)
-<span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125;#<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;) : $&#123;superControllerClass&#125;()#end
+<span class="hljs-keyword">class</span> $&#123;table.controllerName&#125;#<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;) : $&#123;superControllerClass&#125;()#end
 
 #<span class="hljs-keyword">else</span>
     #<span class="hljs-keyword">if</span>($&#123;superControllerClass&#125;)
-    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; extends $&#123;superControllerClass&#125; &#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> $&#123;table.controllerName&#125; extends $&#123;superControllerClass&#125; &#123;
     #<span class="hljs-keyword">else</span>
-    <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> $</span>&#123;table.controllerName&#125; &#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> $&#123;table.controllerName&#125; &#123;
     #end
 
 <span class="hljs-meta">@Resource</span>
@@ -503,12 +503,12 @@
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.saveOrUpdate($&#123;table.entityPath&#125;);
 &#125;
 
-<span class="hljs-meta">@DeleteMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-meta">@DeleteMapping(<span class="hljs-string">&quot;/&#123;id&#125;&quot;</span>)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-built_in">Boolean</span> delete(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(id);
 &#125;
 
-<span class="hljs-meta">@PostMapping(<span class="hljs-meta-string">&quot;/del/batch&quot;</span>)</span>
+<span class="hljs-meta">@PostMapping(<span class="hljs-string">&quot;/del/batch&quot;</span>)</span>
 <span class="hljs-keyword">public</span> boolean deleteBatch(<span class="hljs-meta">@RequestBody</span> List&lt;Integer&gt; ids) &#123;
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.removeById(ids);
 &#125;
@@ -518,12 +518,12 @@
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.list();
 &#125;
 
-<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/&#123;id&#125;&quot;</span>)</span>
+<span class="hljs-meta">@GetMapping(<span class="hljs-string">&quot;/&#123;id&#125;&quot;</span>)</span>
 <span class="hljs-keyword">public</span> $&#123;entity&#125; findOne(<span class="hljs-meta">@PathVariable</span> Integer id) &#123;
         <span class="hljs-keyword">return</span> $&#123;table.entityPath&#125;Service.getById(id);
 &#125;
 
-<span class="hljs-meta">@GetMapping(<span class="hljs-meta-string">&quot;/page&quot;</span>)</span>
+<span class="hljs-meta">@GetMapping(<span class="hljs-string">&quot;/page&quot;</span>)</span>
 <span class="hljs-keyword">public</span> Page&lt;$&#123;entity&#125;&gt; findPage(<span class="hljs-meta">@RequestParam</span> Integer pageNum,
 <span class="hljs-meta">@RequestParam</span> Integer pageSize) &#123;
         LambdaQueryWrapper&lt;$&#123;entity&#125;&gt; queryWrapper = new LambdaQueryWrapper&lt;&gt;();
@@ -569,7 +569,7 @@
 
 <span class="hljs-meta">@Configuration</span>
 <span class="hljs-meta">@EnableSwagger2</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SwaggerConfig</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SwaggerConfig</span> &#123;
     <span class="hljs-comment">/**</span>
 <span class="hljs-comment">     * swagger可以自动生成接口文档</span>
 <span class="hljs-comment">     * 1.配置生成文档的信息</span>
@@ -584,16 +584,16 @@
 <span class="hljs-comment">     */</span>
 
     <span class="hljs-meta">@Bean</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Docket <span class="hljs-title">getDocket</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-keyword">public</span> Docket <span class="hljs-title function_">getDocket</span><span class="hljs-params">()</span>&#123;
         <span class="hljs-comment">//创建封面信息对象</span>
-        ApiInfoBuilder apiInfoBuilder = <span class="hljs-keyword">new</span> ApiInfoBuilder();
+        <span class="hljs-type">ApiInfoBuilder</span> <span class="hljs-variable">apiInfoBuilder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApiInfoBuilder</span>();
         apiInfoBuilder.title(<span class="hljs-string">&quot;《锋迷商城》后端接口说明&quot;</span>)
                 .description(<span class="hljs-string">&quot;此文档详细说明了锋迷商城项目后端接口规范....&quot;</span>)
                 .version(<span class="hljs-string">&quot;v 2.0.1&quot;</span>)
-                .contact( <span class="hljs-keyword">new</span> Contact(<span class="hljs-string">&quot;sunzy&quot;</span>,<span class="hljs-string">&quot;www.suzny.com&quot;</span>,<span class="hljs-string">&quot;sunzy@wang.com&quot;</span>) );
-        ApiInfo apiInfo =  apiInfoBuilder.build();
+                .contact( <span class="hljs-keyword">new</span> <span class="hljs-title class_">Contact</span>(<span class="hljs-string">&quot;sunzy&quot;</span>,<span class="hljs-string">&quot;www.suzny.com&quot;</span>,<span class="hljs-string">&quot;sunzy@wang.com&quot;</span>) );
+        <span class="hljs-type">ApiInfo</span> <span class="hljs-variable">apiInfo</span> <span class="hljs-operator">=</span>  apiInfoBuilder.build();
 
-        Docket docket = <span class="hljs-keyword">new</span> Docket(DocumentationType.SWAGGER_2)
+        <span class="hljs-type">Docket</span> <span class="hljs-variable">docket</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Docket</span>(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo) <span class="hljs-comment">//指定生成的文档中的封面信息：文档标题、版本、作者</span>
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(<span class="hljs-string">&quot;com.sunzy.fmmall.controller&quot;</span>))
@@ -605,7 +605,7 @@
 &#125;
 </code></pre></div>
 
-<p>启动springboot项目访问项目地址/swagger-ui.html即可看到相关接口信息，并可以进行测试</p>
+<p>启动springboot项目访问项目地址&#x2F;swagger-ui.html即可看到相关接口信息，并可以进行测试</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220710113522350.png" srcset="/img/loading.gif" alt="image-20220710113522350"></p>
 <h2 id="3-swagger注解说明"><a href="#3-swagger注解说明" class="headerlink" title="3.swagger注解说明"></a>3.swagger注解说明</h2><blockquote>
 <p>Swagger提供一套详细的注解可以对接口进行详细的说明</p>
@@ -614,7 +614,7 @@
 <div class="hljs"><pre><code class="hljs reasonml">@<span class="hljs-constructor">Api(<span class="hljs-params">value</span> = <span class="hljs-string">&quot;用户管理&quot;</span>, <span class="hljs-params">tags</span> = <span class="hljs-string">&quot;提供用户注册和登录服务&quot;</span>)</span></code></pre></div>
 
 <p>@ApiOperation 方法注解，对每个方法作用进行详细说明</p>
-<div class="hljs"><pre><code class="hljs kotlin"><span class="hljs-meta">@ApiOperation(<span class="hljs-meta-string">&quot;用户登录接口&quot;</span>)</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs kotlin"><span class="hljs-meta">@ApiOperation(<span class="hljs-string">&quot;用户登录接口&quot;</span>)</span></code></pre></div>
 
 <p>@ApiImplicitParams和@ApiImplicitParam 对方法中的参数进行详细的说明，包括字段名，备注，是否必须，以及默认值</p>
 <div class="hljs"><pre><code class="hljs less"><span class="hljs-variable">@ApiImplicitParams</span>(
@@ -671,9 +671,9 @@
 <span class="hljs-meta">@SpringBootApplication</span>
 <span class="hljs-comment">//@MapperScan(&quot;com.sunzy.tkmapper.dao&quot;)</span>
 <span class="hljs-meta">@MapperScan(&quot;com.sunzy.tkmapper.dao&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TkmapperDemoApplication</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TkmapperDemoApplication</span> &#123;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
         SpringApplication.run(TkmapperDemoApplication.class, args);
     &#125;
 
@@ -701,11 +701,11 @@
 
 <p>添加配置文件GeneratorConfig.xml</p>
 <p>记得修改对应包名<code>&lt;!--**--&gt;</code>标记处需要修改</p>
-<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
-<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">generatorConfiguration</span></span>
-<span class="hljs-meta">        <span class="hljs-meta-keyword">PUBLIC</span> <span class="hljs-meta-string">&quot;-//mybatis.org//DTD MyBatis Generator Configuration</span></span>
-<span class="hljs-meta"><span class="hljs-meta-string">1.0//EN&quot;</span></span>
-<span class="hljs-meta">        <span class="hljs-meta-string">&quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;</span>&gt;</span>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
+<span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">generatorConfiguration</span></span>
+<span class="hljs-meta">        <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//mybatis.org//DTD MyBatis Generator Configuration</span></span>
+<span class="hljs-string"><span class="hljs-meta">1.0//EN&quot;</span></span>
+<span class="hljs-meta">        <span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd&quot;</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">generatorConfiguration</span>&gt;</span>
     <span class="hljs-comment">&lt;!-- 引⼊数据库连接配置 --&gt;</span>
     <span class="hljs-comment">&lt;!-- &lt;properties resource=&quot;jdbc.properties&quot;/&gt;--&gt;</span>
@@ -724,9 +724,9 @@
 <span class="hljs-tag">                        <span class="hljs-attr">userId</span>=<span class="hljs-string">&quot;root&quot;</span> <span class="hljs-attr">password</span>=<span class="hljs-string">&quot;root&quot;</span>&gt;</span><span class="hljs-comment">&lt;!--**--&gt;</span>
         <span class="hljs-tag">&lt;/<span class="hljs-name">jdbcConnection</span>&gt;</span>
         <span class="hljs-comment">&lt;!-- 配置实体类存放路径 --&gt;</span>
-        &lt;javaModelGenerator
-                targetPackage=&quot;com.sunzy.fmmall.entity&quot;
-                targetProject=&quot;src/main/java&quot;/&gt;   <span class="hljs-comment">&lt;!--**--&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">javaModelGenerator</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">targetPackage</span>=<span class="hljs-string">&quot;com.sunzy.fmmall.entity&quot;</span></span>
+<span class="hljs-tag">                <span class="hljs-attr">targetProject</span>=<span class="hljs-string">&quot;src/main/java&quot;</span>/&gt;</span>   <span class="hljs-comment">&lt;!--**--&gt;</span>
         <span class="hljs-comment">&lt;!-- 配置 XML 存放路径 --&gt;</span>
         <span class="hljs-tag">&lt;<span class="hljs-name">sqlMapGenerator</span> <span class="hljs-attr">targetPackage</span>=<span class="hljs-string">&quot;/&quot;</span></span>
 <span class="hljs-tag">                         <span class="hljs-attr">targetProject</span>=<span class="hljs-string">&quot;src/main/resources/mapper&quot;</span>/&gt;</span> <span class="hljs-comment">&lt;!--**--&gt;</span>
@@ -758,7 +758,7 @@
 <span class="hljs-keyword">import</span> tk.mybatis.mapper.common.Mapper;
 <span class="hljs-keyword">import</span> tk.mybatis.mapper.common.MySqlMapper;
 
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">GeneralDao</span>&lt;<span class="hljs-title">T</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">Mapper</span>&lt;<span class="hljs-title">T</span>&gt;, <span class="hljs-title">MySqlMapper</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">GeneralDao</span>&lt;T&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Mapper</span>&lt;T&gt;, MySqlMapper&lt;T&gt; &#123;
 &#125;
 </code></pre></div>
 
@@ -780,39 +780,39 @@
 
 <h2 id="2-生成对应的token并返回给前端"><a href="#2-生成对应的token并返回给前端" class="headerlink" title="2.生成对应的token并返回给前端"></a>2.生成对应的token并返回给前端</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 验证成功则生成对应的token</span>
 <span class="hljs-comment">// 使用jwt生成token</span>
-JwtBuilder builder = Jwts.builder();
-Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+<span class="hljs-type">JwtBuilder</span> <span class="hljs-variable">builder</span> <span class="hljs-operator">=</span> Jwts.builder();
+Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 map.put(<span class="hljs-string">&quot;key1&quot;</span>, <span class="hljs-string">&quot;value2&quot;</span>);
 map.put(<span class="hljs-string">&quot;key2&quot;</span>, <span class="hljs-string">&quot;value2&quot;</span>);
-JwtBuilder jwtBuilder = builder.setSubject(username)    <span class="hljs-comment">//设置subject</span>
-    .setIssuedAt(<span class="hljs-keyword">new</span> Date())        <span class="hljs-comment">// 设置token生成的时间</span>
+<span class="hljs-type">JwtBuilder</span> <span class="hljs-variable">jwtBuilder</span> <span class="hljs-operator">=</span> builder.setSubject(username)    <span class="hljs-comment">//设置subject</span>
+    .setIssuedAt(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>())        <span class="hljs-comment">// 设置token生成的时间</span>
     .setId(user.getUserId() + <span class="hljs-string">&quot;&quot;</span>)        <span class="hljs-comment">// 设置userid为token的唯一id</span>
     .setClaims(map)                 <span class="hljs-comment">// map中可以存放用户的角色和权限信息</span>
-    .setExpiration(<span class="hljs-keyword">new</span> Date(System.currentTimeMillis() + <span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span> * <span class="hljs-number">2</span>))               <span class="hljs-comment">// 设置token的过期时间 为两天</span>
+    .setExpiration(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(System.currentTimeMillis() + <span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span> * <span class="hljs-number">2</span>))               <span class="hljs-comment">// 设置token的过期时间 为两天</span>
     .signWith(SignatureAlgorithm.HS256, <span class="hljs-string">&quot;sunzy123456&quot;</span>);<span class="hljs-comment">// 设置token的加密方式和加密密钥</span>
 
-String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token</span>
-<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.OK, token, user);</code></pre></div>
+<span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> jwtBuilder.compact();   <span class="hljs-comment">// 获取token</span>
+<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResultVO</span>(ResStatus.OK, token, user);</code></pre></div>
 
 <h2 id="3-前端进行登录验证时获取对应的token"><a href="#3-前端进行登录验证时获取对应的token" class="headerlink" title="3.前端进行登录验证时获取对应的token"></a>3.前端进行登录验证时获取对应的token</h2><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220711172838166.png" srcset="/img/loading.gif" alt="image-20220711172838166"></p>
-<h2 id="4-JWT进行token解析"><a href="#4-JWT进行token解析" class="headerlink" title="4.JWT进行token解析"></a>4.JWT进行token解析</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">if</span>(token == <span class="hljs-keyword">null</span> || <span class="hljs-string">&quot;&quot;</span>.equals(token))&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;failed&quot;</span>, <span class="hljs-keyword">null</span>);
+<h2 id="4-JWT进行token解析"><a href="#4-JWT进行token解析" class="headerlink" title="4.JWT进行token解析"></a>4.JWT进行token解析</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">if</span>(token == <span class="hljs-literal">null</span> || <span class="hljs-string">&quot;&quot;</span>.equals(token))&#123;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResultVO</span>(ResStatus.NO, <span class="hljs-string">&quot;failed&quot;</span>, <span class="hljs-literal">null</span>);
 &#125;<span class="hljs-keyword">else</span> &#123;
-    JwtParser parser = Jwts.parser();
+    <span class="hljs-type">JwtParser</span> <span class="hljs-variable">parser</span> <span class="hljs-operator">=</span> Jwts.parser();
     parser.setSigningKey(<span class="hljs-string">&quot;sunzy123456&quot;</span>); <span class="hljs-comment">// 密钥需要与加密时使用的一致</span>
     <span class="hljs-keyword">try</span>&#123;
         <span class="hljs-comment">// 如果token正确 且在有效期内 则解析正常否则会出现异常</span>
         Jws&lt;Claims&gt; claimsJws = parser.parseClaimsJws(token);
-        Claims body = claimsJws.getBody();  <span class="hljs-comment">// 获取token中的用户数据</span>
-        String subject = body.getSubject();  <span class="hljs-comment">// 获取token中发subject</span>
-        String key1 = body.get(<span class="hljs-string">&quot;key1&quot;</span>, String.class);  <span class="hljs-comment">/// 获取添加在map中的值</span>
+        <span class="hljs-type">Claims</span> <span class="hljs-variable">body</span> <span class="hljs-operator">=</span> claimsJws.getBody();  <span class="hljs-comment">// 获取token中的用户数据</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">subject</span> <span class="hljs-operator">=</span> body.getSubject();  <span class="hljs-comment">// 获取token中发subject</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">key1</span> <span class="hljs-operator">=</span> body.get(<span class="hljs-string">&quot;key1&quot;</span>, String.class);  <span class="hljs-comment">/// 获取添加在map中的值</span>
     &#125;<span class="hljs-keyword">catch</span>(UnsupportedJwtException e)&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;token不合法请重新登录！&quot;</span>, <span class="hljs-keyword">null</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResultVO</span>(ResStatus.NO, <span class="hljs-string">&quot;token不合法请重新登录！&quot;</span>, <span class="hljs-literal">null</span>);
     &#125;<span class="hljs-keyword">catch</span>(ExpiredJwtException e)&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;token已过期，请重新登录！&quot;</span>, <span class="hljs-keyword">null</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResultVO</span>(ResStatus.NO, <span class="hljs-string">&quot;token已过期，请重新登录！&quot;</span>, <span class="hljs-literal">null</span>);
     &#125;
     <span class="hljs-keyword">catch</span> (Exception e)&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, <span class="hljs-string">&quot;未知错误&quot;</span>, <span class="hljs-keyword">null</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResultVO</span>(ResStatus.NO, <span class="hljs-string">&quot;未知错误&quot;</span>, <span class="hljs-literal">null</span>);
     &#125;</code></pre></div>
 
 <h2 id="5-使用拦截器验证token"><a href="#5-使用拦截器验证token" class="headerlink" title="5.使用拦截器验证token"></a>5.使用拦截器验证token</h2><ul>
@@ -834,24 +834,24 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
 <span class="hljs-keyword">import</span> java.io.PrintWriter;
 
 <span class="hljs-meta">@Component</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CheckTokenInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">HandlerInterceptor</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CheckTokenInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">HandlerInterceptor</span> &#123;
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">preHandle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
-        String token = request.getParameter(<span class="hljs-string">&quot;token&quot;</span>);
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">preHandle</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="hljs-keyword">throws</span> Exception &#123;
+        <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> request.getParameter(<span class="hljs-string">&quot;token&quot;</span>);
 
-        <span class="hljs-keyword">if</span> (token == <span class="hljs-keyword">null</span> || <span class="hljs-string">&quot;&quot;</span>.equals(token)) &#123;
+        <span class="hljs-keyword">if</span> (token == <span class="hljs-literal">null</span> || <span class="hljs-string">&quot;&quot;</span>.equals(token)) &#123;
             doResponse(response, <span class="hljs-string">&quot;请先登录！&quot;</span>);
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         &#125; <span class="hljs-keyword">else</span> &#123;
-            JwtParser parser = Jwts.parser();
+            <span class="hljs-type">JwtParser</span> <span class="hljs-variable">parser</span> <span class="hljs-operator">=</span> Jwts.parser();
             parser.setSigningKey(<span class="hljs-string">&quot;sunzy123456&quot;</span>); <span class="hljs-comment">// 密钥需要与加密时使用的一致</span>
             <span class="hljs-keyword">try</span> &#123;
                 <span class="hljs-comment">// 如果token正确 且在有效期内 则解析正常否则会出现异常</span>
                 Jws&lt;Claims&gt; claimsJws = parser.parseClaimsJws(token);
-                Claims body = claimsJws.getBody();  <span class="hljs-comment">// 获取token中的用户数据</span>
-                String subject = body.getSubject();  <span class="hljs-comment">// 获取token中发subject</span>
-                String key1 = body.get(<span class="hljs-string">&quot;key1&quot;</span>, String.class);  <span class="hljs-comment">/// 获取添加在map中的值</span>
-                <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+                <span class="hljs-type">Claims</span> <span class="hljs-variable">body</span> <span class="hljs-operator">=</span> claimsJws.getBody();  <span class="hljs-comment">// 获取token中的用户数据</span>
+                <span class="hljs-type">String</span> <span class="hljs-variable">subject</span> <span class="hljs-operator">=</span> body.getSubject();  <span class="hljs-comment">// 获取token中发subject</span>
+                <span class="hljs-type">String</span> <span class="hljs-variable">key1</span> <span class="hljs-operator">=</span> body.get(<span class="hljs-string">&quot;key1&quot;</span>, String.class);  <span class="hljs-comment">/// 获取添加在map中的值</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
             &#125; <span class="hljs-keyword">catch</span> (UnsupportedJwtException e) &#123;
                 doResponse(response,<span class="hljs-string">&quot;token不合法，请重新登录！&quot;</span>);
             &#125; <span class="hljs-keyword">catch</span> (ExpiredJwtException e) &#123;
@@ -860,16 +860,16 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
                 doResponse(response,<span class="hljs-string">&quot;未知错误！&quot;</span>);
             &#125;
 
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         &#125;
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span>  <span class="hljs-title">doResponse</span><span class="hljs-params">(HttpServletResponse response, String msg)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;
-        ResultVO resultVO = <span class="hljs-keyword">new</span> ResultVO(ResStatus.NO, msg, <span class="hljs-keyword">null</span>);
-        String string = JSON.toJSONString(resultVO);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span>  <span class="hljs-title function_">doResponse</span><span class="hljs-params">(HttpServletResponse response, String msg)</span> <span class="hljs-keyword">throws</span> IOException &#123;
+        <span class="hljs-type">ResultVO</span> <span class="hljs-variable">resultVO</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResultVO</span>(ResStatus.NO, msg, <span class="hljs-literal">null</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">string</span> <span class="hljs-operator">=</span> JSON.toJSONString(resultVO);
         response.setContentType(<span class="hljs-string">&quot;application/json&quot;</span>);
         response.setCharacterEncoding(<span class="hljs-string">&quot;utf-8&quot;</span>);
-        PrintWriter writer = response.getWriter();
+        <span class="hljs-type">PrintWriter</span> <span class="hljs-variable">writer</span> <span class="hljs-operator">=</span> response.getWriter();
         writer.write(string);
         writer.flush();
         writer.close();
@@ -879,10 +879,7 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
 </code></pre></div>
 
 
-
 </li>
-</ul>
-<ul>
 <li><p>配置拦截器</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.sunzy.fmmall.config;
 
@@ -896,13 +893,13 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
 <span class="hljs-comment"> * 拦截器的配置类</span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@Configuration</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InterceptorConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">WebMvcConfigurer</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InterceptorConfig</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">WebMvcConfigurer</span> &#123;
 
     <span class="hljs-meta">@Autowired</span>
     <span class="hljs-keyword">private</span> CheckTokenInterceptor checkTokenInterceptor;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addInterceptors</span><span class="hljs-params">(InterceptorRegistry registry)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addInterceptors</span><span class="hljs-params">(InterceptorRegistry registry)</span> &#123;
         <span class="hljs-comment">// registry是拦截器的注册器</span>
         <span class="hljs-comment">// 将自己创建的拦截器加入进来 即可实现拦截功能</span>
         registry.addInterceptor(checkTokenInterceptor)
@@ -910,9 +907,7 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
         .excludePathPatterns(<span class="hljs-string">&quot;/user/**&quot;</span>); <span class="hljs-comment">// 除了用户登录和注册路径</span>
     &#125;
 &#125;
-</code></pre></div>
-
-</li>
+</code></pre></div></li>
 </ul>
 <h1 id="加密使用到工具类"><a href="#加密使用到工具类" class="headerlink" title="加密使用到工具类"></a>加密使用到工具类</h1><h2 id="1-md5"><a href="#1-md5" class="headerlink" title="1.md5"></a>1.md5</h2><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.qfedu.fmmall.utils;
 
@@ -921,20 +916,20 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
 <span class="hljs-keyword">import</span> java.security.NoSuchAlgorithmException;
 
 <span class="hljs-comment">//MD5 生成器</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MD5Utils</span> </span>&#123;
-	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">md5</span><span class="hljs-params">(String password)</span></span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MD5Utils</span> &#123;
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">md5</span><span class="hljs-params">(String password)</span>&#123;
 		<span class="hljs-comment">//生成一个md5加密器</span>
 		<span class="hljs-keyword">try</span> &#123;
-			MessageDigest md = MessageDigest.getInstance(<span class="hljs-string">&quot;MD5&quot;</span>);
+			<span class="hljs-type">MessageDigest</span> <span class="hljs-variable">md</span> <span class="hljs-operator">=</span> MessageDigest.getInstance(<span class="hljs-string">&quot;MD5&quot;</span>);
 			<span class="hljs-comment">//计算MD5 的值</span>
 			md.update(password.getBytes());
 			<span class="hljs-comment">//BigInteger 将8位的字符串 转成16位的字符串 得到的字符串形式是哈希码值</span>
 			<span class="hljs-comment">//BigInteger(参数1,参数2) 参数1 是 1为正数 0为0 -1为负数</span>
-			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> BigInteger(<span class="hljs-number">1</span>, md.digest()).toString(<span class="hljs-number">16</span>);
+			<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigInteger</span>(<span class="hljs-number">1</span>, md.digest()).toString(<span class="hljs-number">16</span>);
 		&#125; <span class="hljs-keyword">catch</span> (NoSuchAlgorithmException e) &#123;
 			e.printStackTrace();
 		&#125;
-		<span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 	&#125;
 &#125;
 </code></pre></div>
@@ -945,23 +940,23 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
 
 <span class="hljs-comment">//base64 加密 解密 激活邮件的时候 为 邮箱地址 code验证码 进行加密</span>
 <span class="hljs-comment">//当 回传回来后 进行邮箱地址 和 code 的解密</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Base64Utils</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Base64Utils</span> &#123;
 	<span class="hljs-comment">//加密</span>
-	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">encode</span><span class="hljs-params">(String msg)</span></span>&#123;
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">encode</span><span class="hljs-params">(String msg)</span>&#123;
 		<span class="hljs-keyword">return</span> Base64.getEncoder().encodeToString(msg.getBytes());
 	&#125;
 	<span class="hljs-comment">//解密</span>
-	<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">decode</span><span class="hljs-params">(String msg)</span></span>&#123;
-		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> String(Base64.getDecoder().decode(msg));
+	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">decode</span><span class="hljs-params">(String msg)</span>&#123;
+		<span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(Base64.getDecoder().decode(msg));
 	&#125;
 &#125;
 </code></pre></div>
 
 
 
-<p>​     </p>
+<p>​	 </p>
 <h1 id="logback日志"><a href="#logback日志" class="headerlink" title="logback日志"></a>logback日志</h1><h2 id="添加xml文件"><a href="#添加xml文件" class="headerlink" title="添加xml文件"></a>添加xml文件</h2><p>在springboot项目的resource目录下创建logback-spring.xml文件</p>
-<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span>
 
     <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;stdout&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span>
@@ -996,7 +991,7 @@ String token = jwtBuilder.compact();   <span class="hljs-comment">// 获取token
 <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span></code></pre></div>
 
 <h2 id="在sercie实现类创建Logger对象，输⼊⽇志"><a href="#在sercie实现类创建Logger对象，输⼊⽇志" class="headerlink" title="在sercie实现类创建Logger对象，输⼊⽇志"></a>在sercie实现类创建Logger对象，输⼊⽇志</h2><p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220719162517298.png" srcset="/img/loading.gif" alt="image-20220719162517298"></p>
-<p>日志会被记录到项目的/log目录下，且是按每日记录</p>
+<p>日志会被记录到项目的&#x2F;log目录下，且是按每日记录</p>
 <div class="hljs"><pre><code class="hljs xml">log/log-%d&#123;yyyy-MM-dd-HH&#125;.log</code></pre></div>
 
 

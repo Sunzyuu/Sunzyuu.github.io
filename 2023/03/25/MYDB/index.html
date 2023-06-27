@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -273,72 +273,72 @@
 <h3 id="2-基于tm创建dm模块"><a href="#2-基于tm创建dm模块" class="headerlink" title="2.基于tm创建dm模块"></a>2.基于tm创建dm模块</h3><div class="hljs"><pre><code class="hljs java">DataManager dm=DataManager.create(<span class="hljs-string">&quot;cun/dm&quot;</span>,<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>,tm);</code></pre></div>
 
 <p>DataManager创建过程中，会创建PageCache，Logger</p>
-<div class="hljs"><pre><code class="hljs java">PageCache pc = PageCache.create(path, mem);  
-Logger lg = Logger.create(path);  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">PageCache</span> <span class="hljs-variable">pc</span> <span class="hljs-operator">=</span> PageCache.create(path, mem);  
+<span class="hljs-type">Logger</span> <span class="hljs-variable">lg</span> <span class="hljs-operator">=</span> Logger.create(path);  
 <span class="hljs-comment">// 此时创建了dm.db和dm.log，分别存储数据库数据 和 日志记录</span>
-DataManagerImpl dm = <span class="hljs-keyword">new</span> DataManagerImpl(pc, lg, tm);  
+<span class="hljs-type">DataManagerImpl</span> <span class="hljs-variable">dm</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DataManagerImpl</span>(pc, lg, tm);  
 dm.initPageOne();
 <span class="hljs-comment">//并对pageOne进行初始化</span></code></pre></div>
 
 <h3 id="3-创建VM模块，此处要tm-dm"><a href="#3-创建VM模块，此处要tm-dm" class="headerlink" title="3.创建VM模块，此处要tm,dm"></a>3.创建VM模块，此处要tm,dm</h3><div class="hljs"><pre><code class="hljs java">VersionManager vm= VersionManager.newVersionManager(tm,dm);</code></pre></div>
 
 <p>首先会初始化缓存框架中的信息，初始化成员变量，将SUPER_XID(0)加入到活跃事务列表</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">VersionManagerImpl</span><span class="hljs-params">(TransactionManager tm, DataManager dm)</span> </span>&#123;  
-    <span class="hljs-keyword">super</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 调用父类AbstractCache的构造方法 初始maxResource</span>
-    <span class="hljs-keyword">this</span>.tm = tm;  
-    <span class="hljs-keyword">this</span>.dm = dm;  
-    <span class="hljs-keyword">this</span>.activeTransaction = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-title function_">VersionManagerImpl</span><span class="hljs-params">(TransactionManager tm, DataManager dm)</span> &#123;  
+    <span class="hljs-built_in">super</span>(<span class="hljs-number">0</span>); <span class="hljs-comment">// 调用父类AbstractCache的构造方法 初始maxResource</span>
+    <span class="hljs-built_in">this</span>.tm = tm;  
+    <span class="hljs-built_in">this</span>.dm = dm;  
+    <span class="hljs-built_in">this</span>.activeTransaction = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();  
     <span class="hljs-comment">// 初始化 活跃事务列表，并将超级事务 就xid为0的</span>
-    activeTransaction.put(TransactionManagerImpl.SUPER_XID, Transaction.newTransaction(TransactionManagerImpl.SUPER_XID, <span class="hljs-number">0</span>, <span class="hljs-keyword">null</span>));  
-    <span class="hljs-keyword">this</span>.lock = <span class="hljs-keyword">new</span> ReentrantLock();  
-    <span class="hljs-keyword">this</span>.lt = <span class="hljs-keyword">new</span> LockTable();  
+    activeTransaction.put(TransactionManagerImpl.SUPER_XID, Transaction.newTransaction(TransactionManagerImpl.SUPER_XID, <span class="hljs-number">0</span>, <span class="hljs-literal">null</span>));  
+    <span class="hljs-built_in">this</span>.lock = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>();  
+    <span class="hljs-built_in">this</span>.lt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LockTable</span>();  
 &#125;</code></pre></div>
 
 <h4 id="4-创建TM模块，此处基于VM-DM"><a href="#4-创建TM模块，此处基于VM-DM" class="headerlink" title="4.创建TM模块，此处基于VM,DM"></a>4.创建TM模块，此处基于VM,DM</h4><div class="hljs"><pre><code class="hljs java">TableManager tbm=TableManager.create(<span class="hljs-string">&quot;cun/&quot;</span>,vm,dm);</code></pre></div>
 
 <p>创建文件.tb用于存放表信息</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> TableManager <span class="hljs-title">create</span><span class="hljs-params">(String path, VersionManager vm, DataManager dm)</span> </span>&#123;  
-    Booter booter = Booter.create(path);  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> TableManager <span class="hljs-title function_">create</span><span class="hljs-params">(String path, VersionManager vm, DataManager dm)</span> &#123;  
+    <span class="hljs-type">Booter</span> <span class="hljs-variable">booter</span> <span class="hljs-operator">=</span> Booter.create(path);  
     booter.update(Parser.long2Byte(<span class="hljs-number">0</span>));  
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TableManagerImpl(vm, dm, booter);  
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TableManagerImpl</span>(vm, dm, booter);  
 &#125;</code></pre></div>
 
-<h3 id="5-开启事务"><a href="#5-开启事务" class="headerlink" title="5.开启事务"></a>5.开启事务</h3><div class="hljs"><pre><code class="hljs java">BeginRes br=tbm.begin(<span class="hljs-keyword">new</span> Begin());</code></pre></div>
+<h3 id="5-开启事务"><a href="#5-开启事务" class="headerlink" title="5.开启事务"></a>5.开启事务</h3><div class="hljs"><pre><code class="hljs java">BeginRes br=tbm.begin(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Begin</span>());</code></pre></div>
 
 
-<h3 id="6-解析SQL语句"><a href="#6-解析SQL语句" class="headerlink" title="6.解析SQL语句"></a>6.解析SQL语句</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">long</span> xid=br.xid;  
+<h3 id="6-解析SQL语句"><a href="#6-解析SQL语句" class="headerlink" title="6.解析SQL语句"></a>6.解析SQL语句</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-type">long</span> xid=br.xid;  
 <span class="hljs-comment">//建立一张新表  </span>
 String ss=<span class="hljs-string">&quot;create table students &quot;</span> +  
         <span class="hljs-string">&quot;name string,age int32 &quot;</span> +  
         <span class="hljs-string">&quot;(index name age)&quot;</span>;  
-<span class="hljs-keyword">byte</span> b[]=ss.getBytes(StandardCharsets.UTF_8);  
-Object stat = Parser.Parse(b);</code></pre></div>
+<span class="hljs-type">byte</span> b[]=ss.getBytes(StandardCharsets.UTF_8);  
+<span class="hljs-type">Object</span> <span class="hljs-variable">stat</span> <span class="hljs-operator">=</span> Parser.Parse(b);</code></pre></div>
 
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324174126.png" srcset="/img/loading.gif" alt><br>可以看到，解析后会返回一个Object对象，其包含了表名，字段名，字段类型以及索引</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324174126.png" srcset="/img/loading.gif"><br>可以看到，解析后会返回一个Object对象，其包含了表名，字段名，字段类型以及索引</p>
 <h3 id="7-执行创建表的SQL语句"><a href="#7-执行创建表的SQL语句" class="headerlink" title="7.执行创建表的SQL语句"></a>7.执行创建表的SQL语句</h3><p>分为四种情况<br>     开启一个事务sql语句为 begin<br>     提交一个事务sql语句为 commit<br>     回滚事务sql语句为abort<br>     其他sql语句 CRUD</p>
 <blockquote>
 <p>MYDB执行sql时，默认是开启事务的，即一条sql语句也是需要提交事务的，也开启手动即begin，保持多个操作的原子性</p>
 </blockquote>
-<div class="hljs"><pre><code class="hljs java">Object stat = Parser.Parse(sql);  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">Object</span> <span class="hljs-variable">stat</span> <span class="hljs-operator">=</span> Parser.Parse(sql);  
 <span class="hljs-keyword">if</span>(Begin.class.isInstance(stat)) &#123;  
     <span class="hljs-keyword">if</span>(xid != <span class="hljs-number">0</span>) &#123;  
         <span class="hljs-keyword">throw</span> Error.NestedTransactionException;  
     &#125;  
-    BeginRes r = tbm.begin((Begin)stat);  
+    <span class="hljs-type">BeginRes</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> tbm.begin((Begin)stat);  
     xid = r.xid;  
     <span class="hljs-keyword">return</span> r.result;  
 &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(Commit.class.isInstance(stat)) &#123;  
     <span class="hljs-keyword">if</span>(xid == <span class="hljs-number">0</span>) &#123;  
         <span class="hljs-keyword">throw</span> Error.NoTransactionException;  
     &#125;  
-    <span class="hljs-keyword">byte</span>[] res = tbm.commit(xid);  
+    <span class="hljs-type">byte</span>[] res = tbm.commit(xid);  
     xid = <span class="hljs-number">0</span>;  
     <span class="hljs-keyword">return</span> res;  
 &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(Abort.class.isInstance(stat)) &#123;  
     <span class="hljs-keyword">if</span>(xid == <span class="hljs-number">0</span>) &#123;  
         <span class="hljs-keyword">throw</span> Error.NoTransactionException;  
     &#125;  
-    <span class="hljs-keyword">byte</span>[] res = tbm.abort(xid);  
+    <span class="hljs-type">byte</span>[] res = tbm.abort(xid);  
     xid = <span class="hljs-number">0</span>;  
     <span class="hljs-keyword">return</span> res;  
 &#125; <span class="hljs-keyword">else</span> &#123;  
@@ -353,23 +353,23 @@ Object stat = Parser.Parse(b);</code></pre></div>
 String ss=<span class="hljs-string">&quot;create table students &quot;</span> +  
         <span class="hljs-string">&quot;name string,age int32 &quot;</span> +  
         <span class="hljs-string">&quot;(index name age)&quot;</span>;  
-<span class="hljs-keyword">byte</span> b[]=ss.getBytes(StandardCharsets.UTF_8);  
-Object stat = Parser.Parse(b);
+<span class="hljs-type">byte</span> b[]=ss.getBytes(StandardCharsets.UTF_8);  
+<span class="hljs-type">Object</span> <span class="hljs-variable">stat</span> <span class="hljs-operator">=</span> Parser.Parse(b);
 tbm.create(xid,(Create) stat);</code></pre></div>
 
 <h4 id="首先会到表的缓存查询是否存在该表名"><a href="#首先会到表的缓存查询是否存在该表名" class="headerlink" title="首先会到表的缓存查询是否存在该表名"></a>首先会到表的缓存查询是否存在该表名</h4><p>也就是第一个if语句中的代码</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] create(<span class="hljs-keyword">long</span> xid, Create create) <span class="hljs-keyword">throws</span> Exception &#123;  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[] create(<span class="hljs-type">long</span> xid, Create create) <span class="hljs-keyword">throws</span> Exception &#123;  
     lock.lock();  
     <span class="hljs-keyword">try</span> &#123;  
 	    <span class="hljs-comment">// 此处代码</span>
         <span class="hljs-keyword">if</span>(tableCache.containsKey(create.tableName)) &#123;  
             <span class="hljs-keyword">throw</span> Error.DuplicatedTableException;  
         &#125;  
-        Table table = Table.createTable(<span class="hljs-keyword">this</span>, firstTableUid(), xid, create);
+        <span class="hljs-type">Table</span> <span class="hljs-variable">table</span> <span class="hljs-operator">=</span> Table.createTable(<span class="hljs-built_in">this</span>, firstTableUid(), xid, create);
         updateFirstTableUid(table.uid);  
         tableCache.put(create.tableName, table);  
         <span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  
-            xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+            xidTableCache.put(xid, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());  
         &#125;  
         xidTableCache.get(xid).add(table);  
         <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;create &quot;</span> + create.tableName).getBytes();  
@@ -382,18 +382,18 @@ tbm.create(xid,(Create) stat);</code></pre></div>
 <li>如果存在，说明表名重复，抛出异常</li>
 <li>如果没有，则创建一张新表</li>
 </ul>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] create(<span class="hljs-keyword">long</span> xid, Create create) <span class="hljs-keyword">throws</span> Exception &#123;  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[] create(<span class="hljs-type">long</span> xid, Create create) <span class="hljs-keyword">throws</span> Exception &#123;  
     lock.lock();  
     <span class="hljs-keyword">try</span> &#123;  
         <span class="hljs-keyword">if</span>(tableCache.containsKey(create.tableName)) &#123;  
             <span class="hljs-keyword">throw</span> Error.DuplicatedTableException;  
         &#125;  
         <span class="hljs-comment">// 接下来解释的是这一行代码的执行过程  </span>
-        Table table = Table.createTable(<span class="hljs-keyword">this</span>, firstTableUid(), xid, create);
+        <span class="hljs-type">Table</span> <span class="hljs-variable">table</span> <span class="hljs-operator">=</span> Table.createTable(<span class="hljs-built_in">this</span>, firstTableUid(), xid, create);
         updateFirstTableUid(table.uid);  
         tableCache.put(create.tableName, table);  
         <span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  
-            xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+            xidTableCache.put(xid, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());  
         &#125;  
         xidTableCache.get(xid).add(table);  
         <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;create &quot;</span> + create.tableName).getBytes();  
@@ -402,16 +402,16 @@ tbm.create(xid,(Create) stat);</code></pre></div>
     &#125;  
 &#125;</code></pre></div>
 
-<p>接下来将进入最核心的代码块中<code>Table table = Table.createTable(this, firstTableUid(), xid, create);</code></p>
+<p>接下来将进入最核心的代码块中<code>Table table = Table.createTable(this, firstTableUid(), xid, create); </code></p>
 <h4 id="进入Table-createTable"><a href="#进入Table-createTable" class="headerlink" title="进入Table.createTable"></a>进入Table.createTable</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 创建一个新的Table对象，并根据传入的Create对象创建字段  nextUid = 0</span>
-Table tb = <span class="hljs-keyword">new</span> Table(tbm, create.tableName, nextUid);  
-<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; create.fieldName.length; i ++) &#123;  
-    String fieldName = create.fieldName[i];  
-    String fieldType = create.fieldType[i];  
-    <span class="hljs-keyword">boolean</span> indexed = <span class="hljs-keyword">false</span>;  
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt; create.index.length; j ++) &#123;  
+<span class="hljs-type">Table</span> <span class="hljs-variable">tb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Table</span>(tbm, create.tableName, nextUid);  
+<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; create.fieldName.length; i ++) &#123;  
+    <span class="hljs-type">String</span> <span class="hljs-variable">fieldName</span> <span class="hljs-operator">=</span> create.fieldName[i];  
+    <span class="hljs-type">String</span> <span class="hljs-variable">fieldType</span> <span class="hljs-operator">=</span> create.fieldType[i];  
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">indexed</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;  
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; create.index.length; j ++) &#123;  
         <span class="hljs-keyword">if</span>(fieldName.equals(create.index[j])) &#123;  
-            indexed = <span class="hljs-keyword">true</span>;  
+            indexed = <span class="hljs-literal">true</span>;  
             <span class="hljs-keyword">break</span>;  
         &#125;  
     &#125;
@@ -421,66 +421,66 @@ Table tb = <span class="hljs-keyword">new</span> Table(tbm, create.tableName, ne
 &#125;
 </code></pre></div>
 
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324175248.png" srcset="/img/loading.gif" alt><br>在for循环中取出表的所有字段信息和类型，并判断是否为索引类型，接着创建字段信息</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324175248.png" srcset="/img/loading.gif"><br>在for循环中取出表的所有字段信息和类型，并判断是否为索引类型，接着创建字段信息</p>
 <h4 id="进入Field-createField代码逻辑"><a href="#进入Field-createField代码逻辑" class="headerlink" title="进入Field.createField代码逻辑"></a>进入Field.createField代码逻辑</h4><div class="hljs"><pre><code class="hljs java">typeCheck(fieldType);  
-Field f = <span class="hljs-keyword">new</span> Field(tb, fieldName, fieldType, <span class="hljs-number">0</span>);  
+<span class="hljs-type">Field</span> <span class="hljs-variable">f</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Field</span>(tb, fieldName, fieldType, <span class="hljs-number">0</span>);  
 <span class="hljs-keyword">if</span>(indexed) &#123;  
-    <span class="hljs-keyword">long</span> index = BPlusTree.create(((TableManagerImpl)tb.tbm).dm);  
-    BPlusTree bt = BPlusTree.load(index, ((TableManagerImpl)tb.tbm).dm);  
+    <span class="hljs-type">long</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> BPlusTree.create(((TableManagerImpl)tb.tbm).dm);  
+    <span class="hljs-type">BPlusTree</span> <span class="hljs-variable">bt</span> <span class="hljs-operator">=</span> BPlusTree.load(index, ((TableManagerImpl)tb.tbm).dm);  
     f.index = index;  
     f.bt = bt;  
 &#125;  
 f.persistSelf(xid);  
 <span class="hljs-keyword">return</span> f;</code></pre></div>
 
-<p>如果该字段是索引类型，将会为该索引创建B+树，以上参数信息如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324180543.png" srcset="/img/loading.gif" alt></p>
+<p>如果该字段是索引类型，将会为该索引创建B+树，以上参数信息如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324180543.png" srcset="/img/loading.gif"></p>
 <p>![]</p>
 <h4 id="persistSelf"><a href="#persistSelf" class="headerlink" title="persistSelf()"></a>persistSelf()</h4><p>最后会执行<code>persistSelf()</code>，将字段数据写入磁盘</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">persistSelf</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    <span class="hljs-keyword">byte</span>[] nameRaw = Parser.string2Byte(fieldName);  
-    <span class="hljs-keyword">byte</span>[] typeRaw = Parser.string2Byte(fieldType);  
-    <span class="hljs-keyword">byte</span>[] indexRaw = Parser.long2Byte(index);  
-    <span class="hljs-keyword">this</span>.uid = ((TableManagerImpl)tb.tbm).vm.insert(xid, Bytes.concat(nameRaw, typeRaw, indexRaw));  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">persistSelf</span><span class="hljs-params">(<span class="hljs-type">long</span> xid)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">byte</span>[] nameRaw = Parser.string2Byte(fieldName);  
+    <span class="hljs-type">byte</span>[] typeRaw = Parser.string2Byte(fieldType);  
+    <span class="hljs-type">byte</span>[] indexRaw = Parser.long2Byte(index);  
+    <span class="hljs-built_in">this</span>.uid = ((TableManagerImpl)tb.tbm).vm.insert(xid, Bytes.concat(nameRaw, typeRaw, indexRaw));  
 &#125;</code></pre></div>
 
-<p>将字段名、类型以及索引值转换为byte类型，交给vm插入<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/1679654859017.jpg" srcset="/img/loading.gif" alt></p>
-<h4 id="进入-TableManagerImpl-tb-tbm-vm-insert逻辑"><a href="#进入-TableManagerImpl-tb-tbm-vm-insert逻辑" class="headerlink" title="进入((TableManagerImpl)tb.tbm).vm.insert逻辑"></a>进入((TableManagerImpl)tb.tbm).vm.insert逻辑</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+<p>将字段名、类型以及索引值转换为byte类型，交给vm插入<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/1679654859017.jpg" srcset="/img/loading.gif"></p>
+<h4 id="进入-TableManagerImpl-tb-tbm-vm-insert逻辑"><a href="#进入-TableManagerImpl-tb-tbm-vm-insert逻辑" class="headerlink" title="进入((TableManagerImpl)tb.tbm).vm.insert逻辑"></a>进入((TableManagerImpl)tb.tbm).vm.insert逻辑</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">long</span> xid, <span class="hljs-type">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
     lock.lock();  
-    Transaction t = activeTransaction.get(xid);   <span class="hljs-comment">//从活跃的事务列表中取出该事务</span>
+    <span class="hljs-type">Transaction</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> activeTransaction.get(xid);   <span class="hljs-comment">//从活跃的事务列表中取出该事务</span>
     lock.unlock();  
   
-    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-keyword">null</span>) &#123;  
+    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-literal">null</span>) &#123;  
         <span class="hljs-keyword">throw</span> t.err;  
     &#125;  
 	<span class="hljs-comment">// 将数据拼接成一个Entry</span>
-    <span class="hljs-keyword">byte</span>[] raw = Entry.wrapEntryRaw(xid, data);  
+    <span class="hljs-type">byte</span>[] raw = Entry.wrapEntryRaw(xid, data);  
     <span class="hljs-comment">// 插入DataItem的Data位置</span>
     <span class="hljs-keyword">return</span> dm.insert(xid, raw);  
 &#125;</code></pre></div>
 
-<p>该段中raw的数据如下，就是在VM模块中介绍的Entry的存储结构<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324181517.png" srcset="/img/loading.gif" alt></p>
-<h4 id="进入dm-insert-执行流程"><a href="#进入dm-insert-执行流程" class="headerlink" title="进入dm.insert()执行流程"></a>进入dm.insert()执行流程</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">byte</span>[] raw = DataItem.wrapDataItemRaw(data);  
+<p>该段中raw的数据如下，就是在VM模块中介绍的Entry的存储结构<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324181517.png" srcset="/img/loading.gif"></p>
+<h4 id="进入dm-insert-执行流程"><a href="#进入dm-insert-执行流程" class="headerlink" title="进入dm.insert()执行流程"></a>进入dm.insert()执行流程</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-type">byte</span>[] raw = DataItem.wrapDataItemRaw(data);  
 <span class="hljs-keyword">if</span>(raw.length &gt; PageX.MAX_FREE_SPACE) &#123;  
     <span class="hljs-keyword">throw</span> Error.DataTooLargeException;  
 &#125;</code></pre></div>
 
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324185356.png" srcset="/img/loading.gif" alt><br>使用<code>PageIndex</code>选择合适的页面进行存储</p>
-<div class="hljs"><pre><code class="hljs java">PageInfo pi = <span class="hljs-keyword">null</span>;  
-<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i ++) &#123;  
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324185356.png" srcset="/img/loading.gif"><br>使用<code>PageIndex</code>选择合适的页面进行存储</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">PageInfo</span> <span class="hljs-variable">pi</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;  
+<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i ++) &#123;  
     pi = pIndex.select(raw.length);  
-    <span class="hljs-keyword">if</span> (pi != <span class="hljs-keyword">null</span>) &#123;  
+    <span class="hljs-keyword">if</span> (pi != <span class="hljs-literal">null</span>) &#123;  
         <span class="hljs-keyword">break</span>;  
     &#125; <span class="hljs-keyword">else</span> &#123;  
-        <span class="hljs-keyword">int</span> newPgno = pc.newPage(PageX.initRaw());  
+        <span class="hljs-type">int</span> <span class="hljs-variable">newPgno</span> <span class="hljs-operator">=</span> pc.newPage(PageX.initRaw());  
         pIndex.add(newPgno, PageX.MAX_FREE_SPACE);  
     &#125;  
 &#125;</code></pre></div>
 
 <p>取出page，插入insertLog，用于恢复时使用</p>
 <div class="hljs"><pre><code class="hljs java">pg = pc.getPage(pi.pgno);  
-<span class="hljs-keyword">byte</span>[] log = Recover.insertLog(xid, pg, raw);  <span class="hljs-comment">// 解析出log返回，log的格式如下图</span>
+<span class="hljs-type">byte</span>[] log = Recover.insertLog(xid, pg, raw);  <span class="hljs-comment">// 解析出log返回，log的格式如下图</span>
 logger.log(log);  <span class="hljs-comment">// 向.log文件中写入log，并更行日志文件的校验和，用于数据恢复</span>
-<span class="hljs-keyword">short</span> offset = PageX.insert(pg, raw);  <span class="hljs-comment">// .db文件中写入真正的数据</span>
+<span class="hljs-type">short</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> PageX.insert(pg, raw);  <span class="hljs-comment">// .db文件中写入真正的数据</span>
   
 pg.release();  
 <span class="hljs-keyword">return</span> Types.addressToUid(pi.pgno, offset);
@@ -488,34 +488,34 @@ pg.release();
 
 <span class="hljs-keyword">finally</span> &#123;  
     <span class="hljs-comment">// 将取出的pg重新插入pIndex  </span>
-    <span class="hljs-keyword">if</span>(pg != <span class="hljs-keyword">null</span>) &#123;  
+    <span class="hljs-keyword">if</span>(pg != <span class="hljs-literal">null</span>) &#123;  
         pIndex.add(pi.pgno, PageX.getFreeSpace(pg));  
     &#125; <span class="hljs-keyword">else</span> &#123;  
         pIndex.add(pi.pgno, freeSpace);  
     &#125;  
 &#125;</code></pre></div>
 
-<p>==以上代码都在dm.insert()中==<br>log变量的存储结构如下所示<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324191950.png" srcset="/img/loading.gif" alt><br>最后返回插入位置的偏移量<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324192830.png" srcset="/img/loading.gif" alt><br><code>PageX.inset()</code>的代码逻辑</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">short</span> <span class="hljs-title">insert</span><span class="hljs-params">(Page pg, <span class="hljs-keyword">byte</span>[] raw)</span> </span>&#123;  
-    pg.setDirty(<span class="hljs-keyword">true</span>); <span class="hljs-comment">// 此时该位置数据更新 所以为脏数据  </span>
-    <span class="hljs-keyword">short</span> offset = getFSO(pg.getData()); <span class="hljs-comment">// 获取空闲位置的偏移 在之后插入数据  </span>
+<p>&#x3D;&#x3D;以上代码都在dm.insert()中&#x3D;&#x3D;<br>log变量的存储结构如下所示<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324191950.png" srcset="/img/loading.gif"><br>最后返回插入位置的偏移量<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324192830.png" srcset="/img/loading.gif"><br><code>PageX.inset()</code>的代码逻辑</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">short</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(Page pg, <span class="hljs-type">byte</span>[] raw)</span> &#123;  
+    pg.setDirty(<span class="hljs-literal">true</span>); <span class="hljs-comment">// 此时该位置数据更新 所以为脏数据  </span>
+    <span class="hljs-type">short</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> getFSO(pg.getData()); <span class="hljs-comment">// 获取空闲位置的偏移 在之后插入数据  </span>
     System.arraycopy(raw, <span class="hljs-number">0</span>, pg.getData(), offset, raw.length);  <span class="hljs-comment">// 将数据拷贝到指定的内存地址</span>
-    setFSO(pg.getData(), (<span class="hljs-keyword">short</span>)(offset + raw.length));  <span class="hljs-comment">// 更新FSO</span>
+    setFSO(pg.getData(), (<span class="hljs-type">short</span>)(offset + raw.length));  <span class="hljs-comment">// 更新FSO</span>
     <span class="hljs-keyword">return</span> offset;  
 &#125;</code></pre></div>
 
 <p>完成上面的一系列操作后，sql的执行过程已经持久化到磁盘中。</p>
-<h4 id="回到tbm-create-xid-Create-stat-中"><a href="#回到tbm-create-xid-Create-stat-中" class="headerlink" title="回到tbm.create(xid,(Create) stat);`中"></a>回到tbm.create(xid,(Create) stat);`中</h4><div class="hljs"><pre><code class="hljs java">updateFirstTableUid(table.uid);  <span class="hljs-comment">// 更新.tb文件</span>
+<h4 id="回到tbm-create-xid-Create-stat-96-中"><a href="#回到tbm-create-xid-Create-stat-96-中" class="headerlink" title="回到tbm.create(xid,(Create) stat);&#96;中"></a>回到tbm.create(xid,(Create) stat);&#96;中</h4><div class="hljs"><pre><code class="hljs java">updateFirstTableUid(table.uid);  <span class="hljs-comment">// 更新.tb文件</span>
 tableCache.put(create.tableName, table);  
 <span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  
-    xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+    xidTableCache.put(xid, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());  
 &#125;  
 xidTableCache.get(xid).add(table);  
 <span class="hljs-keyword">return</span> (<span class="hljs-string">&quot;create &quot;</span> + create.tableName).getBytes();</code></pre></div>
 
-<p><code>updateFirstTableUid()</code>用于将新增表的uid更新到<code>.tb</code>文件中，该函数会调用<code>Booter.update()</code>函数，该函数在更新<code>.tb</code>文件时，用创建一个新文件其后缀为<code>.bt_tmp</code><br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324215438.png" srcset="/img/loading.gif" alt><br>之后，将新数据写入该文件，再将<code>.bt</code>文件中的内容拷贝到临时文件<code>.bt_tmp</code>中，准备好全部数据后，会用<code>.bt_tmp</code>将原来的<code>.bt</code>文件覆盖。如此更新数据，是为了保证更新数据的原子性。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] data)</span> </span>&#123;  
-    File tmp = <span class="hljs-keyword">new</span> File(path + BOOTER_TMP_SUFFIX);  
+<p><code>updateFirstTableUid()</code>用于将新增表的uid更新到<code>.tb</code>文件中，该函数会调用<code>Booter.update()</code>函数，该函数在更新<code>.tb</code>文件时，用创建一个新文件其后缀为<code>.bt_tmp</code><br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324215438.png" srcset="/img/loading.gif"><br>之后，将新数据写入该文件，再将<code>.bt</code>文件中的内容拷贝到临时文件<code>.bt_tmp</code>中，准备好全部数据后，会用<code>.bt_tmp</code>将原来的<code>.bt</code>文件覆盖。如此更新数据，是为了保证更新数据的原子性。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] data)</span> &#123;  
+    <span class="hljs-type">File</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path + BOOTER_TMP_SUFFIX);  
     <span class="hljs-keyword">try</span> &#123;  
         tmp.createNewFile();  
     &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;  
@@ -524,7 +524,7 @@ xidTableCache.get(xid).add(table);
     <span class="hljs-keyword">if</span>(!tmp.canRead() || !tmp.canWrite()) &#123;  
         Panic.panic(Error.FileCannotRWException);  
     &#125;  
-    <span class="hljs-keyword">try</span>(FileOutputStream out = <span class="hljs-keyword">new</span> FileOutputStream(tmp)) &#123;  
+    <span class="hljs-keyword">try</span>(<span class="hljs-type">FileOutputStream</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FileOutputStream</span>(tmp)) &#123;  
         out.write(data);  
         out.flush();  
     &#125; <span class="hljs-keyword">catch</span>(IOException e) &#123;  
@@ -532,12 +532,12 @@ xidTableCache.get(xid).add(table);
     &#125;  
     <span class="hljs-keyword">try</span> &#123;  
     <span class="hljs-comment">// 覆盖原文件</span>
-        Files.move(tmp.toPath(), <span class="hljs-keyword">new</span> File(path+BOOTER_SUFFIX).toPath(), StandardCopyOption.REPLACE_EXISTING);  
+        Files.move(tmp.toPath(), <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path+BOOTER_SUFFIX).toPath(), StandardCopyOption.REPLACE_EXISTING);  
     &#125; <span class="hljs-keyword">catch</span>(IOException e) &#123;  
         Panic.panic(e);  
     &#125;  
     <span class="hljs-comment">// 返回新的File对象</span>
-    file = <span class="hljs-keyword">new</span> File(path+BOOTER_SUFFIX);  
+    file = <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(path+BOOTER_SUFFIX);  
     <span class="hljs-keyword">if</span>(!file.canRead() || !file.canWrite()) &#123;  
         Panic.panic(Error.FileCannotRWException);  
     &#125;  
@@ -548,7 +548,7 @@ xidTableCache.get(xid).add(table);
 
 <span class="hljs-comment">// xidTableCache 存放的是事务xid创建的table集合</span>
 <span class="hljs-keyword">if</span>(!xidTableCache.containsKey(xid)) &#123;  <span class="hljs-comment">// 如果该事务xid 不在xidTableCache中，则将其加入</span>
-	xidTableCache.put(xid, <span class="hljs-keyword">new</span> ArrayList&lt;&gt;());  
+	xidTableCache.put(xid, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());  
 &#125;  
 <span class="hljs-comment">// 将创建的表名加入 </span>
 xidTableCache.get(xid).add(table);  
@@ -559,24 +559,24 @@ b=ss.getBytes(StandardCharsets.UTF_8);
 stat = Parser.Parse(b);  
 tbm.insert(xid,(Insert) stat);</code></pre></div>
 
-<p>解析出的sql语句<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324223619.png" srcset="/img/loading.gif" alt><br><code>tbm.insert()</code>中的代码</p>
+<p>解析出的sql语句<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324223619.png" srcset="/img/loading.gif"><br><code>tbm.insert()</code>中的代码</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>  
-<span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] insert(<span class="hljs-keyword">long</span> xid, Insert insert) <span class="hljs-keyword">throws</span> Exception &#123;  
+<span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[] insert(<span class="hljs-type">long</span> xid, Insert insert) <span class="hljs-keyword">throws</span> Exception &#123;  
     lock.lock();  
-    Table table = tableCache.get(insert.tableName);  
+    <span class="hljs-type">Table</span> <span class="hljs-variable">table</span> <span class="hljs-operator">=</span> tableCache.get(insert.tableName);  
     lock.unlock();  
-    <span class="hljs-keyword">if</span>(table == <span class="hljs-keyword">null</span>) &#123;  
+    <span class="hljs-keyword">if</span>(table == <span class="hljs-literal">null</span>) &#123;  
         <span class="hljs-keyword">throw</span> Error.TableNotFoundException;  
     &#125;  
     table.insert(xid, insert);  
     <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;insert&quot;</span>.getBytes();  
 &#125;</code></pre></div>
 
-<p>首先检查表名是否存在，不在则抛出<code>TableNotFoundException</code>异常<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324224735.png" srcset="/img/loading.gif" alt><br>如果存在，则进入<code>table.insert(xid, insert)</code>,代码如下</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, Insert insert)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+<p>首先检查表名是否存在，不在则抛出<code>TableNotFoundException</code>异常<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324224735.png" srcset="/img/loading.gif"><br>如果存在，则进入<code>table.insert(xid, insert)</code>,代码如下</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">long</span> xid, Insert insert)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
     Map&lt;String, Object&gt; entry = string2Entry(insert.values);  
-    <span class="hljs-keyword">byte</span>[] raw = entry2Raw(entry);  
-    <span class="hljs-keyword">long</span> uid = ((TableManagerImpl)tbm).vm.insert(xid, raw);  
+    <span class="hljs-type">byte</span>[] raw = entry2Raw(entry);  
+    <span class="hljs-type">long</span> <span class="hljs-variable">uid</span> <span class="hljs-operator">=</span> ((TableManagerImpl)tbm).vm.insert(xid, raw);  
     <span class="hljs-keyword">for</span> (Field field : fields) &#123;  
         <span class="hljs-keyword">if</span>(field.isIndexed()) &#123;  
             field.insert(entry.get(field.fieldName), uid);  
@@ -584,58 +584,58 @@ tbm.insert(xid,(Insert) stat);</code></pre></div>
     &#125;  
 &#125;</code></pre></div>
 
-<p>首先将SQL语句转换成一条Entry<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324230818.png" srcset="/img/loading.gif" alt><br>接着进入<code>long uid = ((TableManagerImpl)tbm).vm.insert(xid, raw);</code></p>
+<p>首先将SQL语句转换成一条Entry<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324230818.png" srcset="/img/loading.gif"><br>接着进入<code>long uid = ((TableManagerImpl)tbm).vm.insert(xid, raw);</code></p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>  
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+<span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">long</span> xid, <span class="hljs-type">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
     lock.lock();  
-    Transaction t = activeTransaction.get(xid);  
+    <span class="hljs-type">Transaction</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> activeTransaction.get(xid);  
     lock.unlock();  
   
-    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-keyword">null</span>) &#123;  
+    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-literal">null</span>) &#123;  
         <span class="hljs-keyword">throw</span> t.err;  
     &#125;  
   
-    <span class="hljs-keyword">byte</span>[] raw = Entry.wrapEntryRaw(xid, data);  
+    <span class="hljs-type">byte</span>[] raw = Entry.wrapEntryRaw(xid, data);  
     <span class="hljs-keyword">return</span> dm.insert(xid, raw);  
 &#125;</code></pre></div>
 
-<p><code>raw</code>的数据结构如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324231556.png" srcset="/img/loading.gif" alt><br>进入<code>dm.insert(xid, raw)</code>，与创建表的过程一样</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">long</span> <span class="hljs-title">insert</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    <span class="hljs-keyword">byte</span>[] raw = DataItem.wrapDataItemRaw(data);  
+<p><code>raw</code>的数据结构如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324231556.png" srcset="/img/loading.gif"><br>进入<code>dm.insert(xid, raw)</code>，与创建表的过程一样</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(<span class="hljs-type">long</span> xid, <span class="hljs-type">byte</span>[] data)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">byte</span>[] raw = DataItem.wrapDataItemRaw(data);  
     <span class="hljs-keyword">if</span>(raw.length &gt; PageX.MAX_FREE_SPACE) &#123;  
         <span class="hljs-keyword">throw</span> Error.DataTooLargeException;  
     &#125;  
   
-    PageInfo pi = <span class="hljs-keyword">null</span>;  
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i ++) &#123;  
+    <span class="hljs-type">PageInfo</span> <span class="hljs-variable">pi</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;  
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i ++) &#123;  
         pi = pIndex.select(raw.length);  
-        <span class="hljs-keyword">if</span> (pi != <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">if</span> (pi != <span class="hljs-literal">null</span>) &#123;  
             <span class="hljs-keyword">break</span>;  
         &#125; <span class="hljs-keyword">else</span> &#123;  
-            <span class="hljs-keyword">int</span> newPgno = pc.newPage(PageX.initRaw());  
+            <span class="hljs-type">int</span> <span class="hljs-variable">newPgno</span> <span class="hljs-operator">=</span> pc.newPage(PageX.initRaw());  
             pIndex.add(newPgno, PageX.MAX_FREE_SPACE);  
         &#125;  
     &#125;  
-    <span class="hljs-keyword">if</span>(pi == <span class="hljs-keyword">null</span>) &#123;  
+    <span class="hljs-keyword">if</span>(pi == <span class="hljs-literal">null</span>) &#123;  
         <span class="hljs-keyword">throw</span> Error.DatabaseBusyException;  
     &#125;</code></pre></div>
 
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324232309.png" srcset="/img/loading.gif" alt></p>
-<div class="hljs"><pre><code class="hljs java">    Page pg = <span class="hljs-keyword">null</span>;  
-    <span class="hljs-keyword">int</span> freeSpace = <span class="hljs-number">0</span>;  
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324232309.png" srcset="/img/loading.gif"></p>
+<div class="hljs"><pre><code class="hljs java">    <span class="hljs-type">Page</span> <span class="hljs-variable">pg</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;  
+    <span class="hljs-type">int</span> <span class="hljs-variable">freeSpace</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;  
     <span class="hljs-keyword">try</span> &#123;  
         pg = pc.getPage(pi.pgno);  
-        <span class="hljs-keyword">byte</span>[] log = Recover.insertLog(xid, pg, raw);  
+        <span class="hljs-type">byte</span>[] log = Recover.insertLog(xid, pg, raw);  
         logger.log(log);  
   
-        <span class="hljs-keyword">short</span> offset = PageX.insert(pg, raw);  
+        <span class="hljs-type">short</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> PageX.insert(pg, raw);  
   
         pg.release();  
         <span class="hljs-keyword">return</span> Types.addressToUid(pi.pgno, offset);  
   
     &#125; <span class="hljs-keyword">finally</span> &#123;  
         <span class="hljs-comment">// 将取出的pg重新插入pIndex  </span>
-        <span class="hljs-keyword">if</span>(pg != <span class="hljs-keyword">null</span>) &#123;  
+        <span class="hljs-keyword">if</span>(pg != <span class="hljs-literal">null</span>) &#123;  
             pIndex.add(pi.pgno, PageX.getFreeSpace(pg));  
         &#125; <span class="hljs-keyword">else</span> &#123;  
             pIndex.add(pi.pgno, freeSpace);  
@@ -643,10 +643,10 @@ tbm.insert(xid,(Insert) stat);</code></pre></div>
     &#125;  
 &#125;</code></pre></div>
 
-<p>log的数据结构如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324232631.png" srcset="/img/loading.gif" alt><br><code>logger.log(log)</code>中</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">log</span><span class="hljs-params">(<span class="hljs-keyword">byte</span>[] data)</span> </span>&#123;  
-    <span class="hljs-keyword">byte</span>[] log = wrapLog(data);  
-    ByteBuffer buf = ByteBuffer.wrap(log);  
+<p>log的数据结构如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324232631.png" srcset="/img/loading.gif"><br><code>logger.log(log)</code>中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">log</span><span class="hljs-params">(<span class="hljs-type">byte</span>[] data)</span> &#123;  
+    <span class="hljs-type">byte</span>[] log = wrapLog(data);  
+    <span class="hljs-type">ByteBuffer</span> <span class="hljs-variable">buf</span> <span class="hljs-operator">=</span> ByteBuffer.wrap(log);  
     lock.lock();  
     <span class="hljs-keyword">try</span> &#123;  
         fc.position(fc.size());  
@@ -660,25 +660,25 @@ tbm.insert(xid,(Insert) stat);</code></pre></div>
     updateXChecksum(log);  
 &#125;</code></pre></div>
 
-<p>log被进一步被打包成下面的结构<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324233431.png" srcset="/img/loading.gif" alt><br>接着将log写入到<code>.log</code>文件中，最后更新整个文件的校验和<code>updateXChecksum(log)</code>，之后回到</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">short</span> offset = PageX.insert(pg, raw);  
+<p>log被进一步被打包成下面的结构<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230324233431.png" srcset="/img/loading.gif"><br>接着将log写入到<code>.log</code>文件中，最后更新整个文件的校验和<code>updateXChecksum(log)</code>，之后回到</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">short</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> PageX.insert(pg, raw);  
 
 pg.release();  
 <span class="hljs-keyword">return</span> Types.addressToUid(pi.pgno, offset);</code></pre></div>
 
-<p>进入<code>short offset = PageX.insert(pg, raw);</code>,将<code>raw</code>数据写入磁盘中</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">short</span> <span class="hljs-title">insert</span><span class="hljs-params">(Page pg, <span class="hljs-keyword">byte</span>[] raw)</span> </span>&#123;  
-    pg.setDirty(<span class="hljs-keyword">true</span>); <span class="hljs-comment">// 此时该位置数据更新 所以为脏数据  </span>
-    <span class="hljs-keyword">short</span> offset = getFSO(pg.getData()); <span class="hljs-comment">// 获取空闲位置的偏移 在之后插入数据  </span>
+<p>进入<code>short offset = PageX.insert(pg, raw); </code>,将<code>raw</code>数据写入磁盘中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">short</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(Page pg, <span class="hljs-type">byte</span>[] raw)</span> &#123;  
+    pg.setDirty(<span class="hljs-literal">true</span>); <span class="hljs-comment">// 此时该位置数据更新 所以为脏数据  </span>
+    <span class="hljs-type">short</span> <span class="hljs-variable">offset</span> <span class="hljs-operator">=</span> getFSO(pg.getData()); <span class="hljs-comment">// 获取空闲位置的偏移 在之后插入数据  </span>
     System.arraycopy(raw, <span class="hljs-number">0</span>, pg.getData(), offset, raw.length);  
-    setFSO(pg.getData(), (<span class="hljs-keyword">short</span>)(offset + raw.length));  
+    setFSO(pg.getData(), (<span class="hljs-type">short</span>)(offset + raw.length));  
     <span class="hljs-keyword">return</span> offset;  
 &#125;</code></pre></div>
 
 <p>写入 磁盘后将page,放回pageIndex中</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">finally</span> &#123;  
     <span class="hljs-comment">// 将取出的pg重新插入pIndex  </span>
-   <span class="hljs-keyword">if</span>(pg != <span class="hljs-keyword">null</span>) &#123;  
+   <span class="hljs-keyword">if</span>(pg != <span class="hljs-literal">null</span>) &#123;  
         pIndex.add(pi.pgno, PageX.getFreeSpace(pg));  
     &#125; <span class="hljs-keyword">else</span> &#123;  
         pIndex.add(pi.pgno, freeSpace);  
@@ -693,8 +693,8 @@ pg.release();
 &#125;</code></pre></div>
 
 <p><code>field.insert()</code>向b+树插入数据</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">insert</span><span class="hljs-params">(Object key, <span class="hljs-keyword">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    <span class="hljs-keyword">long</span> uKey = value2Uid(key);  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(Object key, <span class="hljs-type">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">long</span> <span class="hljs-variable">uKey</span> <span class="hljs-operator">=</span> value2Uid(key);  
     bt.insert(uKey, uid);  
 &#125;</code></pre></div>
 
@@ -706,18 +706,18 @@ pg.release();
 <div class="hljs"><pre><code class="hljs java">ss=<span class="hljs-string">&quot;select name,age from students where age=18&quot;</span>;  
 b=ss.getBytes(StandardCharsets.UTF_8);  
 stat = Parser.Parse(b);  
-<span class="hljs-keyword">byte</span>[] output=tbm.read(xid,(Select) stat);</code></pre></div>
+<span class="hljs-type">byte</span>[] output=tbm.read(xid,(Select) stat);</code></pre></div>
 
-<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325105353.png" srcset="/img/loading.gif" alt></p>
-<p>进入<code>tbm.read(xid, (Select) stat)</code>，同样先查询是否存在该表<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325105541.png" srcset="/img/loading.gif" alt><br>进入<code>table.read(xid, read);</code></p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">read</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, Select read)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325105353.png" srcset="/img/loading.gif"></p>
+<p>进入<code>tbm.read(xid, (Select) stat)</code>，同样先查询是否存在该表<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325105541.png" srcset="/img/loading.gif"><br>进入<code>table.read(xid, read);</code></p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">read</span><span class="hljs-params">(<span class="hljs-type">long</span> xid, Select read)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
     <span class="hljs-comment">// 解析where条件并得到需要查询的uid列表  </span>
     List&lt;Long&gt; uids = parseWhere(read.where);  
-    StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();  
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();  
     <span class="hljs-comment">// 循环遍历uids列表，逐个查询对应的记录，并输出结果  </span>
     <span class="hljs-keyword">for</span> (Long uid : uids) &#123;  
-        <span class="hljs-keyword">byte</span>[] raw = ((TableManagerImpl)tbm).vm.read(xid, uid);  
-        <span class="hljs-keyword">if</span>(raw == <span class="hljs-keyword">null</span>) <span class="hljs-keyword">continue</span>;  
+        <span class="hljs-type">byte</span>[] raw = ((TableManagerImpl)tbm).vm.read(xid, uid);  
+        <span class="hljs-keyword">if</span>(raw == <span class="hljs-literal">null</span>) <span class="hljs-keyword">continue</span>;  
         Map&lt;String, Object&gt; entry = parseEntry(raw);  
         sb.append(printEntry(entry)).append(<span class="hljs-string">&quot;\n&quot;</span>);  
     &#125;  
@@ -725,23 +725,23 @@ stat = Parser.Parse(b);
 &#125;</code></pre></div>
 
 <p>首先解析where条件中的字段以及数据<code>parseWhere(Where where)</code>，这一步主要就是找到where条件查询的字段，交给<code>calWhere(fd, where)</code>查找出条件的上下界，其中逻辑比较简单，不在赘述。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">private</span> CalWhereRes <span class="hljs-title">calWhere</span><span class="hljs-params">(Field fd, Where where)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    CalWhereRes res = <span class="hljs-keyword">new</span> CalWhereRes();  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> CalWhereRes <span class="hljs-title function_">calWhere</span><span class="hljs-params">(Field fd, Where where)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">CalWhereRes</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CalWhereRes</span>();  
     <span class="hljs-keyword">switch</span>(where.logicOp) &#123;  
         <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;&quot;</span>:  <span class="hljs-comment">// 单个where条件</span>
-            res.single = <span class="hljs-keyword">true</span>;  
-            FieldCalRes r = fd.calExp(where.singleExp1);  
+            res.single = <span class="hljs-literal">true</span>;  
+            <span class="hljs-type">FieldCalRes</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> fd.calExp(where.singleExp1);  
             res.l0 = r.left; res.r0 = r.right;  
             <span class="hljs-keyword">break</span>;  
         <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;or&quot;</span>:  <span class="hljs-comment">// or查询，两次查询结果取并集</span>
-            res.single = <span class="hljs-keyword">false</span>;  
+            res.single = <span class="hljs-literal">false</span>;  
             r = fd.calExp(where.singleExp1);  
             res.l0 = r.left; res.r0 = r.right;  
             r = fd.calExp(where.singleExp2);  
             res.l1 = r.left; res.r1 = r.right;  
             <span class="hljs-keyword">break</span>;  
         <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;and&quot;</span>:  <span class="hljs-comment">// and查询 最后两个结果取交集</span>
-            res.single = <span class="hljs-keyword">true</span>;  
+            res.single = <span class="hljs-literal">true</span>;  
             r = fd.calExp(where.singleExp1);  
             res.l0 = r.left; res.r0 = r.right;  
             r = fd.calExp(where.singleExp2);  
@@ -755,15 +755,15 @@ stat = Parser.Parse(b);
     <span class="hljs-keyword">return</span> res;  
 &#125;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CalWhereRes</span> </span>&#123;  
-    <span class="hljs-keyword">long</span> l0, r0, l1, r1;  
-    <span class="hljs-keyword">boolean</span> single;  
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CalWhereRes</span> &#123;  
+    <span class="hljs-type">long</span> l0, r0, l1, r1;  
+    <span class="hljs-type">boolean</span> single;  
 &#125;</code></pre></div>
 
 <p>在<code>calWhere(fd, where)</code>中，会使用<code>fd.calExp(where.singleExp1)</code>，其作用返回一个<code>CalWhereRes</code>类型的结果，其中包含结果的范围。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> FieldCalRes <span class="hljs-title">calExp</span><span class="hljs-params">(SingleExpression exp)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    Object v = <span class="hljs-keyword">null</span>;  
-    FieldCalRes res = <span class="hljs-keyword">new</span> FieldCalRes();  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> FieldCalRes <span class="hljs-title function_">calExp</span><span class="hljs-params">(SingleExpression exp)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">Object</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;  
+    <span class="hljs-type">FieldCalRes</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FieldCalRes</span>();  
     <span class="hljs-keyword">switch</span>(exp.compareOp) &#123;  
         <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;&lt;&quot;</span>:  
             res.left = <span class="hljs-number">0</span>;  
@@ -787,7 +787,7 @@ stat = Parser.Parse(b);
     <span class="hljs-keyword">return</span> res;  
 &#125;</code></pre></div>
 
-<p><code>v = string2Value(exp.value);</code>在insert操作时也会使用<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325122525.png" srcset="/img/loading.gif" alt><br>将字段数据转换为数字ukey，便于精准查询和范围查询。所以经过<code>calExp()</code>函数的处理后便能够得到响应的左右边界，再到b+树中查询即可。<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325123244.png" srcset="/img/loading.gif" alt><br>此时的函数调用栈如下图<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325123147.png" srcset="/img/loading.gif" alt></p>
+<p><code>v = string2Value(exp.value);</code>在insert操作时也会使用<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325122525.png" srcset="/img/loading.gif"><br>将字段数据转换为数字ukey，便于精准查询和范围查询。所以经过<code>calExp()</code>函数的处理后便能够得到响应的左右边界，再到b+树中查询即可。<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325123244.png" srcset="/img/loading.gif"><br>此时的函数调用栈如下图<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325123147.png" srcset="/img/loading.gif"></p>
 <p>接着回到<code>parseWhere(Where where)</code>函数中</p>
 <div class="hljs"><pre><code class="hljs java">List&lt;Long&gt; uids = fd.search(l0, r0);  
 <span class="hljs-keyword">if</span>(!single) &#123; <span class="hljs-comment">// 若为or查询 还要查询l1,r1范围并加入到结果集中 也就是并集  </span>
@@ -797,18 +797,18 @@ stat = Parser.Parse(b);
 <span class="hljs-keyword">return</span> uids;</code></pre></div>
 
 <p>进入feild中查找<code>fd.search()</code>会调用b+tree的<code>searchRange()</code>方法</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Long&gt; <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-keyword">long</span> left, <span class="hljs-keyword">long</span> right)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> List&lt;Long&gt; <span class="hljs-title function_">search</span><span class="hljs-params">(<span class="hljs-type">long</span> left, <span class="hljs-type">long</span> right)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
     <span class="hljs-keyword">return</span> bt.searchRange(left, right);  
 &#125;</code></pre></div>
 
 <p><code>searchRange()</code>代码逻辑如下</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Long&gt; <span class="hljs-title">searchRange</span><span class="hljs-params">(<span class="hljs-keyword">long</span> leftKey, <span class="hljs-keyword">long</span> rightKey)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    <span class="hljs-keyword">long</span> rootUid = rootUid(); <span class="hljs-comment">// 获取根节点的UID  </span>
-    <span class="hljs-keyword">long</span> leafUid = searchLeaf(rootUid, leftKey); <span class="hljs-comment">// 搜索左边界所在的叶子节点  </span>
-    List&lt;Long&gt; uids = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();  
-    <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;  
-        Node leaf = Node.loadNode(<span class="hljs-keyword">this</span>, leafUid); <span class="hljs-comment">// 加载叶子节点  </span>
-        LeafSearchRangeRes res = leaf.leafSearchRange(leftKey, rightKey); <span class="hljs-comment">// 在叶子节点中搜索符合条件的数据项  </span>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> List&lt;Long&gt; <span class="hljs-title function_">searchRange</span><span class="hljs-params">(<span class="hljs-type">long</span> leftKey, <span class="hljs-type">long</span> rightKey)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">long</span> <span class="hljs-variable">rootUid</span> <span class="hljs-operator">=</span> rootUid(); <span class="hljs-comment">// 获取根节点的UID  </span>
+    <span class="hljs-type">long</span> <span class="hljs-variable">leafUid</span> <span class="hljs-operator">=</span> searchLeaf(rootUid, leftKey); <span class="hljs-comment">// 搜索左边界所在的叶子节点  </span>
+    List&lt;Long&gt; uids = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();  
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;  
+        <span class="hljs-type">Node</span> <span class="hljs-variable">leaf</span> <span class="hljs-operator">=</span> Node.loadNode(<span class="hljs-built_in">this</span>, leafUid); <span class="hljs-comment">// 加载叶子节点  </span>
+        <span class="hljs-type">LeafSearchRangeRes</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> leaf.leafSearchRange(leftKey, rightKey); <span class="hljs-comment">// 在叶子节点中搜索符合条件的数据项  </span>
         leaf.release(); <span class="hljs-comment">// 释放叶子节点  </span>
         uids.addAll(res.uids); <span class="hljs-comment">// 将符合条件的数据项的UID添加到结果列表中  </span>
         <span class="hljs-keyword">if</span>(res.siblingUid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">// 如果没有兄弟节点，则说明已经搜完了所有符合条件的数据项  </span>
@@ -820,10 +820,10 @@ stat = Parser.Parse(b);
     <span class="hljs-keyword">return</span> uids;  
 &#125;</code></pre></div>
 
-<p>经过<code>leaf.leafSearchRange(leftKey, rightKey);</code>便可以得到符合条件的uid<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325125823.png" srcset="/img/loading.gif" alt><br>再返回到<code>searchRange()</code>中</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;  
-    Node leaf = Node.loadNode(<span class="hljs-keyword">this</span>, leafUid); <span class="hljs-comment">// 加载叶子节点  </span>
-    LeafSearchRangeRes res = leaf.leafSearchRange(leftKey, rightKey); <span class="hljs-comment">// 在叶子节点中搜索符合条件的数据项  </span>
+<p>经过<code>leaf.leafSearchRange(leftKey, rightKey);</code>便可以得到符合条件的uid<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325125823.png" srcset="/img/loading.gif"><br>再返回到<code>searchRange()</code>中</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;  
+    <span class="hljs-type">Node</span> <span class="hljs-variable">leaf</span> <span class="hljs-operator">=</span> Node.loadNode(<span class="hljs-built_in">this</span>, leafUid); <span class="hljs-comment">// 加载叶子节点  </span>
+    <span class="hljs-type">LeafSearchRangeRes</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> leaf.leafSearchRange(leftKey, rightKey); <span class="hljs-comment">// 在叶子节点中搜索符合条件的数据项  </span>
     leaf.release(); <span class="hljs-comment">// 释放叶子节点  </span>
     uids.addAll(res.uids); <span class="hljs-comment">// 将符合条件的数据项的UID添加到结果列表中  </span>
     <span class="hljs-keyword">if</span>(res.siblingUid == <span class="hljs-number">0</span>) &#123; <span class="hljs-comment">// 如果没有兄弟节点，则说明已经搜完了所有符合条件的数据项  </span>
@@ -836,14 +836,14 @@ stat = Parser.Parse(b);
 
 <p>释放叶子节点，将满足条件的uid加入到集合，返回给<code>feild.search()</code>，再返回到<code>table.search()</code>，此时回到<code>table.read(xid, read)</code>中</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 执行完的代码注释了</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">read</span><span class="hljs-params">(<span class="hljs-keyword">long</span> xid, Select read)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">read</span><span class="hljs-params">(<span class="hljs-type">long</span> xid, Select read)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
     <span class="hljs-comment">// 解析where条件并得到需要查询的uid列表  </span>
     <span class="hljs-comment">//List&lt;Long&gt; uids = parseWhere(read.where);  </span>
-    StringBuilder sb = <span class="hljs-keyword">new</span> StringBuilder();  
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();  
     <span class="hljs-comment">// 循环遍历uids列表，逐个查询对应的记录，并输出结果  </span>
     <span class="hljs-keyword">for</span> (Long uid : uids) &#123;  
-        <span class="hljs-keyword">byte</span>[] raw = ((TableManagerImpl)tbm).vm.read(xid, uid);  
-        <span class="hljs-keyword">if</span>(raw == <span class="hljs-keyword">null</span>) <span class="hljs-keyword">continue</span>;  
+        <span class="hljs-type">byte</span>[] raw = ((TableManagerImpl)tbm).vm.read(xid, uid);  
+        <span class="hljs-keyword">if</span>(raw == <span class="hljs-literal">null</span>) <span class="hljs-keyword">continue</span>;  
         Map&lt;String, Object&gt; entry = parseEntry(raw);  
         sb.append(printEntry(entry)).append(<span class="hljs-string">&quot;\n&quot;</span>);  
     &#125;  
@@ -851,21 +851,21 @@ stat = Parser.Parse(b);
 &#125;</code></pre></div>
 
 <p>接下来遍历uids列表，交给vm模块，读取uid。<code>vm.read(xid, uid)</code>代码如下，VM继承了计数缓存框架，会先到缓存中查找数据，也就是<code>entry = super.get(uid);</code>这行代码。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] read(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">long</span> uid) <span class="hljs-keyword">throws</span> Exception &#123;  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[] read(<span class="hljs-type">long</span> xid, <span class="hljs-type">long</span> uid) <span class="hljs-keyword">throws</span> Exception &#123;  
     lock.lock();  
-    Transaction t = activeTransaction.get(xid);  
+    <span class="hljs-type">Transaction</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> activeTransaction.get(xid);  
     lock.unlock();  
   
-    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-keyword">null</span>) &#123;  
+    <span class="hljs-keyword">if</span>(t.err != <span class="hljs-literal">null</span>) &#123;  
         <span class="hljs-keyword">throw</span> t.err;  
     &#125;  
   
-    Entry entry = <span class="hljs-keyword">null</span>;  
+    <span class="hljs-type">Entry</span> <span class="hljs-variable">entry</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;  
     <span class="hljs-keyword">try</span> &#123;  
-        entry = <span class="hljs-keyword">super</span>.get(uid);  <span class="hljs-comment">// VM继承了计数缓存框架，会先到缓存中查找数据</span>
+        entry = <span class="hljs-built_in">super</span>.get(uid);  <span class="hljs-comment">// VM继承了计数缓存框架，会先到缓存中查找数据</span>
     &#125; <span class="hljs-keyword">catch</span>(Exception e) &#123;  
         <span class="hljs-keyword">if</span>(e == Error.NullEntryException) &#123;  
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;  
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;  
         &#125; <span class="hljs-keyword">else</span> &#123;  
             <span class="hljs-keyword">throw</span> e;  
         &#125;  
@@ -874,7 +874,7 @@ stat = Parser.Parse(b);
         <span class="hljs-keyword">if</span>(Visibility.isVisible(tm, t, entry)) &#123;  
             <span class="hljs-keyword">return</span> entry.data();  
         &#125; <span class="hljs-keyword">else</span> &#123;  
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;  
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;  
         &#125;  
     &#125; <span class="hljs-keyword">finally</span> &#123;  
         entry.release();  
@@ -882,8 +882,8 @@ stat = Parser.Parse(b);
 &#125;</code></pre></div>
 
 <p>接下来进入<code>AbstractCache.get()</code>,代码很长。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">protected</span> T <span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-keyword">long</span> key)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> T <span class="hljs-title function_">get</span><span class="hljs-params">(<span class="hljs-type">long</span> key)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) &#123;  
         lock.lock();  
         <span class="hljs-keyword">if</span>(getting.containsKey(key)) &#123; <span class="hljs-comment">// getting为正在获取某资源的线程  </span>
             <span class="hljs-comment">// 请求的资源正在被其他线程获取  </span>
@@ -899,7 +899,7 @@ stat = Parser.Parse(b);
   
         <span class="hljs-keyword">if</span>(cache.containsKey(key)) &#123;  
             <span class="hljs-comment">// 资源在缓存中，直接返回  </span>
-            T obj = cache.get(key);  
+            <span class="hljs-type">T</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> cache.get(key);  
             <span class="hljs-comment">// 将事务xid加入到引用了该uid的列表中</span>
             references.put(key, references.get(key) + <span class="hljs-number">1</span>);  
             lock.unlock();  
@@ -912,12 +912,12 @@ stat = Parser.Parse(b);
             <span class="hljs-keyword">throw</span> Error.CacheFullException;  
         &#125;  
         count ++;  
-        getting.put(key, <span class="hljs-keyword">true</span>);  
+        getting.put(key, <span class="hljs-literal">true</span>);  
         lock.unlock();  
         <span class="hljs-keyword">break</span>;  
     &#125;  
   
-    T obj = <span class="hljs-keyword">null</span>;  
+    <span class="hljs-type">T</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;  
     <span class="hljs-keyword">try</span> &#123;  
         <span class="hljs-comment">// 资源不在缓存中时  </span>
         obj = getForCache(key);  
@@ -939,16 +939,16 @@ stat = Parser.Parse(b);
 &#125;</code></pre></div>
 
 <p>因为是第一次查询所以，肯定不在缓存中，需要到磁盘中查找<code>obj = getForCache(key)</code></p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">protected</span> Entry <span class="hljs-title">getForCache</span><span class="hljs-params">(<span class="hljs-keyword">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    Entry entry = Entry.loadEntry(<span class="hljs-keyword">this</span>, uid);  
-    <span class="hljs-keyword">if</span>(entry == <span class="hljs-keyword">null</span>) &#123;  
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">protected</span> Entry <span class="hljs-title function_">getForCache</span><span class="hljs-params">(<span class="hljs-type">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">Entry</span> <span class="hljs-variable">entry</span> <span class="hljs-operator">=</span> Entry.loadEntry(<span class="hljs-built_in">this</span>, uid);  
+    <span class="hljs-keyword">if</span>(entry == <span class="hljs-literal">null</span>) &#123;  
         <span class="hljs-keyword">throw</span> Error.NullEntryException;  
     &#125;  
     <span class="hljs-keyword">return</span> entry;  
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Entry <span class="hljs-title">loadEntry</span><span class="hljs-params">(VersionManager vm, <span class="hljs-keyword">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;  
-    DataItem di = ((VersionManagerImpl)vm).dm.read(uid);  
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Entry <span class="hljs-title function_">loadEntry</span><span class="hljs-params">(VersionManager vm, <span class="hljs-type">long</span> uid)</span> <span class="hljs-keyword">throws</span> Exception &#123;  
+    <span class="hljs-type">DataItem</span> <span class="hljs-variable">di</span> <span class="hljs-operator">=</span> ((VersionManagerImpl)vm).dm.read(uid);  
     <span class="hljs-keyword">return</span> newEntry(vm, di, uid);  
 &#125;</code></pre></div>
 
@@ -959,43 +959,43 @@ cache.put(key, obj);  <span class="hljs-comment">// 将从磁盘中加载的entr
 references.put(key, <span class="hljs-number">1</span>);  
 lock.unlock();</code></pre></div>
 
-<p>此时的调用栈如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325132416.png" srcset="/img/loading.gif" alt><br>继续返回，回到<code>vm.read(xid, uid)</code>中，判断可见性后返回记录。</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">byte</span>[] read(<span class="hljs-keyword">long</span> xid, <span class="hljs-keyword">long</span> uid) <span class="hljs-keyword">throws</span> Exception &#123;  
+<p>此时的调用栈如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325132416.png" srcset="/img/loading.gif"><br>继续返回，回到<code>vm.read(xid, uid)</code>中，判断可见性后返回记录。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">byte</span>[] read(<span class="hljs-type">long</span> xid, <span class="hljs-type">long</span> uid) <span class="hljs-keyword">throws</span> Exception &#123;  
 	... <span class="hljs-comment">//已执行的代码</span>
     <span class="hljs-keyword">try</span> &#123;  
         <span class="hljs-keyword">if</span>(Visibility.isVisible(tm, t, entry)) &#123;  
             <span class="hljs-keyword">return</span> entry.data();  
         &#125; <span class="hljs-keyword">else</span> &#123;  
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;  
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;  
         &#125;  
     &#125; <span class="hljs-keyword">finally</span> &#123;  
         entry.release();</code></pre></div>
 
-<p>返回到<code>table.read()</code>中,获取的记录如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325133026.png" srcset="/img/loading.gif" alt><br>继续向上返回到<code>tbm.read()</code>，继续返回到主函数，控制台打印结果如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325133301.png" srcset="/img/loading.gif" alt></p>
-<p>整个过程有亿点点的复杂，<a target="_blank" rel="noopener" href="https://ziyang.moe">真佩服作者</a></p>
+<p>返回到<code>table.read()</code>中,获取的记录如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325133026.png" srcset="/img/loading.gif"><br>继续向上返回到<code>tbm.read()</code>，继续返回到主函数，控制台打印结果如下<br><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/Pasted%20image%2020230325133301.png" srcset="/img/loading.gif"></p>
+<p>整个过程有亿点点的复杂，<a target="_blank" rel="noopener" href="https://ziyang.moe/">真佩服作者</a></p>
 <h2 id="分析隔离级别"><a href="#分析隔离级别" class="headerlink" title="分析隔离级别"></a>分析隔离级别</h2><h3 id="读已提交"><a href="#读已提交" class="headerlink" title="读已提交"></a>读已提交</h3><p>准备两个测试用例，第一个为创建表后向其中插入一条数据</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
 
         TransactionManagerImpl tm= TransactionManager.create(<span class="hljs-string">&quot;cun/tm&quot;</span>);
         DataManager dm=DataManager.create(<span class="hljs-string">&quot;cun/dm&quot;</span>,<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>,tm);
         VersionManager vm= VersionManager.newVersionManager(tm,dm);
         TableManager tbm=TableManager.create(<span class="hljs-string">&quot;cun/&quot;</span>,vm,dm);
 
-        <span class="hljs-keyword">byte</span>[] res;
-        Executor executor = <span class="hljs-keyword">new</span> Executor(tbm);
-        String begin = <span class="hljs-string">&quot;begin&quot;</span>;
-        <span class="hljs-keyword">byte</span>[] beginBytes = begin.getBytes(StandardCharsets.UTF_8);
+        <span class="hljs-type">byte</span>[] res;
+        <span class="hljs-type">Executor</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Executor</span>(tbm);
+        <span class="hljs-type">String</span> <span class="hljs-variable">begin</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;begin&quot;</span>;
+        <span class="hljs-type">byte</span>[] beginBytes = begin.getBytes(StandardCharsets.UTF_8);
         String createTB=<span class="hljs-string">&quot;create table students &quot;</span> +
                 <span class="hljs-string">&quot;name string,age int32 &quot;</span> +
                 <span class="hljs-string">&quot;(index name age)&quot;</span>;
-        <span class="hljs-keyword">byte</span>[] createTBBytes=createTB.getBytes(StandardCharsets.UTF_8);
+        <span class="hljs-type">byte</span>[] createTBBytes=createTB.getBytes(StandardCharsets.UTF_8);
 
         String insertSQL=<span class="hljs-string">&quot;insert into students values xiaosun 18&quot;</span>;
-        <span class="hljs-keyword">byte</span>[] insertSQLBytes = insertSQL.getBytes(StandardCharsets.UTF_8);
+        <span class="hljs-type">byte</span>[] insertSQLBytes = insertSQL.getBytes(StandardCharsets.UTF_8);
         <span class="hljs-keyword">try</span> &#123;
-            <span class="hljs-keyword">byte</span>[] bytes = executor.execute(beginBytes);
+            <span class="hljs-type">byte</span>[] bytes = executor.execute(beginBytes);
             res = executor.execute(createTBBytes);
-            System.out.println(<span class="hljs-keyword">new</span> String(res));
+            System.out.println(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(res));
             executor.execute(insertSQLBytes);
         &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
             e.printStackTrace();
@@ -1003,7 +1003,7 @@ lock.unlock();</code></pre></div>
     &#125;</code></pre></div>
 
 <p>第二测试用例为查询上述插入的数据</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
 
         TransactionManagerImpl tm= TransactionManager.open(<span class="hljs-string">&quot;cun/tm&quot;</span>);
         DataManager dm=DataManager.open(<span class="hljs-string">&quot;cun/dm&quot;</span>,<span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">20</span>,tm);
@@ -1012,16 +1012,16 @@ lock.unlock();</code></pre></div>
 
         <span class="hljs-comment">//开启事务</span>
 <span class="hljs-comment">//        BeginRes br=tbm.begin(new Begin());</span>
-        <span class="hljs-keyword">byte</span>[] res;
-        Executor executor = <span class="hljs-keyword">new</span> Executor(tbm);
-        String begin = <span class="hljs-string">&quot;begin&quot;</span>;
-        <span class="hljs-keyword">byte</span>[] beginBytes = begin.getBytes(StandardCharsets.UTF_8);
+        <span class="hljs-type">byte</span>[] res;
+        <span class="hljs-type">Executor</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Executor</span>(tbm);
+        <span class="hljs-type">String</span> <span class="hljs-variable">begin</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;begin&quot;</span>;
+        <span class="hljs-type">byte</span>[] beginBytes = begin.getBytes(StandardCharsets.UTF_8);
         String selectSQL=<span class="hljs-string">&quot;select name,age from students where age=18&quot;</span>;
-        <span class="hljs-keyword">byte</span>[] selectSQLBytes=selectSQL.getBytes(StandardCharsets.UTF_8);
+        <span class="hljs-type">byte</span>[] selectSQLBytes=selectSQL.getBytes(StandardCharsets.UTF_8);
         <span class="hljs-keyword">try</span> &#123;
-            <span class="hljs-keyword">byte</span>[] bytes = executor.execute(beginBytes);
+            <span class="hljs-type">byte</span>[] bytes = executor.execute(beginBytes);
             res = executor.execute(selectSQLBytes);
-            System.out.println(<span class="hljs-keyword">new</span> String(res));
+            System.out.println(<span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(res));
         &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
             e.printStackTrace();
         &#125;

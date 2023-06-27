@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      710 字
+      712 字
     </span>
   
 
@@ -251,7 +251,7 @@
 <h2 id="原题"><a href="#原题" class="headerlink" title="原题"></a>原题</h2><p>题目描述</p>
 <p>小明置身于一个迷宫，请你帮小明找出从起点到终点的最短路程。<br> 小明只能向上下左右四个方向移动。</p>
 <p>输入</p>
-<p>输入包含多组测试数据。输入的第一行是一个整数T，表示有T组测试数据。<br> 每组输入的第一行是两个整数N和M（1&lt;=N,M&lt;=100）。<br> 接下来N行，每行输入M个字符，每个字符表示迷宫中的一个小方格。<br> 字符的含义如下：<br>‘S’：起点<br>‘E’：终点<br>‘-’：空地，可以通过<br>‘#’：障碍，无法通过<br> 输入数据保证有且仅有一个起点和终点。</p>
+<p>输入包含多组测试数据。输入的第一行是一个整数T，表示有T组测试数据。<br> 每组输入的第一行是两个整数N和M（1&lt;&#x3D;N,M&lt;&#x3D;100）。<br> 接下来N行，每行输入M个字符，每个字符表示迷宫中的一个小方格。<br> 字符的含义如下：<br>‘S’：起点<br>‘E’：终点<br>‘-’：空地，可以通过<br>‘#’：障碍，无法通过<br> 输入数据保证有且仅有一个起点和终点。</p>
 <p>输出</p>
 <p>对于每组输入，输出从起点到终点的最短路程，如果不存在从起点到终点的路，则输出-1。</p>
 <h3 id="样例输入"><a href="#样例输入" class="headerlink" title="样例输入"></a>样例输入</h3><div class="hljs"><pre><code>1
@@ -260,23 +260,27 @@ s-###
 -----
 ##---
 E#---
----##</code></pre></div><h3 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h3><div class="hljs"><pre><code>9</code></pre></div><h2 id="解决代码"><a href="#解决代码" class="headerlink" title="解决代码"></a>解决代码</h2><div class="hljs"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;iostream&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;cstring&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;string&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span><span class="hljs-meta-string">&lt;queue&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span>
-<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
-<span class="hljs-keyword">int</span> de[<span class="hljs-number">100</span>][<span class="hljs-number">100</span>];<span class="hljs-comment">//计步数组  记录走到这个位置所需的步数 不能走到的位置标记为-1 </span>
-<span class="hljs-keyword">char</span> <span class="hljs-built_in">map</span>[<span class="hljs-number">100</span>][<span class="hljs-number">100</span>];  <span class="hljs-comment">//用于存放迷宫地图 </span>
-<span class="hljs-keyword">typedef</span> <span class="hljs-built_in">pair</span>&lt;<span class="hljs-keyword">int</span>,intP;  //坐标
-<span class="hljs-keyword">int</span> to[2][4]=&#123;1,-1,0,0,0,0,1,-1&#125;;  //在当前坐标下能走的四个方向
-<span class="hljs-keyword">int</span> sx,ex,sy,ey;  //(sx,sy)为起点坐标  （ex,ey）为终点坐标
-<span class="hljs-keyword">int</span> x,y,nx,ny; //(x,y)为函数中当前位置坐标   （nx,ny)为接下来能到达的坐标 
-<span class="hljs-keyword">int</span> r,l;  //r为行数 l为列数 
-<span class="hljs-keyword">int</span> bfs()
+---##
+</code></pre></div>
+<h3 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h3><div class="hljs"><pre><code>9
+</code></pre></div>
+<h2 id="解决代码"><a href="#解决代码" class="headerlink" title="解决代码"></a>解决代码</h2><div class="hljs"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> de[<span class="hljs-number">100</span>][<span class="hljs-number">100</span>];<span class="hljs-comment">//计步数组  记录走到这个位置所需的步数 不能走到的位置标记为-1 </span>
+<span class="hljs-type">char</span> map[<span class="hljs-number">100</span>][<span class="hljs-number">100</span>];  <span class="hljs-comment">//用于存放迷宫地图 </span>
+<span class="hljs-keyword">typedef</span> pair&lt;<span class="hljs-type">int</span>,intP;  //坐标
+<span class="hljs-type">int</span> to[2][4]=&#123;1,-1,0,0,0,0,1,-1&#125;;  //在当前坐标下能走的四个方向
+<span class="hljs-type">int</span> sx,ex,sy,ey;  //(sx,sy)为起点坐标  （ex,ey）为终点坐标
+<span class="hljs-type">int</span> x,y,nx,ny; //(x,y)为函数中当前位置坐标   （nx,ny)为接下来能到达的坐标 
+<span class="hljs-type">int</span> r,l;  //r为行数 l为列数 
+<span class="hljs-type">int</span> bfs()
 &#123;
-	<span class="hljs-built_in">memset</span>(de,-1,<span class="hljs-keyword">sizeof</span>(de));
-	<span class="hljs-built_in">queue</span>&lt;Pqu;
+	memset(de,-1,<span class="hljs-keyword">sizeof</span>(de));
+	queue&lt;Pqu;
 	qu.push(P(sx,sy));   //将起点坐标放入队头 
 	de[sx][sy]=0;
 	<span class="hljs-keyword">while</span>(!qu.empty()) 
@@ -285,14 +289,14 @@ E#---
 		qu.pop() ;//删除对头及走过的坐标 
 		x=p.first,y=p.second; 
 		<span class="hljs-keyword">if</span>(x==ex&amp;&amp;y==ey) <span class="hljs-keyword">break</span>; //到达终点 跳出循环		
-	 	<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=0;i&lt;4;i++)
+	 	<span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=0;i&lt;4;i++)
 		&#123;
 			nx=x+to[0][i];//开始向四个方向移动 
 			ny=y+to[1][i];			
-				<span class="hljs-keyword">if</span>(nx&gt;=0&amp;&amp;nx&lt;r&amp;&amp;ny&gt;=<span class="hljs-number">0</span>&amp;&amp;ny&lt;l&amp;&amp;<span class="hljs-built_in">map</span>[nx][ny]!=<span class="hljs-string">&#x27;#&#x27;</span>&amp;&amp;de[nx][ny]==<span class="hljs-number">-1</span>)
+				<span class="hljs-keyword">if</span>(nx&gt;=0&amp;&amp;nx&lt;r&amp;&amp;ny&gt;=<span class="hljs-number">0</span>&amp;&amp;ny&lt;l&amp;&amp;map[nx][ny]!=<span class="hljs-string">&#x27;#&#x27;</span>&amp;&amp;de[nx][ny]==<span class="hljs-number">-1</span>)
 	 <span class="hljs-comment">//判断是否越界 以及是否能走  排除走过的路 </span>
 	 &#123;
-	 	 qu.push(P(nx,ny));  <span class="hljs-comment">//将能走的坐标放入队列 之后依次删除 </span>
+	 	 qu.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">P</span>(nx,ny));  <span class="hljs-comment">//将能走的坐标放入队列 之后依次删除 </span>
 						 de[nx][ny]=de[x][y]+<span class="hljs-number">1</span>;  <span class="hljs-comment">//步数加一 </span>
 					  &#125; 				  
 			&#125;
@@ -300,26 +304,26 @@ E#---
 	<span class="hljs-keyword">if</span>(de[ex][ey]==<span class="hljs-number">-1</span>)  <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;  <span class="hljs-comment">//终点的记步数组为-1 及不能到达终点 </span>
 	<span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> de[ex][ey]; 
 &#125; 
-<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
 <span class="hljs-function"></span>&#123;
-	<span class="hljs-keyword">int</span> n,i,j;
-	<span class="hljs-keyword">while</span>(<span class="hljs-built_in">cin</span>&gt;&gt;n)&#123;
+	<span class="hljs-type">int</span> n,i,j;
+	<span class="hljs-keyword">while</span>(cin&gt;&gt;n)&#123;
 		<span class="hljs-keyword">while</span>(n--)&#123;
-			<span class="hljs-built_in">cin</span>&gt;&gt;r&gt;&gt;l;
+			cin&gt;&gt;r&gt;&gt;l;
 			<span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;r;i++)&#123;
 				<span class="hljs-keyword">for</span>(j=<span class="hljs-number">0</span>;j&lt;l;j++)&#123; 
-				<span class="hljs-built_in">cin</span>&gt;&gt;<span class="hljs-built_in">map</span>[i][j];
-				<span class="hljs-keyword">if</span>(<span class="hljs-built_in">map</span>[i][j]==<span class="hljs-string">&#x27;S&#x27;</span>) <span class="hljs-comment">//记录起点坐标 </span>
+				cin&gt;&gt;map[i][j];
+				<span class="hljs-keyword">if</span>(map[i][j]==<span class="hljs-string">&#x27;S&#x27;</span>) <span class="hljs-comment">//记录起点坐标 </span>
 				 &#123;
 					sx=i,sy=j;
 				 &#125; 
-				 <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">map</span>[i][j]==<span class="hljs-string">&#x27;E&#x27;</span>)  <span class="hljs-comment">//记录终点坐标 </span>
+				 <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(map[i][j]==<span class="hljs-string">&#x27;E&#x27;</span>)  <span class="hljs-comment">//记录终点坐标 </span>
 				 &#123;
 				 	ex=i,ey=j;
 				 &#125;
 				&#125;
 			&#125;
-			<span class="hljs-built_in">cout</span>&lt;&lt;bfs()&lt;&lt;<span class="hljs-built_in">endl</span>;
+			cout&lt;&lt;<span class="hljs-built_in">bfs</span>()&lt;&lt;endl;
 		&#125;
 	&#125;
 	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;

@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      30
+      31
        分钟
     </span>
   
@@ -252,8 +252,8 @@
 <p>给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。</p>
 <p>你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。</p>
 <p>示例:</p>
-<p>给定 nums = [2, 7, 11, 15], target = 9</p>
-<p>因为 nums[0] + nums[1] = 2 + 7 = 9</p>
+<p>给定 nums &#x3D; [2, 7, 11, 15], target &#x3D; 9</p>
+<p>因为 nums[0] + nums[1] &#x3D; 2 + 7 &#x3D; 9</p>
 <p>所以返回 [0, 1]</p>
 <p>来源：力扣（LeetCode）</p>
 <p>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/two-sum">https://leetcode-cn.com/problems/two-sum</a></p>
@@ -262,15 +262,15 @@
 <li>思路一：暴力，二重循环搜索答案，肯定超时</li>
 <li>思路二：使用hash表，将遍历过的数据放入hash表中，&lt;key , value&gt; 为&lt;nums[i], i&gt;结构</li>
 </ul>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span>[] twoSum(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> target) &#123;
-    HashMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) &#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] twoSum(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target) &#123;
+    HashMap&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) &#123;
         <span class="hljs-keyword">if</span>(map.containsKey(target - nums[i]))&#123;
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[]&#123;map.get(target - nums[i]), i&#125;;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;map.get(target - nums[i]), i&#125;;
         &#125;
         map.put(nums[i], i);
     &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 &#125;</code></pre></div>
 
 <h3 id="最大子序和（力扣53题）"><a href="#最大子序和（力扣53题）" class="headerlink" title="最大子序和（力扣53题）"></a>最大子序和（力扣53题）</h3><blockquote>
@@ -295,7 +295,7 @@
 <li><p>遍历顺序为从前向后</p>
 </li>
 </ul>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">maxSubArray</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxSubArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;
     <span class="hljs-comment">// int sum = nums[0];</span>
     <span class="hljs-comment">// int[] dp = new int[nums.length];</span>
     <span class="hljs-comment">// dp[0] = nums[0];</span>
@@ -307,9 +307,9 @@
     <span class="hljs-comment">// &#125;</span>
     <span class="hljs-comment">// return sum;</span>
     <span class="hljs-comment">// 可以不使用dp数组，节省空间</span>
-    <span class="hljs-keyword">int</span> sum = nums[<span class="hljs-number">0</span>];
-    <span class="hljs-keyword">int</span> result = sum;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; nums.length; i++) &#123;
+    <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> sum;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) &#123;
         sum = Math.max(sum + nums[i], nums[i]);
         <span class="hljs-keyword">if</span>(sum &gt; result)&#123;
             result = sum;
@@ -323,7 +323,7 @@
 
 
 <h3 id="多数元素（力扣169题）"><a href="#多数元素（力扣169题）" class="headerlink" title="多数元素（力扣169题）"></a>多数元素（力扣169题）</h3><blockquote>
-<p>给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n/2 ⌋ 的元素。</p>
+<p>给定一个大小为 n 的数组，找到其中的多数元素。多数元素是指在数组中出现次数大于 ⌊ n&#x2F;2 ⌋ 的元素。</p>
 <p>你可以假设数组是非空的，并且给定的数组总是存在多数元素。</p>
 <p>示例 1:</p>
 <p>输入: [3,2,3]</p>
@@ -336,13 +336,13 @@
 </blockquote>
 <ul>
 <li>思路一：使用hash表，遍历数组并计数即可</li>
-<li>思路二：排序，题中说了总是存在多数元素，那么排序后的弟⌊ n/2 ⌋即为所求答案</li>
-<li>思路三：从第一个数开始count=1，遇到相同的就加1，遇到不同的就减1，减到0就重新换个数开始计数，总能找到最多的那个</li>
+<li>思路二：排序，题中说了总是存在多数元素，那么排序后的弟⌊ n&#x2F;2 ⌋即为所求答案</li>
+<li>思路三：从第一个数开始count&#x3D;1，遇到相同的就加1，遇到不同的就减1，减到0就重新换个数开始计数，总能找到最多的那个</li>
 </ul>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 思路一</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">majorityElement</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
-    HashMap&lt;Integer, Integer&gt; count = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; nums.length; i++) &#123;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;
+    HashMap&lt;Integer, Integer&gt; count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) &#123;
         count.put(nums[i], count.getOrDefault(nums[i], <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
     &#125;
 
@@ -355,15 +355,15 @@
     <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 &#125;
 <span class="hljs-comment">// 思路二</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">majorityElement</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;
     Arrays.sort(nums);
     <span class="hljs-keyword">return</span> nums[nums.length / <span class="hljs-number">2</span>];
 &#125;
 <span class="hljs-comment">// 思路三</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">majorityElement</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
-    <span class="hljs-keyword">int</span> res = nums[<span class="hljs-number">0</span>];
-    <span class="hljs-keyword">int</span> count = <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; nums.length; i++) &#123;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> &#123;
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) &#123;
         <span class="hljs-keyword">if</span>(nums[i] == res)&#123;
             count ++;
         &#125;<span class="hljs-keyword">else</span> &#123;
@@ -376,30 +376,28 @@
     <span class="hljs-keyword">return</span> res;
 &#125;</code></pre></div>
 
-
-
 <h3 id="二分查找（力扣704题）"><a href="#二分查找（力扣704题）" class="headerlink" title="二分查找（力扣704题）"></a>二分查找（力扣704题）</h3><blockquote>
 <p>给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。</p>
 <p>示例 1:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 9</p>
+<p>输入: nums &#x3D; [-1,0,3,5,9,12], target &#x3D; 9</p>
 <p>输出: 4</p>
 <p>解释: 9 出现在 nums 中并且下标为 4</p>
 <p>示例 2:</p>
-<p>输入: nums = [-1,0,3,5,9,12], target = 2</p>
+<p>输入: nums &#x3D; [-1,0,3,5,9,12], target &#x3D; 2</p>
 <p>输出: -1</p>
 <p>解释: 2 不存在 nums 中因此返回 -1</p>
 <p>来源：力扣（LeetCode）</p>
 <p>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/binary-search-">https://leetcode-cn.com/problems/binary-search-</a></p>
 </blockquote>
 <p>无需多言</p>
-<div class="hljs"><pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
-    <span class="hljs-keyword">if</span>(nums == <span class="hljs-keyword">null</span> || nums.length == <span class="hljs-number">0</span>)&#123;
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">search</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> &#123;
+    <span class="hljs-keyword">if</span>(nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>)&#123;
         <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
     &#125;
 
-    <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">int</span> right = nums.length - <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">int</span> mid = left + (right - left) / <span class="hljs-number">2</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">while</span> (left &lt;= right)&#123;
         <span class="hljs-keyword">if</span>(target &gt; nums[mid])&#123;
             left = mid + <span class="hljs-number">1</span>;
@@ -419,10 +417,10 @@
 <h3 id="数组中第k个最大元素（力扣215题）"><a href="#数组中第k个最大元素（力扣215题）" class="headerlink" title="数组中第k个最大元素（力扣215题）"></a>数组中第k个最大元素（力扣215题）</h3><blockquote>
 <p>在未排序的数组中找到第 k 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。</p>
 <p>示例 1:</p>
-<p>输入: [3,2,1,5,6,4] 和 k = 2</p>
+<p>输入: [3,2,1,5,6,4] 和 k &#x3D; 2</p>
 <p>输出: 5</p>
 <p>示例 2:</p>
-<p>输入: [3,2,3,1,2,4,5,5,6] 和 k = 4</p>
+<p>输入: [3,2,3,1,2,4,5,5,6] 和 k &#x3D; 4</p>
 <p>输出: 4</p>
 <p>说明:可以假设 k 总是有效的，且 1 ≤ k ≤ 数组的长度</p>
 <p>来源：力扣（LeetCode）</p>
@@ -431,20 +429,20 @@
 <p>思路一：优先队列，维护一个容量为k的优先队列（最小堆），其队首元素为最小值，当遍历完整个数组后，队首元素即为第k大的数</p>
 <p>思路二：基于快速排序的快速选择算法</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 优先队列    </span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findKthLargest</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findKthLargest</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> &#123;
     <span class="hljs-comment">// 第 1 大的数，下标是 len - 1;</span>
     <span class="hljs-comment">// 第 2 大的数，下标是 len - 2;</span>
     <span class="hljs-comment">// ...</span>
     <span class="hljs-comment">// 第 k 大的数，下标是 len - k;</span>
     <span class="hljs-comment">// 创建优先队列</span>
     <span class="hljs-comment">// 创建一个容量为k的小根堆，那么遍历整个数组的过程中维护这个小根堆，那么其根元素就是数组中第k大的数</span>
-    PriorityQueue&lt;Integer&gt; priorityQueue = <span class="hljs-keyword">new</span> PriorityQueue&lt;&gt;(k, Comparator.comparingInt(a -&gt; a));
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) &#123;
+    PriorityQueue&lt;Integer&gt; priorityQueue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(k, Comparator.comparingInt(a -&gt; a));
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) &#123;
         priorityQueue.offer(nums[i]);
     &#125;
 
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = k; i &lt; nums.length; i++) &#123;
-        Integer peek = priori
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> k; i &lt; nums.length; i++) &#123;
+        <span class="hljs-type">Integer</span> <span class="hljs-variable">peek</span> <span class="hljs-operator">=</span> priori
             tyQueue.peek();
         <span class="hljs-keyword">if</span>(nums[i] &gt; peek)&#123;
             priorityQueue.poll();
@@ -455,19 +453,19 @@
 &#125;
 
 <span class="hljs-comment">// 快速选择</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">findKthLargest</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findKthLargest</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> &#123;
     <span class="hljs-comment">// 第 1 大的数，下标是 len - 1;</span>
     <span class="hljs-comment">// 第 2 大的数，下标是 len - 2;</span>
     <span class="hljs-comment">// ...</span>
     <span class="hljs-comment">// 第 k 大的数，下标是 len - k;</span>
-    <span class="hljs-keyword">int</span> len = nums.length;
-    <span class="hljs-keyword">int</span> target = len - k;
+    <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> len - k;
 
-    <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">int</span> right = len - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> len - <span class="hljs-number">1</span>;
 
-    <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;
-        <span class="hljs-keyword">int</span> pivotIndex = partition(nums, left, right);
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;
+        <span class="hljs-type">int</span> <span class="hljs-variable">pivotIndex</span> <span class="hljs-operator">=</span> partition(nums, left, right);
         <span class="hljs-keyword">if</span> (pivotIndex == target) &#123;
             <span class="hljs-keyword">return</span> nums[pivotIndex];
         &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (pivotIndex &lt; target) &#123;
@@ -479,16 +477,16 @@
     &#125;
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">partition</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right)</span> </span>&#123;
-    <span class="hljs-keyword">int</span> randomIndex = left + random.nextInt(right - left + <span class="hljs-number">1</span>);
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">partition</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> &#123;
+    <span class="hljs-type">int</span> <span class="hljs-variable">randomIndex</span> <span class="hljs-operator">=</span> left + random.nextInt(right - left + <span class="hljs-number">1</span>);
     swap(nums, left, randomIndex);
     <span class="hljs-comment">// all in nums[left + 1..le) &lt;= pivot;</span>
     <span class="hljs-comment">// all in nums(ge..right] &gt;= pivot;</span>
-    <span class="hljs-keyword">int</span> pivot = nums[left];
-    <span class="hljs-keyword">int</span> le = left + <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">int</span> ge = right;
+    <span class="hljs-type">int</span> <span class="hljs-variable">pivot</span> <span class="hljs-operator">=</span> nums[left];
+    <span class="hljs-type">int</span> <span class="hljs-variable">le</span> <span class="hljs-operator">=</span> left + <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">ge</span> <span class="hljs-operator">=</span> right;
 
-    <span class="hljs-keyword">while</span> (<span class="hljs-keyword">true</span>) &#123;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;
         <span class="hljs-keyword">while</span> (le &lt;= ge &amp;&amp; nums[le] &lt; pivot) &#123;
             le++;
         &#125;
@@ -509,8 +507,8 @@
     <span class="hljs-keyword">return</span> ge;
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">swap</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> index1, <span class="hljs-keyword">int</span> index2)</span> </span>&#123;
-    <span class="hljs-keyword">int</span> temp = nums[index1];
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">swap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> index1, <span class="hljs-type">int</span> index2)</span> &#123;
+    <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> nums[index1];
     nums[index1] = nums[index2];
     nums[index2] = temp;
 &#125;</code></pre></div>
@@ -523,70 +521,70 @@
 <p>每列的元素从上到下升序排列。</p>
 <p>示例:</p>
 <p>现有矩阵 matrix 如下：</p>
-<p>*[*</p>
+<p><em>[</em></p>
 <p> <em>[1,  4, 7, 11, 15],</em></p>
 <p> <em>[2,  5, 8, 12, 19],</em></p>
 <p> <em>[3,  6, 9, 16, 22],</em></p>
 <p> <em>[10, 13, 14, 17, 24],</em></p>
 <p> <em>[18, 21, 23, 26, 30]</em></p>
 <p><em>]</em></p>
-<p>给定 target = 5，返回 true。</p>
-<p>给定 target = 20，返回 false。</p>
+<p>给定 target &#x3D; 5，返回 true。</p>
+<p>给定 target &#x3D; 20，返回 false。</p>
 <p>来源：力扣（LeetCode）</p>
 <p>链接：<a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/search-a-2d-matrix-ii">https://leetcode-cn.com/problems/search-a-2d-matrix-ii</a></p>
 </blockquote>
 <p>思路一：题中说的很清楚是有序的矩阵，可以模仿二分搜索解决该题</p>
 <p>思路二：<img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220924161450669.png" srcset="/img/loading.gif" alt="image-20220924161450669"></p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">// 思路一</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">searchMatrix</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">searchMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> target)</span> &#123;
 
-    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span>[] nums : matrix) &#123;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] nums : matrix) &#123;
         <span class="hljs-keyword">if</span>(search(nums, target))&#123;
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         &#125;
     &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 &#125;
 
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">search</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
-    <span class="hljs-keyword">if</span>(nums == <span class="hljs-keyword">null</span> || nums.length == <span class="hljs-number">0</span>)&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">search</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> &#123;
+    <span class="hljs-keyword">if</span>(nums == <span class="hljs-literal">null</span> || nums.length == <span class="hljs-number">0</span>)&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     &#125;
 
-    <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">int</span> right = nums.length - <span class="hljs-number">1</span>;
-    <span class="hljs-keyword">int</span> mid = left + (right - left) / <span class="hljs-number">2</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
     <span class="hljs-keyword">while</span> (left &lt;= right)&#123;
         <span class="hljs-keyword">if</span>(target &gt; nums[mid])&#123;
             left = mid + <span class="hljs-number">1</span>;
         &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(target &lt; nums[mid])&#123;
             right = mid -<span class="hljs-number">1</span>;
         &#125;<span class="hljs-keyword">else</span> &#123;
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         &#125;
         mid = left + (right - left) / <span class="hljs-number">2</span>;
     &#125;
 
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 &#125;
 
 <span class="hljs-comment">// 思路二</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">searchMatrix</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[][] matrix, <span class="hljs-keyword">int</span> target)</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">searchMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> target)</span> &#123;
     <span class="hljs-comment">// 从矩阵的右上角搜索 (0, matrix[0].length)</span>
-    <span class="hljs-keyword">int</span> m = matrix[<span class="hljs-number">0</span>].length;
-    <span class="hljs-keyword">int</span> n = matrix.length;
-    <span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>;
-    <span class="hljs-keyword">int</span> y = m - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> matrix.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">y</span> <span class="hljs-operator">=</span> m - <span class="hljs-number">1</span>;
     <span class="hljs-keyword">while</span> (x &lt; n &amp;&amp; y &gt;= <span class="hljs-number">0</span>)&#123;
         <span class="hljs-keyword">if</span>(target == matrix[x][y])&#123;
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (target &lt; matrix[x][y]) &#123;
             y --;
         &#125;<span class="hljs-keyword">else</span> &#123;
             x ++;
         &#125;
     &#125;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 &#125;</code></pre></div>
 
 

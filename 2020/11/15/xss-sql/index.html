@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      3.1k 字
+      2.9k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      50
+      47
        分钟
     </span>
   
@@ -253,41 +253,41 @@
 <h2 id="xss漏洞的搭建"><a href="#xss漏洞的搭建" class="headerlink" title="xss漏洞的搭建"></a>xss漏洞的搭建</h2><h3 id="1-网页源码"><a href="#1-网页源码" class="headerlink" title="1.网页源码"></a>1.网页源码</h3><div class="hljs"><pre><code class="hljs php+HTML">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 	&lt;head&gt;
-		&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html;charset&#x3D;utf-8&quot;&gt;
-		&lt;title&gt;xss&lt;&#x2F;title&gt;
-	&lt;&#x2F;head&gt;
+		&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;
+		&lt;title&gt;xss&lt;/title&gt;
+	&lt;/head&gt;
 	&lt;body&gt;
 		&lt;center&gt;
 			
-			&lt;form action&#x3D;&quot;&quot; method&#x3D;&quot;post&quot;&gt;
-				&lt;h6&gt;please input your name!&lt;&#x2F;h6&gt;
-				&lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;username&quot; value&#x3D;&quot;&quot; &#x2F;&gt;&lt;br &#x2F;&gt;
-				&lt;input type&#x3D;&#39;submit&#39; value&#x3D;&quot;submit&quot; &#x2F;&gt;
-			&lt;&#x2F;form&gt;
+			&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;
+				&lt;h6&gt;please input your name!&lt;/h6&gt;
+				&lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;&quot; /&gt;&lt;br /&gt;
+				&lt;input type=&#x27;submit&#x27; value=&quot;submit&quot; /&gt;
+			&lt;/form&gt;
 			
 	
 &lt;?php
   
 function SafeFilter (&amp;$arr) 
 &#123;
-   $ra&#x3D;Array(&#39;&#x2F;([\x00-\x08,\x0b-\x0c,\x0e-\x19])&#x2F;&#39;,&#39;&#x2F;script&#x2F;&#39;,&#39;&#x2F;javascript&#x2F;&#39;,&#39;&#x2F;vbscript&#x2F;&#39;,&#39;&#x2F;expression&#x2F;&#39;,&#39;&#x2F;applet&#x2F;&#39;
-   ,&#39;&#x2F;meta&#x2F;&#39;,&#39;&#x2F;xml&#x2F;&#39;,&#39;&#x2F;blink&#x2F;&#39;,&#39;&#x2F;link&#x2F;&#39;,&#39;&#x2F;style&#x2F;&#39;,&#39;&#x2F;embed&#x2F;&#39;,&#39;&#x2F;object&#x2F;&#39;,&#39;&#x2F;frame&#x2F;&#39;,&#39;&#x2F;layer&#x2F;&#39;,&#39;&#x2F;title&#x2F;&#39;,&#39;&#x2F;bgsound&#x2F;&#39;
-   ,&#39;&#x2F;base&#x2F;&#39;,&#39;&#x2F;onload&#x2F;&#39;,&#39;&#x2F;onunload&#x2F;&#39;,&#39;&#x2F;onchange&#x2F;&#39;,&#39;&#x2F;onsubmit&#x2F;&#39;,&#39;&#x2F;onreset&#x2F;&#39;,&#39;&#x2F;onselect&#x2F;&#39;,&#39;&#x2F;onblur&#x2F;&#39;,&#39;&#x2F;onfocus&#x2F;&#39;,
-   &#39;&#x2F;onabort&#x2F;&#39;,&#39;&#x2F;onkeydown&#x2F;&#39;,&#39;&#x2F;onkeypress&#x2F;&#39;,&#39;&#x2F;onkeyup&#x2F;&#39;,&#39;&#x2F;onclick&#x2F;&#39;,&#39;&#x2F;ondblclick&#x2F;&#39;,&#39;&#x2F;onmousedown&#x2F;&#39;,&#39;&#x2F;onmousemove&#x2F;&#39;
-   ,&#39;&#x2F;onmouseout&#x2F;&#39;,&#39;&#x2F;onmouseover&#x2F;&#39;,&#39;&#x2F;onmouseup&#x2F;&#39;,&#39;&#x2F;onunload&#x2F;&#39;);
+   $ra=Array(&#x27;/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/&#x27;,&#x27;/script/&#x27;,&#x27;/javascript/&#x27;,&#x27;/vbscript/&#x27;,&#x27;/expression/&#x27;,&#x27;/applet/&#x27;
+   ,&#x27;/meta/&#x27;,&#x27;/xml/&#x27;,&#x27;/blink/&#x27;,&#x27;/link/&#x27;,&#x27;/style/&#x27;,&#x27;/embed/&#x27;,&#x27;/object/&#x27;,&#x27;/frame/&#x27;,&#x27;/layer/&#x27;,&#x27;/title/&#x27;,&#x27;/bgsound/&#x27;
+   ,&#x27;/base/&#x27;,&#x27;/onload/&#x27;,&#x27;/onunload/&#x27;,&#x27;/onchange/&#x27;,&#x27;/onsubmit/&#x27;,&#x27;/onreset/&#x27;,&#x27;/onselect/&#x27;,&#x27;/onblur/&#x27;,&#x27;/onfocus/&#x27;,
+   &#x27;/onabort/&#x27;,&#x27;/onkeydown/&#x27;,&#x27;/onkeypress/&#x27;,&#x27;/onkeyup/&#x27;,&#x27;/onclick/&#x27;,&#x27;/ondblclick/&#x27;,&#x27;/onmousedown/&#x27;,&#x27;/onmousemove/&#x27;
+   ,&#x27;/onmouseout/&#x27;,&#x27;/onmouseover/&#x27;,&#x27;/onmouseup/&#x27;,&#x27;/onunload/&#x27;);
      
    if (is_array($arr))
    &#123;
-     foreach ($arr as $key &#x3D;&gt; $value) 
+     foreach ($arr as $key =&gt; $value) 
      &#123;
         if (!is_array($value))
         &#123;
-          if (!get_magic_quotes_gpc())  &#x2F;&#x2F;不对magic_quotes_gpc转义过的字符使用addslashes(),避免双重转义。
+          if (!get_magic_quotes_gpc())  //不对magic_quotes_gpc转义过的字符使用addslashes(),避免双重转义。
           &#123;
-             $value  &#x3D; addslashes($value); &#x2F;&#x2F;给单引号（&#39;）、双引号（&quot;）、反斜线（\）与 NUL（NULL 字符）  加上反斜线转义
+             $value  = addslashes($value); //给单引号（&#x27;）、双引号（&quot;）、反斜线（\）与 NUL（NULL 字符）  加上反斜线转义
           &#125;
-          $value       &#x3D; preg_replace($ra,&#39;&#39;,$value);     &#x2F;&#x2F;删除非打印字符，粗暴式过滤xss可疑字符串
-          $arr[$key]     &#x3D; htmlentities(strip_tags($value)); &#x2F;&#x2F;去除 HTML 和 PHP 标记并转换为 HTML 实体
+          $value       = preg_replace($ra,&#x27;&#x27;,$value);     //删除非打印字符，粗暴式过滤xss可疑字符串
+          $arr[$key]     = htmlentities(strip_tags($value)); //去除 HTML 和 PHP 标记并转换为 HTML 实体
         &#125;
         else
         &#123;
@@ -296,28 +296,28 @@ function SafeFilter (&amp;$arr)
      &#125;
    &#125;
 &#125;
-&#x2F;&#x2F;php防注入和XSS攻击通用过滤
+//php防注入和XSS攻击通用过滤
 $_POST    &amp;&amp; SafeFilter($_POST);
 
-			if (isset($_POST[&#39;username&#39;]))
+			if (isset($_POST[&#x27;username&#x27;]))
 			&#123;
-				$s&#x3D;$_POST[&#39;username&#39;];
+				$s=$_POST[&#x27;username&#x27;];
 				
 				echo $s;
 
 			&#125;
 			
 ?&gt;
-	&lt;&#x2F;center&gt;
+	&lt;/center&gt;
 		
-		&lt;&#x2F;script&gt;
-	&lt;&#x2F;body&gt;
-&lt;&#x2F;html&gt;</code></pre></div>
+		&lt;/script&gt;
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
 
 <p>网页源码十分简单，就是用户输入所要查询的username，之后将其输入的内容打印出来。</p>
 <p>起初并没有对用户的输入进行处理，直接执行了<code>echo</code>，造成了xss漏洞的出现。</p>
 <h3 id="2-攻击效果"><a href="#2-攻击效果" class="headerlink" title="2.攻击效果"></a>2.攻击效果</h3><p>在输入栏中输入以下</p>
-<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">alert(<span class="hljs-string">&quot;xss&quot;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"><span class="hljs-title function_">alert</span>(<span class="hljs-string">&quot;xss&quot;</span>)</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 
 <span class="hljs-tag">&lt;<span class="hljs-name">img</span> <span class="hljs-attr">src</span>=<span class="hljs-string">1</span> <span class="hljs-attr">onerror</span>=<span class="hljs-string">alert(/xsss/)</span>&gt;</span></code></pre></div>
 
@@ -327,28 +327,28 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 <p>过滤函数如下</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">SafeFilter</span> (<span class="hljs-params">&amp;<span class="hljs-variable">$arr</span></span>) </span>
 <span class="hljs-function"></span>&#123;
-   <span class="hljs-variable">$ra</span>=<span class="hljs-keyword">Array</span>(<span class="hljs-string">&#x27;/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/&#x27;</span>,<span class="hljs-string">&#x27;/script/&#x27;</span>,<span class="hljs-string">&#x27;/javascript/&#x27;</span>,<span class="hljs-string">&#x27;/vbscript/&#x27;</span>,<span class="hljs-string">&#x27;/expression/&#x27;</span>,<span class="hljs-string">&#x27;/applet/&#x27;</span>
+   <span class="hljs-variable">$ra</span>=<span class="hljs-title function_ invoke__">Array</span>(<span class="hljs-string">&#x27;/([\x00-\x08,\x0b-\x0c,\x0e-\x19])/&#x27;</span>,<span class="hljs-string">&#x27;/script/&#x27;</span>,<span class="hljs-string">&#x27;/javascript/&#x27;</span>,<span class="hljs-string">&#x27;/vbscript/&#x27;</span>,<span class="hljs-string">&#x27;/expression/&#x27;</span>,<span class="hljs-string">&#x27;/applet/&#x27;</span>
    ,<span class="hljs-string">&#x27;/meta/&#x27;</span>,<span class="hljs-string">&#x27;/xml/&#x27;</span>,<span class="hljs-string">&#x27;/blink/&#x27;</span>,<span class="hljs-string">&#x27;/link/&#x27;</span>,<span class="hljs-string">&#x27;/style/&#x27;</span>,<span class="hljs-string">&#x27;/embed/&#x27;</span>,<span class="hljs-string">&#x27;/object/&#x27;</span>,<span class="hljs-string">&#x27;/frame/&#x27;</span>,<span class="hljs-string">&#x27;/layer/&#x27;</span>,<span class="hljs-string">&#x27;/title/&#x27;</span>,<span class="hljs-string">&#x27;/bgsound/&#x27;</span>
    ,<span class="hljs-string">&#x27;/base/&#x27;</span>,<span class="hljs-string">&#x27;/onload/&#x27;</span>,<span class="hljs-string">&#x27;/onunload/&#x27;</span>,<span class="hljs-string">&#x27;/onchange/&#x27;</span>,<span class="hljs-string">&#x27;/onsubmit/&#x27;</span>,<span class="hljs-string">&#x27;/onreset/&#x27;</span>,<span class="hljs-string">&#x27;/onselect/&#x27;</span>,<span class="hljs-string">&#x27;/onblur/&#x27;</span>,<span class="hljs-string">&#x27;/onfocus/&#x27;</span>,
    <span class="hljs-string">&#x27;/onabort/&#x27;</span>,<span class="hljs-string">&#x27;/onkeydown/&#x27;</span>,<span class="hljs-string">&#x27;/onkeypress/&#x27;</span>,<span class="hljs-string">&#x27;/onkeyup/&#x27;</span>,<span class="hljs-string">&#x27;/onclick/&#x27;</span>,<span class="hljs-string">&#x27;/ondblclick/&#x27;</span>,<span class="hljs-string">&#x27;/onmousedown/&#x27;</span>,<span class="hljs-string">&#x27;/onmousemove/&#x27;</span>
    ,<span class="hljs-string">&#x27;/onmouseout/&#x27;</span>,<span class="hljs-string">&#x27;/onmouseover/&#x27;</span>,<span class="hljs-string">&#x27;/onmouseup/&#x27;</span>,<span class="hljs-string">&#x27;/onunload/&#x27;</span>);
      
-   <span class="hljs-keyword">if</span> (is_array(<span class="hljs-variable">$arr</span>))
+   <span class="hljs-keyword">if</span> (<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$arr</span>))
    &#123;
      <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$arr</span> <span class="hljs-keyword">as</span> <span class="hljs-variable">$key</span> =&gt; <span class="hljs-variable">$value</span>) <span class="hljs-comment">//循环语句，挨个检测</span>
      &#123;
-        <span class="hljs-keyword">if</span> (!is_array(<span class="hljs-variable">$value</span>))
+        <span class="hljs-keyword">if</span> (!<span class="hljs-title function_ invoke__">is_array</span>(<span class="hljs-variable">$value</span>))
         &#123;
-          <span class="hljs-keyword">if</span> (!get_magic_quotes_gpc()) 
+          <span class="hljs-keyword">if</span> (!<span class="hljs-title function_ invoke__">get_magic_quotes_gpc</span>()) 
           &#123;
-             <span class="hljs-variable">$value</span>  = addslashes(<span class="hljs-variable">$value</span>); <span class="hljs-comment">//给单引号（&#x27;）、双引号（&quot;）、反斜线（\）与 NUL（NULL 字符）  加上反斜线转义</span>
+             <span class="hljs-variable">$value</span>  = <span class="hljs-title function_ invoke__">addslashes</span>(<span class="hljs-variable">$value</span>); <span class="hljs-comment">//给单引号（&#x27;）、双引号（&quot;）、反斜线（\）与 NUL（NULL 字符）  加上反斜线转义</span>
           &#125;
-          <span class="hljs-variable">$value</span>       = preg_replace(<span class="hljs-variable">$ra</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$value</span>);     <span class="hljs-comment">//删除非打印字符</span>
-          <span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]     = htmlentities(strip_tags(<span class="hljs-variable">$value</span>)); <span class="hljs-comment">//去除 HTML 和 PHP 标记并转换为 HTML 实体</span>
+          <span class="hljs-variable">$value</span>       = <span class="hljs-title function_ invoke__">preg_replace</span>(<span class="hljs-variable">$ra</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$value</span>);     <span class="hljs-comment">//删除非打印字符</span>
+          <span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]     = <span class="hljs-title function_ invoke__">htmlentities</span>(<span class="hljs-title function_ invoke__">strip_tags</span>(<span class="hljs-variable">$value</span>)); <span class="hljs-comment">//去除 HTML 和 PHP 标记并转换为 HTML 实体</span>
         &#125;
         <span class="hljs-keyword">else</span>
         &#123;
-          SafeFilter(<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]);
+          <span class="hljs-title function_ invoke__">SafeFilter</span>(<span class="hljs-variable">$arr</span>[<span class="hljs-variable">$key</span>]);
         &#125;
      &#125;
    &#125;
@@ -356,7 +356,7 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 
 <p><strong>各个函数功能如下：</strong></p>
 <p><strong>magic_quotes_gpc</strong>函数在php中的作用是判断解析用户提示的数据，如包括有:post、get、cookie过来的数据增加转义字符“\”，以确保这些数据不会引起程序，特别是数据库语句因为特殊字符引起的污染而出现致命的错误</p>
-<p>在magic_quotes_gpc=On的情况下，如果输入的数据有</p>
+<p>在magic_quotes_gpc&#x3D;On的情况下，如果输入的数据有</p>
 <p>单引号（’）、双引号（”）、反斜线（）与 NUL（NULL 字符）等字符都会被加上反斜线。</p>
 <p><strong>addslashes函数</strong></p>
 <p><img src="https://i.loli.net/2020/11/12/W7m2yOvok3g6ZXA.png" srcset="/img/loading.gif" alt="addslashes.png"></p>
@@ -365,65 +365,65 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 <p>login.php源码</p>
 <div class="hljs"><pre><code class="hljs php+HTML">&lt;!DOCTYPE html&gt;
 
-&lt;html &gt;&lt;head&gt;&lt;meta http-equiv&#x3D;&quot;Content-Type&quot; content&#x3D;&quot;text&#x2F;html; charset&#x3D;utf-8&quot;&gt;
-        &lt;title&gt;Sqli&lt;&#x2F;title&gt;
-&lt;&#x2F;head&gt;
+&lt;html &gt;&lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+        &lt;title&gt;Sqli&lt;/title&gt;
+&lt;/head&gt;
 &lt;body&gt;
 
 &lt;body&gt;
 
-&lt;div class&#x3D;&quot;limiter&quot;&gt;
-    &lt;div class&#x3D;&quot;container-login100&quot;&gt;
-        &lt;div class&#x3D;&quot;wrap-login100 p-b-160 p-t-50&quot;&gt;
-            &lt;form class&#x3D;&quot;login100-form validate-form&quot; action&#x3D;&quot;check.php&quot; method&#x3D;&quot;post&quot;&gt;
-					&lt;span class&#x3D;&quot;login100-form-title p-b-43&quot;&gt;
+&lt;div class=&quot;limiter&quot;&gt;
+    &lt;div class=&quot;container-login100&quot;&gt;
+        &lt;div class=&quot;wrap-login100 p-b-160 p-t-50&quot;&gt;
+            &lt;form class=&quot;login100-form validate-form&quot; action=&quot;check.php&quot; method=&quot;post&quot;&gt;
+					&lt;span class=&quot;login100-form-title p-b-43&quot;&gt;
 						Account Login
-					&lt;&#x2F;span&gt;
+					&lt;/span&gt;
 
-                &lt;div class&#x3D;&quot;wrap-input100 rs1 validate-input&quot; data-validate&#x3D;&quot;Username is required&quot;&gt;
-                    &lt;input class&#x3D;&quot;input100&quot; type&#x3D;&quot;text&quot; name&#x3D;&quot;username&quot;&gt;
-                    &lt;span class&#x3D;&quot;label-input100&quot;&gt;Username&lt;&#x2F;span&gt;
-                &lt;&#x2F;div&gt;
+                &lt;div class=&quot;wrap-input100 rs1 validate-input&quot; data-validate=&quot;Username is required&quot;&gt;
+                    &lt;input class=&quot;input100&quot; type=&quot;text&quot; name=&quot;username&quot;&gt;
+                    &lt;span class=&quot;label-input100&quot;&gt;Username&lt;/span&gt;
+                &lt;/div&gt;
 
 
-                &lt;div class&#x3D;&quot;wrap-input100 rs2 validate-input&quot; data-validate&#x3D;&quot;Password is required&quot;&gt;
-                    &lt;input class&#x3D;&quot;input100&quot; type&#x3D;&quot;password&quot; name&#x3D;&quot;password&quot;&gt;
-                    &lt;span class&#x3D;&quot;label-input100&quot;&gt;Password&lt;&#x2F;span&gt;
-                &lt;&#x2F;div&gt;
+                &lt;div class=&quot;wrap-input100 rs2 validate-input&quot; data-validate=&quot;Password is required&quot;&gt;
+                    &lt;input class=&quot;input100&quot; type=&quot;password&quot; name=&quot;password&quot;&gt;
+                    &lt;span class=&quot;label-input100&quot;&gt;Password&lt;/span&gt;
+                &lt;/div&gt;
 
-                &lt;div class&#x3D;&quot;container-login100-form-btn&quot;&gt;
-                    &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;login100-form-btn&quot;&gt;
+                &lt;div class=&quot;container-login100-form-btn&quot;&gt;
+                    &lt;button type=&quot;submit&quot; class=&quot;login100-form-btn&quot;&gt;
                         Sign in
-                    &lt;&#x2F;button&gt;
-                &lt;&#x2F;div&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
 
-            &lt;&#x2F;form&gt;
-        &lt;&#x2F;div&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
 
-    &lt;&#x2F;a&gt;
+    &lt;/a&gt;
 
-&lt;&#x2F;div&gt;
+&lt;/div&gt;
 
-&lt;&#x2F;body&gt;
-&lt;&#x2F;html&gt;</code></pre></div>
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
 
 <p>check.php源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-variable">$pwd</span>=<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>];
 <span class="hljs-variable">$uname</span>=<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>];
 
-<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> mysqli(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
-<span class="hljs-keyword">if</span>(mysqli_connect_errno())&#123;
-    printf(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,mysqli_connect_error());
+<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">mysqli</span>(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">mysqli_connect_errno</span>())&#123;
+    <span class="hljs-title function_ invoke__">printf</span>(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,<span class="hljs-title function_ invoke__">mysqli_connect_error</span>());
     <span class="hljs-keyword">exit</span>();
 &#125;
-<span class="hljs-variable">$result</span> = <span class="hljs-variable">$mysqli</span>-&gt;query(<span class="hljs-string">&quot;select * from users where username=&#x27;<span class="hljs-subst">$uname</span>&#x27; and password=&#x27;<span class="hljs-subst">$pwd</span>&#x27;&quot;</span>);
+<span class="hljs-variable">$result</span> = <span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-string">&quot;select * from users where username=&#x27;<span class="hljs-subst">$uname</span>&#x27; and password=&#x27;<span class="hljs-subst">$pwd</span>&#x27;&quot;</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;TABLE border=1,width=400&gt;&quot;</span>;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Password&lt;/th&gt;&lt;tr&gt;&quot;</span>;
 
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$row</span>=mysqli_fetch_row(<span class="hljs-variable">$result</span>))
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$row</span>=<span class="hljs-title function_ invoke__">mysqli_fetch_row</span>(<span class="hljs-variable">$result</span>))
 &#123;
-	printf (<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$row</span>[<span class="hljs-number">1</span>],<span class="hljs-variable">$row</span>[<span class="hljs-number">2</span>]);
+	<span class="hljs-title function_ invoke__">printf</span> (<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$row</span>[<span class="hljs-number">1</span>],<span class="hljs-variable">$row</span>[<span class="hljs-number">2</span>]);
        	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;br&gt;&quot;</span>;
 	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;login success&quot;</span>;
 &#125;
@@ -433,8 +433,8 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 &#125;
 <span class="hljs-comment">// echo &quot;&lt;/TABLE&gt;&quot;;</span>
 <span class="hljs-comment">// echo &quot;&lt;/div&gt;&quot;;</span>
-<span class="hljs-variable">$mysqli</span>-&gt;close();
-<span class="hljs-variable">$result</span>-&gt;close();
+<span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p>逻辑很简单，在login.php页面提交用户名和密码，将username和password发送到check.php页面连接数据库检查用户是否合法，用户名和密码都正确则，打印出用户名和密码。</p>
@@ -476,22 +476,22 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
 <span class="hljs-variable">$pwd</span>=<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>];
 <span class="hljs-variable">$uname</span>=<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>];
-<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> mysqli(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
-<span class="hljs-keyword">if</span>(mysqli_connect_errno())&#123;
-    printf(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,mysqli_connect_error());
+<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">mysqli</span>(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">mysqli_connect_errno</span>())&#123;
+    <span class="hljs-title function_ invoke__">printf</span>(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,<span class="hljs-title function_ invoke__">mysqli_connect_error</span>());
     <span class="hljs-keyword">exit</span>();
 &#125;
-<span class="hljs-variable">$result</span> = <span class="hljs-variable">$mysqli</span>-&gt;query(<span class="hljs-string">&quot;select * from users where username=&#x27;<span class="hljs-subst">$uname</span>&#x27; and password=&#x27;<span class="hljs-subst">$pwd</span>&#x27;&quot;</span>);
+<span class="hljs-variable">$result</span> = <span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-string">&quot;select * from users where username=&#x27;<span class="hljs-subst">$uname</span>&#x27; and password=&#x27;<span class="hljs-subst">$pwd</span>&#x27;&quot;</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;TABLE border=1,width=400&gt;&quot;</span>;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Password&lt;/th&gt;&lt;tr&gt;&quot;</span>;
 
-<span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$pwd</span>)&gt;=<span class="hljs-number">16</span>||strlen(<span class="hljs-variable">$uname</span>)&gt;=<span class="hljs-number">15</span>)
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$pwd</span>)&gt;=<span class="hljs-number">16</span>||<span class="hljs-title function_ invoke__">strlen</span>(<span class="hljs-variable">$uname</span>)&gt;=<span class="hljs-number">15</span>)
 &#123;
 	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;It is too long.&quot;</span>;
 &#125;
-<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-variable">$row</span>=mysqli_fetch_row(<span class="hljs-variable">$result</span>))
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-variable">$row</span>=<span class="hljs-title function_ invoke__">mysqli_fetch_row</span>(<span class="hljs-variable">$result</span>))
 &#123;
-	printf (<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$row</span>[<span class="hljs-number">1</span>],<span class="hljs-variable">$row</span>[<span class="hljs-number">2</span>]);
+	<span class="hljs-title function_ invoke__">printf</span> (<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$row</span>[<span class="hljs-number">1</span>],<span class="hljs-variable">$row</span>[<span class="hljs-number">2</span>]);
        	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;br&gt;&quot;</span>;
 	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;login success.&quot;</span>;
 &#125;
@@ -501,8 +501,8 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 &#125;
 <span class="hljs-comment">// echo &quot;&lt;/TABLE&gt;&quot;;</span>
 <span class="hljs-comment">// echo &quot;&lt;/div&gt;&quot;;</span>
-<span class="hljs-variable">$mysqli</span>-&gt;close();
-<span class="hljs-variable">$result</span>-&gt;close();
+<span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 
@@ -516,7 +516,7 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 <span class="hljs-comment">//echo &quot;&lt;hr&gt;&quot;;</span>
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inject_check</span>(<span class="hljs-params"><span class="hljs-variable">$Sql_Str</span></span>) </span>&#123;<span class="hljs-comment">//自动过滤Sql的注入语句。</span>
-   <span class="hljs-variable">$check</span>=preg_match(<span class="hljs-string">&#x27;/select|from|where|if|database|order|insert|update|or|group_concat|\&#x27;|\\*|\*|\.\.\/|\.\/|union|and|ascii|substring|sleep/i&#x27;</span>,<span class="hljs-variable">$Sql_Str</span>);
+   <span class="hljs-variable">$check</span>=<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/select|from|where|if|database|order|insert|update|or|group_concat|\&#x27;|\\*|\*|\.\.\/|\.\/|union|and|ascii|substring|sleep/i&#x27;</span>,<span class="hljs-variable">$Sql_Str</span>);
     <span class="hljs-keyword">if</span> (<span class="hljs-variable">$check</span>) &#123;
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;script language=&quot;JavaScript&quot;&gt;alert(&quot;hacker&quot;);&lt;/script&gt;&#x27;</span>;
         <span class="hljs-keyword">exit</span>();
@@ -524,14 +524,14 @@ $_POST    &amp;&amp; SafeFilter($_POST);
         <span class="hljs-keyword">return</span> <span class="hljs-variable">$Sql_Str</span>;
     &#125;
 &#125;
-<span class="hljs-variable">$pwd</span>=inject_check(<span class="hljs-variable">$pwd</span>);
-<span class="hljs-variable">$uname</span> = inject_check(<span class="hljs-variable">$uname</span>);
-<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> mysqli(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
-<span class="hljs-keyword">if</span>(mysqli_connect_errno())&#123;
-    printf(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,mysqli_connect_error());
+<span class="hljs-variable">$pwd</span>=<span class="hljs-title function_ invoke__">inject_check</span>(<span class="hljs-variable">$pwd</span>);
+<span class="hljs-variable">$uname</span> = <span class="hljs-title function_ invoke__">inject_check</span>(<span class="hljs-variable">$uname</span>);
+<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">mysqli</span>(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">mysqli_connect_errno</span>())&#123;
+    <span class="hljs-title function_ invoke__">printf</span>(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,<span class="hljs-title function_ invoke__">mysqli_connect_error</span>());
     <span class="hljs-keyword">exit</span>();
 &#125;
-<span class="hljs-variable">$result</span> = <span class="hljs-variable">$mysqli</span>-&gt;query(<span class="hljs-string">&quot;select * from users where username=&#x27;<span class="hljs-subst">$uname</span>&#x27; and password=&#x27;<span class="hljs-subst">$pwd</span>&#x27;&quot;</span>);
+<span class="hljs-variable">$result</span> = <span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-string">&quot;select * from users where username=&#x27;<span class="hljs-subst">$uname</span>&#x27; and password=&#x27;<span class="hljs-subst">$pwd</span>&#x27;&quot;</span>);
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;TABLE border=1,width=400&gt;&quot;</span>;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Password&lt;/th&gt;&lt;tr&gt;&quot;</span>;
 
@@ -540,9 +540,9 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 <span class="hljs-comment">// 	echo &quot;It is too long.&quot;;</span>
 <span class="hljs-comment">// &#125;</span>
 <span class="hljs-comment">// else </span>
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$row</span>=mysqli_fetch_row(<span class="hljs-variable">$result</span>))
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$row</span>=<span class="hljs-title function_ invoke__">mysqli_fetch_row</span>(<span class="hljs-variable">$result</span>))
 &#123;
-	printf (<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$row</span>[<span class="hljs-number">1</span>],<span class="hljs-variable">$row</span>[<span class="hljs-number">2</span>]);
+	<span class="hljs-title function_ invoke__">printf</span> (<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$row</span>[<span class="hljs-number">1</span>],<span class="hljs-variable">$row</span>[<span class="hljs-number">2</span>]);
        	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;br&gt;&quot;</span>;
 	<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;login success.&quot;</span>;
 &#125;
@@ -552,13 +552,13 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 &#125;
 <span class="hljs-comment">// echo &quot;&lt;/TABLE&gt;&quot;;</span>
 <span class="hljs-comment">// echo &quot;&lt;/div&gt;&quot;;</span>
-<span class="hljs-variable">$mysqli</span>-&gt;close();
-<span class="hljs-variable">$result</span>-&gt;close();
+<span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p>过滤函数如下，其中将一般注入需要用到的函数和符号都过滤了。</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">inject_check</span>(<span class="hljs-params"><span class="hljs-variable">$Sql_Str</span></span>) </span>&#123;<span class="hljs-comment">//自动过滤Sql的注入语句。</span>
-    <span class="hljs-variable">$check</span>=preg_match(<span class="hljs-string">&#x27;/select|from|where|if|database|order|insert|update|or|group_concat|\&#x27;|\\*|\*|\.\.\/|\.\/|union|and|ascii|substring|sleep/i&#x27;</span>,<span class="hljs-variable">$Sql_Str</span>);
+    <span class="hljs-variable">$check</span>=<span class="hljs-title function_ invoke__">preg_match</span>(<span class="hljs-string">&#x27;/select|from|where|if|database|order|insert|update|or|group_concat|\&#x27;|\\*|\*|\.\.\/|\.\/|union|and|ascii|substring|sleep/i&#x27;</span>,<span class="hljs-variable">$Sql_Str</span>);
     <span class="hljs-keyword">if</span> (<span class="hljs-variable">$check</span>) &#123;
         <span class="hljs-keyword">echo</span> <span class="hljs-string">&#x27;&lt;script language=&quot;JavaScript&quot;&gt;alert(&quot;hacker&quot;);&lt;/script&gt;&#x27;</span>;
         <span class="hljs-keyword">exit</span>();
@@ -588,23 +588,23 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 <span class="hljs-comment">// $uname = inject_check($uname);</span>
 <span class="hljs-comment">// </span>
 
-<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> mysqli(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
-<span class="hljs-keyword">if</span>(mysqli_connect_errno())&#123;
-    printf(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,mysqli_connect_error());
+<span class="hljs-variable">$mysqli</span> = <span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">mysqli</span>(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;test&#x27;</span>);  <span class="hljs-comment">// 数据库服务器的主机名这里使用的本地主机，密码，使用的数据库名</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">mysqli_connect_errno</span>())&#123;
+    <span class="hljs-title function_ invoke__">printf</span>(<span class="hljs-string">&quot;fail:%s&lt;br&gt;&quot;</span>,<span class="hljs-title function_ invoke__">mysqli_connect_error</span>());
     <span class="hljs-keyword">exit</span>();
 &#125;
 
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;TABLE border=1,width=400&gt;&quot;</span>;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Password&lt;/th&gt;&lt;tr&gt;&quot;</span>;
-<span class="hljs-variable">$result</span> =  <span class="hljs-variable">$mysqli</span>-&gt;prepare(<span class="hljs-string">&quot;select * from users where username=? and password=?&quot;</span>);
+<span class="hljs-variable">$result</span> =  <span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">prepare</span>(<span class="hljs-string">&quot;select * from users where username=? and password=?&quot;</span>);
 
-<span class="hljs-variable">$result</span>-&gt;bind_param(<span class="hljs-string">&#x27;ss&#x27;</span>,<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$pwd</span>);
-<span class="hljs-variable">$result</span>-&gt;execute();
-<span class="hljs-variable">$result</span>-&gt;store_result();
-<span class="hljs-variable">$result</span>-&gt;bind_result(<span class="hljs-variable">$id</span>,<span class="hljs-variable">$un</span>,<span class="hljs-variable">$pd</span>); <span class="hljs-comment">//将查询到的变量绑定到三个自定义的变量中，输出时直接输出这三个变量即可。</span>
-<span class="hljs-keyword">if</span>(<span class="hljs-variable">$result</span>-&gt;fetch())
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">bind_param</span>(<span class="hljs-string">&#x27;ss&#x27;</span>,<span class="hljs-variable">$uname</span>,<span class="hljs-variable">$pwd</span>);
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">execute</span>();
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">store_result</span>();
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">bind_result</span>(<span class="hljs-variable">$id</span>,<span class="hljs-variable">$un</span>,<span class="hljs-variable">$pd</span>); <span class="hljs-comment">//将查询到的变量绑定到三个自定义的变量中，输出时直接输出这三个变量即可。</span>
+<span class="hljs-keyword">if</span>(<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">fetch</span>())
 &#123;
-	printf(<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$un</span>,<span class="hljs-variable">$pd</span>);
+	<span class="hljs-title function_ invoke__">printf</span>(<span class="hljs-string">&quot;&lt;tr&gt;&lt;td&gt;%s&lt;/td&gt;&lt;td&gt;%s&lt;/td&gt;&lt;/tr&gt;&quot;</span>,<span class="hljs-variable">$un</span>,<span class="hljs-variable">$pd</span>);
 &#125;
 <span class="hljs-keyword">else</span>
 &#123;
@@ -619,8 +619,8 @@ $_POST    &amp;&amp; SafeFilter($_POST);
 <span class="hljs-comment">// &#125;</span>
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/TABLE&gt;&quot;</span>;
 <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;/div&gt;&quot;</span>;
-<span class="hljs-variable">$result</span>-&gt;close();
-<span class="hljs-variable">$mysqli</span>-&gt;close();
+<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
+<span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();
 <span class="hljs-meta">?&gt;</span></code></pre></div>
 
 <p>应用预编译语句后，再次输入注入语句后就不再起到注入作用，只是将其当成正常的查询过程，返回相应的结果。</p>

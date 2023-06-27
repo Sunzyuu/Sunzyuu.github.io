@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      56
+      57
        分钟
     </span>
   
@@ -249,7 +249,7 @@
               <h1 id="springboot-demo"><a href="#springboot-demo" class="headerlink" title="springboot demo"></a>springboot demo</h1><p>使用springboot整合SSMP</p>
 <h2 id="1-项目需求"><a href="#1-项目需求" class="headerlink" title="1.项目需求"></a>1.项目需求</h2><p>项目最终实现的页面</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220417232613669.png" srcset="/img/loading.gif" alt="image-20220417232613669"></p>
-<p>​    整体案例中需要采用的技术如下：</p>
+<p>​	整体案例中需要采用的技术如下：</p>
 <blockquote>
 <ol>
 <li>Dao开发————整合MyBatisPlus，制作数据层测试</li>
@@ -275,7 +275,7 @@
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220417214706594.png" srcset="/img/loading.gif" alt="image-20220417214706594"></p>
 <p>选择所需要的依赖，选择后springboot就可以自动导入相关坐标，无需手动导入</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220417214851951.png" srcset="/img/loading.gif" alt="image-20220417214851951"></p>
-<p>==注意将配置文件改为yml类型==</p>
+<p>&#x3D;&#x3D;注意将配置文件改为yml类型&#x3D;&#x3D;</p>
 <p><strong>application.yml</strong></p>
 <div class="hljs"><pre><code class="hljs yaml"><span class="hljs-comment"># 修改配置将tomcat的端口改为80</span>
 <span class="hljs-attr">server:</span> 
@@ -316,7 +316,7 @@
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Data;
 <span class="hljs-meta">@Data</span>
 <span class="hljs-comment">// Data注解可以可以完成所有属性的setter getter toString，equals，hashCode方法</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Book</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Book</span> &#123;
     <span class="hljs-keyword">private</span> Integer id;
     <span class="hljs-keyword">private</span> String type;
     <span class="hljs-keyword">private</span> String name;
@@ -359,12 +359,12 @@
       <span class="hljs-attr">username:</span> <span class="hljs-string">root</span>
       <span class="hljs-attr">password:</span> <span class="hljs-string">root</span></code></pre></div>
 
-<p>==若连接数据库出现时区错误时可以加上参数?serverTimezone=UTC==</p>
+<p>&#x3D;&#x3D;若连接数据库出现时区错误时可以加上参数?serverTimezone&#x3D;UTC&#x3D;&#x3D;</p>
 <h4 id="3-使用MyBatisPlus的标准通用接口BaseMapper加速开发"><a href="#3-使用MyBatisPlus的标准通用接口BaseMapper加速开发" class="headerlink" title="(3)使用MyBatisPlus的标准通用接口BaseMapper加速开发"></a>(3)使用MyBatisPlus的标准通用接口BaseMapper加速开发</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Mapper</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">BookDao</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseMapper</span>&lt;<span class="hljs-title">Book</span>&gt; </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">BookDao</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;Book&gt; &#123;
 &#125;</code></pre></div>
 
-<p>==注意==</p>
+<p>&#x3D;&#x3D;注意&#x3D;&#x3D;</p>
 <p>对数据库操作时需要指定数据表的前缀，并设置主键增加的策略，这里使用自增</p>
 <div class="hljs"><pre><code class="hljs yaml"><span class="hljs-attr">mybatis-plus:</span>
   <span class="hljs-attr">global-config:</span>
@@ -388,14 +388,14 @@
 <li>创建Page对象，利用构造方法实例化所需的参数currentPage，pageSize</li>
 <li>使用Mapper.selectPage()使用分页查询功能</li>
 </ul>
-<div class="hljs"><pre><code class="hljs java">IPage page = <span class="hljs-keyword">new</span> Page(<span class="hljs-number">2</span>,<span class="hljs-number">5</span>);
-IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</code></pre></div>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">IPage</span> <span class="hljs-variable">page</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>(<span class="hljs-number">2</span>,<span class="hljs-number">5</span>);
+<span class="hljs-type">IPage</span> <span class="hljs-variable">page</span> <span class="hljs-operator">=</span> bookDao.selectPage(page, <span class="hljs-literal">null</span>);</code></pre></div>
 
 <p>使用分页查询返回的结果仍是Page类型，其中包含多条数据，并且使用返回的结果可以获取到分页的详细信息，包括当前页，总记录数，当前页记录数，前一页等</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetPage</span><span class="hljs-params">()</span></span>&#123;
-    IPage page = <span class="hljs-keyword">new</span> Page(<span class="hljs-number">2</span>,<span class="hljs-number">5</span>);
-    bookDao.selectPage(page, <span class="hljs-keyword">null</span>);
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">testGetPage</span><span class="hljs-params">()</span>&#123;
+    <span class="hljs-type">IPage</span> <span class="hljs-variable">page</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>(<span class="hljs-number">2</span>,<span class="hljs-number">5</span>);
+    bookDao.selectPage(page, <span class="hljs-literal">null</span>);
     System.out.println(page.getCurrent());		<span class="hljs-comment">//当前页码值</span>
     System.out.println(page.getSize());			<span class="hljs-comment">//每页显示数</span>
     System.out.println(page.getTotal());		<span class="hljs-comment">//数据总量</span>
@@ -405,11 +405,11 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 
 <p>但是在使用分页功能时需要设置一个拦截器，基础操作中有查询全部的功能，而在这个基础上只需要升级一下（PLUS）就可以得到分页操作。所以MyBatisPlus将分页操作做成了一个开关，你用分页功能就把开关开启，不用就不需要开启这个开关。而我们现在没有开启这个开关，所以分页操作是没有的。这个开关是通过MyBatisPlus的拦截器的形式存在的。</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MPConfig</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MPConfig</span> &#123;
     <span class="hljs-meta">@Bean</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title">mybatisPlusInterceptor</span><span class="hljs-params">()</span></span>&#123;
-        MybatisPlusInterceptor interceptor = <span class="hljs-keyword">new</span> MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> PaginationInnerInterceptor());
+    <span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title function_">mybatisPlusInterceptor</span><span class="hljs-params">()</span>&#123;
+        <span class="hljs-type">MybatisPlusInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MybatisPlusInterceptor</span>();
+        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PaginationInnerInterceptor</span>());
         
        <span class="hljs-comment">// 当需要其他的拦截器时继续addInnerInterceptor即可</span>
        <span class="hljs-comment">// 如果后期开发其他功能，需要添加全新的拦截器，按照第二行的格式继续add进去新的拦截器就可以了。</span>
@@ -421,8 +421,8 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 
 <h3 id="数据层开发-条件查询"><a href="#数据层开发-条件查询" class="headerlink" title="数据层开发-条件查询"></a>数据层开发-条件查询</h3><p>MyBatisPlus将这些操作都制作成API接口，调用一个又一个的方法就可以实现各种条件的拼装。使用方法如下</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetBy</span><span class="hljs-params">()</span></span>&#123;
-    QueryWrapper&lt;Book&gt; qw = <span class="hljs-keyword">new</span> QueryWrapper&lt;&gt;();
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">testGetBy</span><span class="hljs-params">()</span>&#123;
+    QueryWrapper&lt;Book&gt; qw = <span class="hljs-keyword">new</span> <span class="hljs-title class_">QueryWrapper</span>&lt;&gt;();
     qw.like(<span class="hljs-string">&quot;name&quot;</span>,<span class="hljs-string">&quot;Spring&quot;</span>);
     bookDao.selectList(qw);
 &#125;</code></pre></div>
@@ -430,20 +430,20 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 <p>其中第一句QueryWrapper对象是一个用于封装查询条件的对象，该对象可以动态使用API调用的方法添加条件，最终转化成对应的SQL语句。第二句就是一个条件了，需要什么条件，使用QueryWapper对象直接调用对应操作即可。上述代码中执行的SQL语句为<code>select * from tbl_book where name like &#39;%spring%&#39;</code>，MP自动对查询条件进行处理，省去了手动处理的一步。</p>
 <p>MyBatisPlus针对字段检查进行了功能升级，全面支持Lambda表达式，就有了下面这组API。由QueryWrapper对象升级为LambdaQueryWrapper对象，其使用方法如下：</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetBy2</span><span class="hljs-params">()</span></span>&#123;
-    String name = <span class="hljs-string">&quot;1&quot;</span>;
-    LambdaQueryWrapper&lt;Book&gt; lqw = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;Book&gt;();
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">testGetBy2</span><span class="hljs-params">()</span>&#123;
+    <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;1&quot;</span>;
+    LambdaQueryWrapper&lt;Book&gt; lqw = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;Book&gt;();
     lqw.like(Book::getName,name);
     bookDao.selectList(lqw);
 &#125;</code></pre></div>
 
 <p>为了便于开发者动态拼写SQL，防止将null数据作为条件使用，MyBatisPlus还提供了动态拼装SQL的快捷书写方式。</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Test</span>
-<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">testGetBy2</span><span class="hljs-params">()</span></span>&#123;
-    String name = <span class="hljs-string">&quot;1&quot;</span>;
-    LambdaQueryWrapper&lt;Book&gt; lqw = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;Book&gt;();
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">testGetBy2</span><span class="hljs-params">()</span>&#123;
+    <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;1&quot;</span>;
+    LambdaQueryWrapper&lt;Book&gt; lqw = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;Book&gt;();
     <span class="hljs-comment">//if(name != null) lqw.like(Book::getName,name);		//方式一：JAVA代码控制</span>
-    lqw.like(name != <span class="hljs-keyword">null</span>,Book::getName,name);				<span class="hljs-comment">//方式二：API接口提供控制开关</span>
+    lqw.like(name != <span class="hljs-literal">null</span>,Book::getName,name);				<span class="hljs-comment">//方式二：API接口提供控制开关</span>
     bookDao.selectList(lqw);
 &#125;</code></pre></div>
 
@@ -457,15 +457,15 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 
 <span class="hljs-keyword">import</span> java.util.List;
 
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">BookService</span> </span>&#123;
-    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">save</span><span class="hljs-params">(Book book)</span></span>;
-    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">update</span><span class="hljs-params">(Book book)</span></span>;
-    <span class="hljs-function"><span class="hljs-keyword">boolean</span> <span class="hljs-title">delete</span><span class="hljs-params">(Integer id)</span></span>;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">BookService</span> &#123;
+    <span class="hljs-type">boolean</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Book book)</span>;
+    <span class="hljs-type">boolean</span> <span class="hljs-title function_">update</span><span class="hljs-params">(Book book)</span>;
+    <span class="hljs-type">boolean</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(Integer id)</span>;
 
-    <span class="hljs-function">List&lt;Book&gt; <span class="hljs-title">getAll</span><span class="hljs-params">()</span></span>;
-    <span class="hljs-function">Book <span class="hljs-title">getById</span><span class="hljs-params">(Integer id)</span></span>;
+    List&lt;Book&gt; <span class="hljs-title function_">getAll</span><span class="hljs-params">()</span>;
+    Book <span class="hljs-title function_">getById</span><span class="hljs-params">(Integer id)</span>;
 
-    <span class="hljs-function">IPage&lt;Book&gt; <span class="hljs-title">getPage</span><span class="hljs-params">(<span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span></span>;
+    IPage&lt;Book&gt; <span class="hljs-title function_">getPage</span><span class="hljs-params">(<span class="hljs-type">int</span> currentPage, <span class="hljs-type">int</span> pageSize)</span>;
 
 &#125;</code></pre></div>
 
@@ -484,59 +484,59 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 
 <span class="hljs-comment">// 注册为数据逻辑层的bean</span>
 <span class="hljs-meta">@Service</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookServiceImpl2</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">BookService</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BookServiceImpl2</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">BookService</span> &#123;
 
     <span class="hljs-meta">@Autowired</span>
     <span class="hljs-keyword">private</span> BookDao bookDao;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">save</span><span class="hljs-params">(Book book)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">save</span><span class="hljs-params">(Book book)</span> &#123;
         <span class="hljs-keyword">return</span> bookDao.insert(book) &gt; <span class="hljs-number">0</span>;
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">update</span><span class="hljs-params">(Book book)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">update</span><span class="hljs-params">(Book book)</span> &#123;
         <span class="hljs-keyword">return</span> bookDao.updateById(book) &gt; <span class="hljs-number">0</span>;
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">delete</span><span class="hljs-params">(Integer id)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(Integer id)</span> &#123;
         <span class="hljs-keyword">return</span> bookDao.deleteById(id) &gt; <span class="hljs-number">0</span>;
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title">getAll</span><span class="hljs-params">()</span> </span>&#123;
-        <span class="hljs-keyword">return</span> bookDao.selectList(<span class="hljs-keyword">null</span>);
+    <span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title function_">getAll</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> bookDao.selectList(<span class="hljs-literal">null</span>);
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Book <span class="hljs-title">getById</span><span class="hljs-params">(Integer id)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> Book <span class="hljs-title function_">getById</span><span class="hljs-params">(Integer id)</span> &#123;
         <span class="hljs-keyword">return</span> bookDao.selectById(id);
     &#125;
 
     <span class="hljs-meta">@Override</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> IPage&lt;Book&gt; <span class="hljs-title">getPage</span><span class="hljs-params">(<span class="hljs-keyword">int</span> currentPage, <span class="hljs-keyword">int</span> pageSize)</span> </span>&#123;
-        IPage&lt;Book&gt; page = <span class="hljs-keyword">new</span> Page&lt;&gt;(currentPage, pageSize);
-        <span class="hljs-keyword">return</span> bookDao.selectPage(page, <span class="hljs-keyword">null</span>);
+    <span class="hljs-keyword">public</span> IPage&lt;Book&gt; <span class="hljs-title function_">getPage</span><span class="hljs-params">(<span class="hljs-type">int</span> currentPage, <span class="hljs-type">int</span> pageSize)</span> &#123;
+        IPage&lt;Book&gt; page = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>&lt;&gt;(currentPage, pageSize);
+        <span class="hljs-keyword">return</span> bookDao.selectPage(page, <span class="hljs-literal">null</span>);
     &#125;
 &#125;
 </code></pre></div>
 
 <p>使用mybatisplus的自带接口快速开发</p>
 <p>业务层接口快速开发</p>
-<div class="hljs"><pre><code class="hljs JAVA"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">IBookService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">IService</span>&lt;<span class="hljs-title">Book</span>&gt; </span>&#123;
+<div class="hljs"><pre><code class="hljs JAVA"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">IBookService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">IService</span>&lt;Book&gt; &#123;
     <span class="hljs-comment">//添加非通用操作API接口</span>
 &#125;</code></pre></div>
 
-<p>​        业务层接口实现类快速开发，关注继承的类需要传入两个泛型，一个是数据层接口，另一个是实体类。</p>
+<p>​		业务层接口实现类快速开发，关注继承的类需要传入两个泛型，一个是数据层接口，另一个是实体类。</p>
 <div class="hljs"><pre><code class="hljs JAVA"><span class="hljs-meta">@Service</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ServiceImpl</span>&lt;<span class="hljs-title">BookDao</span>, <span class="hljs-title">Book</span>&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title">IBookService</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BookServiceImpl</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;BookDao, Book&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">IBookService</span> &#123;
     <span class="hljs-meta">@Autowired</span>
     <span class="hljs-keyword">private</span> BookDao bookDao;
 	<span class="hljs-comment">//添加非通用操作API</span>
 &#125;</code></pre></div>
 
-<p>​        如果感觉MyBatisPlus提供的功能不足以支撑你的使用需要（其实是一定不能支撑的，因为需求不可能是通用的），在原始接口基础上接着定义新的API接口就行了，此处不再说太多了，就是自定义自己的操作了，但是不要和已有的API接口名冲突即可。</p>
+<p>​		如果感觉MyBatisPlus提供的功能不足以支撑你的使用需要（其实是一定不能支撑的，因为需求不可能是通用的），在原始接口基础上接着定义新的API接口就行了，此处不再说太多了，就是自定义自己的操作了，但是不要和已有的API接口名冲突即可。</p>
 <p><strong>总结</strong></p>
 <ol>
 <li>使用通用接口（ISerivce<T>）快速开发Service</T></li>
@@ -560,44 +560,44 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 <span class="hljs-comment">//使用restful接口约束</span>
 <span class="hljs-meta">@RestController</span>
 <span class="hljs-meta">@RequestMapping(&quot;/books&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookController2</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BookController2</span> &#123;
 
     <span class="hljs-meta">@Autowired</span>
     <span class="hljs-keyword">private</span> IBookService service;
 
     <span class="hljs-meta">@GetMapping</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title">getAll</span><span class="hljs-params">()</span></span>&#123;
+    <span class="hljs-keyword">public</span> List&lt;Book&gt; <span class="hljs-title function_">getAll</span><span class="hljs-params">()</span>&#123;
         <span class="hljs-keyword">return</span> service.list();
     &#125;
 
 
     <span class="hljs-meta">@PostMapping</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">save</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">save</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span>&#123;
 
         System.out.println(book);
         <span class="hljs-keyword">return</span> service.save(book);
     &#125;
 
     <span class="hljs-meta">@PutMapping</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
-        LambdaQueryWrapper&lt;Book&gt; wrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span>&#123;
+        LambdaQueryWrapper&lt;Book&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();
         wrapper.eq(Book::getId, book.getId());
         <span class="hljs-keyword">return</span> service.update(book,wrapper);
     &#125;
 
     <span class="hljs-meta">@DeleteMapping(&quot;&#123;id&#125;&quot;)</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id)</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> id)</span>&#123;
         <span class="hljs-keyword">return</span> service.removeById(id);
     &#125;
 
     <span class="hljs-meta">@GetMapping(&quot;&#123;id&#125;&quot;)</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> Book <span class="hljs-title">getById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id )</span></span>&#123;
+    <span class="hljs-keyword">public</span> Book <span class="hljs-title function_">getById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> id )</span>&#123;
         <span class="hljs-keyword">return</span> service.getById(id);
     &#125;
 
     <span class="hljs-meta">@GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> IPage&lt;Book&gt; <span class="hljs-title">getPage</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> currentPage, <span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> pageSize)</span></span>&#123;
-        Page&lt;Book&gt; page = <span class="hljs-keyword">new</span> Page&lt;&gt;(currentPage, pageSize);
+    <span class="hljs-keyword">public</span> IPage&lt;Book&gt; <span class="hljs-title function_">getPage</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> currentPage, <span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> pageSize)</span>&#123;
+        Page&lt;Book&gt; page = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>&lt;&gt;(currentPage, pageSize);
         <span class="hljs-keyword">return</span> service.page(page);
     &#125;
 &#125;</code></pre></div>
@@ -611,16 +611,16 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220418231557326.png" srcset="/img/loading.gif" alt="image-20220418231557326"></p>
 <p>删除功能delete()</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220418232140801.png" srcset="/img/loading.gif" alt="image-20220418232140801"></p>
-<p>==消息一致性处理== </p>
+<p>&#x3D;&#x3D;消息一致性处理&#x3D;&#x3D; </p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Data</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">R</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">R</span> &#123;
     <span class="hljs-keyword">private</span> Boolean flag;   <span class="hljs-comment">//表示本次请求是否成功</span>
     <span class="hljs-keyword">private</span> Object data;    <span class="hljs-comment">//本次请求返回的数据</span>
 &#125;</code></pre></div>
 
 <p>使用消息一致处理后获取的数据格式</p>
 <div class="hljs"><pre><code class="hljs java">&#123;
-    <span class="hljs-string">&quot;flag&quot;</span>: <span class="hljs-keyword">true</span>,
+    <span class="hljs-string">&quot;flag&quot;</span>: <span class="hljs-literal">true</span>,
     <span class="hljs-string">&quot;data&quot;</span>:&#123;
         <span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>,
         <span class="hljs-string">&quot;type&quot;</span>: <span class="hljs-string">&quot;计算机理论&quot;</span>,
@@ -646,41 +646,41 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 
 <span class="hljs-meta">@RestController</span>
 <span class="hljs-meta">@RequestMapping(&quot;/books&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BookController</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BookController</span> &#123;
 
     <span class="hljs-meta">@Autowired</span>
     <span class="hljs-keyword">private</span> IBookService service;
 
     <span class="hljs-meta">@GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">getAll</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> currentPage, <span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> pageSize, Book book)</span></span>&#123;
+    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">getAll</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> currentPage, <span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> pageSize, Book book)</span>&#123;
         IPage&lt;Book&gt; bookIPage = service.getAll(currentPage, pageSize, book);
         <span class="hljs-keyword">if</span>(currentPage &gt; bookIPage.getPages()) &#123;
-            bookIPage = service.getAll((<span class="hljs-keyword">int</span>) bookIPage.getPages(), pageSize, book);
+            bookIPage = service.getAll((<span class="hljs-type">int</span>) bookIPage.getPages(), pageSize, book);
         &#125;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(<span class="hljs-keyword">null</span> != bookIPage, bookIPage);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>(<span class="hljs-literal">null</span> != bookIPage, bookIPage);
     &#125;
 
 
     <span class="hljs-meta">@PostMapping</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">save</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(service.save(book));
+    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">save</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>(service.save(book));
     &#125;
 
     <span class="hljs-meta">@PutMapping</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span></span>&#123;
-        LambdaQueryWrapper&lt;Book&gt; wrapper = <span class="hljs-keyword">new</span> LambdaQueryWrapper&lt;&gt;();
+    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Book book)</span>&#123;
+        LambdaQueryWrapper&lt;Book&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();
         wrapper.eq(Book::getId, book.getId());
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(service.update(book,wrapper));
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>(service.update(book,wrapper));
     &#125;
 
     <span class="hljs-meta">@DeleteMapping(&quot;&#123;id&#125;&quot;)</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id)</span></span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(service.removeById(id));
+    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> id)</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>(service.removeById(id));
     &#125;
 
     <span class="hljs-meta">@GetMapping(&quot;&#123;id&#125;&quot;)</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> R <span class="hljs-title">getById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-keyword">int</span> id )</span></span>&#123;
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> R(<span class="hljs-keyword">true</span>, service.getById(id));
+    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">getById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> <span class="hljs-type">int</span> id )</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>(<span class="hljs-literal">true</span>, service.getById(id));
     &#125;
 
 <span class="hljs-comment">//    @GetMapping(&quot;&#123;currentPage&#125;/&#123;pageSize&#125;&quot;)</span>
@@ -711,55 +711,55 @@ IPage page = bookDao.selectPage(page, <span class="hljs-keyword">null</span>);</
 &#125;</code></pre></div>
 
 <p>异步请求代码</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-title">getAll</span>(<span class="hljs-params"></span>)</span> &#123;
-    param = <span class="hljs-string">&quot;?name=&quot;</span> + <span class="hljs-built_in">this</span>.pagination.name;
-    param = param + <span class="hljs-string">&quot;&amp;type=&quot;</span> + <span class="hljs-built_in">this</span>.pagination.type;
-    param = param + <span class="hljs-string">&quot;&amp;description=&quot;</span> + <span class="hljs-built_in">this</span>.pagination.description;
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-title function_">getAll</span>(<span class="hljs-params"></span>) &#123;
+    param = <span class="hljs-string">&quot;?name=&quot;</span> + <span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">name</span>;
+    param = param + <span class="hljs-string">&quot;&amp;type=&quot;</span> + <span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">type</span>;
+    param = param + <span class="hljs-string">&quot;&amp;description=&quot;</span> + <span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">description</span>;
 
     <span class="hljs-comment">// console.log(param);</span>
-    axios.get(<span class="hljs-string">&quot;/books/&quot;</span>+<span class="hljs-built_in">this</span>.pagination.currentPage + <span class="hljs-string">&quot;/&quot;</span> + <span class="hljs-built_in">this</span>.pagination.pageSize + param).then(<span class="hljs-function">(<span class="hljs-params">res</span>)=&gt;</span>&#123;
-        <span class="hljs-built_in">this</span>.dataList = res.data.data.records;
-        <span class="hljs-built_in">this</span>.pagination.total = res.data.data.total;
-        <span class="hljs-built_in">this</span>.pagination.currentPage = res.data.data.current;
-        <span class="hljs-built_in">this</span>.pagination.pagesize = res.data.data.size;
+    axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/books/&quot;</span>+<span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">currentPage</span> + <span class="hljs-string">&quot;/&quot;</span> + <span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">pageSize</span> + param).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>)=&gt;</span>&#123;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">dataList</span> = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">records</span>;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">total</span> = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">total</span>;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">currentPage</span> = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">current</span>;
+        <span class="hljs-variable language_">this</span>.<span class="hljs-property">pagination</span>.<span class="hljs-property">pagesize</span> = res.<span class="hljs-property">data</span>.<span class="hljs-property">data</span>.<span class="hljs-property">size</span>;
     &#125;);
 &#125;</code></pre></div>
 
 <p>在钩子函数中执行该方法</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">//钩子函数，VUE对象初始化完成后自动执行</span>
 created() &#123;
-    <span class="hljs-keyword">this</span>.getAll();
+    <span class="hljs-built_in">this</span>.getAll();
 &#125;,</code></pre></div>
 
 <h4 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h4><p>添加数据的窗口弹出控制</p>
 <p>数据模型</p>
-<div class="hljs"><pre><code class="hljs js">dialogFormVisible: <span class="hljs-literal">false</span>,<span class="hljs-comment">//添加表单是否可见</span>
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-attr">dialogFormVisible</span>: <span class="hljs-literal">false</span>,<span class="hljs-comment">//添加表单是否可见</span>
 formData</code></pre></div>
 
 <p>对话框控制函数</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">//弹出添加窗口</span>
 handleCreate() &#123;
-    <span class="hljs-keyword">this</span>.dialogFormVisible = <span class="hljs-keyword">true</span>;
-    <span class="hljs-keyword">this</span>.resetForm();
+    <span class="hljs-built_in">this</span>.dialogFormVisible = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">this</span>.resetForm();
 &#125;,</code></pre></div>
 
 <p>重置表单功能</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">//重置表单</span>
 resetForm() &#123;
-    <span class="hljs-keyword">this</span>.formData = &#123;&#125;;
+    <span class="hljs-built_in">this</span>.formData = &#123;&#125;;
 &#125;,</code></pre></div>
 
 <p>添加功能</p>
 <div class="hljs"><pre><code class="hljs java">handleAdd () &#123;
-    axios.post(<span class="hljs-string">&quot;/books&quot;</span>, <span class="hljs-keyword">this</span>.formData).then((res) =&gt; &#123;
+    axios.post(<span class="hljs-string">&quot;/books&quot;</span>, <span class="hljs-built_in">this</span>.formData).then((res) =&gt; &#123;
         <span class="hljs-keyword">if</span>(res.data.flag)&#123;
-            <span class="hljs-keyword">this</span>.dialogFormVisible = <span class="hljs-keyword">false</span>;
-            <span class="hljs-keyword">this</span>.$message.success(<span class="hljs-string">&quot;添加成功！&quot;</span>);
+            <span class="hljs-built_in">this</span>.dialogFormVisible = <span class="hljs-literal">false</span>;
+            <span class="hljs-built_in">this</span>.$message.success(<span class="hljs-string">&quot;添加成功！&quot;</span>);
         &#125;<span class="hljs-keyword">else</span>&#123;
-            <span class="hljs-keyword">this</span>.$message.error(<span class="hljs-string">&quot;添加失败！&quot;</span>);
+            <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&quot;添加失败！&quot;</span>);
         &#125;
     &#125;).<span class="hljs-keyword">finally</span>(() =&gt; &#123;
-        <span class="hljs-keyword">this</span>.getAll();
+        <span class="hljs-built_in">this</span>.getAll();
     &#125;)
 &#125;</code></pre></div>
 
@@ -767,31 +767,31 @@ resetForm() &#123;
 handleDelete(row) &#123;
     axios.delete(<span class="hljs-string">&quot;/books/&quot;</span> + row.id).then((res)=&gt;&#123;
         <span class="hljs-keyword">if</span>(res.data.flag)&#123;
-            <span class="hljs-keyword">this</span>.$message.success(<span class="hljs-string">&quot;删除成功！&quot;</span>);
-            <span class="hljs-keyword">this</span>.getAll();
+            <span class="hljs-built_in">this</span>.$message.success(<span class="hljs-string">&quot;删除成功！&quot;</span>);
+            <span class="hljs-built_in">this</span>.getAll();
         &#125;<span class="hljs-keyword">else</span>&#123;
-            <span class="hljs-keyword">this</span>.$message.error(<span class="hljs-string">&quot;删除失败！&quot;</span>);
+            <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&quot;删除失败！&quot;</span>);
         &#125;
     &#125;)
 &#125;,</code></pre></div>
 
 <h4 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">//弹出编辑窗口</span>
 handleUpdate(row) &#123;
-    <span class="hljs-keyword">this</span>.dialogFormVisible4Edit = <span class="hljs-keyword">true</span>;
-    <span class="hljs-keyword">this</span>.formData = row;
+    <span class="hljs-built_in">this</span>.dialogFormVisible4Edit = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">this</span>.formData = row;
 &#125;,
 
 <span class="hljs-comment">//修改</span>
 handleEdit() &#123;
-    axios.put(<span class="hljs-string">&quot;/books&quot;</span>, <span class="hljs-keyword">this</span>.formData).then((res) =&gt; &#123;
+    axios.put(<span class="hljs-string">&quot;/books&quot;</span>, <span class="hljs-built_in">this</span>.formData).then((res) =&gt; &#123;
         <span class="hljs-keyword">if</span>(res.data.flag)&#123;
-            <span class="hljs-keyword">this</span>.dialogFormVisible4Edit = <span class="hljs-keyword">false</span>;
-            <span class="hljs-keyword">this</span>.$message.success(<span class="hljs-string">&quot;修改成功！&quot;</span>);
+            <span class="hljs-built_in">this</span>.dialogFormVisible4Edit = <span class="hljs-literal">false</span>;
+            <span class="hljs-built_in">this</span>.$message.success(<span class="hljs-string">&quot;修改成功！&quot;</span>);
         &#125;<span class="hljs-keyword">else</span>&#123;
-            <span class="hljs-keyword">this</span>.$message.error(<span class="hljs-string">&quot;修改失败！&quot;</span>);
+            <span class="hljs-built_in">this</span>.$message.error(<span class="hljs-string">&quot;修改失败！&quot;</span>);
         &#125;
     &#125;).<span class="hljs-keyword">finally</span>(() =&gt; &#123;
-        <span class="hljs-keyword">this</span>.getAll();
+        <span class="hljs-built_in">this</span>.getAll();
     &#125;)
 &#125;,</code></pre></div>
 

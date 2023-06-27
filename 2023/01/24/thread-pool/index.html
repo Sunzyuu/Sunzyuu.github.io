@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -259,10 +259,10 @@
 <span class="hljs-keyword">import</span> java.util.concurrent.locks.ReentrantLock;
 
 <span class="hljs-meta">@Slf4j(topic = &quot;c.ThredPoolDemo&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThredPoolDemo</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ThredPoolDemo</span> &#123;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
-        ThreadPool threadPool = <span class="hljs-keyword">new</span> ThreadPool(<span class="hljs-number">1</span>, <span class="hljs-number">1000</span>, TimeUnit.MILLISECONDS, <span class="hljs-number">1</span>, ((queue, task) -&gt; &#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
+        <span class="hljs-type">ThreadPool</span> <span class="hljs-variable">threadPool</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPool</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1000</span>, TimeUnit.MILLISECONDS, <span class="hljs-number">1</span>, ((queue, task) -&gt; &#123;
             <span class="hljs-comment">// 1.死等</span>
 <span class="hljs-comment">//            queue.put(task);</span>
             <span class="hljs-comment">// 2.带超时时间的等待</span>
@@ -274,8 +274,8 @@
             <span class="hljs-comment">// 5.让调用者自己执行任务</span>
 <span class="hljs-comment">//            task.run();  // 在主线程中执行任务</span>
         &#125;));
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) &#123;
-            <span class="hljs-keyword">int</span> id = i;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) &#123;
+            <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> i;
             threadPool.execute(()-&gt;&#123;
                 <span class="hljs-keyword">try</span> &#123;
                     Thread.sleep(<span class="hljs-number">2000</span>);
@@ -293,23 +293,23 @@
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &lt;T&gt;</span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-meta">@FunctionalInterface</span>
-<span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">RejectPolicy</span>&lt;<span class="hljs-title">T</span>&gt;</span>&#123;
-    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">reject</span><span class="hljs-params">(BlockingQueue&lt;T&gt; queue, T task)</span></span>;
+<span class="hljs-keyword">interface</span> <span class="hljs-title class_">RejectPolicy</span>&lt;T&gt;&#123;
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">reject</span><span class="hljs-params">(BlockingQueue&lt;T&gt; queue, T task)</span>;
 &#125;
 
 <span class="hljs-meta">@Slf4j(topic = &quot;c.ThreadPool&quot;)</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreadPool</span> </span>&#123;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadPool</span> &#123;
     <span class="hljs-comment">// 任务队列</span>
     <span class="hljs-keyword">private</span> BlockingQueue&lt;Runnable&gt; taskQueue;
 
     <span class="hljs-comment">// 线程集合</span>
-    <span class="hljs-keyword">private</span> HashSet&lt;Worker&gt; workers = <span class="hljs-keyword">new</span> HashSet();
+    <span class="hljs-keyword">private</span> HashSet&lt;Worker&gt; workers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>();
 
     <span class="hljs-comment">// 核心线程数</span>
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> coreSize;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> coreSize;
 
     <span class="hljs-comment">// 超时时间</span>
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> timeout;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> timeout;
 
     <span class="hljs-comment">// 时间单位</span>
     <span class="hljs-keyword">private</span> TimeUnit timeUnit;
@@ -318,11 +318,11 @@
     <span class="hljs-keyword">private</span> RejectPolicy&lt;Runnable&gt; rejectPolicy;
 
     <span class="hljs-comment">//执行任务</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">execute</span><span class="hljs-params">(Runnable task)</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">execute</span><span class="hljs-params">(Runnable task)</span>&#123;
         <span class="hljs-keyword">synchronized</span> (workers)&#123;
             <span class="hljs-comment">// 当任务线程数没有超过核心线程数 直接交个worker对象执行</span>
             <span class="hljs-keyword">if</span>(workers.size() &lt; coreSize)&#123;
-                Worker worker = <span class="hljs-keyword">new</span> Worker(task);
+                <span class="hljs-type">Worker</span> <span class="hljs-variable">worker</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Worker</span>(task);
                 log.debug(<span class="hljs-string">&quot;worker被创建&#123;&#125;, task is &#123;&#125;&quot;</span>, worker,task);
                 workers.add(worker);
                 <span class="hljs-comment">// 执行任务</span>
@@ -336,69 +336,69 @@
     &#125;
 
 	<span class="hljs-comment">// 构造函数</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ThreadPool</span><span class="hljs-params">(<span class="hljs-keyword">int</span> coreSize, <span class="hljs-keyword">long</span> timeout, TimeUnit timeUnit,<span class="hljs-keyword">int</span> queueCapatiy, RejectPolicy&lt;Runnable&gt; rejectPolicy)</span> </span>&#123;
-        <span class="hljs-keyword">this</span>.coreSize = coreSize;
-        <span class="hljs-keyword">this</span>.timeout = timeout;
-        <span class="hljs-keyword">this</span>.timeUnit = timeUnit;
-        <span class="hljs-keyword">this</span>.taskQueue = <span class="hljs-keyword">new</span> BlockingQueue&lt;&gt;(queueCapatiy);
-        <span class="hljs-keyword">this</span>.rejectPolicy = rejectPolicy;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ThreadPool</span><span class="hljs-params">(<span class="hljs-type">int</span> coreSize, <span class="hljs-type">long</span> timeout, TimeUnit timeUnit,<span class="hljs-type">int</span> queueCapatiy, RejectPolicy&lt;Runnable&gt; rejectPolicy)</span> &#123;
+        <span class="hljs-built_in">this</span>.coreSize = coreSize;
+        <span class="hljs-built_in">this</span>.timeout = timeout;
+        <span class="hljs-built_in">this</span>.timeUnit = timeUnit;
+        <span class="hljs-built_in">this</span>.taskQueue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BlockingQueue</span>&lt;&gt;(queueCapatiy);
+        <span class="hljs-built_in">this</span>.rejectPolicy = rejectPolicy;
     &#125;
 	<span class="hljs-comment">// 任务处理对象</span>
-    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Worker</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Thread</span></span>&#123;
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">Worker</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Thread</span>&#123;
         <span class="hljs-keyword">private</span> Runnable task;
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Worker</span><span class="hljs-params">(Runnable task)</span> </span>&#123;
-            <span class="hljs-keyword">this</span>.task = task;
+        <span class="hljs-keyword">public</span> <span class="hljs-title function_">Worker</span><span class="hljs-params">(Runnable task)</span> &#123;
+            <span class="hljs-built_in">this</span>.task = task;
         &#125;
 
         <span class="hljs-meta">@Override</span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;
             <span class="hljs-comment">// 1.当task不为空时，直接执行任务</span>
             <span class="hljs-comment">// 2.当task为空时，需要到任务队列中拉去任务执行</span>
 <span class="hljs-comment">//            while(task != null || (task = taskQueue.take()) != null)&#123;</span>
-            <span class="hljs-keyword">while</span>(task != <span class="hljs-keyword">null</span> || (task = taskQueue.poll(timeout, timeUnit)) != <span class="hljs-keyword">null</span>)&#123;
+            <span class="hljs-keyword">while</span>(task != <span class="hljs-literal">null</span> || (task = taskQueue.poll(timeout, timeUnit)) != <span class="hljs-literal">null</span>)&#123;
                 <span class="hljs-keyword">try</span>&#123;
                     log.debug(<span class="hljs-string">&quot;task正在被执行...&#123;&#125;&quot;</span>, task);
                     task.run();
                 &#125;<span class="hljs-keyword">catch</span> (Exception e)&#123;
 
                 &#125;<span class="hljs-keyword">finally</span> &#123;
-                    task = <span class="hljs-keyword">null</span>;
+                    task = <span class="hljs-literal">null</span>;
                 &#125;
             &#125;
             <span class="hljs-comment">// 退出循环说明任务执行完毕 需要从worker中移除</span>
             <span class="hljs-keyword">synchronized</span> (workers)&#123;
-                log.debug(<span class="hljs-string">&quot;worker 被移除&#123;&#125;&quot;</span>, <span class="hljs-keyword">this</span>);
-                workers.remove(<span class="hljs-keyword">this</span>);
+                log.debug(<span class="hljs-string">&quot;worker 被移除&#123;&#125;&quot;</span>, <span class="hljs-built_in">this</span>);
+                workers.remove(<span class="hljs-built_in">this</span>);
             &#125;
         &#125;
     &#125;
 &#125;
 <span class="hljs-meta">@Slf4j(topic = &quot;c.BlockingQueue&quot;)</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BlockingQueue</span>&lt;<span class="hljs-title">T</span>&gt; </span>&#123;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BlockingQueue</span>&lt;T&gt; &#123;
     <span class="hljs-comment">// 1.任务队列</span>
-    <span class="hljs-keyword">private</span> Deque&lt;T&gt; queue = <span class="hljs-keyword">new</span> ArrayDeque&lt;&gt;();
+    <span class="hljs-keyword">private</span> Deque&lt;T&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
     <span class="hljs-comment">// 2.锁</span>
-    <span class="hljs-keyword">private</span> ReentrantLock lock = <span class="hljs-keyword">new</span> ReentrantLock();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">ReentrantLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>();
     <span class="hljs-comment">// 3.生产者条件变量</span>
-    <span class="hljs-keyword">private</span> Condition fullWaitSet = lock.newCondition();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">Condition</span> <span class="hljs-variable">fullWaitSet</span> <span class="hljs-operator">=</span> lock.newCondition();
     <span class="hljs-comment">// 4.消费者条件变量</span>
-    <span class="hljs-keyword">private</span> Condition emptyWaitSet = lock.newCondition();
+    <span class="hljs-keyword">private</span> <span class="hljs-type">Condition</span> <span class="hljs-variable">emptyWaitSet</span> <span class="hljs-operator">=</span> lock.newCondition();
     <span class="hljs-comment">// 5.线程池的最大容量</span>
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> capacity;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> capacity;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BlockingQueue</span><span class="hljs-params">(<span class="hljs-keyword">int</span> capacity)</span> </span>&#123;
-        <span class="hljs-keyword">this</span>.capacity = capacity;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BlockingQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> capacity)</span> &#123;
+        <span class="hljs-built_in">this</span>.capacity = capacity;
     &#125;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">poll</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timeout, TimeUnit unit)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">poll</span><span class="hljs-params">(<span class="hljs-type">long</span> timeout, TimeUnit unit)</span> &#123;
         lock.lock();
         <span class="hljs-keyword">try</span> &#123;
             <span class="hljs-comment">// 将timeout统一转换为纳秒</span>
-            <span class="hljs-keyword">long</span> nanos = unit.toNanos(timeout);
+            <span class="hljs-type">long</span> <span class="hljs-variable">nanos</span> <span class="hljs-operator">=</span> unit.toNanos(timeout);
             <span class="hljs-keyword">while</span> (queue.isEmpty()) &#123;
                 <span class="hljs-keyword">try</span> &#123;
                     <span class="hljs-keyword">if</span> (nanos &lt;= <span class="hljs-number">0</span>) &#123;
-                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
                     &#125;
                     <span class="hljs-comment">// 返回的是剩余的等待时间</span>
                     nanos = emptyWaitSet.awaitNanos(nanos);
@@ -406,7 +406,7 @@
                     e.printStackTrace();
                 &#125;
             &#125;
-            T t = queue.removeFirst();
+            <span class="hljs-type">T</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> queue.removeFirst();
             fullWaitSet.signal();
             <span class="hljs-keyword">return</span> t;
         &#125; <span class="hljs-keyword">finally</span> &#123;
@@ -416,7 +416,7 @@
 
 
     <span class="hljs-comment">// 阻塞获取</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> T <span class="hljs-title">take</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">take</span><span class="hljs-params">()</span> &#123;
         lock.lock();
         <span class="hljs-keyword">try</span> &#123;
             <span class="hljs-keyword">while</span> (queue.isEmpty()) &#123;
@@ -426,7 +426,7 @@
                     e.printStackTrace();
                 &#125;
             &#125;
-            T t = queue.removeFirst();
+            <span class="hljs-type">T</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> queue.removeFirst();
             fullWaitSet.signal();
             <span class="hljs-keyword">return</span> t;
         &#125; <span class="hljs-keyword">finally</span> &#123;
@@ -436,14 +436,14 @@
 
 
     <span class="hljs-comment">// 带超时时间的阻塞添加</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">offer</span><span class="hljs-params">(T task, <span class="hljs-keyword">long</span> timeout, TimeUnit timeUnit)</span></span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">offer</span><span class="hljs-params">(T task, <span class="hljs-type">long</span> timeout, TimeUnit timeUnit)</span>&#123;
         lock.lock();
         <span class="hljs-keyword">try</span> &#123;
-            <span class="hljs-keyword">long</span> nanos = timeUnit.toNanos(timeout);
+            <span class="hljs-type">long</span> <span class="hljs-variable">nanos</span> <span class="hljs-operator">=</span> timeUnit.toNanos(timeout);
                 <span class="hljs-keyword">while</span> (queue.size() == capacity) &#123;
                 <span class="hljs-keyword">try</span> &#123;
                     <span class="hljs-keyword">if</span>(nanos &lt;= <span class="hljs-number">0</span>)&#123;
-                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
                     &#125;
                     log.debug(<span class="hljs-string">&quot;等待加入任务队列&#123;&#125;&quot;</span>, task);
                     nanos = fullWaitSet.awaitNanos(nanos);
@@ -454,14 +454,14 @@
             log.debug(<span class="hljs-string">&quot;加入任务队列&#123;&#125;&quot;</span>, task);
             queue.addLast(task);
             emptyWaitSet.signal();
-            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         &#125; <span class="hljs-keyword">finally</span> &#123;
             lock.unlock();
         &#125;
     &#125;
 
     <span class="hljs-comment">//阻塞添加</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">put</span><span class="hljs-params">(T task)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">put</span><span class="hljs-params">(T task)</span> &#123;
         lock.lock();
         <span class="hljs-keyword">try</span> &#123;
             <span class="hljs-keyword">while</span> (queue.size() == capacity) &#123;
@@ -481,12 +481,12 @@
     &#125;
 
     <span class="hljs-comment">// 有拒绝策略的添加</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">tryPut</span><span class="hljs-params">(RejectPolicy&lt;T&gt; rejectPolicy, T task)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">tryPut</span><span class="hljs-params">(RejectPolicy&lt;T&gt; rejectPolicy, T task)</span> &#123;
         lock.lock();
         <span class="hljs-keyword">try</span> &#123;
             <span class="hljs-comment">// 判断队列是否满</span>
             <span class="hljs-keyword">if</span>(queue.size() == capacity) &#123;
-                rejectPolicy.reject(<span class="hljs-keyword">this</span>, task);
+                rejectPolicy.reject(<span class="hljs-built_in">this</span>, task);
             &#125; <span class="hljs-keyword">else</span> &#123;  <span class="hljs-comment">// 有空闲</span>
                 log.debug(<span class="hljs-string">&quot;加入任务队列 &#123;&#125;&quot;</span>, task);
                 queue.addLast(task);
@@ -498,7 +498,7 @@
     &#125;
 
     <span class="hljs-comment">// 获取大小</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getSize</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getSize</span><span class="hljs-params">()</span> &#123;
         lock.lock();
         <span class="hljs-keyword">try</span> &#123;
             <span class="hljs-keyword">return</span> queue.size();
@@ -522,20 +522,20 @@
 <span class="hljs-keyword">import</span> java.util.concurrent.ScheduledExecutorService;
 <span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;
 
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ScheduleDemo</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ScheduleDemo</span> &#123;
 
 
     <span class="hljs-comment">// 如何实现在 固定时间点执行任务</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
         <span class="hljs-comment">// 当前时间</span>
-        LocalDateTime nowTime = LocalDateTime.now();
+        <span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">nowTime</span> <span class="hljs-operator">=</span> LocalDateTime.now();
 
         <span class="hljs-comment">// 周四的时间</span>
-        LocalDateTime time =  nowTime.withHour(<span class="hljs-number">22</span>).withMinute(<span class="hljs-number">12</span>).withSecond(<span class="hljs-number">0</span>).withNano(<span class="hljs-number">0</span>).with(DayOfWeek.SUNDAY);
+        <span class="hljs-type">LocalDateTime</span> <span class="hljs-variable">time</span> <span class="hljs-operator">=</span>  nowTime.withHour(<span class="hljs-number">22</span>).withMinute(<span class="hljs-number">12</span>).withSecond(<span class="hljs-number">0</span>).withNano(<span class="hljs-number">0</span>).with(DayOfWeek.SUNDAY);
         <span class="hljs-comment">// 当前时间与周四的时间差值</span>
-        <span class="hljs-keyword">long</span> initDaley;
+        <span class="hljs-type">long</span> initDaley;
         <span class="hljs-comment">// 一周的时间</span>
-        <span class="hljs-keyword">long</span> period = <span class="hljs-number">1000</span> * <span class="hljs-number">3600</span> * <span class="hljs-number">24</span> * <span class="hljs-number">7</span>;
+        <span class="hljs-type">long</span> <span class="hljs-variable">period</span> <span class="hljs-operator">=</span> <span class="hljs-number">1000</span> * <span class="hljs-number">3600</span> * <span class="hljs-number">24</span> * <span class="hljs-number">7</span>;
 
         <span class="hljs-keyword">if</span>(nowTime.compareTo(time) &gt; <span class="hljs-number">0</span> )&#123;
             time.plusWeeks(<span class="hljs-number">1</span>);
@@ -544,7 +544,7 @@
         System.out.println(nowTime);
         System.out.println(time);
         initDaley = Duration.between(nowTime, time).toMillis();
-        ScheduledExecutorService pool = Executors.newScheduledThreadPool(<span class="hljs-number">1</span>);
+        <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">pool</span> <span class="hljs-operator">=</span> Executors.newScheduledThreadPool(<span class="hljs-number">1</span>);
 
         pool.scheduleAtFixedRate(()-&gt;&#123;
             System.out.println(<span class="hljs-string">&quot;running...&quot;</span>);
@@ -559,17 +559,17 @@
 
 <h1 id="CountDownLatch-应用例子"><a href="#CountDownLatch-应用例子" class="headerlink" title="CountDownLatch 应用例子"></a>CountDownLatch 应用例子</h1><p>模拟游戏开始之前用户的加载过程</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j(topic = &quot;c.CountDownLatchDemo&quot;)</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CountDownLatchDemo</span> </span>&#123;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CountDownLatchDemo</span> &#123;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
-        ExecutorService service = Executors.newFixedThreadPool(<span class="hljs-number">10</span>);
-        CountDownLatch latch = <span class="hljs-keyword">new</span> CountDownLatch(<span class="hljs-number">10</span>);
-        Random random = <span class="hljs-keyword">new</span> Random();
-        String[] allUsers = <span class="hljs-keyword">new</span> String[<span class="hljs-number">10</span>];
-        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;
-            <span class="hljs-keyword">int</span> k = i;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
+        <span class="hljs-type">ExecutorService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">10</span>);
+        <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">10</span>);
+        <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+        String[] allUsers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[<span class="hljs-number">10</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;
+            <span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> i;
             service.submit(() -&gt; &#123;
-                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>; j &lt;= <span class="hljs-number">100</span>; j++) &#123;
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt;= <span class="hljs-number">100</span>; j++) &#123;
                     <span class="hljs-keyword">try</span> &#123;
                         Thread.sleep(random.nextInt(<span class="hljs-number">100</span>));
                     &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;

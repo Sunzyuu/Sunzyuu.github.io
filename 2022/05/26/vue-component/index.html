@@ -52,7 +52,7 @@
 
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 <body>
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.5k 字
+      2.2k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      39
+      35
        分钟
     </span>
   
@@ -267,59 +267,59 @@ Vue.use(ElementUI, &#123; <span class="hljs-keyword">size</span>: <span class="h
 <h3 id="创建dom组件"><a href="#创建dom组件" class="headerlink" title="创建dom组件"></a>创建dom组件</h3><div class="hljs"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;pie&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 500px; height: 400px&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></div>
 
 <h3 id="初始化图表数据"><a href="#初始化图表数据" class="headerlink" title="初始化图表数据"></a>初始化图表数据</h3><div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">var</span> pieOption = &#123;
-  title: &#123;
-    text: <span class="hljs-string">&#x27;各季度会员数量统计&#x27;</span>,
-    subtext: <span class="hljs-string">&#x27;比例图&#x27;</span>,
-    left: <span class="hljs-string">&#x27;center&#x27;</span>
+  <span class="hljs-attr">title</span>: &#123;
+    <span class="hljs-attr">text</span>: <span class="hljs-string">&#x27;各季度会员数量统计&#x27;</span>,
+    <span class="hljs-attr">subtext</span>: <span class="hljs-string">&#x27;比例图&#x27;</span>,
+    <span class="hljs-attr">left</span>: <span class="hljs-string">&#x27;center&#x27;</span>
   &#125;,
-  tooltip: &#123;
-    trigger: <span class="hljs-string">&#x27;item&#x27;</span>
+  <span class="hljs-attr">tooltip</span>: &#123;
+    <span class="hljs-attr">trigger</span>: <span class="hljs-string">&#x27;item&#x27;</span>
   &#125;,
-  legend: &#123;
-    orient: <span class="hljs-string">&#x27;vertical&#x27;</span>,
-    left: <span class="hljs-string">&#x27;left&#x27;</span>
+  <span class="hljs-attr">legend</span>: &#123;
+    <span class="hljs-attr">orient</span>: <span class="hljs-string">&#x27;vertical&#x27;</span>,
+    <span class="hljs-attr">left</span>: <span class="hljs-string">&#x27;left&#x27;</span>
   &#125;,
-  series: [
+  <span class="hljs-attr">series</span>: [
     &#123;
-      type: <span class="hljs-string">&#x27;pie&#x27;</span>,
-      radius: <span class="hljs-string">&#x27;60%&#x27;</span>,
-      label:&#123;            <span class="hljs-comment">//饼图图形上的文本标签</span>
-        normal:&#123;
-          show:<span class="hljs-literal">true</span>,
-          position:<span class="hljs-string">&#x27;inner&#x27;</span>, <span class="hljs-comment">//标签的位置</span>
+      <span class="hljs-attr">type</span>: <span class="hljs-string">&#x27;pie&#x27;</span>,
+      <span class="hljs-attr">radius</span>: <span class="hljs-string">&#x27;60%&#x27;</span>,
+      <span class="hljs-attr">label</span>:&#123;            <span class="hljs-comment">//饼图图形上的文本标签</span>
+        <span class="hljs-attr">normal</span>:&#123;
+          <span class="hljs-attr">show</span>:<span class="hljs-literal">true</span>,
+          <span class="hljs-attr">position</span>:<span class="hljs-string">&#x27;inner&#x27;</span>, <span class="hljs-comment">//标签的位置</span>
           textStyle : &#123;
             fontWeight : <span class="hljs-number">300</span> ,
             fontSize : <span class="hljs-number">14</span>,    <span class="hljs-comment">//文字的字体大小</span>
-            color: <span class="hljs-string">&quot;#fff&quot;</span>
+            <span class="hljs-attr">color</span>: <span class="hljs-string">&quot;#fff&quot;</span>
           &#125;,
-          formatter:<span class="hljs-string">&#x27;&#123;d&#125;%&#x27;</span>
+          <span class="hljs-attr">formatter</span>:<span class="hljs-string">&#x27;&#123;d&#125;%&#x27;</span>
         &#125;
       &#125;,
-      data: [],  <span class="hljs-comment">// 填空</span>
-      emphasis: &#123;
-        itemStyle: &#123;
-          shadowBlur: <span class="hljs-number">10</span>,
-          shadowOffsetX: <span class="hljs-number">0</span>,
-          shadowColor: <span class="hljs-string">&#x27;rgba(0, 0, 0, 0.5)&#x27;</span>
+      <span class="hljs-attr">data</span>: [],  <span class="hljs-comment">// 填空</span>
+      <span class="hljs-attr">emphasis</span>: &#123;
+        <span class="hljs-attr">itemStyle</span>: &#123;
+          <span class="hljs-attr">shadowBlur</span>: <span class="hljs-number">10</span>,
+          <span class="hljs-attr">shadowOffsetX</span>: <span class="hljs-number">0</span>,
+          <span class="hljs-attr">shadowColor</span>: <span class="hljs-string">&#x27;rgba(0, 0, 0, 0.5)&#x27;</span>
         &#125;
       &#125;
     &#125;
   ]
 &#125;;
 
-<span class="hljs-keyword">var</span> pieDom = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;pie&#x27;</span>);
-<span class="hljs-keyword">var</span> pieChart = echarts.init(pieDom);</code></pre></div>
+<span class="hljs-keyword">var</span> pieDom = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;pie&#x27;</span>);
+<span class="hljs-keyword">var</span> pieChart = echarts.<span class="hljs-title function_">init</span>(pieDom);</code></pre></div>
 
-<p>其中<code>data: [],</code>是表格显示的数据，这里是需要重点实现的</p>
+<p>其中<code>  data: [],</code>是表格显示的数据，这里是需要重点实现的</p>
 <p>这里可以在前端页面中写死数据，但是大多需要请求后端接口获取数据，如下</p>
-<div class="hljs"><pre><code class="hljs js"><span class="hljs-built_in">this</span>.request.get(<span class="hljs-string">&quot;/echarts/members&quot;</span>).then(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span>&#123;
-      pieOption.series[<span class="hljs-number">0</span>].data = [
-        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第一季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">0</span>]&#125;,
-        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第二季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">1</span>]&#125;,
-        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第三季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">2</span>]&#125;,
-        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第四季度&quot;</span>, <span class="hljs-attr">value</span>: res.data[<span class="hljs-number">3</span>]&#125;,
+<div class="hljs"><pre><code class="hljs js"><span class="hljs-variable language_">this</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">get</span>(<span class="hljs-string">&quot;/echarts/members&quot;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span>&#123;
+      pieOption.<span class="hljs-property">series</span>[<span class="hljs-number">0</span>].<span class="hljs-property">data</span> = [
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第一季度&quot;</span>, <span class="hljs-attr">value</span>: res.<span class="hljs-property">data</span>[<span class="hljs-number">0</span>]&#125;,
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第二季度&quot;</span>, <span class="hljs-attr">value</span>: res.<span class="hljs-property">data</span>[<span class="hljs-number">1</span>]&#125;,
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第三季度&quot;</span>, <span class="hljs-attr">value</span>: res.<span class="hljs-property">data</span>[<span class="hljs-number">2</span>]&#125;,
+        &#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&quot;第四季度&quot;</span>, <span class="hljs-attr">value</span>: res.<span class="hljs-property">data</span>[<span class="hljs-number">3</span>]&#125;,
       ]
-    pieChart.setOption(pieOption);
+    pieChart.<span class="hljs-title function_">setOption</span>(pieOption);
 &#125;</code></pre></div>
 
 <p>实现效果图</p>
@@ -335,23 +335,23 @@ npm install xterm-addon-fit -S</code></pre></div>
 <p>本文使用的版本如下</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526160612795.png" srcset="/img/loading.gif" alt="image-20220526160612795"></p>
 <h3 id="在页面中导入使用到的包"><a href="#在页面中导入使用到的包" class="headerlink" title="在页面中导入使用到的包"></a>在页面中导入使用到的包</h3><div class="hljs"><pre><code class="hljs js"><span class="hljs-keyword">import</span> <span class="hljs-string">&quot;xterm/css/xterm.css&quot;</span>;
-<span class="hljs-keyword">import</span> &#123; Terminal &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm&quot;</span>;
-<span class="hljs-keyword">import</span> &#123; FitAddon &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm-addon-fit&quot;</span>;
-<span class="hljs-keyword">import</span> &#123; AttachAddon &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm-addon-attach&quot;</span>;</code></pre></div>
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Terminal</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">FitAddon</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm-addon-fit&quot;</span>;
+<span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">AttachAddon</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;xterm-addon-attach&quot;</span>;</code></pre></div>
 
 <p>前端所有代码如下</p>
 <div class="hljs"><pre><code class="hljs vue">&lt;template&gt;
-  &lt;div class&#x3D;&quot;app-container&quot;&gt;
+  &lt;div class=&quot;app-container&quot;&gt;
     &lt;el-row &gt;
-      &lt;h1&gt;Web Console&lt;&#x2F;h1&gt;
-        &lt;div id&#x3D;&quot;log&quot; style&#x3D;&quot;margin-top:20px;&quot;&gt;
-          &lt;div class&#x3D;&quot;xterm&quot; id&#x3D;&quot;terminal&quot;&gt;&lt;&#x2F;div&gt;
-        &lt;&#x2F;div&gt;
-    &lt;&#x2F;el-row&gt;
-  &lt;&#x2F;div&gt;
-&lt;&#x2F;template&gt;
+      &lt;h1&gt;Web Console&lt;/h1&gt;
+        &lt;div id=&quot;log&quot; style=&quot;margin-top:20px;&quot;&gt;
+          &lt;div class=&quot;xterm&quot; id=&quot;terminal&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/el-row&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
 &lt;script&gt;
-import &quot;xterm&#x2F;css&#x2F;xterm.css&quot;;
+import &quot;xterm/css/xterm.css&quot;;
 import &#123; Terminal &#125; from &quot;xterm&quot;;
 import &#123; FitAddon &#125; from &quot;xterm-addon-fit&quot;;
 import &#123; AttachAddon &#125; from &quot;xterm-addon-attach&quot;;
@@ -369,8 +369,8 @@ export default &#123;
       term: null,
       socket: null,
       rows: 40,
-      &#x2F;&#x2F; cols: 10,
-      webSocketUrl: &#39;&#39;, &#x2F;&#x2F;&quot;ws:&#x2F;&#x2F;127.0.0.1:8081&#x2F;terminal?workdir&#x3D;&#x2F;&amp;container&#x3D;5e0647ee611b&quot;,
+      // cols: 10,
+      webSocketUrl: &#x27;&#x27;, //&quot;ws://127.0.0.1:8081/terminal?workdir=/&amp;container=5e0647ee611b&quot;,
       SetOut: false,
       isKey: false
     &#125;
@@ -378,57 +378,57 @@ export default &#123;
   computed: &#123;&#125;,
   watch: &#123;&#125;,
   created() &#123;
-    const id &#x3D; this.$route.query.id
+    const id = this.$route.query.id
     console.log(id)
-    this.webSocketUrl &#x3D; &quot;ws:&#x2F;&#x2F;127.0.0.1:8081&#x2F;terminal?workdir&#x3D;&#x2F;&amp;container&#x3D;&quot; + id
+    this.webSocketUrl = &quot;ws://127.0.0.1:8081/terminal?workdir=/&amp;container=&quot; + id
   &#125;,
   mounted() &#123;
     this.initSocket();
   &#125;,
   beforeDestroy() &#123;
     this.socket.close();
-    &#x2F;&#x2F; this.term.dispose();
+    // this.term.dispose();
   &#125;,
   methods: &#123;
     submitForm() &#123;
-      this.$refs[&#39;elForm&#39;].validate(valid &#x3D;&gt; &#123;
+      this.$refs[&#x27;elForm&#x27;].validate(valid =&gt; &#123;
         if (!valid) return
-        &#x2F;&#x2F; TODO 提交表单
+        // TODO 提交表单
       &#125;)
     &#125;,
     resetForm() &#123;
-      this.$refs[&#39;elForm&#39;].resetFields()
+      this.$refs[&#x27;elForm&#x27;].resetFields()
     &#125;,
-    &#x2F;&#x2F;Xterm主题
+    //Xterm主题
     initTerm(data, callback) &#123;
-      const term &#x3D; new Terminal(&#123;
-        rendererType: &quot;canvas&quot;, &#x2F;&#x2F;渲染类型
-        rows: this.rows, &#x2F;&#x2F;行数
-        &#x2F;&#x2F; cols: this.cols,&#x2F;&#x2F; 设置之后会输入多行之后覆盖现象
-        convertEol: true, &#x2F;&#x2F;启用时，光标将设置为下一行的开头
-        &#x2F;&#x2F; scrollback: 10,&#x2F;&#x2F;终端中的回滚量
-        fontSize: 14, &#x2F;&#x2F;字体大小
-        disableStdin: false, &#x2F;&#x2F;是否应禁用输入。
-        cursorStyle: &quot;block&quot;, &#x2F;&#x2F;光标样式
-        cursorBlink: true, &#x2F;&#x2F;光标闪烁
+      const term = new Terminal(&#123;
+        rendererType: &quot;canvas&quot;, //渲染类型
+        rows: this.rows, //行数
+        // cols: this.cols,// 设置之后会输入多行之后覆盖现象
+        convertEol: true, //启用时，光标将设置为下一行的开头
+        // scrollback: 10,//终端中的回滚量
+        fontSize: 14, //字体大小
+        disableStdin: false, //是否应禁用输入。
+        cursorStyle: &quot;block&quot;, //光标样式
+        cursorBlink: true, //光标闪烁
         scrollback: 30,
         tabStopWidth: 8,
         theme: &#123;
-          foreground: &quot;green&quot;, &#x2F;&#x2F;字体
-          background: &quot;#000000&quot;, &#x2F;&#x2F;背景色
-          cursor: &quot;help&quot; &#x2F;&#x2F;设置光标
+          foreground: &quot;green&quot;, //字体
+          background: &quot;#000000&quot;, //背景色
+          cursor: &quot;help&quot; //设置光标
         &#125;
       &#125;);
-      const attachAddon &#x3D; new AttachAddon(this.socket);
-      const fitAddon &#x3D; new FitAddon();
+      const attachAddon = new AttachAddon(this.socket);
+      const fitAddon = new FitAddon();
       term.loadAddon(attachAddon);
       term.loadAddon(fitAddon);
       term.open(document.getElementById(&quot;terminal&quot;));
       fitAddon.fit();
       term.focus();
-      let _this &#x3D; this;
-      &#x2F;&#x2F;限制和后端交互，只有输入回车键才显示结果
-      term.prompt &#x3D; () &#x3D;&gt; &#123;
+      let _this = this;
+      //限制和后端交互，只有输入回车键才显示结果
+      term.prompt = () =&gt; &#123;
         term.write(&quot;\r\n$ &quot;);
       &#125;;
       term.prompt();
@@ -437,81 +437,81 @@ export default &#123;
         if (term._initialized) &#123;
           return;
         &#125;
-        &#x2F;&#x2F; 初始化
-        term._initialized &#x3D; true;
-        term.writeln();&#x2F;&#x2F;控制台初始化报错处
+        // 初始化
+        term._initialized = true;
+        term.writeln();//控制台初始化报错处
         term.prompt();
-        &#x2F;&#x2F; &#x2F; **
-        &#x2F;&#x2F;     *添加事件监听器，用于按下键时的事件。事件值包含
-        &#x2F;&#x2F;     *将在data事件以及DOM事件中发送的字符串
-        &#x2F;&#x2F;     *触发了它。
-        &#x2F;&#x2F;     * @返回一个IDisposable停止监听。
-        &#x2F;&#x2F;  * &#x2F;
-        &#x2F;&#x2F;   &#x2F; ** 更新：xterm 4.x（新增）
-        &#x2F;&#x2F;  *为数据事件触发时添加事件侦听器。发生这种情况
-        &#x2F;&#x2F;  *用户输入或粘贴到终端时的示例。事件值
-        &#x2F;&#x2F;  *是&#96;string&#96;结果的结果，在典型的设置中，应该通过
-        &#x2F;&#x2F;  *到支持pty。
-        &#x2F;&#x2F;  * @返回一个IDisposable停止监听。
-        &#x2F;&#x2F;  * &#x2F;
-        &#x2F;&#x2F; 支持输入与粘贴方法
+        // / **
+        //     *添加事件监听器，用于按下键时的事件。事件值包含
+        //     *将在data事件以及DOM事件中发送的字符串
+        //     *触发了它。
+        //     * @返回一个IDisposable停止监听。
+        //  * /
+        //   / ** 更新：xterm 4.x（新增）
+        //  *为数据事件触发时添加事件侦听器。发生这种情况
+        //  *用户输入或粘贴到终端时的示例。事件值
+        //  *是`string`结果的结果，在典型的设置中，应该通过
+        //  *到支持pty。
+        //  * @返回一个IDisposable停止监听。
+        //  * /
+        // 支持输入与粘贴方法
         term.onData(function(key) &#123;
-          let order &#x3D; &#123;
+          let order = &#123;
             Data: key,
             Op: &quot;stdin&quot;
           &#125;;
           _this.onSend(order);
         &#125;);
-        _this.term &#x3D; term;
+        _this.term = term;
       &#125;
 
       runFakeTerminal(_this);
     &#125;,
-    &#x2F;&#x2F;webShell主题
+    //webShell主题
     initSocket() &#123;
-      const WebSocketUrl &#x3D; this.webSocketUrl
-      this.socket &#x3D; new WebSocket(
+      const WebSocketUrl = this.webSocketUrl
+      this.socket = new WebSocket(
         WebSocketUrl
       );
-      this.socketOnClose(); &#x2F;&#x2F;关闭
-      this.socketOnOpen(); &#x2F;&#x2F;
+      this.socketOnClose(); //关闭
+      this.socketOnOpen(); //
       this.socketOnError();
     &#125;,
-    &#x2F;&#x2F;webshell链接成功之后操作
+    //webshell链接成功之后操作
     socketOnOpen() &#123;
-      this.socket.onopen &#x3D; () &#x3D;&gt; &#123;
-        &#x2F;&#x2F; 链接成功后
+      this.socket.onopen = () =&gt; &#123;
+        // 链接成功后
         this.initTerm();
       &#125;;
     &#125;,
-    &#x2F;&#x2F;webshell关闭之后操作
+    //webshell关闭之后操作
     socketOnClose() &#123;
-      this.socket.onclose &#x3D; () &#x3D;&gt; &#123;
+      this.socket.onclose = () =&gt; &#123;
         console.log(&quot;close socket&quot;);
       &#125;;
     &#125;,
-    &#x2F;&#x2F;webshell错误信息
+    //webshell错误信息
     socketOnError() &#123;
-      this.socket.onerror &#x3D; () &#x3D;&gt; &#123;
+      this.socket.onerror = () =&gt; &#123;
         console.log(&quot;socket 链接失败&quot;);
       &#125;;
     &#125;,
-    &#x2F;&#x2F;特殊处理
+    //特殊处理
     onSend(data) &#123;
-      data &#x3D; this.base.isObject(data) ? JSON.stringify(data) : data;
-      data &#x3D; this.base.isArray(data) ? data.toString() : data;
-      data &#x3D; data.replace(&#x2F;\\\\&#x2F;, &quot;\\&quot;);
+      data = this.base.isObject(data) ? JSON.stringify(data) : data;
+      data = this.base.isArray(data) ? data.toString() : data;
+      data = data.replace(/\\\\/, &quot;\\&quot;);
       this.shellWs.onSend(data);
     &#125;,
-    &#x2F;&#x2F;删除左右两端的空格
+    //删除左右两端的空格
     trim(str) &#123;
-      return str.replace(&#x2F;(^\s*)|(\s*$)&#x2F;g, &quot;&quot;);
+      return str.replace(/(^\s*)|(\s*$)/g, &quot;&quot;);
     &#125;
   &#125;
 &#125;
-&lt;&#x2F;script&gt;
+&lt;/script&gt;
 &lt;style&gt;
-&lt;&#x2F;style&gt;</code></pre></div>
+&lt;/style&gt;</code></pre></div>
 
 <p>以前前端代码基本不需要改动，只需要修改后端的api</p>
 <div class="hljs"><pre><code class="hljs ini"><span class="hljs-attr">this.webSocketUrl</span> = <span class="hljs-string">&quot;ws://127.0.0.1:8081/terminal?workdir=/&amp;container=&quot;</span> + id</code></pre></div>
@@ -525,8 +525,8 @@ export default &#123;
 <span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;vue-video-player/src/custom-theme.css&#x27;</span>
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;
-  name: <span class="hljs-string">&quot;VideoDetail&quot;</span>,
-  components: &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;VideoDetail&quot;</span>,
+  <span class="hljs-attr">components</span>: &#123;
     videoPlayer
   &#125;,</code></pre></div>
 
@@ -550,20 +550,20 @@ ipt&amp;lang=js&amp; 13:0<span class="hljs-string">-47</span> 19:17<span class="
 <p>完整的前端代码</p>
 <div class="hljs"><pre><code class="hljs vue">&lt;template&gt;
   &lt;div&gt;
-    &lt;div class&#x3D;&#39;demo&#39;&gt;
-      &lt;video-player class&#x3D;&quot;video-player-box&quot;
-                    ref&#x3D;&quot;videoPlayer&quot;
-                    :playsinline&#x3D;&quot;true&quot;
-                    :options&#x3D;&quot;playerOptions&quot;&gt;
-      &lt;&#x2F;video-player&gt;
-    &lt;&#x2F;div&gt;
-  &lt;&#x2F;div&gt;
-&lt;&#x2F;template&gt;
+    &lt;div class=&#x27;demo&#x27;&gt;
+      &lt;video-player class=&quot;video-player-box&quot;
+                    ref=&quot;videoPlayer&quot;
+                    :playsinline=&quot;true&quot;
+                    :options=&quot;playerOptions&quot;&gt;
+      &lt;/video-player&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
 
 &lt;script&gt;
-import &#123; videoPlayer &#125; from &#39;vue-video-player&#x2F;src&#39;
-import &#39;video.js&#x2F;dist&#x2F;video-js.css&#39;
-import &#39;vue-video-player&#x2F;src&#x2F;custom-theme.css&#39;
+import &#123; videoPlayer &#125; from &#x27;vue-video-player/src&#x27;
+import &#x27;video.js/dist/video-js.css&#x27;
+import &#x27;vue-video-player/src/custom-theme.css&#x27;
 
 export default &#123;
   name: &quot;VideoDetail&quot;,
@@ -572,52 +572,52 @@ export default &#123;
   &#125;,
   data() &#123;
     return &#123;
-      &#x2F;&#x2F; id: this.$route.query.id,
-      &#x2F;&#x2F; video: &#123;&#125;,
+      // id: this.$route.query.id,
+      // video: &#123;&#125;,
       playerOptions: &#123;
-        playbackRates: [0.5, 1.0, 1.5, 2.0], &#x2F;&#x2F; 可选的播放速度
-        autoplay: true, &#x2F;&#x2F; 如果为true,浏览器准备好时开始回放。
-        muted: false, &#x2F;&#x2F; 默认情况下将会消除任何音频。
-        loop: false, &#x2F;&#x2F; 是否视频一结束就重新开始。
-        preload: &#39;auto&#39;, &#x2F;&#x2F; 建议浏览器在&lt;video&gt;加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
-        language: &#39;zh-CN&#39;,
-        aspectRatio: &#39;16:9&#39;, &#x2F;&#x2F; 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如&quot;16:9&quot;或&quot;4:3&quot;）
-        fluid: true, &#x2F;&#x2F; 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        playbackRates: [0.5, 1.0, 1.5, 2.0], // 可选的播放速度
+        autoplay: true, // 如果为true,浏览器准备好时开始回放。
+        muted: false, // 默认情况下将会消除任何音频。
+        loop: false, // 是否视频一结束就重新开始。
+        preload: &#x27;auto&#x27;, // 建议浏览器在&lt;video&gt;加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: &#x27;zh-CN&#x27;,
+        aspectRatio: &#x27;16:9&#x27;, // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如&quot;16:9&quot;或&quot;4:3&quot;）
+        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [&#123;
-          type: &quot;video&#x2F;mp4&quot;, &#x2F;&#x2F; 类型
-          src: &#39;&#39; &#x2F;&#x2F; url地址
+          type: &quot;video/mp4&quot;, // 类型
+          src: &#x27;&#x27; // url地址
         &#125;],
-        poster: &#39;&#39;, &#x2F;&#x2F; 封面地址
-        notSupportedMessage: &#39;此视频暂无法播放，请稍后再试&#39;, &#x2F;&#x2F; 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+        poster: &#x27;&#x27;, // 封面地址
+        notSupportedMessage: &#x27;此视频暂无法播放，请稍后再试&#x27;, // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: &#123;
-          timeDivider: true, &#x2F;&#x2F; 当前时间和持续时间的分隔符
-          durationDisplay: true, &#x2F;&#x2F; 显示持续时间
-          remainingTimeDisplay: true, &#x2F;&#x2F; 是否显示剩余时间功能
-          fullscreenToggle: true &#x2F;&#x2F; 是否显示全屏按钮
+          timeDivider: true, // 当前时间和持续时间的分隔符
+          durationDisplay: true, // 显示持续时间
+          remainingTimeDisplay: true, // 是否显示剩余时间功能
+          fullscreenToggle: true // 是否显示全屏按钮
         &#125;
       &#125;
     &#125;
   &#125;,
   created() &#123;
-    let id &#x3D;  this.$route.query.id
-    &#x2F;&#x2F; this.playerOptions.sources[0].src &#x3D; &quot;http:&#x2F;&#x2F;vjs.zencdn.net&#x2F;v&#x2F;oceans.mp4&quot;
-    this.request(&quot;&#x2F;file&#x2F;detail&#x2F;&quot; + id).then(res &#x3D;&gt; &#123;
+    let id =  this.$route.query.id
+    // this.playerOptions.sources[0].src = &quot;http://vjs.zencdn.net/v/oceans.mp4&quot;
+    this.request(&quot;/file/detail/&quot; + id).then(res =&gt; &#123;
       console.log(res.data)
-      this.video &#x3D; res.data
-      this.playerOptions.sources[0].src &#x3D; res.data.url
+      this.video = res.data
+      this.playerOptions.sources[0].src = res.data.url
 
     &#125;)
   &#125;,
   methods: &#123;&#125;
 &#125;
-&lt;&#x2F;script&gt;
+&lt;/script&gt;
 
 &lt;style&gt;
 
-&lt;&#x2F;style&gt;
+&lt;/style&gt;
 </code></pre></div>
 
-<p>需要修改的位置只有<code>this.playerOptions.sources[0].src</code></p>
+<p>需要修改的位置只有<code>this.playerOptions.sources[0].src </code></p>
 <p>将参数换成你的视频地址即可</p>
 <p>实现效果如下</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20220526161723965.png" srcset="/img/loading.gif" alt="image-20220526161723965"></p>
