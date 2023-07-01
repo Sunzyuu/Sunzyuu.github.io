@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      629 字
+      1.7k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      27
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：37 分钟前
+                  本文最后更新于：1 分钟前
                 
               </p>
             
@@ -354,7 +354,207 @@
 
 <p>添加代理后，就能正常使用openai的api了</p>
 <p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230627200620750.png" srcset="/img/loading.gif" alt="image-20230627200620750"></p>
-<h1 id="实现每个用户独占一个对话框"><a href="#实现每个用户独占一个对话框" class="headerlink" title="实现每个用户独占一个对话框"></a>实现每个用户独占一个对话框</h1><p>TODO</p>
+<h1 id="实现每个用户独占一个对话框"><a href="#实现每个用户独占一个对话框" class="headerlink" title="实现每个用户独占一个对话框"></a>实现每个用户独占一个对话框</h1><p>在实现对话之前，需要了解一种技术SSE(Server-Sent Events)，是一种基于 HTTP 的服务器推送技术，它可以让服务端向客户端实时发送数据，而不需要客户端不断地发起请求。</p>
+<p>在 Spring Boot 中，可以使用 SseEmitter 类来实现 SSE。SseEmitter 类是 Spring 框架提供的用于将服务器端数据异步地发送到客户端的类。</p>
+<p>实现sse功能的代码</p>
+<h2 id="后端代码"><a href="#后端代码" class="headerlink" title="后端代码"></a>后端代码</h2><h3 id="服务层"><a href="#服务层" class="headerlink" title="服务层"></a>服务层</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Slf4j</span>
+<span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SseServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">SseService</span> &#123;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Map&lt;Long, SseEmitter&gt; sessionMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 该方法用于建立SSE连接</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> idUser</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> SseEmitter <span class="hljs-title function_">connect</span><span class="hljs-params">(Long idUser)</span> &#123;
+        <span class="hljs-keyword">if</span> (existsUser(idUser)) &#123;
+            removeUser(idUser);
+        &#125;
+        <span class="hljs-comment">// 0L表示永不超时</span>
+        <span class="hljs-type">SseEmitter</span> <span class="hljs-variable">sseEmitter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SseEmitter</span>(<span class="hljs-number">0L</span>);
+        sseEmitter.onError((err) -&gt; &#123;
+            log.error(<span class="hljs-string">&quot;type: SseSession Error, msg: &#123;&#125; session Id : &#123;&#125;&quot;</span>, err.getMessage(), idUser);
+            onError(idUser, err);
+        &#125;);
+
+        sseEmitter.onTimeout(() -&gt; &#123;
+            log.info(<span class="hljs-string">&quot;type: SseSession Timeout, session Id : &#123;&#125;&quot;</span>, idUser);
+            removeUser(idUser);
+        &#125;);
+
+        sseEmitter.onCompletion(() -&gt; &#123;
+            log.info(<span class="hljs-string">&quot;type: SseSession Completion, session Id : &#123;&#125;&quot;</span>, idUser);
+            removeUser(idUser);
+        &#125;);
+        addUser(idUser, sseEmitter);
+        log.info(<span class="hljs-string">&quot;type: SseSession Connect, session Id : &#123;&#125;&quot;</span>, idUser);
+        <span class="hljs-keyword">return</span> sseEmitter;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 用于向指定用户发送消息</span>
+<span class="hljs-comment">     * 首先，该方法会检查用户是否存在于sessionMap中。</span>
+<span class="hljs-comment">     * 如果存在，则调用相应用户的SseEmitter对象的send方法发送消息内容；</span>
+<span class="hljs-comment">     * 如果不存在，则抛出IllegalArgumentException异常。</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> idUser</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> content</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">send</span><span class="hljs-params">(Long idUser, String content)</span> &#123;
+        <span class="hljs-keyword">if</span> (existsUser(idUser)) &#123;
+            <span class="hljs-keyword">try</span> &#123;
+                sendMessage(idUser, content);
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            &#125; <span class="hljs-keyword">catch</span> (IOException exception) &#123;
+                log.error(<span class="hljs-string">&quot;type: SseSession send Error:IOException, msg: &#123;&#125; session Id : &#123;&#125;&quot;</span>, exception.getMessage(), idUser);
+            &#125;
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;User Id &quot;</span> + idUser + <span class="hljs-string">&quot; not Found&quot;</span>);
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 该方法用于关闭指定用户的SSE连接</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> idUser</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">close</span><span class="hljs-params">(Long idUser)</span> &#123;
+        log.info(<span class="hljs-string">&quot;type: SseSession Close, session Id : &#123;&#125;&quot;</span>, idUser);
+        removeUser(idUser);
+    &#125;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addUser</span><span class="hljs-params">(Long idUser, SseEmitter sseEmitter)</span> &#123;
+        sessionMap.put(idUser, sseEmitter);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 该方法用于处理SSE连接出现错误的情况</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> sessionKey</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> throwable</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onError</span><span class="hljs-params">(Long sessionKey, Throwable throwable)</span> &#123;
+        <span class="hljs-type">SseEmitter</span> <span class="hljs-variable">sseEmitter</span> <span class="hljs-operator">=</span> sessionMap.get(sessionKey);
+        <span class="hljs-keyword">if</span> (sseEmitter != <span class="hljs-literal">null</span>) &#123;
+            sseEmitter.completeWithError(throwable);
+        &#125;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 移除会话中的用户</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> idUser</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeUser</span><span class="hljs-params">(Long idUser)</span> &#123;
+        sessionMap.remove(idUser);
+    &#125;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">existsUser</span><span class="hljs-params">(Long idUser)</span> &#123;
+        <span class="hljs-keyword">return</span> sessionMap.containsKey(idUser);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 向用户发送消息</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> idUser</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> content</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> IOException</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendMessage</span><span class="hljs-params">(Long idUser, String content)</span> <span class="hljs-keyword">throws</span> IOException &#123;
+        sessionMap.get(idUser).send(content);
+        log.info(<span class="hljs-string">&quot;send to &#123;&#125; : &#123;&#125;&quot;</span>, idUser, content);
+    &#125;
+&#125;</code></pre></div>
+
+<h3 id="web层"><a href="#web层" class="headerlink" title="web层"></a>web层</h3><p>比较简单，首先要建立连接，把订阅放到容器中，服务端才能知道向哪里发送消息</p>
+<p>需要注意的是，使用SseEmitter我们不再需要在@GetMapping上写produces &#x3D; “text&#x2F;event-stream; charset&#x3D;utf-8”</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span>
+<span class="hljs-meta">@RequestMapping(&quot;/api/v1/sse&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SeeController</span> &#123;
+
+    <span class="hljs-meta">@Resource</span>
+    <span class="hljs-keyword">private</span> SseService sseService;
+
+    <span class="hljs-meta">@GetMapping(value = &quot;/subscribe/&#123;idUser&#125;&quot;, produces = &#123;MediaType.TEXT_EVENT_STREAM_VALUE&#125;)</span>
+    <span class="hljs-keyword">public</span> SseEmitter <span class="hljs-title function_">subscribe</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long idUser)</span> &#123;
+        <span class="hljs-keyword">return</span> sseService.connect(idUser);
+    &#125;
+
+    <span class="hljs-meta">@GetMapping(value = &quot;/close/&#123;idUser&#125;&quot;)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">close</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long idUser)</span> &#123;
+        sseService.close(idUser);
+    &#125;
+    
+    <span class="hljs-meta">@GetMapping(&quot;/send&quot;)</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">sendMessage</span><span class="hljs-params">()</span> &#123;
+        sseService.send(<span class="hljs-number">9L</span>, <span class="hljs-string">&quot;hello world!&quot;</span>);
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;success&quot;</span>;
+    &#125;
+&#125;</code></pre></div>
+
+<h2 id="前端代码"><a href="#前端代码" class="headerlink" title="前端代码"></a>前端代码</h2><p><strong>SSE的基本特性：</strong></p>
+<ul>
+<li>HTML5中的协议，是基于纯文本的简单协议；</li>
+<li>在游览器端可供JavaScript使用的EventSource对象</li>
+</ul>
+<p>EventSource提供了三个标准事件，同时默认支持断线重连</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>onopen</td>
+<td>当成功与服务器建立连接时产生</td>
+</tr>
+<tr>
+<td>onmessage</td>
+<td>当收到服务器发来的消息时发生</td>
+</tr>
+<tr>
+<td>onerror</td>
+<td>当出现错误时发生</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>传输的数据有格式上的要求，必须为 [data:…\n…\n]或者是[retry:10\n]， 但是使用SseEmitter时不用使用该格式</p>
+</blockquote>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!doctype <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>SseEmitter<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>sse测试<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;result&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span>
+<span class="language-javascript">    <span class="hljs-keyword">var</span> source = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventSource</span>(<span class="hljs-string">&#x27;http://localhost:8099/api/v1/sse/subscribe/9&#x27;</span>);</span>
+<span class="language-javascript">    source.<span class="hljs-property">onmessage</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;</span>
+<span class="language-javascript">        text = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;result&#x27;</span>).<span class="hljs-property">innerText</span>;</span>
+<span class="language-javascript">        text += <span class="hljs-string">&#x27;\n&#x27;</span> + event.<span class="hljs-property">data</span>;</span>
+<span class="language-javascript">        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;result&#x27;</span>).<span class="hljs-property">innerText</span> = text;</span>
+<span class="language-javascript">    &#125;;</span>
+<span class="language-javascript">    <span class="hljs-comment">// &lt;!-- 添加一个开启回调 --&gt;</span></span>
+<span class="language-javascript">    source.<span class="hljs-property">onopen</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params">event</span>) &#123;</span>
+<span class="language-javascript">        text = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;result&#x27;</span>).<span class="hljs-property">innerText</span>;</span>
+<span class="language-javascript">        text += <span class="hljs-string">&#x27;\n 开启: &#x27;</span>;</span>
+<span class="language-javascript">        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(event);</span>
+<span class="language-javascript">        <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;result&#x27;</span>).<span class="hljs-property">innerText</span> = text;</span>
+<span class="language-javascript">    &#125;;</span>
+<span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre></div>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>首先访问html页面，访问后建立连接，之后访问<code>&#39;http://localhost:8099/api/v1/sse/send</code>，向前端发送数据</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230701163145645.png" srcset="/img/loading.gif" alt="image-20230701163145645"></p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230701163024619.png" srcset="/img/loading.gif" alt="image-20230701163024619"></p>
+<p>从前端页面现实的数据与后端日志记录可以看到已经成功完成了，由服务端向客户端推送消息的功能。</p>
 
             </div>
             <hr>
