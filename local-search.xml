@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>test</title>
+    <link href="/2023/08/20/test/"/>
+    <url>/2023/08/20/test/</url>
+    
+    <content type="html"><![CDATA[<h1 id="test"><a href="#test" class="headerlink" title="test"></a>test</h1><p>这是macOS</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>RPC</title>
+    <link href="/2023/08/02/RPC/"/>
+    <url>/2023/08/02/RPC/</url>
+    
+    <content type="html"><![CDATA[<h1 id="RPC框架的实现"><a href="#RPC框架的实现" class="headerlink" title="RPC框架的实现"></a>RPC框架的实现</h1><h2 id="netty实现网络通信"><a href="#netty实现网络通信" class="headerlink" title="netty实现网络通信"></a>netty实现网络通信</h2><ul><li><p>1.Netty 是一个基于 NIO 的 client-server(客户端服务器)框架，使用它可以快速简单地开发网络应用程序。</p></li><li><p>2.它极大地简化并简化了 TCP 和 UDP 套接字服务器等网络编程,并且性能以及安全性等很多方面甚至都要更好。</p></li><li><p>3.支持多种协议如 FTP，SMTP，HTTP 以及各种二进制和基于文本的传统协议</p></li></ul><p>用官方的总结就是: Netty 成功地找到了一种在不妥协可维护性和性能的情况下实现易于开发，性能，稳定性和灵活性的方法。</p><pre><code class="hljs mermaid">graph TD    A[哈希类型识别] --&gt; B[生成密码列表]    B --&gt; C[基于规则的变换]    B --&gt; D[暴力破解攻击]    C --&gt; E[哈希比较]    D --&gt; E    E --&gt; F[检测破解的密码]    F --&gt; G[性能优化]</code></pre><pre><code class="hljs mermaid">graph TD    A[准备工作] --&gt; B[分割哈希任务]    B --&gt; C[字典攻击]    B --&gt; D[规则攻击]    C --&gt; E[并行破解]    D --&gt; E    E --&gt; F[结果合并]    F --&gt; G[验证和输出]    G --&gt; H[优化和调整]</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>java</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>RPC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>java-openai</title>
     <link href="/2023/06/27/java-openai/"/>
     <url>/2023/06/27/java-openai/</url>
