@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      297 字
+      2.3k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      31
        分钟
     </span>
   
@@ -241,43 +241,332 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：16 天前
+                  本文最后更新于：几秒前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="RPC框架的实现"><a href="#RPC框架的实现" class="headerlink" title="RPC框架的实现"></a>RPC框架的实现</h1><h2 id="netty实现网络通信"><a href="#netty实现网络通信" class="headerlink" title="netty实现网络通信"></a>netty实现网络通信</h2><ul>
-<li><p>1.Netty 是一个基于 NIO 的 client-server(客户端服务器)框架，使用它可以快速简单地开发网络应用程序。</p>
-</li>
-<li><p>2.它极大地简化并简化了 TCP 和 UDP 套接字服务器等网络编程,并且性能以及安全性等很多方面甚至都要更好。</p>
-</li>
-<li><p>3.支持多种协议如 FTP，SMTP，HTTP 以及各种二进制和基于文本的传统协议</p>
-</li>
-</ul>
-<p>用官方的总结就是: Netty 成功地找到了一种在不妥协可维护性和性能的情况下实现易于开发，性能，稳定性和灵活性的方法。</p>
-<pre><code class="hljs mermaid">graph TD
-    A[哈希类型识别] --&gt; B[生成密码列表]
-    B --&gt; C[基于规则的变换]
-    B --&gt; D[暴力破解攻击]
-    C --&gt; E[哈希比较]
-    D --&gt; E
-    E --&gt; F[检测破解的密码]
-    F --&gt; G[性能优化]
-</code></pre>
+              <h1 id="RPC框架的实现"><a href="#RPC框架的实现" class="headerlink" title="RPC框架的实现"></a>RPC框架的实现</h1><h2 id="RPC是什么？"><a href="#RPC是什么？" class="headerlink" title="RPC是什么？"></a>RPC是什么？</h2><p>RPC（Remote Procedure Call，远程过程调用）是一种计算机通信协议，用于在分布式系统中使一个程序调用另一个程序的过程看起来像本地过程调用一样。它允许在不同的计算机或网络上运行的程序之间进行通信和交互。</p>
+<p>RPC的基本工作原理如下：</p>
+<ol>
+<li>客户端（调用方）调用一个远程过程，就像调用本地函数一样。客户端不需要关心远程过程的实际位置或运行在哪台计算机上。</li>
+<li>客户端的请求被封装成一个消息，包括远程过程的标识符、参数等信息。</li>
+<li>这个消息通过网络传输到远程计算机上的服务器端。</li>
+<li>服务器端接收到消息后，解析消息，执行相应的远程过程，然后将结果封装成响应消息。</li>
+<li>服务器端将响应消息发送回客户端。</li>
+<li>客户端接收到响应消息后，解析响应并获取远程过程的结果。</li>
+</ol>
+<p>RPC的目标是隐藏底层的通信细节，使远程过程调用的过程对程序员来说尽可能透明和简单。这使得构建分布式系统和客户端-服务器应用程序变得更加容易，因为开发者可以将远程服务看作是本地的函数调用，而不必担心网络通信的细节。</p>
+<p>在代码上展示就是如下形式：</p>
+<p>服务提供方提供的接口</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">HelloService</span> &#123;
+    String <span class="hljs-title function_">sayHello</span><span class="hljs-params">(String msg)</span>;
+&#125;
+</code></pre></div>
+
+<p>客户端进行远程调用</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
+        <span class="hljs-type">HelloService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> ?   				<span class="hljs-comment">// 获取接口的代理对象</span>
+        service.sayHello(<span class="hljs-string">&quot;Hello world!&quot;</span>);
+&#125;</code></pre></div>
+
+<p>其中HelloService就是服务提供方提供的服务，但是在客户端不存在该接口的实现类，所以此时需要进行远程过程调用。既然要远程，客户端与服务端就需要进行网络通信，以传输必要的的调用信息，包括调用服务的接口名，方法名，方法的参数类型，参数，就是如下的类</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Data</span>
+<span class="hljs-meta">@AllArgsConstructor</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Invocation</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;
+    <span class="hljs-keyword">private</span> String interfaceName;
+
+    <span class="hljs-keyword">private</span> String methodName;
+
+    <span class="hljs-keyword">private</span> Class[] parameterTypes;
+
+    <span class="hljs-keyword">private</span> String version;
+
+    <span class="hljs-keyword">private</span> Object[] parameters;
+&#125;</code></pre></div>
+
+<p>下面就是将信息进行传输</p>
+<h2 id="Socket实现网络通信"><a href="#Socket实现网络通信" class="headerlink" title="Socket实现网络通信"></a>Socket实现网络通信</h2><p>首先服务端</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Server</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">RpcRequestHandler</span> <span class="hljs-variable">rpcRequestHandler</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RpcRequestHandler</span>();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">start</span><span class="hljs-params">(<span class="hljs-type">int</span> port)</span> <span class="hljs-keyword">throws</span> IOException &#123;
+        <span class="hljs-keyword">try</span> (<span class="hljs-type">ServerSocket</span> <span class="hljs-variable">serverSocket</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ServerSocket</span>(port)) &#123;
+            Socket socket;
+            <span class="hljs-keyword">while</span>((socket = serverSocket.accept()) != <span class="hljs-literal">null</span>) &#123;
+                System.out.println(<span class="hljs-string">&quot;Connecting to &quot;</span> + socket.getRemoteSocketAddress());
+                <span class="hljs-keyword">try</span> (<span class="hljs-type">ObjectInputStream</span> <span class="hljs-variable">objectInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectInputStream</span>(socket.getInputStream())) &#123;
+                    <span class="hljs-type">ObjectOutputStream</span> <span class="hljs-variable">objectOutputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectOutputStream</span>(socket.getOutputStream());
+                  	<span class="hljs-comment">// 获取客户端的请求信息</span>
+                    Invocation invocation= (Invocation) objectInputStream.readObject();
+                    System.out.println(<span class="hljs-string">&quot;Invocation info: &quot;</span> + invocation.toString());
+                    <span class="hljs-comment">// 调用目标方法</span>
+                    <span class="hljs-type">Object</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> rpcRequestHandler.handle(invocation);
+                    objectOutputStream.writeObject(result);
+                    objectOutputStream.flush();
+                &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException e) &#123;
+                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);
+                &#125;
+            &#125;
+        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);
+        &#125;
+    &#125;
+&#125;</code></pre></div>
+
+<p>客户端</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Client</span> &#123;
+
+    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">send</span><span class="hljs-params">(Invocation invocation, String host, <span class="hljs-type">int</span> port)</span> &#123;
+        <span class="hljs-keyword">try</span>(<span class="hljs-type">Socket</span> <span class="hljs-variable">socket</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Socket</span>(host, port)) &#123;
+            <span class="hljs-type">ObjectOutputStream</span> <span class="hljs-variable">objectOutputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectOutputStream</span>(socket.getOutputStream());
+            <span class="hljs-comment">// 通过输出流向服务端发送消息</span>
+            objectOutputStream.writeObject(invocation);
+            <span class="hljs-comment">// 获取服务端的消息</span>
+            <span class="hljs-type">ObjectInputStream</span> <span class="hljs-variable">objectInputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectInputStream</span>(socket.getInputStream());
+            <span class="hljs-keyword">return</span> objectInputStream.readObject();
+
+        &#125; <span class="hljs-keyword">catch</span> (UnknownHostException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException e) &#123;
+            e.printStackTrace();
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    &#125;
+&#125;</code></pre></div>
+
+<p>socket实现通信的过程比较简单，最重要的是RpcRequestHandler的实现，其功能就是从注册中心获取到客户端调用的服务，通过反射机制调用目标方法，并返回执行结果</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RpcRequestHandler</span> &#123;
+
+    <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">handle</span><span class="hljs-params">(Invocation invocation)</span> &#123;
+         <span class="hljs-comment">// 从本地注册中心获取服务</span>
+        <span class="hljs-type">Class</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> LocalRegister.getClass(invocation.getInterfaceName(), invocation.getVersion());
+        <span class="hljs-keyword">return</span> invokeTargetMethod(invocation, service);
+    &#125;
+
+    <span class="hljs-keyword">private</span> Object <span class="hljs-title function_">invokeTargetMethod</span><span class="hljs-params">(Invocation rpcRequest, Class service)</span> &#123;
+        <span class="hljs-type">Object</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+
+        <span class="hljs-keyword">try</span> &#123;
+            <span class="hljs-comment">// 获取service中目标方法，通过传递方法名和参数类型来获取特定的方法</span>
+            <span class="hljs-type">Method</span> <span class="hljs-variable">method</span> <span class="hljs-operator">=</span> service.getMethod(rpcRequest.getMethodName(), rpcRequest.getParameterTypes());
+            result = method.invoke(service.newInstance(), rpcRequest.getParameters());
+            System.out.printf(<span class="hljs-string">&quot;service:[%s] successful invoke method:[%s]&quot;</span>, rpcRequest.getInterfaceName(), rpcRequest.getMethodName());
+        &#125; <span class="hljs-keyword">catch</span> (NoSuchMethodException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (InvocationTargetException e) &#123;
+            e.printStackTrace();
+        &#125; <span class="hljs-keyword">catch</span> (InstantiationException e) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);
+        &#125;
+
+        <span class="hljs-keyword">return</span> result;
+
+    &#125;
+&#125;</code></pre></div>
+
+<h2 id="服务注册中心"><a href="#服务注册中心" class="headerlink" title="服务注册中心"></a>服务注册中心</h2><p>服务注册中心的作用是在分布式系统中提供服务的发现和注册功能。它在分布式架构中起到以下重要作用：</p>
+<ol>
+<li>服务注册：RPC服务注册中心允许各个服务提供者将其提供的服务注册到中心服务器上。这样，客户端可以通过查询注册中心来获取服务的信息，而不必事先知道服务提供者的网络地址或位置。</li>
+<li>服务发现：客户端可以向RPC服务注册中心查询需要的服务，然后获取服务的相关信息，如IP地址、端口号、协议等。这样，客户端可以动态地发现可用的服务并进行调用。</li>
+<li>负载均衡：服务注册中心通常支持负载均衡策略，可以将客户端的请求分发给多个服务提供者，以实现负载均衡。这有助于提高系统的性能和可伸缩性。</li>
+<li>故障恢复：如果某个服务提供者发生故障或不可用，服务注册中心可以帮助客户端检测到这种情况，并自动切换到另一个可用的服务提供者，从而提高系统的可用性和容错性。</li>
+<li>服务元数据管理：服务注册中心通常还允许服务提供者添加一些元数据信息，如服务版本、描述、标签等。这有助于更好地管理和理解服务。</li>
+<li>动态配置：RPC服务注册中心支持动态配置服务的相关信息，包括服务提供者的数量和位置，以适应系统的变化和需求。</li>
+</ol>
+<p>常见的RPC服务注册中心包括ZooKeeper、Consul、etcd、Eureka（Spring Cloud的一部分）、Nacos等。这些注册中心可以根据具体的需求选择使用，并与不同的RPC框架（如gRPC、Dubbo、Spring Cloud等）集成，以实现分布式系统的服务发现和管理。</p>
+<h3 id="本地注册中心"><a href="#本地注册中心" class="headerlink" title="本地注册中心"></a>本地注册中心</h3><p>这里以本地注册演示注册中兴的作用</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LocalRegister</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Map&lt;String, Class&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;String, Class&gt;();
+
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">register</span><span class="hljs-params">(String interfaceName, String version, Class implClass)</span> &#123;
+        map.put(interfaceName + version, implClass);
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Class <span class="hljs-title function_">getClass</span><span class="hljs-params">(String interfaceName, String version)</span> &#123;
+        <span class="hljs-keyword">return</span> map.get(interfaceName + version);
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h3 id="服务注册"><a href="#服务注册" class="headerlink" title="服务注册"></a>服务注册</h3><p>服务提供者在启动时，需要将需要暴露的服务注册到本地注册中心</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Provider</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">PORT</span> <span class="hljs-operator">=</span> <span class="hljs-number">10001</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> IOException &#123;
+
+        <span class="hljs-comment">// 将服务放入到本地注册</span>
+        LocalRegister.register(HelloService.class.getName(), <span class="hljs-string">&quot;1.0&quot;</span>, HelloServiceImpl.class);
+        LocalRegister.register(HelloService.class.getName(), <span class="hljs-string">&quot;2.0&quot;</span>, HelloServiceImpl2.class);
+
+        <span class="hljs-comment">// 启动socket服务</span>
+        <span class="hljs-type">Server</span> <span class="hljs-variable">server</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Server</span>();
+        server.start(url.getPort());
+    &#125;
+&#125;</code></pre></div>
 
 
 
 
 
-<pre><code class="hljs mermaid">graph TD
-    A[准备工作] --&gt; B[分割哈希任务]
-    B --&gt; C[字典攻击]
-    B --&gt; D[规则攻击]
-    C --&gt; E[并行破解]
-    D --&gt; E
-    E --&gt; F[结果合并]
-    F --&gt; G[验证和输出]
-    G --&gt; H[优化和调整]</code></pre>
+<h2 id="远程调用"><a href="#远程调用" class="headerlink" title="远程调用"></a>远程调用</h2><p>客户端需要通过socket连接发送请求信息，实现远程调用</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">Invocation</span> <span class="hljs-variable">invocation</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Invocation</span>(HelloService.class.getName(), <span class="hljs-string">&quot;sayHello&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Class</span>[]&#123;String.class&#125;, <span class="hljs-string">&quot;2.0&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>[]&#123;<span class="hljs-string">&quot;sunzy&quot;</span>&#125;);
+<span class="hljs-type">Client</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Client</span>();
+<span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> (String) client.send(invocation, <span class="hljs-string">&quot;127.0.0.1&quot;</span>, <span class="hljs-number">10001</span>);
+
+System.out.println(result);</code></pre></div>
+
+<p>服务端控制台输出</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.png" srcset="/img/loading.gif" alt="image-20230904151231084"></p>
+<p>客户端控制台输出</p>
+<p><img src="https://raw.githubusercontent.com/sunzhengyu99/image/master/img/image-20230904152101884.png" srcset="/img/loading.gif"></p>
+<p>从上面的执行结果可以看出，已经完成远程过程调用</p>
+<h2 id="使用代理对象调用目标服务"><a href="#使用代理对象调用目标服务" class="headerlink" title="使用代理对象调用目标服务"></a>使用代理对象调用目标服务</h2><p>从上面客户端的调用过程不难看出，每次想要调用一个方法都需要先创建一个Invocation对象，再发送请求，这么做不仅效率很低，而且浪费网络带宽</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProxyFactory</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String version;
+
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">LoadBalance</span> <span class="hljs-variable">loadBalance</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RandomLoadBalance</span>();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ProxyFactory</span><span class="hljs-params">(String version)</span> &#123;
+        <span class="hljs-built_in">this</span>.version = version;
+    &#125;
+
+
+    <span class="hljs-keyword">public</span>  &lt;T&gt; T <span class="hljs-title function_">getProxy</span><span class="hljs-params">(Class interfaceClass)</span> &#123;
+        <span class="hljs-type">Object</span> <span class="hljs-variable">proxyInstance</span> <span class="hljs-operator">=</span> Proxy.newProxyInstance(interfaceClass.getClassLoader(), <span class="hljs-keyword">new</span> <span class="hljs-title class_">Class</span>[]&#123;interfaceClass&#125;, <span class="hljs-keyword">new</span> <span class="hljs-title class_">InvocationHandler</span>() &#123;
+            <span class="hljs-meta">@Override</span>
+            <span class="hljs-keyword">public</span> Object <span class="hljs-title function_">invoke</span><span class="hljs-params">(Object proxy, Method method, Object[] args)</span> <span class="hljs-keyword">throws</span> Throwable &#123;
+                <span class="hljs-comment">// 3.使用代理对象调用原始方法</span>
+                <span class="hljs-type">Invocation</span> <span class="hljs-variable">invocation</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Invocation</span>(interfaceClass.getName(), method.getName(), method.getParameterTypes(),
+                        version, args);
+
+                <span class="hljs-comment">// 服务发现</span>
+                List&lt;URL&gt; services = MapRemoteRegister.getClass(interfaceClass.getName());
+                <span class="hljs-comment">// 负载均衡</span>
+                <span class="hljs-type">URL</span> <span class="hljs-variable">url</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+
+                <span class="hljs-comment">// 服务调用</span>
+                <span class="hljs-type">Client</span> <span class="hljs-variable">client</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Client</span>();
+                <span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+
+                ArrayList&lt;URL&gt; invokeURLs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+                <span class="hljs-comment">// 出错重试机制</span>
+                <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">3</span>;
+                <span class="hljs-keyword">while</span>(max &gt; <span class="hljs-number">0</span>) &#123;
+
+                    <span class="hljs-keyword">try</span> &#123;
+                        services.remove(services);
+                        invokeURLs.add(url);
+                        url = loadBalance.loadBalance(services);
+
+                    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+                        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;负载均衡出错!&quot;</span>;
+                    &#125;
+
+                    <span class="hljs-keyword">try</span> &#123;
+                        result = (String) client.send(invocation, <span class="hljs-string">&quot;127.0.0.1&quot;</span>, url.getPort());
+                        System.out.println(<span class="hljs-string">&quot;代理对象执行结束!&quot;</span>);
+                        <span class="hljs-keyword">return</span> result; <span class="hljs-comment">// 4.代理对象返回执行结果</span>
+                    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+                        <span class="hljs-keyword">if</span>(max != <span class="hljs-number">0</span>) &#123;
+                            max--;
+                            <span class="hljs-keyword">continue</span>;
+                        &#125;
+                        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;服务调用出错!&quot;</span>;
+                    &#125;
+                &#125;
+
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+            &#125;
+        &#125;);
+        <span class="hljs-keyword">return</span> (T) proxyInstance;
+    &#125;
+&#125;</code></pre></div>
+
+<p>此时客户端的调用方式就有所改变</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-type">ProxyFactory</span> <span class="hljs-variable">proxyFactory</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ProxyFactory</span>(<span class="hljs-string">&quot;1.0&quot;</span>);
+<span class="hljs-type">HelloService</span> <span class="hljs-variable">service</span> <span class="hljs-operator">=</span> proxyFactory.getProxy(HelloService.class); <span class="hljs-comment">// 1.获取代理对象</span>
+<span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> service.sayHello(<span class="hljs-string">&quot;Hello world!111111&quot;</span>);<span class="hljs-comment">// 2.通过代理对象调用sayHello方法</span>
+System.out.println(service.sayHello2(<span class="hljs-string">&quot;Hello world!111111&quot;</span>));
+System.out.println(result);</code></pre></div>
+
+<p>从上述代码可以看出，当获得代理对象后，客户端就可以像使用本地对象一样，随意调用该类中的函数，大大简便了RPC的调用</p>
+<p>通过以上的代码我们实现了最简单的RPC框架</p>
+<p>文件结构</p>
+<div class="hljs"><pre><code class="hljs java">├── Consumer
+│   ├── pom.xml
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── org
+│           │       └── example
+│           │           └── Consumer
+│           │               ├── Computer.java
+│           │               ├── Hello.java
+│           │               ├── Hello2.java
+│           │               └── NodeCluster.java
+│           └── resources
+├── Provider
+│   ├── pom.xml
+│   ├── src
+│       └── main
+│           ├── java
+│           │   └── org
+│           │       └── example
+│           │           ├── handler
+│           │           │   └── RpcRequestHandler.java
+│           │           ├── loadbalance
+│           │           │   ├── Impl
+│           │           │   │   └── RandomLoadBalance.java
+│           │           │   └── LoadBalance.java
+│           │           ├── provider
+│           │           │   └── Provider.java
+│           │           ├── proxy
+│           │           │   └── ProxyFactory.java
+│           │           ├── service
+│           │           │   ├── HelloServiceImpl.java
+│           │           │   └── HelloServiceImpl2.java
+│           │           └── socket
+│           │               ├── Client.java
+│           │               └── Server.java
+│           └── resources
+│               └── META-INF
+├── Provider-common
+│   ├── pom.xml
+│   ├── src
+│   │   ├── main
+│   │   │   ├── java
+│   │   │   │   └── org
+│   │   │   │       └── example
+│   │   │   │           ├── common
+│   │   │   │           │   ├── Invocation.java
+│   │   │   │           │   ├── RpcServiceConfig.java
+│   │   │   │           │   └── URL.java
+│   │   │   │           ├── register
+│   │   │   │           │   ├── LocalRegister.java
+│   │   │   │           │   └── MapRemoteRegister.java
+│   │   │   │           └── service
+│   │   │   │               └── HelloService.java
+│   │   │   └── resources
+│   │   │       └── map.txt
+│   │   └── test
+│   │       └── java
+│   │           └── org
+│   │               └── example
+└── pom.xml
+</code></pre></div>
+
+
 
 
             </div>
