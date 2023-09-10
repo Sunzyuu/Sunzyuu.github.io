@@ -1,0 +1,953 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>sso - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-09-10 16:30" pubdate>
+        2023年9月10日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      39
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">sso</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：几秒前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="SSO"><a href="#SSO" class="headerlink" title="SSO"></a>SSO</h1><p>SSO（Single Sign-On）单点登录。它是一种身份验证和授权机制，允许用户使用一组凭据（如用户名和密码）登录到一个应用程序，然后在不再需要重新输入凭据的情况下，访问其他已经集成了SSO的应用程序。</p>
+<p>以下是SSO的主要特点和优势：</p>
+<ol>
+<li><strong>单一身份验证：</strong> 用户只需一次登录，即可访问多个不同的应用程序和服务，而无需为每个应用程序都提供凭据。</li>
+<li><strong>降低用户认证负担：</strong> SSO减少了用户需要记住的用户名和密码数量，降低了用户认证的负担，提高了用户体验。</li>
+<li><strong>中心化身份管理：</strong> SSO通常包括一个中心身份提供者（Identity Provider，IdP），负责管理用户身份和权限。这简化了身份和权限管理，使得可以更容易地添加、修改和删除用户。</li>
+<li><strong>增强安全性：</strong> 尽管只需要一次登录，但SSO可以提供强大的安全性，包括多因素身份验证（MFA）和单点注销（Single Log-Out）等功能，以确保用户数据和应用程序的安全性。</li>
+<li><strong>集成多种协议：</strong> SSO可以支持多种身份验证和授权协议，如SAML（Security Assertion Markup Language）、OAuth、OpenID Connect等，以适应不同应用程序和服务的需求。</li>
+</ol>
+<p>例如你登录网易账号中心（<a target="_blank" rel="noopener" href="https://reg.163.com/">https://reg.163.com/</a> ）之后访问以下站点都是登录状态。</p>
+<ul>
+<li>网易直播 <a target="_blank" rel="noopener" href="https://v.163.com/">https://v.163.comopen in new window</a></li>
+<li>网易博客 <a target="_blank" rel="noopener" href="https://blog.163.com/">https://blog.163.comopen in new window</a></li>
+<li>网易花田 <a target="_blank" rel="noopener" href="https://love.163.com/">https://love.163.comopen in new window</a></li>
+<li>网易考拉 <a target="_blank" rel="noopener" href="https://www.kaola.com/">https://www.kaola.comopen in new window</a></li>
+<li>网易 Lofter <a target="_blank" rel="noopener" href="http://www.lofter.com/">http://www.lofter.comopen in new window</a></li>
+</ul>
+<p>那么如何动手实现一个SSO框架？</p>
+<h1 id="SSO-demo"><a href="#SSO-demo" class="headerlink" title="SSO-demo"></a>SSO-demo</h1><h2 id="创建工程"><a href="#创建工程" class="headerlink" title="创建工程"></a>创建工程</h2><p>首先创建maven父工程，其pom.xml如下</p>
+<div class="hljs"><pre><code class="hljs java">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;
+&lt;project xmlns=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span>
+         xmlns:xsi=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+         xsi:schemaLocation=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;
+    &lt;modelVersion&gt;<span class="hljs-number">4.0</span><span class="hljs-number">.0</span>&lt;/modelVersion&gt;
+
+    &lt;groupId&gt;org.example&lt;/groupId&gt;
+    &lt;artifactId&gt;sso_demo&lt;/artifactId&gt;
+    &lt;packaging&gt;pom&lt;/packaging&gt;
+    &lt;version&gt;<span class="hljs-number">1.0</span>-SNAPSHOT&lt;/version&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;relativePath/&gt;
+        &lt;version&gt;<span class="hljs-number">2.6</span><span class="hljs-number">.7</span>&lt;/version&gt;
+    &lt;/parent&gt;
+
+    &lt;modules&gt;
+        &lt;<span class="hljs-keyword">module</span>&gt;sso-vip&lt;/<span class="hljs-keyword">module</span>&gt;
+        &lt;<span class="hljs-keyword">module</span>&gt;sso-cart&lt;/<span class="hljs-keyword">module</span>&gt;
+        &lt;<span class="hljs-keyword">module</span>&gt;sso-main&lt;/<span class="hljs-keyword">module</span>&gt;
+        &lt;<span class="hljs-keyword">module</span>&gt;sso-login&lt;/<span class="hljs-keyword">module</span>&gt;
+    &lt;/modules&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;<span class="hljs-number">8</span>&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;<span class="hljs-number">8</span>&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;version&gt;<span class="hljs-number">1.18</span><span class="hljs-number">.24</span>&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+            &lt;version&gt;<span class="hljs-number">2.6</span><span class="hljs-number">.7</span>&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;<span class="hljs-number">4.0</span><span class="hljs-number">.1</span>&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;</code></pre></div>
+
+<p>可以看到，其有三个子工程sso-vip、sso-login、sso-cart、sso-main，都为Spring-boot项目，提供网页服务</p>
+<div class="hljs"><pre><code class="hljs java">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;
+&lt;project xmlns=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span>
+         xmlns:xsi=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+         xsi:schemaLocation=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;sso_demo&lt;/artifactId&gt;
+        &lt;groupId&gt;org.example&lt;/groupId&gt;
+        &lt;version&gt;<span class="hljs-number">1.0</span>-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;<span class="hljs-number">4.0</span><span class="hljs-number">.0</span>&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;sso-login&lt;/artifactId&gt;
+
+    &lt;properties&gt;
+        &lt;maven.compiler.source&gt;<span class="hljs-number">8</span>&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;<span class="hljs-number">8</span>&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+&lt;/project&gt;</code></pre></div>
+
+<p>这四个模块在一起就很像电商平台的四个微服务，分别运行在不同的端口下。</p>
+<p>其中main运行在</p>
+<table>
+<thead>
+<tr>
+<th>server</th>
+<th>port</th>
+<th>url</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sso-main</td>
+<td>9010</td>
+<td><a target="_blank" rel="noopener" href="http://www.codeshop.com:9010/">www.codeshop.com:9010</a></td>
+</tr>
+<tr>
+<td>sso-vip</td>
+<td>9011</td>
+<td>vip.codeshop.com:9011</td>
+</tr>
+<tr>
+<td>sso-cart</td>
+<td>9012</td>
+<td>cart.codeshop.com:9012</td>
+</tr>
+<tr>
+<td>sso-login</td>
+<td>9000</td>
+<td>login.codeshop.com:9000</td>
+</tr>
+</tbody></table>
+<p>在hosts文件中添加一下内容</p>
+<div class="hljs"><pre><code class="hljs sh">sudo vim /etc/hosts</code></pre></div>
+
+<div class="hljs"><pre><code class="hljs accesslog"><span class="hljs-number">127.0.0.1</span>	www.codeshop.com
+<span class="hljs-number">127.0.0.1</span>	vip.codeshop.com
+<span class="hljs-number">127.0.0.1</span>	cart.codeshop.com
+<span class="hljs-number">127.0.0.1</span>	login.codeshop.com</code></pre></div>
+
+<p>访问时记得清除浏览器缓存，不然可能访问不到。</p>
+<h2 id><a href="#" class="headerlink" title></a></h2><h2 id="代码逻辑"><a href="#代码逻辑" class="headerlink" title="代码逻辑"></a>代码逻辑</h2><h3 id="非登录模块"><a href="#非登录模块" class="headerlink" title="非登录模块"></a>非登录模块</h3><p>当用户访问<a href="http://www.codeshop.com:9010时其可以不登录账号，但是访问vip.codeshop.com:9011、">www.codeshop.com:9010时其可以不登录账号，但是访问vip.codeshop.com:9011、</a> cart.codeshop.com:9012则必须要跳转到login.codeshop.com:9000，进行登录操作。如下图所示逻辑。</p>
+<p><img src="https://oss.javaguide.cn/github/javaguide/system-design/security/sso/sso-logincheck-sequence.png-kbrb.png" srcset="/img/loading.gif" alt="SSO系统设计-登录信息获取/登录状态校验"></p>
+<p>那么前端代码逻辑就是</p>
+<ul>
+<li>首先判断用户是否登录</li>
+<li>如果用户登录，则从session中获取保存的用户信息，如用户名</li>
+<li>如果用户没登录，则需要跳转到登录页面</li>
+<li>在用户登录完成后，需要返回到原来的页面，并且显示登录的用户信息，所以在访问登录页面时，需要携带参数，用于跳转回原来页面</li>
+</ul>
+<p>下面以vip页面为例，其他页面同理</p>
+<div class="hljs"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span> <span class="hljs-attr">xmlns:th</span>=<span class="hljs-string">&quot;http://www.w3.org/1999/xhtml&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>VIP模块<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>VIP服务!<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">th:if</span>=<span class="hljs-string">&quot;$&#123;session.loginUser == null&#125;&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;http://login.codeshop.com:9000/view/login?target=http://vip.codeshop.com:9011/view/index&quot;</span>&gt;</span>login<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">th:unless</span>=<span class="hljs-string">&quot;$&#123;session.loginUser == null&#125;&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;http://vip.codeshop.com:9011/view/logout?target=http://vip.codeshop.com:9011/view/index&quot;</span>&gt;</span>logout<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">th:unless</span>=<span class="hljs-string">&quot;$&#123;session.loginUser == null&#125;&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;color: cadetblue&quot;</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.loginUser.username&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span> 登录成功! <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">br</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">br</span>&gt;</span>
+        用户id: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;color:cadetblue&quot;</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.loginUser.id&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">br</span>&gt;</span>
+        用户名: <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;color:cadetblue&quot;</span> <span class="hljs-attr">th:text</span>=<span class="hljs-string">&quot;$&#123;session.loginUser.username&#125;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">br</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre></div>
+
+<p>后端代码如下</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span>
+<span class="hljs-meta">@RequestMapping(&quot;/view&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span> &#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> RestTemplate restTemplate;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">USER_INFO_ADDRESS</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;http://login.codeshop.com:9000/login/info?token=&quot;</span>;
+
+    <span class="hljs-meta">@GetMapping(&quot;/index&quot;)</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">toIndex</span><span class="hljs-params">(<span class="hljs-meta">@CookieValue(required = false, value = &quot;TOKEN&quot;)</span> Cookie cookie,</span>
+<span class="hljs-params">                          HttpSession session)</span> &#123;
+        <span class="hljs-keyword">if</span> (cookie != <span class="hljs-literal">null</span>) &#123;
+            <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> cookie.getValue();
+            <span class="hljs-keyword">if</span> (!StringUtils.isEmpty(token)) &#123;
+                <span class="hljs-type">Map</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> restTemplate.getForObject(USER_INFO_ADDRESS + token, Map.class);
+                session.setAttribute(<span class="hljs-string">&quot;loginUser&quot;</span>, result);
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;index&quot;</span>;
+    &#125;
+&#125;</code></pre></div>
+
+<p>其中RestTemplate的作用是用于http调用，在微服务框架中，每个服务独立，所以vip模块无法直接调用login的函数，所以使用http进行调用</p>
+<p>在启动类上要进行Bean的注册</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VipApp</span> &#123;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;
+        SpringApplication.run(VipApp.class,args);
+    &#125;
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-keyword">public</span> RestTemplate <span class="hljs-title function_">restTemplate</span><span class="hljs-params">()</span>&#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RestTemplate</span>();
+    &#125;
+&#125;</code></pre></div>
+
+
+
+<h3 id="登录模块"><a href="#登录模块" class="headerlink" title="登录模块"></a>登录模块</h3><p>前段页面，只要提供两个输入框，接受用户名和密码</p>
+<div class="hljs"><pre><code class="hljs java">&lt;!DOCTYPE html&gt;
+&lt;html lang=<span class="hljs-string">&quot;en&quot;</span> xmlns:th=<span class="hljs-string">&quot;http://www.w3.org/1999/xhtml&quot;</span>&gt;
+&lt;head&gt;
+    &lt;meta charset=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;
+    &lt;title&gt;Login Module&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;用户登录 &lt;/h1&gt;
+    &lt;p style=<span class="hljs-string">&quot;color: red;&quot;</span> th:text=<span class="hljs-string">&quot;$&#123;session.msg&#125;&quot;</span>&gt;&lt;/p&gt;
+    &lt;form action=<span class="hljs-string">&quot;/login&quot;</span> method=<span class="hljs-string">&quot;POST&quot;</span>&gt;
+        姓名:  &lt;input name=<span class="hljs-string">&quot;username&quot;</span> value=<span class="hljs-string">&quot;&quot;</span>&gt;
+        &lt;br&gt;&lt;/br&gt;
+        密码:  &lt;input name=<span class="hljs-string">&quot;password&quot;</span> value=<span class="hljs-string">&quot;&quot;</span>&gt;
+        &lt;br&gt;&lt;/br&gt;
+        &lt;button type=<span class="hljs-string">&quot;submit&quot;</span> style=<span class="hljs-string">&quot;width:60px;height:30px&quot;</span>&gt; login &lt;/button&gt;
+    &lt;/form&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div>
+
+<p>创建用户实体，用于模拟</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Data</span> <span class="hljs-comment">//添加getter/setter</span>
+<span class="hljs-meta">@NoArgsConstructor</span>  <span class="hljs-comment">//添加无参构造器</span>
+<span class="hljs-meta">@AllArgsConstructor</span> <span class="hljs-comment">//添加全参构造器</span>
+<span class="hljs-meta">@Accessors(chain = true)</span> <span class="hljs-comment">//添加链式调用</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;
+    <span class="hljs-keyword">private</span> Integer id;
+    <span class="hljs-keyword">private</span> String username;
+    <span class="hljs-keyword">private</span> String password;
+&#125;
+</code></pre></div>
+
+<p>控制器代码逻辑<code>http://login.codeshop.com:9000/view/login</code></p>
+<ul>
+<li>首先判断是否有target参数，如果没有跳转到<code>login.codeshop.com:9010</code>进行登录</li>
+<li>然后判断是否请求的cookie中是否携带token</li>
+<li>如果携带token，用户已完成登录，从缓存中获取用户信息返回即可</li>
+<li>没有携带token则需要<code>/login</code>下完成登录</li>
+</ul>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span>
+<span class="hljs-meta">@RequestMapping(&quot;/view&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ViewController</span> &#123;
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 跳转到登录页面</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@GetMapping(&quot;/login&quot;)</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">toLogin</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(required = false, defaultValue = &quot;&quot;)</span> String target,</span>
+<span class="hljs-params">                          HttpSession session,</span>
+<span class="hljs-params">                          <span class="hljs-meta">@CookieValue(required = false, value = &quot;TOKEN&quot;)</span> Cookie cookie)</span>&#123;
+        <span class="hljs-keyword">if</span>(StringUtils.isEmpty(target))&#123;
+            target = <span class="hljs-string">&quot;login.codeshop.com:9010&quot;</span>;
+        &#125;
+        <span class="hljs-keyword">if</span>(cookie != <span class="hljs-literal">null</span>)&#123;
+            <span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> cookie.getValue();
+            <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> LogCacheUtil.loginUser.get(value);
+            <span class="hljs-keyword">if</span>(user != <span class="hljs-literal">null</span>)&#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;redirect:&quot;</span> + target;
+            &#125;
+        &#125;
+        session.setAttribute(<span class="hljs-string">&quot;target&quot;</span>,target);
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;login&quot;</span>;
+    &#125;
+
+&#125;</code></pre></div>
+
+<p><code>/login</code>登录模块的代码</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Controller</span>
+<span class="hljs-meta">@RequestMapping(&quot;/login&quot;)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoginController</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> Set&lt;User&gt; dbUser;
+
+  <span class="hljs-comment">// 模拟用户数据</span>
+    <span class="hljs-keyword">static</span> &#123;
+        dbUser = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        dbUser.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;adx&quot;</span>, <span class="hljs-string">&quot;123456&quot;</span>));
+        dbUser.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;admin&quot;</span>, <span class="hljs-string">&quot;123456&quot;</span>));
+    &#125;
+
+    <span class="hljs-meta">@PostMapping</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">doLogin</span><span class="hljs-params">(User user, HttpSession session, HttpServletResponse response)</span> &#123;
+        <span class="hljs-type">String</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> (String) session.getAttribute(<span class="hljs-string">&quot;target&quot;</span>);
+        Optional&lt;User&gt; first = dbUser.stream().filter(dbUser -&gt; dbUser.getUsername().equals(user.getUsername()) &amp;&amp;
+                dbUser.getPassword().equals(user.getPassword()))
+                .findFirst();
+        <span class="hljs-keyword">if</span> (first.isPresent()) &#123;
+         		<span class="hljs-comment">// 使用随机数作为token</span>
+            <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();
+            <span class="hljs-type">Cookie</span> <span class="hljs-variable">cookie</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cookie</span>(<span class="hljs-string">&quot;TOKEN&quot;</span>, token);
+            cookie.setPath(<span class="hljs-string">&quot;/&quot;</span>);
+          	<span class="hljs-comment">// 设置token的作用域名</span>
+            cookie.setDomain(<span class="hljs-string">&quot;codeshop.com&quot;</span>);
+          	<span class="hljs-comment">// 在响应头中添加cookie</span>
+            response.addCookie(cookie);
+          	<span class="hljs-comment">// 保存已登录用户信息</span>
+            LogCacheUtil.loginUser.put(token, first.get());
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            session.setAttribute(<span class="hljs-string">&quot;msg&quot;</span>, <span class="hljs-string">&quot;用户名或密码错误!&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;login&quot;</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;redirect:&quot;</span> + target;
+    &#125;
+
+  	<span class="hljs-comment">/**</span>
+<span class="hljs-comment">  		根据token获取用户在缓存中的信息</span>
+<span class="hljs-comment">  	*/</span>
+    <span class="hljs-meta">@GetMapping(&quot;info&quot;)</span>
+    <span class="hljs-meta">@ResponseBody</span>
+    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">getUserInfo</span><span class="hljs-params">(String token)</span> &#123;
+        <span class="hljs-keyword">if</span> (!StringUtils.isEmpty(token)) &#123;
+            <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> LogCacheUtil.loginUser.get(token);
+            <span class="hljs-keyword">return</span> ResponseEntity.ok(user);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(<span class="hljs-literal">null</span>, HttpStatus.BAD_REQUEST);
+        &#125;
+    &#125;
+
+   	<span class="hljs-comment">/**</span>
+<span class="hljs-comment">   	退出操作</span>
+<span class="hljs-comment">   	*/</span>
+    <span class="hljs-meta">@GetMapping(&quot;/logout&quot;)</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">loginOut</span><span class="hljs-params">(<span class="hljs-meta">@CookieValue(value = &quot;TOKEN&quot;)</span> Cookie cookie, HttpServletResponse response, String target)</span> &#123;
+        <span class="hljs-comment">// 将cookie的过期时间修改为0</span>
+        cookie.setMaxAge(<span class="hljs-number">0</span>);
+       <span class="hljs-comment">// 从缓存中删除用户的信息 </span>
+        LogCacheUtil.loginUser.remove(cookie.getValue());
+        response.addCookie(cookie);
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;redirect:&quot;</span> + target;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>后端响应后，返回本次登录的cookie，前端在获取cookie后，会将信息保存到浏览器中。</p>
+<p><img src="/2023/09/10/sso/image-20230910181048549.png" srcset="/img/loading.gif" alt="image-20230910181048549"></p>
+<p>此时登录的是<a target="_blank" rel="noopener" href="http://www.codeshop.com/">www.codeshop.com</a></p>
+<p>当访问vip.codeshop.com时，就会发现，用登录也可以获取到登录用户的信息。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/java/">java</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SSO/">SSO</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/08/20/test/">
+                        <span class="hidden-mobile">test</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "sso&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
