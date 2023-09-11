@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.5k 字
+      3.2k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      39
+      52
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：1 分钟前
                 
               </p>
             
@@ -588,6 +588,171 @@
 <p><img src="/2023/09/10/sso/image-20230910181048549.png" srcset="/img/loading.gif" alt="image-20230910181048549"></p>
 <p>此时登录的是<a target="_blank" rel="noopener" href="http://www.codeshop.com/">www.codeshop.com</a></p>
 <p>当访问vip.codeshop.com时，就会发现，用登录也可以获取到登录用户的信息。</p>
+<h2 id="使用redis缓存用户token"><a href="#使用redis缓存用户token" class="headerlink" title="使用redis缓存用户token"></a>使用redis缓存用户token</h2><p>整合redis</p>
+<div class="hljs"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre></div>
+
+<p>在父工程的pom文件中添加依赖，版本与使用springboot保持一致</p>
+<p>添加操作redis的工具类，注意这个不添加也不影响，添加了后，使用redis更加方便简捷，不添加的话可以直接使用RedisTemplate进行操作，效果是一样的</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedisUtils</span> &#123;
+
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> RedisTemplate&lt;String, String&gt; redisTemplate;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 读取缓存</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">get</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;
+        <span class="hljs-keyword">return</span> redisTemplate.opsForValue().get(key);
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 写入缓存</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">set</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, String value)</span> &#123;
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            redisTemplate.opsForValue().set(key, value);
+            result = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 写入缓存,并设置过期时间</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> value</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeout</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> unit</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@return</span></span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">set</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, String value, <span class="hljs-type">long</span> timeout, TimeUnit unit)</span> &#123;
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            redisTemplate.opsForValue().set(key, value, timeout, unit);
+            result = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 更新缓存</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">getAndSet</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key, String value)</span> &#123;
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            redisTemplate.opsForValue().getAndSet(key, value);
+            result = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 删除缓存</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String key)</span> &#123;
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            redisTemplate.delete(key);
+            result = <span class="hljs-literal">true</span>;
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+&#125;</code></pre></div>
+
+<p>修改登录模块从缓存中获取token的代码</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/login&quot;)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">toLogin</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(required = false, defaultValue = &quot;&quot;)</span> String target,</span>
+<span class="hljs-params">                      HttpSession session,</span>
+<span class="hljs-params">                      <span class="hljs-meta">@CookieValue(required = false, value = &quot;TOKEN&quot;)</span> Cookie cookie)</span>&#123;
+    <span class="hljs-keyword">if</span>(StringUtils.isEmpty(target))&#123;
+        target = <span class="hljs-string">&quot;login.codeshop.com:9010&quot;</span>;
+    &#125;
+    <span class="hljs-keyword">if</span>(cookie != <span class="hljs-literal">null</span>)&#123;
+        <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> cookie.getValue();
+        <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> redisUtils.get(token); <span class="hljs-comment">// 从redis中根据token获取用户信息</span>
+        System.out.println(username);
+        <span class="hljs-comment">// User user = LogCacheUtil.loginUser.get(token);</span>
+        <span class="hljs-keyword">if</span>(user != <span class="hljs-literal">null</span>)&#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;redirect:&quot;</span> + target;
+        &#125;
+    &#125;
+    session.setAttribute(<span class="hljs-string">&quot;target&quot;</span>,target);
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;login&quot;</span>;
+&#125;</code></pre></div>
+
+<p>在用户登录时，以&lt;token, username&gt;为键值对保存信息。</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">doLogin</span><span class="hljs-params">(User user, HttpSession session, HttpServletResponse response)</span> &#123;
+        <span class="hljs-type">String</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> (String) session.getAttribute(<span class="hljs-string">&quot;target&quot;</span>);
+        Optional&lt;User&gt; first = dbUser.stream().filter(dbUser -&gt; dbUser.getUsername().equals(user.getUsername()) &amp;&amp;
+                dbUser.getPassword().equals(user.getPassword()))
+                .findFirst();
+        <span class="hljs-keyword">if</span> (first.isPresent()) &#123;
+            <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();
+            <span class="hljs-type">Cookie</span> <span class="hljs-variable">cookie</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Cookie</span>(<span class="hljs-string">&quot;TOKEN&quot;</span>, token);
+            cookie.setPath(<span class="hljs-string">&quot;/&quot;</span>);
+            cookie.setDomain(<span class="hljs-string">&quot;codeshop.com&quot;</span>);
+            response.addCookie(cookie);
+            <span class="hljs-comment">// 向redis中存token</span>
+            redisUtils.set(token, first.get().getUsername());
+<span class="hljs-comment">//            LogCacheUtil.loginUser.put(token, first.get());</span>
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            session.setAttribute(<span class="hljs-string">&quot;msg&quot;</span>, <span class="hljs-string">&quot;用户名或密码错误!&quot;</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;login&quot;</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;redirect:&quot;</span> + target;
+    &#125;
+
+    <span class="hljs-meta">@GetMapping(&quot;info&quot;)</span>
+    <span class="hljs-meta">@ResponseBody</span>
+    <span class="hljs-keyword">public</span> ResponseEntity&lt;String&gt; <span class="hljs-title function_">getUserInfo</span><span class="hljs-params">(String token)</span> &#123;
+        <span class="hljs-keyword">if</span> (!StringUtils.isEmpty(token)) &#123;
+            <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> redisUtils.get(token);
+<span class="hljs-comment">//            User user = LogCacheUtil.loginUser.get(token);</span>
+            <span class="hljs-keyword">return</span> ResponseEntity.ok(username);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(<span class="hljs-literal">null</span>, HttpStatus.BAD_REQUEST);
+        &#125;
+    &#125;</code></pre></div>
+
+<p>在main, vip, cart模块也要修改获取用户信息的代码</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Autowired</span>
+   <span class="hljs-keyword">private</span> RedisUtils redisUtils;
+   <span class="hljs-meta">@Autowired</span>
+   <span class="hljs-keyword">private</span> RestTemplate restTemplate;
+
+   <span class="hljs-comment">//private final String USER_INFO_ADDRESS = &quot;http://login.codeshop.com:9000/login/info?token=&quot;;</span>
+
+   <span class="hljs-meta">@GetMapping(&quot;/index&quot;)</span>
+   <span class="hljs-keyword">public</span> String <span class="hljs-title function_">toIndex</span><span class="hljs-params">(<span class="hljs-meta">@CookieValue(required = false, value = &quot;TOKEN&quot;)</span>Cookie cookie,</span>
+<span class="hljs-params">                         HttpSession session)</span>&#123;
+       <span class="hljs-keyword">if</span>(cookie != <span class="hljs-literal">null</span>)&#123;
+           <span class="hljs-type">String</span> <span class="hljs-variable">token</span> <span class="hljs-operator">=</span> cookie.getValue();
+           <span class="hljs-keyword">if</span>(!StringUtils.isEmpty(token))&#123;
+               <span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> redisUtils.get(token); <span class="hljs-comment">// 直接从redis中获取，省去http调用带来的的延时</span>
+               session.setAttribute(<span class="hljs-string">&quot;loginUser&quot;</span>,result);
+           &#125;
+       &#125;
+       <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;index&quot;</span>;
+   &#125;</code></pre></div>
+
+<p>源码：<a target="_blank" rel="noopener" href="https://github.com/sunzhengyu99/SSO-demo">https://github.com/sunzhengyu99/SSO-demo</a></p>
 
             </div>
             <hr>
