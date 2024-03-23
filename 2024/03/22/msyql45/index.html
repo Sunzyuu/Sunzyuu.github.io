@@ -1,0 +1,1356 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/feiji.png">
+  <link rel="icon" type="image/png" href="/img/feiji.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="sunzy">
+  <meta name="keywords" content="">
+  <title>MySQL45个常用语句练习 - 一路走到黑</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/a11y-light.min.css" />
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Sunzy'blog</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://i.loli.net/2020/10/24/eBR35xZYEbuzSW9.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2024-03-22 15:19" pubdate>
+        2024年3月22日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      63
+       分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL45个常用语句练习</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：几秒前
+                
+              </p>
+            
+            <div class="markdown-body" id="post-body">
+              <h1 id="MySQL45个常用语句练习"><a href="#MySQL45个常用语句练习" class="headerlink" title="MySQL45个常用语句练习"></a>MySQL45个常用语句练习</h1><h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><h3 id="关于各种连接的解释"><a href="#关于各种连接的解释" class="headerlink" title="关于各种连接的解释"></a>关于各种连接的解释</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36501591/article/details/116234694">https://blog.csdn.net/qq_36501591/article/details/116234694</a></p>
+<h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><div class="hljs"><pre><code class="hljs mysql">create table Student(SId varchar(10),Sname varchar(10),Sage datetime,Ssex varchar(10));
+insert into Student values(&#x27;01&#x27; , &#x27;赵雷&#x27; , &#x27;1990-01-01&#x27; , &#x27;男&#x27;);
+insert into Student values(&#x27;02&#x27; , &#x27;钱电&#x27; , &#x27;1990-12-21&#x27; , &#x27;男&#x27;);
+insert into Student values(&#x27;03&#x27; , &#x27;孙风&#x27; , &#x27;1990-05-20&#x27; , &#x27;男&#x27;);
+insert into Student values(&#x27;04&#x27; , &#x27;李云&#x27; , &#x27;1990-08-06&#x27; , &#x27;男&#x27;);
+insert into Student values(&#x27;05&#x27; , &#x27;周梅&#x27; , &#x27;1991-12-01&#x27; , &#x27;女&#x27;);
+insert into Student values(&#x27;06&#x27; , &#x27;吴兰&#x27; , &#x27;1992-03-01&#x27; , &#x27;女&#x27;);
+insert into Student values(&#x27;07&#x27; , &#x27;郑竹&#x27; , &#x27;1989-07-01&#x27; , &#x27;女&#x27;);
+insert into Student values(&#x27;09&#x27; , &#x27;张三&#x27; , &#x27;2017-12-20&#x27; , &#x27;女&#x27;);
+insert into Student values(&#x27;10&#x27; , &#x27;李四&#x27; , &#x27;2017-12-25&#x27; , &#x27;女&#x27;);
+insert into Student values(&#x27;11&#x27; , &#x27;李四&#x27; , &#x27;2017-12-30&#x27; , &#x27;女&#x27;);
+insert into Student values(&#x27;12&#x27; , &#x27;赵六&#x27; , &#x27;2017-01-01&#x27; , &#x27;女&#x27;);
+insert into Student values(&#x27;13&#x27; , &#x27;孙七&#x27; , &#x27;2018-01-01&#x27; , &#x27;女&#x27;);
+
+
+create table Course(CId varchar(10),Cname nvarchar(10),TId varchar(10));
+insert into Course values(&#x27;01&#x27; , &#x27;语文&#x27; , &#x27;02&#x27;);
+insert into Course values(&#x27;02&#x27; , &#x27;数学&#x27; , &#x27;01&#x27;);
+insert into Course values(&#x27;03&#x27; , &#x27;英语&#x27; , &#x27;03&#x27;);
+
+
+create table Teacher(TId varchar(10),Tname varchar(10));
+insert into Teacher values(&#x27;01&#x27; , &#x27;张三&#x27;);
+insert into Teacher values(&#x27;02&#x27; , &#x27;李四&#x27;);
+insert into Teacher values(&#x27;03&#x27; , &#x27;王五&#x27;);
+
+create table SC(SId varchar(10),CId varchar(10),score decimal(18,1));
+insert into SC values(&#x27;01&#x27; , &#x27;01&#x27; , 80);
+insert into SC values(&#x27;01&#x27; , &#x27;02&#x27; , 90);
+insert into SC values(&#x27;01&#x27; , &#x27;03&#x27; , 99);
+insert into SC values(&#x27;02&#x27; , &#x27;01&#x27; , 70);
+insert into SC values(&#x27;02&#x27; , &#x27;02&#x27; , 60);
+insert into SC values(&#x27;02&#x27; , &#x27;03&#x27; , 80);
+insert into SC values(&#x27;03&#x27; , &#x27;01&#x27; , 80);
+insert into SC values(&#x27;03&#x27; , &#x27;02&#x27; , 80);
+insert into SC values(&#x27;03&#x27; , &#x27;03&#x27; , 80);
+insert into SC values(&#x27;04&#x27; , &#x27;01&#x27; , 50);
+insert into SC values(&#x27;04&#x27; , &#x27;02&#x27; , 30);
+insert into SC values(&#x27;04&#x27; , &#x27;03&#x27; , 20);
+insert into SC values(&#x27;05&#x27; , &#x27;01&#x27; , 76);
+insert into SC values(&#x27;05&#x27; , &#x27;02&#x27; , 87);
+insert into SC values(&#x27;06&#x27; , &#x27;01&#x27; , 31);
+insert into SC values(&#x27;06&#x27; , &#x27;03&#x27; , 34);
+insert into SC values(&#x27;07&#x27; , &#x27;02&#x27; , 89);
+insert into SC values(&#x27;07&#x27; , &#x27;03&#x27; , 98);
+</code></pre></div>
+
+<h2 id="练习-—-45-个sql练习题"><a href="#练习-—-45-个sql练习题" class="headerlink" title="练习 — 45 个sql练习题"></a>练习 — 45 个sql练习题</h2><div class="hljs"><pre><code class="hljs mysql">-- 1.查询&quot; 01 &quot;课程比&quot; 02 &quot;课程成绩高的学生的信息及课程分数
+SELECT
+	s.*,
+	a.score AS score_01,
+	b.score AS score_02 
+FROM
+	student s
+	JOIN sc a ON s.SId = a.SId 
+	AND a.CId = &#x27;01&#x27;
+	JOIN sc b ON s.SId = b.SId 
+	AND b.CId = &#x27;02&#x27; 
+WHERE
+	a.score &gt; b.score;
+SELECT
+	s.*,
+	a.score,
+	b.score 
+FROM
+	student s
+	LEFT JOIN ( SELECT * FROM sc WHERE CId = &#x27;01&#x27; ) a ON s.sid = a.sid
+	INNER JOIN ( SELECT * FROM sc WHERE CId = &#x27;02&#x27; ) b ON a.SId = b.SId 
+WHERE
+	a.score &gt; b.score 
+
+-- 1.1 查询同时存在&quot; 01 &quot;课程和&quot; 02 &quot;课程的情况
+SELECT
+	* 
+FROM
+	( SELECT * FROM sc WHERE CId = &#x27;01&#x27; ) a
+	JOIN ( SELECT * FROM sc WHERE CId = &#x27;02&#x27; ) b ON a.SId = b.SId SELECT
+	* 
+FROM
+	sc a
+	JOIN sc b ON a.sid = b.sid 
+	AND a.cid = &#x27;01&#x27; 
+	AND b.cid = &#x27;02&#x27; 
+	
+-- 1.2 查询存在&quot; 01 &quot;课程但可能不存在&quot; 02 &quot;课程的情况(不存在时显示为 null )
+SELECT
+	* 
+FROM
+	( SELECT * FROM sc WHERE cid = &#x27;01&#x27; ) a
+	LEFT JOIN ( SELECT * FROM sc WHERE cid = &#x27;02&#x27; ) b ON a.sid = b.sid 
+-- 1.3 查询不存在&quot; 01 &quot;课程但存在&quot; 02 &quot;课程的情况
+SELECT
+	* 
+FROM
+	(
+	SELECT
+		* 
+	FROM
+		sc 
+	WHERE
+	sid NOT IN ( SELECT sid FROM sc WHERE cid = &#x27;01&#x27; )) a
+	INNER JOIN sc b ON a.sid = b.sid 
+WHERE
+	b.cid = &#x27;02&#x27;;
+-- 2.查询平均成绩大于等于 60 分的同学的学生编号和学生姓名和平均成绩
+SELECT
+	* 
+FROM
+	student s
+	INNER JOIN ( SELECT sid, AVG( score ) AS avg_score FROM sc GROUP BY sid HAVING avg_score &gt; 60 ) c ON s.sid = c.sid 
+-- 3.查询在 SC 表存在成绩的学生信息
+	
+	SET @@GLOBAL.sql_mode = &#x27;STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION&#x27;;
+SELECT
+	b.* 
+FROM
+	sc a
+	LEFT JOIN student b ON a.sid = b.sid 
+GROUP BY
+	b.sid 
+-- 4.查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩(没成绩的显示为 null ) 4.1 查有成绩的学生信息
+SELECT
+	a.sid,
+	a.sname,
+	b.cons,
+	b.sum_score 
+FROM
+	student a
+	LEFT JOIN ( SELECT sid, count( cid ) AS cons, sum( score ) AS sum_score FROM sc GROUP BY sid ) b ON a.sid = b.sid 
+-- 5.查询「李」姓老师的数量
+SELECT
+	COUNT(*) 
+FROM
+	teacher 
+WHERE
+	tname LIKE &quot;李%&quot; 
+-- 6.查询学过「张三」老师授课的同学的信息
+SELECT
+	s.* 
+FROM
+	student s
+	JOIN sc c ON s.sid = c.sid 
+WHERE
+	cid = ( SELECT a.cid FROM course a JOIN teacher b ON a.tid = b.tid WHERE b.tname = &quot;张三&quot; ) SELECT
+	b.* 
+FROM
+	sc a
+	LEFT JOIN student b ON a.sid = b.sid 
+WHERE
+	cid IN ( SELECT cid FROM course WHERE tid =( SELECT tid FROM teacher WHERE tname = &#x27;张三&#x27; ) ) 
+GROUP BY
+	sid;
+-- 7.查询没有学全所有课程的同学的信息
+SELECT
+	* 
+FROM
+	student a
+	JOIN sc b ON a.sid = b.sid 
+GROUP BY
+	a.sid 
+HAVING
+	COUNT( b.cid ) &lt; ( SELECT COUNT(*) FROM course ) 
+-- 8.查询至少有一门课与学号为&quot; 01 &quot;的同学所学相同的同学的信息
+SELECT DISTINCT
+	s.* 
+FROM
+	student s
+	JOIN sc c ON s.sid = c.sid 
+WHERE
+	c.cid IN ( SELECT cid FROM sc WHERE sid = 1 ) SELECT DISTINCT
+	b.* 
+FROM
+	sc a
+	LEFT JOIN student b ON a.sid = b.sid 
+WHERE
+	cid IN ( SELECT cid FROM sc WHERE sid = &#x27;01&#x27; );
+-- 9.查询和&quot; 01 &quot;号的同学学习的课程 完全相同的其他同学的信息
+-- 要没有学习01号同学学习课程外的其他课程， 而且学习的课程数量相同
+SELECT
+	* 
+FROM
+	( SELECT * FROM sc WHERE cid IN ( SELECT cid FROM sc WHERE sid = &#x27;01&#x27; ) AND sid != &#x27;01&#x27; ) a
+	LEFT JOIN student s ON a.sid = s.sid 
+GROUP BY
+	a.sid 
+HAVING
+	count( cid ) = ( SELECT count( 1 ) FROM sc WHERE sid = &#x27;01&#x27; ) 
+-- 10.查询没学过&quot;张三&quot;老师讲授的任一门课程的学生姓名
+-- 查询 张三 老师教的课程cid
+-- 先查询学过 张三老师课程的学生
+SELECT
+	sid 
+FROM
+	sc a
+	LEFT JOIN course c ON a.cid = c.cid
+	JOIN teacher d ON c.tid = d.tid 
+WHERE
+	d.tname = &quot;张三&quot; SELECT
+	sname 
+FROM
+	student 
+WHERE
+	sid NOT IN (
+	SELECT
+		sid 
+	FROM
+		sc a
+		LEFT JOIN course c ON a.cid = c.cid
+		JOIN teacher d ON c.tid = d.tid 
+	WHERE
+		d.tname = &quot;张三&quot; 
+	)
+    
+-- 11.查询两门及其以上不及格课程的同学的学号，姓名及其平均成绩
+SELECT
+	a.sid,
+	a.sname 
+FROM
+	student a
+	JOIN ( SELECT * FROM sc WHERE score &lt; 60 GROUP BY sid HAVING count( 1 ) &gt;= 2 ) b ON a.sid = b.sid SELECT
+	a.sid,
+	a.sname,
+	avg( b.score ) AS avg_score 
+FROM
+	student a
+	LEFT JOIN sc b ON a.sid = b.sid 
+WHERE
+	b.score &lt; 60 GROUP BY a.sid HAVING count( a.sid ) &gt;= 2 
+-- 12.检索&quot; 01 &quot;课程分数小于 60，按分数降序排列的学生信息
+SELECT
+	* 
+FROM
+	student a
+	JOIN sc b ON a.sid = b.sid 
+WHERE
+	b.cid = &#x27;01&#x27; 
+	AND b.score &lt; 60 
+ORDER BY
+	b.score DESC
+-- 13.按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩
+SELECT
+	c.sid,
+	c.sname,
+	c.cid,
+	c.score,
+	d.avg_score 
+FROM
+	(
+	SELECT
+		a.sid,
+		a.sname,
+		b.cid,
+		b.score 
+	FROM
+		student a
+		LEFT JOIN sc b ON a.sid = b.sid 
+	) c
+	LEFT JOIN ( SELECT sid, avg( score ) AS avg_score FROM sc GROUP BY sid ) d ON c.sid = d.sid 
+ORDER BY
+	d.avg_score DESC SELECT
+	c.sid,
+	c.cid,
+	c.score,
+	d.avg_sco 
+FROM
+	(
+	SELECT
+		a.sid,
+		b.cid,
+		b.score 
+	FROM
+		student a
+		LEFT JOIN sc b ON a.sid = b.sid 
+	) c
+	LEFT JOIN ( SELECT sid, avg( a.score ) AS avg_sco FROM sc a GROUP BY a.sid ) d ON c.sid = d.sid 
+ORDER BY
+	avg_sco DESC;
+-- 14.查询各科成绩最高分、最低分和平均分： 
+-- 以如下形式显示：课程 ID，课程 name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率 及格为&gt;=60，中等为：70-80，优良为：80-90，优秀为：&gt;=90 要求输出课程号和选修人数，查询结果按人数降序排列，若人数相同，按课程号升序排列
+SELECT
+	avg( score ) AS avg_score 
+FROM
+	sc 
+GROUP BY
+	cid SELECT
+	max( score ) AS avg_score 
+FROM
+	sc 
+GROUP BY
+	cid SELECT
+	min( score ) AS avg_score 
+FROM
+	sc 
+GROUP BY
+	cid SELECT
+	cid,
+	max( score ) AS max_score,
+	min( score ) AS min_score,
+	avg( score ) AS avg_score,
+	count(*) AS cons,
+	sum(
+	IF
+	( score &gt;= 60, 1, 0 )) / count( 1 ) AS jige,
+	sum(
+	IF
+	( score &gt;= 70 AND score &lt; 80, 1, 0 )) / count( 1 ) AS zhongdeng,
+	sum(
+	IF
+	( score &gt;= 80 AND score &lt; 90, 1, 0 )) / count( 1 ) AS youliang,
+	sum(
+	IF
+	( score &gt;= 90, 1, 0 )) / count( 1 ) AS youxiu 
+FROM
+	sc 
+GROUP BY
+	cid DESC SELECT
+	cid,
+	max( score ) AS max_sc,
+	min( score ) AS min_sc,
+	avg( score ) AS avg_sc,
+	count( 1 ) AS cons,
+	sum(
+	IF
+	( score &gt;= 60, 1, 0 ))/ count( 1 ) AS jige,
+	sum(
+	IF
+	( 70 &lt;= score AND score &lt;= 80, 1, 0 ))/ count( 1 ) AS zd,
+	sum(
+	IF
+	( 80 &lt;= score AND score &lt;= 90, 1, 0 ))/ count( 1 ) AS yl,
+	sum(
+	IF
+	( 90 &gt;= score, 1, 0 ))/ count( 1 ) AS yx 
+FROM
+	sc 
+GROUP BY
+	cid;
+-- 15.按各科成绩进行排序，并显示排名， Score 重复时保留名次空缺
+SELECT
+	sid,
+	cid,
+	score,
+	@rank := @rank + 1 AS rn 
+FROM
+	sc,(
+	SELECT
+		@rank := 0 
+	) AS t 
+ORDER BY
+	score DESC;
+-- 16.查询学生的总成绩，并进行排名，总分重复时保留名次空缺 16.1 查询学生的总成绩，并进行排名，总分重复时不保留名次空缺
+SELECT
+	s.*,
+CASE
+		
+		WHEN @sco = scos THEN
+		&#x27;&#x27; ELSE @rank := @rank + 1 
+	END AS rn,
+	@sco := scos 
+FROM
+	( SELECT sid, sum( score ) AS scos FROM sc GROUP BY sid ORDER BY scos DESC ) s,
+	( SELECT @rank := 0, @sco := NULL ) AS t 
+-- 17.统计各科成绩各分数段人数：课程编号，课程名称，[100-85]，[85-70]，[70-60]，[60-0] 及所占百分比
+SELECT
+	cid,
+	max( score ) AS max_sc,
+	min( score ) AS min_sc,
+	avg( score ) AS avg_sc,
+	sum(
+	IF
+	( score &gt;= 60, 1, 0 ))/ count( 1 ) AS jige,
+	sum(
+	IF
+	( 70 &lt;= score AND score &lt;= 80, 1, 0 ))/ count( 1 ) AS zd,
+	sum(
+	IF
+	( 80 &lt;= score AND score &lt;= 90, 1, 0 ))/ count( 1 ) AS yl,
+	sum(
+	IF
+	( 90 &gt;= score, 1, 0 ))/ count( 1 ) AS yx 
+FROM
+	sc 
+GROUP BY
+	cid;
+SELECT
+	a.cid,
+	b.cname,
+	max( a.score ) AS max_sc,
+	min( a.score ) AS min_sc,
+	avg( a.score ) AS avg_sc,
+	sum(
+	IF
+	( a.score &lt; 60, 1, 0 )) AS bjg,
+	sum(
+	IF
+	( a.score &gt;= 60 AND a.score &lt; 70, 1, 0 )) AS jg,
+	sum(
+	IF
+	( 70 &lt;= a.score AND a.score &lt; 85, 1, 0 )) AS zd,
+	sum(
+	IF
+	( 85 &lt;= a.score AND a.score &lt;= 100, 1, 0 )) AS yl,
+	sum(
+	IF
+	( a.score &lt; 60, 1, 0 )) / count( 1 ) AS bjg_p,
+	sum(
+	IF
+	( a.score &gt;= 60 AND a.score &lt; 70, 1, 0 ))/ count( 1 ) AS jg_p,
+	sum(
+	IF
+	( 70 &lt;= a.score AND a.score &lt; 85, 1, 0 ))/ count( 1 ) AS zd_p,
+	sum(
+	IF
+	( 85 &lt;= a.score AND a.score &lt;= 100, 1, 0 ))/ count( 1 ) AS yl_p 
+FROM
+	sc a
+	JOIN course b ON a.cid = b.cid 
+GROUP BY
+	a.cid 
+-- 18.查询各科成绩前三名的记录
+-- 转换思路，前三名转化为若大于此成绩的数量少于3即为前三名
+SELECT
+	* 
+FROM
+	sc a 
+WHERE
+	( SELECT count( 1 ) FROM sc b WHERE a.cid = b.cid AND b.score &gt; a.score ) &lt; 3 
+
+
+-- 19.查询每门课程被选修的学生数
+SELECT
+	cid,
+	count( 1 ) AS count_ 
+FROM
+	sc 
+GROUP BY
+	cid 
+	
+-- 20.查询出只选修两门课程的学生学号和姓名
+SELECT
+	b.sid,
+	b.sname 
+FROM
+	sc a
+	JOIN student b ON a.sid = b.sid 
+GROUP BY
+	a.sid 
+HAVING
+	count( 1 ) = 2 SELECT
+	student.SId,
+	student.Sname 
+FROM
+	sc,
+	student 
+WHERE
+	student.SId = sc.SId 
+GROUP BY
+	sc.SId 
+HAVING
+	count(*)= 2 
+
+-- 21.查询男生、女生人数
+SELECT
+	count( 1 ) 
+FROM
+	student 
+GROUP BY
+	ssex SELECT
+	sum(
+	IF
+	( ssex = &quot;男&quot;, 1, 0 )) AS man,
+	sum(
+	IF
+	( ssex = &quot;女&quot;, 1, 0 )) AS woman 
+FROM
+	student 
+	
+-- 22.查询名字中含有「风」字的学生信息
+SELECT
+	* 
+FROM
+	student 
+WHERE
+	sname LIKE &quot;%风%&quot; 
+-- 23.查询同名同性学生名单，并统计同名人数
+SELECT
+	a.*,
+	count(*) AS sum 
+FROM
+	student a
+	LEFT JOIN student b ON a.sname = b.sname 
+WHERE
+	a.sid != b.sid 
+
+-- 24.查询 1990 年出生的学生名单
+SELECT
+	* 
+FROM
+	student 
+WHERE
+	YEAR ( sage ) = &#x27;1990&#x27; 
+	
+-- 25.查询每门课程的平均成绩，结果按平均成绩降序排列，平均成绩相同时，按课程编号升序排列
+SELECT
+	cid,
+	avg( score ) AS avg_score 
+FROM
+	sc 
+GROUP BY
+	cid 
+ORDER BY
+	avg_score DESC,
+	cid 
+-- 26.查询平均成绩大于等于 85 的所有学生的学号、姓名和平均成绩
+SELECT
+	b.sid,
+	b.sname,
+	avg( a.score ) AS avg_score 
+FROM
+	sc a
+	JOIN student b ON a.sid = b.sid 
+GROUP BY
+	a.sid 
+HAVING
+	avg_score &gt;= 85 
+
+-- 27.查询课程名称为「数学」，且分数低于 60 的学生姓名和分数
+SELECT
+	b.sname,
+	a.score 
+FROM
+	sc a
+	JOIN student b ON a.sid = b.sid
+	JOIN course c ON a.cid = c.cid 
+	AND c.cname = &quot;数学&quot; 
+WHERE
+	a.score &lt; 60
+-- 28.查询所有学生的课程及分数情况（存在学生没成绩，没选课的情况）
+SELECT
+	* 
+FROM
+	student a
+	LEFT JOIN sc b ON a.sid = b.sid 
+-- 29.查询任何一门课程成绩在 70 分以上的姓名、课程名称和分数
+SELECT
+	* 
+FROM
+	student a
+	LEFT JOIN sc b ON a.sid = b.sid
+	JOIN course c ON b.cid = c.cid 
+WHERE
+	b.score &gt; 70
+-- 30.查询不及格的课程
+SELECT
+	* 
+FROM
+	sc a
+	JOIN course b ON a.cid = b.cid 
+WHERE
+	a.score &lt; 60 
+GROUP BY
+	b.cid 
+-- 31.查询课程编号为 01 且课程成绩在 80 分以上的学生的学号和姓名
+SELECT
+	b.sid,
+	b.sname 
+FROM
+	sc a
+	JOIN student b ON a.sid = b.sid 
+WHERE
+	a.score &gt; 80 
+	AND a.cid = &#x27;01&#x27; SELECT
+	student.SId,
+	student.Sname 
+FROM
+	student,
+	sc 
+WHERE
+	sc.CId = &#x27;01&#x27; 
+	AND student.SId = sc.SId 
+	AND sc.score &gt; 80 
+-- 32.求每门课程的学生人数
+SELECT
+	b.cid,
+	b.cname,
+	count( 1 ) AS cons 
+FROM
+	sc a
+	JOIN course b ON a.cid = b.cid 
+GROUP BY
+	cid 
+
+-- 33.假设成绩不重复，查询选修「张三」老师所授课程的学生中，成绩最高的学生信息及其成绩
+SELECT
+	b.*,
+	c.cname,
+	a.score 
+FROM
+	sc a
+	JOIN student b ON a.sid = b.sid
+	JOIN course c ON c.cid = a.cid
+	JOIN teacher d ON c.tid = d.tid 
+WHERE
+	d.tname = &quot;张三&quot; 
+ORDER BY
+	a.score DESC 
+	LIMIT 0,
+	1
+-- 34.假设成绩有重复的情况下，查询选修「张三」老师所授课程的学生中，成绩最高的学生信息及其成绩
+-- 35.查询不同课程成绩相同的学生的学生编号、课程编号、学生成绩
+SELECT
+	* 
+FROM
+	sc a
+	INNER JOIN sc b ON a.sid = b.sid 
+	AND a.score = b.score 
+	AND a.cid != b.cid 
+GROUP BY
+	a.sid,
+	a.cid SELECT
+	* 
+FROM
+	sc a
+	INNER JOIN sc b ON a.sid = b.sid 
+WHERE
+	a.cid != b.cid 
+	AND a.score = b.score 
+GROUP BY
+	a.sid,
+	a.cid 
+
+-- 36.查询每门功成绩最好的前两名
+SELECT
+	* 
+FROM
+	sc a 
+WHERE
+	( SELECT count( 1 ) FROM sc b WHERE a.cid = b.cid AND b.score &gt; a.score ) &lt;= 1 SELECT
+	* 
+FROM
+	sc a 
+WHERE
+	( SELECT count( 1 ) FROM sc b WHERE a.cid = b.cid AND b.score &gt; a.score ) &lt;= 1; 
+
+-- 37.统计每门课程的学生选修人数（超过 5 人的课程才统计）。
+SELECT cid, count( 1 ) FROM sc GROUP BY cid HAVING count( 1 ) &gt; 5 
+
+
+-- 38.检索至少选修两门课程的学生学号
+SELECT
+	sid 
+FROM
+	sc 
+GROUP BY
+	sid 
+HAVING
+	count( 1 ) &gt;= 2 
+
+-- 39.查询选修了全部课程的学生信息
+SELECT
+	sid 
+FROM
+	sc 
+GROUP BY
+	sid 
+HAVING
+	count( 1 ) = ( SELECT count( 1 ) FROM course ) 
+	
+	
+-- 40.查询各学生的年龄，只按年份来算
+SELECT
+	*,
+	YEAR (
+	now()) - YEAR ( sage ) AS age 
+FROM
+	student -- 41.按照出生日期来算，当前月日 &lt; 出生年月的月日则，年龄减一
+SELECT
+	*,
+CASE
+		
+		WHEN substr( sage, 6, 5 )&lt; substr( now(), 6, 5 ) THEN
+		YEAR (
+		now())- YEAR ( sage ) 
+		WHEN substr( sage, 6, 5 )&gt;= substr( now(), 6, 5 ) THEN
+		YEAR (
+		now())- YEAR ( sage ) - 1 
+	END AS age 
+FROM
+	student;
+	
+-- 42.查询本周过生日的学生
+SELECT
+	YEARWEEK(
+	CURDATE()) -- 202411
+SELECT
+	SUBSTR( YEARWEEK( CURDATE()), 5, 2 ) -- 11
+SELECT
+	*,
+	substr( YEARWEEK( student.Sage ), 5, 2 ) AS birth_week,
+	substr( YEARWEEK( CURDATE()), 5, 2 ) AS now_week 
+FROM
+	student 
+WHERE
+	substr( YEARWEEK( student.Sage ), 5, 2 )= substr( YEARWEEK( CURDATE()), 5, 2 );
+	
+-- 43.查询下周过生日的学生
+SELECT
+	*,
+	substr( YEARWEEK( student.Sage ), 5, 2 ) AS birth_week,
+	substr( YEARWEEK( CURDATE()), 5, 2 ) AS now_week 
+FROM
+	student 
+WHERE
+	substr( YEARWEEK( student.Sage ), 5, 2 )= substr( YEARWEEK( CURDATE()), 5, 2 )+ 1;
+
+-- 44.查询本月过生日的学生
+SELECT
+	*,
+	MONTH ( sage ) AS birth_month,
+	MONTH (
+	now()) AS now_month 
+FROM
+	student 
+WHERE
+	MONTH ( sage )= MONTH (
+	now()) 
+	
+-- 45.查询下月过生日的学生
+SELECT
+	*,
+	MONTH ( sage ) AS birth_month,
+	MONTH (
+	now()) AS now_month 
+FROM
+	student 
+WHERE
+	MONTH ( sage )= MONTH (
+	now()) + 1</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/mysql/">mysql</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/09/21/tools/">
+                        <span class="hidden-mobile">tools</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments">
+                
+                
+  <div id="vcomments"></div>
+  <script type="text/javascript">
+    function loadValine() {
+      addScript('https://cdn.jsdelivr.net/gh/HCLonely/Valine@latest/dist/Valine.min.js', function () {
+        new Valine({
+          el: "#vcomments",
+          app_id: "2rPljbm5WOxA9BCPXqy3VE5y-gzGzoHsz",
+          app_key: "SCoIn2Qp99a7ITtPhkAi6Chw",
+          placeholder: "说点什么吧~~~",
+          path: window.location.pathname,
+          avatar: "retro",
+          meta: ["nick","mail","link"],
+          pageSize: "10",
+          lang: "zh-CN",
+          highlight: true,
+          recordIP: false,
+          serverURLs: "",
+          master: "4cd096660a71d786a2a4d9d0bb4e8996",
+          friends: "b275f0fc8103331da645a878cf60f841",
+          tagMeta: ["博主","友人","访客"],
+        });
+      });
+    }
+    waitElementVisible('vcomments', loadValine);
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments
+      powered by Valine.</a></noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+  <div class="col-lg-7 mx-auto nopadding-md">
+    <div class="container custom post-content mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MySQL45个常用语句练习&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: true,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+      icon: "§"
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+<div class="text-center py-1">   
+  <div>
+    <span>Copyright © 2020</span></a>
+    <a href="http://sunzy.icu/" target="_blank" rel="nofollow noopener">
+     <span>my blog</span></a>    <br>
+  </div>
+<div>
+  <span id="timeDate">载入天数...</span>
+  <span id="times">载入时分秒...</span>
+  <script>
+  var now = new Date();
+  function createtime(){
+      var grt= new Date("03/02/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "🚀 for&nbsp"+dnum+"&nbspdays";  //此次自定义显示内容
+      document.getElementById("times").innerHTML = hnum + "&nbsphr&nbsp" + mnum + "&nbspmin&nbsp" + snum + "&nbspsec";
+  }  //此次自定义显示内容
+  setInterval("createtime()",250);
+  </script>
+</div>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

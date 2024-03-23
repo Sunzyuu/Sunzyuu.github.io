@@ -189,6 +189,51 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2022/09/09/XDU-choose-course/">XDU_choose_course</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/09/09/XDU-choose-course/">
+          
+          
+            
+          
+          XDU 抢课脚本项目地址
+1.登录认证1.1 密码加密首先在浏览器中在同一身份的位置进行手动登录可以发现如下的请求
+
+输入的密码已经被加密
+表单参数中多了一个execution参数
+
+
+在浏览器拦截的请求中有一个encrypt.js的文件，猜测是用于加密密码的
+
+该文件的代码很长，但是核心的加密过程如下
+function getAesString(data, key0, iv0) &#123;
+ 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-09 12:59" pubdate>
+              2022-09-09
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2022/07/29/Daily-Algorithm/">Daily_Algorithm</a>
       </h1>
 
@@ -651,72 +696,6 @@ Controller开发
               <a href="/tags/mybatis/">mybatis</a>
             
               <a href="/tags/servlet/">servlet</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2021/08/06/maliciousUrls/">商品评价情感分析</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/08/06/maliciousUrls/">
-          
-          
-            
-          
-          项目综述
-对给定的文本进行自动分类，对评价分成好评和差评
-
-支持批量检测，并进行可视化展示
-
-对所有评价进行词云展示
-
-
-数据获取爬虫获取JD的商品评价，这里主要针对智能手机的评价
-
-首先是分析如何获取到商品的评价
-
-对商品评价进行提取
-
-对获取的数据进行分类保存
-
-
-获取评价首先进行搜索，比如关键词 为手机
-self.startUrl = &quot;https://search.jd.com/
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-08-06 15:26" pubdate>
-              2021-08-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/python/">python</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">朴素贝叶斯</a>
             
           </div>
         
