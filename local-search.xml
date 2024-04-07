@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>nginx_proxy</title>
+    <link href="/2024/04/07/nginx-proxy/"/>
+    <url>/2024/04/07/nginx-proxy/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Nginx实现代理转发"><a href="#Nginx实现代理转发" class="headerlink" title="Nginx实现代理转发"></a>Nginx实现代理转发</h1><p>面试官问了一个问题，如何使用url实现访问一个非80端口的服务，当时靠着感觉说了nginx的反向代理的实现，后面查询了实现方法，nginx确实可以实现这个功能。</p><p>实现也很简单，配置一个ngnix的转发功能即可</p><pre><code class="hljs json">server <span class="hljs-punctuation">&#123;</span>    listen       <span class="hljs-number">80</span>;    #charset koi8-r;    #access_log  logs/host.access.log  main;    location / <span class="hljs-punctuation">&#123;</span>        proxy_pass http<span class="hljs-punctuation">:</span><span class="hljs-comment">//localhost:8099/;</span>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">&#125;</span></code></pre><h1 id="Nginx实现反向代理"><a href="#Nginx实现反向代理" class="headerlink" title="Nginx实现反向代理"></a>Nginx实现反向代理</h1><p>主要配置为<code>upstream</code>字段，其中配置了已经部署的服务器地址，默认的负载均衡规则是轮询，也可以配置为根据权重分配访问，还有IP_Hash规则。</p><pre><code class="hljs json">upstream myservice <span class="hljs-punctuation">&#123;</span>    server <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-punctuation">:</span><span class="hljs-number">8081</span>;    server <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-punctuation">:</span><span class="hljs-number">8083</span>;    # server <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-punctuation">:</span><span class="hljs-number">8847</span>;<span class="hljs-punctuation">&#125;</span>server <span class="hljs-punctuation">&#123;</span>    listen       <span class="hljs-number">80</span>;    server_name  localhost;    location / <span class="hljs-punctuation">&#123;</span>    proxy_pass http<span class="hljs-punctuation">:</span><span class="hljs-comment">//myservice;</span><span class="hljs-punctuation">&#125;</span></code></pre>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>nginx</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MySQL45个常用语句练习</title>
     <link href="/2024/03/22/msyql45/"/>
     <url>/2024/03/22/msyql45/</url>
