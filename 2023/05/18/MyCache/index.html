@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      9.3k 字
+      13.4k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      135
+      195
        分钟
     </span>
   
@@ -241,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：10 个月前
+                  本文最后更新于：1 分钟前
                 
               </p>
             
@@ -573,9 +573,10 @@ System.out.println(cache.keySet());</code></pre></div>
 <span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key key</span>
 <span class="hljs-comment">     * <span class="hljs-doctag">@param</span> timeInMills 时间戳</span>
 <span class="hljs-comment">     * <span class="hljs-doctag">@return</span> this</span>
-<span class="hljs-comment">    ICache&lt;K, V&gt; expireAt(final K key, final long timeInMills);</span>
-<span class="hljs-comment"></span>
-<span class="hljs-comment">&#125;</span></code></pre></div>
+<span class="hljs-comment">     */</span>
+    ICache&lt;K, V&gt; <span class="hljs-title function_">expireAt</span><span class="hljs-params">(<span class="hljs-keyword">final</span> K key, <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> timeInMills)</span>;
+
+&#125;</code></pre></div>
 
 <h3 id="ICacheExpire"><a href="#ICacheExpire" class="headerlink" title="ICacheExpire"></a>ICacheExpire</h3><p>定义缓存过期的处理结构</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ICacheExpire</span>&lt;K,V&gt; &#123;
@@ -853,6 +854,200 @@ System.out.println(cache.keySet());</code></pre></div>
         &#125;
     &#125;
 &#125;</code></pre></div>
+
+
+
+
+
+<h2 id="随机删除"><a href="#随机删除" class="headerlink" title="随机删除"></a>随机删除</h2><p>Redis内部维护一个定时任务，默认每秒运行10次（通过配置hz控制）。</p>
+<p>定时任务中删除过期键逻辑采用了自适应算法，根据键的过期比例、使用快慢两种速率模式回收键</p>
+<p>1）定时任务在每个数据库空间随机检查20个键，当发现过期时删除对应的键。</p>
+<p>2）如果超过检查数25%的键过期，循环执行回收逻辑直到不足25%或运行超时为止，慢模式下超时时间为25毫秒。</p>
+<p>3）如果之前回收键逻辑超时，则在Redis触发内部事件之前再次以快模式运行回收过期键任务，快模式下超时时间为1毫秒且2秒内只能运行1次。</p>
+<p>4）快慢两种模式内部删除逻辑相同，只是执行的超时时间不同。</p>
+<p>ps: 这里的快慢模式设计的也比较巧妙，根据过期信息的比例，调整对应的任务超时时间。</p>
+<p>这里的随机也非常重要，可以比较客观的清理掉过期信息，而不是从头遍历，导致后面的数据无法被访问</p>
+<h3 id="基本属性"><a href="#基本属性" class="headerlink" title="基本属性"></a>基本属性</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheExpireRandom</span>&lt;K,V&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ICacheExpire</span>&lt;K,V&gt; &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Log</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LogFactory.getLog(CacheExpireRandom.class);
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 单次清空的数量限制</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">COUNT_LIMIT</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 过期 map</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 空间换时间</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;K, Long&gt; expireMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 缓存实现</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 是否启用快模式</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">fastMode</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 线程执行类</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">EXECUTOR_SERVICE</span> <span class="hljs-operator">=</span> Executors.newSingleThreadScheduledExecutor();
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CacheExpireRandom</span><span class="hljs-params">(ICache&lt;K, V&gt; cache)</span> &#123;
+        <span class="hljs-built_in">this</span>.cache = cache;
+        <span class="hljs-built_in">this</span>.init();
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 初始化任务</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;
+        EXECUTOR_SERVICE.scheduleAtFixedRate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ExpireThreadRandom</span>(), <span class="hljs-number">10</span>, <span class="hljs-number">10</span>, TimeUnit.SECONDS);
+    &#125;
+
+&#125;</code></pre></div>
+
+<h3 id="定时任务"><a href="#定时任务" class="headerlink" title="定时任务"></a>定时任务</h3><p>这里与redis保持一致，支持fastMode</p>
+<p>实际上fastMode和慢模式的逻辑一样，只是超时的时间不同</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 定时执行任务</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExpireThreadRandom</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Runnable</span> &#123;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-comment">//1.判断是否为空</span>
+        <span class="hljs-keyword">if</span>(MapUtil.isEmpty(expireMap)) &#123;
+            log.info(<span class="hljs-string">&quot;expireMap 信息为空，直接跳过本次处理。&quot;</span>);
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-comment">//2. 是否启用快模式</span>
+        <span class="hljs-keyword">if</span>(fastMode) &#123;
+            expireKeys(<span class="hljs-number">10L</span>);
+        &#125;
+        <span class="hljs-comment">//3. 缓慢模式</span>
+        expireKeys(<span class="hljs-number">100L</span>);
+    &#125;
+&#125;</code></pre></div>
+
+<h3 id="过期信息核心实现"><a href="#过期信息核心实现" class="headerlink" title="过期信息核心实现"></a>过期信息核心实现</h3><p>执行过期时，首先会记录超时时间，用于超时时之间中断执行</p>
+<p>默认回复fastMode &#x3D; false，当执行超时的时候设置fastMode&#x3D;true</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 过期信息</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> timeoutMills 超时时间</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">expireKeys</span><span class="hljs-params">(<span class="hljs-keyword">final</span> <span class="hljs-type">long</span> timeoutMills)</span> &#123;
+    <span class="hljs-comment">// 设置超时时间 100ms</span>
+    <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">timeLimit</span> <span class="hljs-operator">=</span> System.currentTimeMillis() + timeoutMills;
+    <span class="hljs-comment">// 恢复 fastMode</span>
+    <span class="hljs-built_in">this</span>.fastMode = <span class="hljs-literal">false</span>;
+    <span class="hljs-comment">//2. 获取 key 进行处理</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;
+        <span class="hljs-comment">//2.1 返回判断</span>
+        <span class="hljs-keyword">if</span>(count &gt;= COUNT_LIMIT) &#123;
+            log.info(<span class="hljs-string">&quot;过期淘汰次数已经达到最大次数: &#123;&#125;，完成本次执行。&quot;</span>, COUNT_LIMIT);
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-keyword">if</span>(System.currentTimeMillis() &gt;= timeLimit) &#123;
+            <span class="hljs-built_in">this</span>.fastMode = <span class="hljs-literal">true</span>;
+            log.info(<span class="hljs-string">&quot;过期淘汰已经达到限制时间，中断本次执行，设置 fastMode=true;&quot;</span>);
+            <span class="hljs-keyword">return</span>;
+        &#125;
+        <span class="hljs-comment">//2.2 随机过期</span>
+        <span class="hljs-type">K</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> getRandomKey();
+        <span class="hljs-type">Long</span> <span class="hljs-variable">expireAt</span> <span class="hljs-operator">=</span> expireMap.get(key);
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">expireFlag</span> <span class="hljs-operator">=</span> expireKey(key, expireAt);
+        log.debug(<span class="hljs-string">&quot;key: &#123;&#125; 过期执行结果 &#123;&#125;&quot;</span>, key, expireFlag);
+        <span class="hljs-comment">//2.3 信息更新</span>
+        count++;
+    &#125;
+&#125;</code></pre></div>
+
+<h3 id="随机获取过期key"><a href="#随机获取过期key" class="headerlink" title="随机获取过期key"></a>随机获取过期key</h3><div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 随机获取一个 key 信息</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 随机返回的 keys</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> K <span class="hljs-title function_">getRandomKey</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> ThreadLocalRandom.current();
+    Set&lt;K&gt; keySet = expireMap.keySet();
+    List&lt;K&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(keySet);
+    <span class="hljs-type">int</span> <span class="hljs-variable">randomIndex</span> <span class="hljs-operator">=</span> random.nextInt(list.size());
+    <span class="hljs-keyword">return</span> list.get(randomIndex);
+&#125;</code></pre></div>
+
+<p>直接将所有的keys转换为list然后通过random获取一个元素</p>
+<p>但是存在一个缺点，<code>getRandomKey()</code> 方法为了获取一个随机的信息，代价还是太大了。如果 keys 的数量非常大，那么我们要创建一个 list，这个本身就是非常耗时的，而且空间复杂度直接翻倍。</p>
+<h4 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h4><p>1.避免空间浪费</p>
+<p>最简单的思路应该是避免list的创建</p>
+<p>我们所要的只是基于size的随机值，我们可以遍历获取</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">private</span> K <span class="hljs-title function_">getRandomKey2</span><span class="hljs-params">()</span> &#123;
+    <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> ThreadLocalRandom.current();
+    <span class="hljs-type">int</span> <span class="hljs-variable">randomIndex</span> <span class="hljs-operator">=</span> random.nextInt(expireMap.size());
+    <span class="hljs-comment">// 遍历 keys</span>
+    Iterator&lt;K&gt; iterator = expireMap.keySet().iterator();
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (iterator.hasNext()) &#123;
+        <span class="hljs-type">K</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> iterator.next();
+        <span class="hljs-keyword">if</span>(count == randomIndex) &#123;
+            <span class="hljs-keyword">return</span> key;
+        &#125;
+        count++;
+    &#125;
+    <span class="hljs-comment">// 正常逻辑不会到这里</span>
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheRuntimeException</span>(<span class="hljs-string">&quot;对应信息不存在&quot;</span>);
+&#125;</code></pre></div>
+
+<p>2.批量操作</p>
+<p>上述的方法避免了 list 的创建，同时也符合随机的条件。</p>
+<p>但是从头遍历到随机的 size 数值，这也是一个比较慢的过程（O(N) 时间复杂度）。</p>
+<p>如果我们取 100 次，悲观的话就是 100 * O(N)。</p>
+<p>我们可以运用批量的思想，比如一次取 100 个，降低时间复杂度：</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 批量获取多个 key 信息</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param</span> sizeLimit 大小限制</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@return</span> 随机返回的 keys</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 0.0.16</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">private</span> Set&lt;K&gt; <span class="hljs-title function_">getRandomKeyBatch</span><span class="hljs-params">(<span class="hljs-keyword">final</span> <span class="hljs-type">int</span> sizeLimit)</span> &#123;
+    <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> ThreadLocalRandom.current();
+    <span class="hljs-type">int</span> <span class="hljs-variable">randomIndex</span> <span class="hljs-operator">=</span> random.nextInt(expireMap.size());
+    <span class="hljs-comment">// 遍历 keys</span>
+    Iterator&lt;K&gt; iterator = expireMap.keySet().iterator();
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    Set&lt;K&gt; keySet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">while</span> (iterator.hasNext()) &#123;
+        <span class="hljs-comment">// 判断列表大小</span>
+        <span class="hljs-keyword">if</span>(keySet.size() &gt;= sizeLimit) &#123;
+            <span class="hljs-keyword">return</span> keySet;
+        &#125;
+        <span class="hljs-type">K</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> iterator.next();
+        <span class="hljs-comment">// index 向后的位置，全部放进来。</span>
+        <span class="hljs-keyword">if</span>(count &gt;= randomIndex) &#123;
+            keySet.add(key);
+        &#125;
+        count++;
+    &#125;
+    <span class="hljs-comment">// 正常逻辑不会到这里</span>
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheRuntimeException</span>(<span class="hljs-string">&quot;对应信息不存在&quot;</span>);
+&#125;</code></pre></div>
+
+
+
+
 
 <h1 id="创建代理对象"><a href="#创建代理对象" class="headerlink" title="创建代理对象"></a>创建代理对象</h1><h2 id="相关接口-2"><a href="#相关接口-2" class="headerlink" title="相关接口"></a>相关接口</h2><h3 id="ICacheProxy"><a href="#ICacheProxy" class="headerlink" title="ICacheProxy"></a>ICacheProxy</h3><p>因为后面要实现几种类型的代理对象，所以先抽象出一个接口，方便使用</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ICacheProxy</span> &#123;
@@ -1562,8 +1757,142 @@ System.out.println(cache.keySet());</code></pre></div>
 
 
 <h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><p>redis的持久化有两种RDB和AOF，由于项目中这两种方案的实现比较简陋，就不在此多介绍了</p>
-<p>可以看这篇</p>
-<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzUyNjE3OTAyMw==&mid=2247484394&idx=1&sn=b28bab43fbcbb716b1962a91eafaaddb&chksm=fa138c4acd64055cac562dc8ceaade6af5d51d5eda5a9f138837ab408b34a2b1b7e07750ad96&cur_album_id=1537245724881567745&scene=189#wechat_redirect">从零手写实现redis（三）内存数据如何重启不丢失？ (qq.com)</a></p>
+<h2 id="CachePresist"><a href="#CachePresist" class="headerlink" title="CachePresist"></a>CachePresist</h2><p>实现一个基于json的持久化，创建一个CachePresistDbJson实现ICachePresist接口，该类中需要有一个成员变量用于获取保存json文件的地址</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CachePersistDbJson</span>&lt;K,V&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ICachePersist</span>&lt;K,V&gt; &#123;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment">     * 数据库路径  </span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.8  </span>
+<span class="hljs-comment">     */</span>  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String dbPath;  
+  
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CachePersistDbJson</span><span class="hljs-params">(String dbPath)</span> &#123;  
+        <span class="hljs-built_in">this</span>.dbPath = dbPath;  
+    &#125;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment">     * 持久化  </span>
+<span class="hljs-comment">     * key长度 key+value  </span>
+<span class="hljs-comment">     * 第一个空格，获取 key 的长度，然后截取  </span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> cache 缓存  </span>
+<span class="hljs-comment">     */</span>  
+    <span class="hljs-meta">@Override</span>  
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">persist</span><span class="hljs-params">(ICache&lt;K, V&gt; cache)</span> &#123;  
+        Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet = cache.entrySet();  
+  
+        <span class="hljs-comment">// 创建文件  </span>
+        FileUtil.createFile(dbPath);  
+        <span class="hljs-comment">// 清空文件  </span>
+        FileUtil.truncate(dbPath);  
+  
+        <span class="hljs-keyword">for</span>(Map.Entry&lt;K,V&gt; entry : entrySet) &#123;  
+            <span class="hljs-type">K</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> entry.getKey();  
+            <span class="hljs-type">Long</span> <span class="hljs-variable">expireTime</span> <span class="hljs-operator">=</span> cache.expire().expireTime(key);  
+            PersistEntry&lt;K,V&gt; persistEntry = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PersistEntry</span>&lt;&gt;();  
+            persistEntry.setKey(key);  
+            persistEntry.setValue(entry.getValue());  
+            persistEntry.setExpire(expireTime);  
+  
+            <span class="hljs-type">String</span> <span class="hljs-variable">line</span> <span class="hljs-operator">=</span> JSON.toJSONString(persistEntry);  
+            FileUtil.write(dbPath, line, StandardOpenOption.APPEND);  
+        &#125;  
+    &#125;  
+  
+&#125;</code></pre></div>
+
+<h2 id="定时执行"><a href="#定时执行" class="headerlink" title="定时执行"></a>定时执行</h2><p>有了持久化策略，需要有触发方式，这里采用定时执行的方式</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InnerCachePersist</span>&lt;K,V&gt; &#123;  
+  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Log</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LogFactory.getLog(InnerCachePersist.class);  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment">     * 缓存信息  </span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.8  </span>
+<span class="hljs-comment">     */</span>  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment">     * 缓存持久化策略  </span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.8  </span>
+<span class="hljs-comment">     */</span>  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ICachePersist&lt;K,V&gt; persist;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment">     * 线程执行类  </span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.3  </span>
+<span class="hljs-comment">     */</span>  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">EXECUTOR_SERVICE</span> <span class="hljs-operator">=</span> Executors.newSingleThreadScheduledExecutor();  
+  
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">InnerCachePersist</span><span class="hljs-params">(ICache&lt;K, V&gt; cache, ICachePersist&lt;K, V&gt; persist)</span> &#123;  
+        <span class="hljs-built_in">this</span>.cache = cache;  
+        <span class="hljs-built_in">this</span>.persist = persist;  
+  
+        <span class="hljs-comment">// 初始化  </span>
+        <span class="hljs-built_in">this</span>.init();  
+    &#125;  
+  
+    <span class="hljs-comment">/**  </span>
+<span class="hljs-comment">     * 初始化  </span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@since</span> 0.0.8  </span>
+<span class="hljs-comment">     */</span>  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;  
+        EXECUTOR_SERVICE.scheduleAtFixedRate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Runnable</span>() &#123;  
+            <span class="hljs-meta">@Override</span>  
+            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">run</span><span class="hljs-params">()</span> &#123;  
+                <span class="hljs-keyword">try</span> &#123;  
+                    log.info(<span class="hljs-string">&quot;开始持久化缓存信息&quot;</span>);  
+                    persist.persist(cache);  
+                    log.info(<span class="hljs-string">&quot;完成持久化缓存信息&quot;</span>);  
+                &#125; <span class="hljs-keyword">catch</span> (Exception exception) &#123;  
+                    log.error(<span class="hljs-string">&quot;文件持久化异常&quot;</span>, exception);  
+                &#125;  
+            &#125;  
+        &#125;, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, TimeUnit.MINUTES);  
+    &#125;  
+  
+&#125;</code></pre></div>
+<p>这里需要注意是定时任务的实现方式，每隔一分钟执行一次</p>
+<h1 id="本地数据加载"><a href="#本地数据加载" class="headerlink" title="本地数据加载"></a>本地数据加载</h1><p>有了持久化策略，还要有加载策略。将持久化的json文件内容解析并存入cache中。实现过程也比较简单</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheLoadJSON</span>&lt;K, V&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ICacheLoad</span>&lt;K, V&gt; &#123;  
+  
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Log</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LogFactory.getLog(CacheLoadJSON.class);  
+  
+    <span class="hljs-keyword">private</span> String dbPath;  
+  
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CacheLoadJSON</span><span class="hljs-params">(String dbPath)</span> &#123;  
+        <span class="hljs-built_in">this</span>.dbPath = dbPath;  
+    &#125;  
+  
+    <span class="hljs-meta">@Override</span>  
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">load</span><span class="hljs-params">(ICache&lt;K, V&gt; cache)</span> &#123;  
+  
+        List&lt;String&gt; lines = FileUtil.readAllLines(dbPath);  
+        log.info(<span class="hljs-string">&quot;[load] 开始处理 path: &#123;&#125;&quot;</span>, dbPath);  
+        <span class="hljs-keyword">if</span>(CollectionUtil.isEmpty(lines))&#123;  
+            log.info(<span class="hljs-string">&quot;[load] path: &#123;&#125; 文件内容为空，直接返回&quot;</span>, dbPath);  
+            <span class="hljs-keyword">return</span>;  
+        &#125;  
+  
+        <span class="hljs-keyword">for</span> (String line : lines) &#123;  
+            <span class="hljs-keyword">if</span>(StringUtil.isEmpty(line))&#123;  
+                <span class="hljs-keyword">continue</span>;  
+            &#125;  
+  
+            <span class="hljs-comment">// 反序列化 将文件中的数据保存到cache中  </span>
+            PersistEntry&lt;K, V&gt; persistEntry = JSON.parseObject(line, PersistEntry.class);  
+            <span class="hljs-type">K</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> persistEntry.getKey();  
+            <span class="hljs-type">V</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> persistEntry.getValue();  
+            <span class="hljs-type">Long</span> <span class="hljs-variable">expireTime</span> <span class="hljs-operator">=</span> persistEntry.getExpireTime();  
+  
+            cache.put(key, value);  
+            <span class="hljs-keyword">if</span>(!ObjectUtil.isEmpty(expireTime))&#123;  
+                cache.expireAt(key, expireTime);  
+            &#125;  
+        &#125;  
+    &#125;  
+&#125;</code></pre></div>
+
+<p>这里只完成了类似于redis的rdb持久化，其中可优化的点还有很多，比如rdb文件的压缩、格式的定义 、CRC校验等</p>
 <h1 id="数据删除监听器"><a href="#数据删除监听器" class="headerlink" title="数据删除监听器"></a>数据删除监听器</h1><p>当 有数据被从cache中删除时，在控制台中打印出详细信息，这就涉及到两种删除操作</p>
 <ul>
 <li>当cache容量已满，数据被淘汰</li>
@@ -1964,7 +2293,7 @@ System.out.println(cache.keySet());</code></pre></div>
 <p>链表满只有一种场景，那就是添加元素的时候，也就是执行 put(key, value) 的时候。</p>
 <p>直接删除对应的 key 即可。</p>
 <h2 id="相关接口-5"><a href="#相关接口-5" class="headerlink" title="相关接口"></a>相关接口</h2><p>和FIFO的接口保持一致，调用地方不变</p>
-<p>为了后续的LRU&#x2F;LRU实现，新增remove&#x2F;update两个方法</p>
+<p>为了后续的LRU实现，新增remove&#x2F;update两个方法</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ICacheEvict</span>&lt;K, V&gt; &#123;
 
     <span class="hljs-comment">/**</span>
@@ -1992,8 +2321,6 @@ System.out.println(cache.keySet());</code></pre></div>
 <h2 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="CacheEvictLRU"><a href="#CacheEvictLRU" class="headerlink" title="CacheEvictLRU"></a>CacheEvictLRU</h3><p>直接基于 LinkedList 实现：</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 丢弃策略-LRU 最近最少使用</span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@author</span> binbin.hou</span>
-<span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 0.0.11</span>
 <span class="hljs-comment"> */</span>
 <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheEvictLRU</span>&lt;K,V&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ICacheEvict</span>&lt;K,V&gt; &#123;
 
@@ -2048,7 +2375,351 @@ System.out.println(cache.keySet());</code></pre></div>
 <li>update(): 做了一点简化，认为只要是访问就是删除，然后插入到队首</li>
 <li>remove()：删除就是直接从链表中删除</li>
 </ul>
-<h3 id="CacheInterceptor"><a href="#CacheInterceptor" class="headerlink" title="CacheInterceptor"></a>CacheInterceptor</h3><p>方法已经写好，但是什么方法需要调用，如何调用？</p>
+<p>缺点：</p>
+<p>插入数据或者获取数据时需要扫描整个链表，每次确认元素是否存在，都要消耗O(n)的时间复杂度查询。</p>
+<h3 id="CacheEvictLruDoubleListMap"><a href="#CacheEvictLruDoubleListMap" class="headerlink" title="CacheEvictLruDoubleListMap"></a>CacheEvictLruDoubleListMap</h3><p>基于双向链表和Hash表改进需要扫描链表的缺陷，配合hash表，将数据和链表的节点形成映射，将插入操作和读取操作的时间复杂度从O(n)降至O(1)</p>
+<ul>
+<li>双向链表保持不变</li>
+<li>Map中key对应的值放双向链表的节点信息</li>
+</ul>
+<h4 id="双向链表的节点定义"><a href="#双向链表的节点定义" class="headerlink" title="双向链表的节点定义"></a>双向链表的节点定义</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DoubleListNode</span>&lt;K, V&gt;&#123;
+
+    <span class="hljs-keyword">private</span> K key;
+
+    <span class="hljs-keyword">private</span> V value;
+
+    <span class="hljs-keyword">private</span> DoubleListNode&lt;K, V&gt; pre;
+
+    <span class="hljs-keyword">private</span> DoubleListNode&lt;K, V&gt; next;
+
+    <span class="hljs-keyword">public</span> K <span class="hljs-title function_">key</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> key;
+    &#125;
+
+    <span class="hljs-keyword">public</span> DoubleListNode&lt;K, V&gt; <span class="hljs-title function_">key</span><span class="hljs-params">(K key)</span> &#123;
+        <span class="hljs-built_in">this</span>.key = key;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> V <span class="hljs-title function_">value</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> value;
+    &#125;
+
+    <span class="hljs-keyword">public</span> DoubleListNode&lt;K, V&gt; <span class="hljs-title function_">value</span><span class="hljs-params">(V value)</span> &#123;
+        <span class="hljs-built_in">this</span>.value = value;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> DoubleListNode&lt;K, V&gt; <span class="hljs-title function_">pre</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> pre;
+    &#125;
+
+    <span class="hljs-keyword">public</span> DoubleListNode&lt;K, V&gt; <span class="hljs-title function_">pre</span><span class="hljs-params">(DoubleListNode&lt;K, V&gt; pre)</span> &#123;
+        <span class="hljs-built_in">this</span>.pre = pre;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;
+    &#125;
+
+    <span class="hljs-keyword">public</span> DoubleListNode&lt;K, V&gt; <span class="hljs-title function_">next</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-keyword">return</span> next;
+    &#125;
+
+    <span class="hljs-keyword">public</span> DoubleListNode&lt;K, V&gt; <span class="hljs-title function_">next</span><span class="hljs-params">(DoubleListNode&lt;K, V&gt; next)</span> &#123;
+        <span class="hljs-built_in">this</span>.next = next;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>;
+    &#125;
+&#125;
+</code></pre></div>
+
+<h4 id="LRU缓存实现"><a href="#LRU缓存实现" class="headerlink" title="LRU缓存实现"></a>LRU缓存实现</h4><div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheEvictLruDoubleListMap</span>&lt;K, V&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractCacheEvict</span>&lt;K, V&gt;&#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Log</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LogFactory.getLog(CacheEvictLruDoubleListMap.class);
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 头节点</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> DoubleListNode&lt;K, V&gt; head;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 尾节点</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> DoubleListNode&lt;K, V&gt; tail;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * map 信息</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * key: 元素信息</span>
+<span class="hljs-comment">     * value: 元素在 list 中对应的节点信息</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> Map&lt;K, DoubleListNode&lt;K, V&gt;&gt; indexMap;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CacheEvictLruDoubleListMap</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-built_in">this</span>.indexMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-built_in">this</span>.head = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DoubleListNode</span>&lt;&gt;();
+        <span class="hljs-built_in">this</span>.tail = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DoubleListNode</span>&lt;&gt;();
+
+        <span class="hljs-built_in">this</span>.head.next(<span class="hljs-built_in">this</span>.tail);
+        <span class="hljs-built_in">this</span>.tail.pre(<span class="hljs-built_in">this</span>.head);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">protected</span> ICacheEntry&lt;K, V&gt; <span class="hljs-title function_">doEvict</span><span class="hljs-params">(ICacheEvictContext&lt;K, V&gt; context)</span> &#123;
+        ICacheEntry&lt;K, V&gt; result = <span class="hljs-literal">null</span>;
+        ICache&lt;K, V&gt; cache = context.cache();
+        <span class="hljs-comment">// 超出限制 移除队尾元素</span>
+        <span class="hljs-keyword">if</span>(cache.size() &gt;= context.size())&#123;
+            <span class="hljs-comment">// 获取队尾元素的前一个元素</span>
+            DoubleListNode&lt;K, V&gt; tailPre = <span class="hljs-built_in">this</span>.tail.pre();
+            <span class="hljs-keyword">if</span>(tailPre == <span class="hljs-built_in">this</span>.head)&#123;
+                log.error(<span class="hljs-string">&quot;当前列表为空，无法进行删除&quot;</span>);
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;不可删除头结点&quot;</span>);
+            &#125;
+
+            <span class="hljs-type">K</span> <span class="hljs-variable">evictKey</span> <span class="hljs-operator">=</span> tailPre.key();
+            <span class="hljs-type">V</span> <span class="hljs-variable">removeValue</span> <span class="hljs-operator">=</span> cache.remove(evictKey);
+            <span class="hljs-comment">// 同时删除双向链表中的元素</span>
+            removeKey(evictKey);
+            result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheEntry</span>&lt;&gt;(evictKey, removeValue);
+        &#125;
+
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 放入元素</span>
+<span class="hljs-comment">     *  （1） 删除已经存在的元素</span>
+<span class="hljs-comment">     *  （2） 新元素放到头部</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateKey</span><span class="hljs-params">(K key)</span> &#123;
+        <span class="hljs-comment">// 先删除元素</span>
+        <span class="hljs-built_in">this</span>.removeKey(key);
+        <span class="hljs-comment">// 给添加的key创建一个节点</span>
+        DoubleListNode&lt;K, V&gt; newNode = <span class="hljs-keyword">new</span> <span class="hljs-title class_">DoubleListNode</span>&lt;&gt;();
+        newNode.key(key);
+
+        <span class="hljs-comment">// 获取head的next节点</span>
+        DoubleListNode&lt;K, V&gt; next = <span class="hljs-built_in">this</span>.head.next();
+        <span class="hljs-comment">// head的next指向新节点</span>
+        <span class="hljs-built_in">this</span>.head.next(newNode);
+        <span class="hljs-comment">// 新节点的pre指向head</span>
+        newNode.pre(<span class="hljs-built_in">this</span>.head);
+        <span class="hljs-comment">// next的pre指向新节点</span>
+        next.pre(newNode);
+        <span class="hljs-comment">// 新的节点的next指向next</span>
+        newNode.next(next);
+
+        <span class="hljs-comment">//将节点信息插入到map中</span>
+        indexMap.put(key, newNode);
+
+    &#125;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 移除元素</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * 1. 获取 map 中的元素</span>
+<span class="hljs-comment">     * 2. 不存在直接返回，存在执行以下步骤：</span>
+<span class="hljs-comment">     * 2.1 删除双向链表中的元素</span>
+<span class="hljs-comment">     * 2.2 删除 map 中的元素</span>
+<span class="hljs-comment">     *</span>
+<span class="hljs-comment">     * <span class="hljs-doctag">@param</span> key</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeKey</span><span class="hljs-params">(K key)</span> &#123;
+        DoubleListNode&lt;K, V&gt; node = indexMap.get(key);
+        <span class="hljs-keyword">if</span>(ObjectUtil.isEmpty(node))&#123;
+            <span class="hljs-keyword">return</span>;
+        &#125;
+
+        DoubleListNode&lt;K, V&gt; pre = node.pre();
+        DoubleListNode&lt;K, V&gt; next = node.next();
+
+        <span class="hljs-comment">// 从链表中摘除该节点</span>
+        pre.next(next);
+        next.pre(pre);
+
+        <span class="hljs-comment">// 删除map中node节点</span>
+        <span class="hljs-built_in">this</span>.indexMap.remove(key);
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>这样就实现了获取节点的时间复杂度为O(1)</p>
+<h3 id="基于LinkedHashMap"><a href="#基于LinkedHashMap" class="headerlink" title="基于LinkedHashMap"></a>基于LinkedHashMap</h3><p>LinkedHashMap 本身就是对于 list 和 hashMap 的一种结合的数据结构，我们可以直接使用 jdk 中 LinkedHashMap 去实现</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LRUCache</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">LinkedHashMap</span> &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> capacity;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">LRUCache</span><span class="hljs-params">(<span class="hljs-type">int</span> capacity)</span> &#123;
+        <span class="hljs-comment">// 注意这里将LinkedHashMap的accessOrder设为true</span>
+        <span class="hljs-built_in">super</span>(<span class="hljs-number">16</span>, <span class="hljs-number">0.75f</span>, <span class="hljs-literal">true</span>);
+        <span class="hljs-built_in">this</span>.capacity = capacity;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">removeEldestEntry</span><span class="hljs-params">(Map.Entry eldest)</span> &#123;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.size() &gt;= capacity;
+    &#125;
+&#125;</code></pre></div>
+
+<p>项目中的实现稍微复杂一些</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheEvictLruLinkedHashMap</span>&lt;K, V&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">LinkedHashMap</span>&lt;K,V&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ICacheEvict</span>&lt;K,V&gt; &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Log</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LogFactory.getLog(CacheEvictLruLinkedHashMap.class);
+
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 是否移除标识</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">removeFlag</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 最旧的一个元素</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> Map.Entry&lt;K, V&gt; eldest = <span class="hljs-literal">null</span>;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CacheEvictLruLinkedHashMap</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-built_in">super</span>(<span class="hljs-number">16</span>, <span class="hljs-number">0.75f</span>, <span class="hljs-literal">true</span>);
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> ICacheEntry&lt;K, V&gt; <span class="hljs-title function_">evict</span><span class="hljs-params">(ICacheEvictContext&lt;K, V&gt; context)</span> &#123;
+        ICacheEntry&lt;K, V&gt; result = <span class="hljs-literal">null</span>;
+        <span class="hljs-keyword">final</span> ICache&lt;K,V&gt; cache = context.cache();
+        <span class="hljs-comment">// 超过限制，移除队尾的元素</span>
+        <span class="hljs-keyword">if</span>(cache.size() &gt;= context.size()) &#123;
+            removeFlag = <span class="hljs-literal">true</span>;
+
+            <span class="hljs-comment">// 执行 put 操作</span>
+            <span class="hljs-built_in">super</span>.put(context.key(), <span class="hljs-literal">null</span>);
+
+            <span class="hljs-comment">// 构建淘汰的元素</span>
+            <span class="hljs-type">K</span> <span class="hljs-variable">evictKey</span> <span class="hljs-operator">=</span> eldest.getKey();
+            <span class="hljs-comment">// 从缓存中移除</span>
+            <span class="hljs-type">V</span> <span class="hljs-variable">evictValue</span> <span class="hljs-operator">=</span> cache.remove(evictKey);
+            result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheEntry</span>&lt;&gt;(evictKey, evictValue);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            removeFlag = <span class="hljs-literal">false</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">removeEldestEntry</span><span class="hljs-params">(Map.Entry&lt;K, V&gt; eldest)</span> &#123;
+        <span class="hljs-built_in">this</span>.eldest = eldest;
+        <span class="hljs-keyword">return</span> removeFlag;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateKey</span><span class="hljs-params">(K key)</span> &#123;
+        <span class="hljs-built_in">super</span>.put(key, <span class="hljs-literal">null</span>);
+    &#125;
+
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeKey</span><span class="hljs-params">(K key)</span> &#123;
+        <span class="hljs-built_in">super</span>.remove(key);
+    &#125;
+&#125;
+</code></pre></div>
+
+
+
+<p>LRU-2</p>
+<p>当存在热点数据时，LRU的效率很好，但是批量操作会导致LRU的命中率急剧下降，缓存污染的情况比较严重</p>
+<p>LRU-K中的K代表最近使用的次数，因此LRU可以认为是LRU-1。</p>
+<p>LRU-K的主要目的是为了解决LRU算法“缓存污染”的问题，其核心思想是将“最近使用过1次”的判断标准扩展为“最近使用过K次”</p>
+<p>相比LRU，LRU-K需要多维护一个队列，用于记录所有缓存数据被访问的历史。只有当数据的访问次数达到K次的时候，才将数据放入缓存。</p>
+<p>当需要淘汰数据时，LRU-K会淘汰第K次访问时间距当前时间最大的数据。</p>
+<p>数据第一次被访问时，加入到历史访问列表，如果数据在访问历史列表中没有达到K次访问，则按照一定的规则（FIFO,LRU）淘汰；</p>
+<p>当访问历史队列中的数据访问次数达到K次后，将数据索引从历史队列中删除，将数据移到缓存队列中，并缓存数据，缓存队列重新按照时间排序；</p>
+<p>缓存数据队列中被再次访问后，重新排序，需要淘汰数据时，淘汰缓存队列中排在末尾的数据，即“淘汰倒数K次访问离现在最久的数据”。</p>
+<p>LRU-K具有LRU的优点，同时还能避免LRU的缺点，实际应用中LRU-2是综合最优的选择</p>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheEvictLru2</span>&lt;K, V&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractCacheEvict</span>&lt;K, V&gt; &#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-type">Log</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LogFactory.getLog(CacheEvictLru2.class);
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 访问一次的key</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> LruMapDoubleList&lt;K, V&gt; firstLruMap;
+
+    <span class="hljs-comment">/**</span>
+<span class="hljs-comment">     * 访问一次以上的key</span>
+<span class="hljs-comment">     */</span>
+    <span class="hljs-keyword">private</span> LruMapDoubleList&lt;K, V&gt; moreLruMap;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CacheEvictLru2</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-built_in">this</span>.firstLruMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LruMapDoubleList</span>&lt;&gt;();
+        <span class="hljs-built_in">this</span>.moreLruMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LruMapDoubleList</span>&lt;&gt;();
+    &#125;
+
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">protected</span> ICacheEntry&lt;K, V&gt; <span class="hljs-title function_">doEvict</span><span class="hljs-params">(ICacheEvictContext&lt;K, V&gt; context)</span> &#123;
+        ICacheEntry&lt;K, V&gt; result = <span class="hljs-literal">null</span>;
+        ICache&lt;K, V&gt; cache = context.cache();
+        <span class="hljs-keyword">if</span>(cache.size() &gt;= context.size())&#123;
+            ICacheEntry&lt;K, V&gt; evictEntry = <span class="hljs-literal">null</span>;
+            <span class="hljs-keyword">if</span>(!firstLruMap.isEmpty())&#123;
+                evictEntry = firstLruMap.removeEldest();
+                log.debug(<span class="hljs-string">&quot;从 firstLruMap 中淘汰数据：&#123;&#125;&quot;</span>, evictEntry.key());
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                evictEntry = moreLruMap.removeEldest();
+                log.debug(<span class="hljs-string">&quot;从 moreLruMap 中淘汰数据：&#123;&#125;&quot;</span>, evictEntry.key());
+            &#125;
+            <span class="hljs-comment">// 缓存移除</span>
+            <span class="hljs-keyword">final</span> <span class="hljs-type">K</span> <span class="hljs-variable">evictKey</span> <span class="hljs-operator">=</span> evictEntry.key();
+            <span class="hljs-type">V</span> <span class="hljs-variable">evictValue</span> <span class="hljs-operator">=</span>  cache.remove(evictKey);
+            result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheEntry</span>&lt;&gt;(evictKey, evictValue);
+        &#125;
+        <span class="hljs-keyword">return</span> result;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateKey</span><span class="hljs-params">(K key)</span> &#123;
+        <span class="hljs-keyword">if</span>(moreLruMap.contains(key) || firstLruMap.contains(key)) &#123;
+            <span class="hljs-built_in">this</span>.removeKey(key);
+            moreLruMap.updateKey(key);
+            log.debug(<span class="hljs-string">&quot;key: &#123;&#125; 多次访问，加入到 moreLruMap 中&quot;</span>, key);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            firstLruMap.updateKey(key);
+            log.debug(<span class="hljs-string">&quot;key: &#123;&#125; 第一次访问，加入到 firstLruMap 中&quot;</span>, key);
+        &#125;
+    &#125;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeKey</span><span class="hljs-params">(K key)</span> &#123;
+        <span class="hljs-keyword">if</span>(moreLruMap.contains(key))&#123;
+            moreLruMap.removeKey(key);
+            log.debug(<span class="hljs-string">&quot;key: &#123;&#125; 从 moreLruMap 中移除&quot;</span>, key);
+        &#125; <span class="hljs-keyword">else</span> &#123;
+            firstLruMap.removeKey(key);
+            log.debug(<span class="hljs-string">&quot;key: &#123;&#125; 从 firstLruMap 中移除&quot;</span>, key);
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+<p>在doEvict中，当需要淘汰数据时，优先从firstLruMap中删除数据，如果为空则从moreLruMap中删除数据</p>
+<p>在removeKey()中，如果key在moreLruMap中，则从moreLruMap中删除，否则从firstLruMap中删除</p>
+<p>在UpdateKey()中</p>
+<ul>
+<li>如果moreLruMap中已经存在key，则先删除key，再插入key</li>
+<li>如果firstLruMap中已经存在，则处理firstLruMap队列，先从firstLruMap中删除，插入到moreLruMap队列中</li>
+<li>如果key不在firstLruMap和moreLruMap中，说明是新元素，直接插入到firstLruMap的开始即可</li>
+</ul>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>对于LRU算法的改进主要有两点</p>
+<ul>
+<li>性能的改进，从O(N)优化到了O(1)</li>
+<li>批量操作的改进，避免了缓存污染</li>
+</ul>
+<h3 id="LFU"><a href="#LFU" class="headerlink" title="LFU"></a>LFU</h3><p>LFU是最近最不常用，是一种基于访问频次的一种算法，所以需要额外的空间存储数据访问的次数。</p>
+<h4 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a><strong>核心思想</strong></h4><p>如果一个数据在最近一段时间内使用次数很少，那么在将来一段时间被使用的可能性也很小</p>
+<h4 id="O-N-的删除"><a href="#O-N-的删除" class="headerlink" title="O(N) 的删除"></a>O(N) 的删除</h4><p>为了能够淘汰最少使用的数据，个人第一直觉就是直接一个 <code>HashMap&lt;String, Interger&gt;</code>, String 对应 key 信息，Integer 对应次数。</p>
+<p>每次访问到就去+1，设置和读取的时间复杂度都是 O(1)；不过删除就比较麻烦了，需要全部遍历对比，时间复杂度为 O(n);</p>
+<h4 id="O-logn-的删除"><a href="#O-logn-的删除" class="headerlink" title="O(logn) 的删除"></a>O(logn) 的删除</h4><p>另外还有一种实现思路就是利用小顶堆+hashmap，小顶堆插入、删除操作都能达到O(logn)时间复杂度，因此效率相比第一种实现方法更加高效。比如 TreeMap。</p>
+<h4 id="O-1-的删除"><a href="#O-1-的删除" class="headerlink" title="O(1) 的删除"></a>O(1) 的删除</h4><h3 id="CacheInterceptor"><a href="#CacheInterceptor" class="headerlink" title="CacheInterceptor"></a>CacheInterceptor</h3><p>方法已经写好，但是什么方法需要调用，如何调用？</p>
 <p>这里还是基于注解的实现</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 是否执行驱除更新</span>
@@ -2059,8 +2730,14 @@ System.out.println(cache.keySet());</code></pre></div>
 <span class="hljs-type">boolean</span> <span class="hljs-title function_">evict</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-literal">false</span>;</code></pre></div>
 
 <h3 id="cache-1"><a href="#cache-1" class="headerlink" title="cache"></a>cache</h3><p>上面思考中，什么是缓存命中，说明了哪些方法需要添加注释</p>
+<ul>
+<li>get()</li>
+<li>containsKey()</li>
+<li>put()</li>
+<li>remove()</li>
+</ul>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-meta">@Override</span>
-<span class="hljs-meta">@CacheInterceptor(refresh = true, evict = true)</span>
+<span class="hljs-meta">@CacheInterceptor(evict = true)</span>
 <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">containsKey</span><span class="hljs-params">(Object key)</span> &#123;
     <span class="hljs-keyword">return</span> map.containsKey(key);
 &#125;
@@ -2086,6 +2763,10 @@ System.out.println(cache.keySet());</code></pre></div>
 <span class="hljs-keyword">public</span> V <span class="hljs-title function_">remove</span><span class="hljs-params">(Object key)</span> &#123;
     <span class="hljs-keyword">return</span> map.remove(key);
 &#125;</code></pre></div>
+
+
+
+
 
 <h2 id="注解驱逐拦截器实现"><a href="#注解驱逐拦截器实现" class="headerlink" title="注解驱逐拦截器实现"></a>注解驱逐拦截器实现</h2><p>执行顺序：放在方法之后更新，不然每次当前操作的 key 都会被放在最前面。</p>
 <div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheInterceptorEvict</span>&lt;K,V&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ICacheInterceptor</span>&lt;K, V&gt; &#123;

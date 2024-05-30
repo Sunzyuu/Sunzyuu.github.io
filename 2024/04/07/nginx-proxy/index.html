@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="sunzy">
   <meta name="keywords" content="">
-  <title>nginx_proxy - 一路走到黑</title>
+  <title>面试题目 - 一路走到黑</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      203 字
+      1.1k 字
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      14
        分钟
     </span>
   
@@ -237,16 +237,16 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">nginx_proxy</h1>
+            <h1 style="display: none">面试题目</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：几秒前
+                  本文最后更新于：1 个月前
                 
               </p>
             
             <div class="markdown-body" id="post-body">
-              <h1 id="Nginx实现代理转发"><a href="#Nginx实现代理转发" class="headerlink" title="Nginx实现代理转发"></a>Nginx实现代理转发</h1><p>面试官问了一个问题，如何使用url实现访问一个非80端口的服务，当时靠着感觉说了nginx的反向代理的实现，后面查询了实现方法，nginx确实可以实现这个功能。</p>
+              <h1 id="使用url实现访问一个非80端口的服务"><a href="#使用url实现访问一个非80端口的服务" class="headerlink" title="使用url实现访问一个非80端口的服务"></a>使用url实现访问一个非80端口的服务</h1><h2 id="Nginx实现代理转发"><a href="#Nginx实现代理转发" class="headerlink" title="Nginx实现代理转发"></a>Nginx实现代理转发</h2><p>面试官问了一个问题，如何，当时靠着感觉说了nginx的反向代理的实现，后面查询了实现方法，nginx确实可以实现这个功能。</p>
 <p>实现也很简单，配置一个ngnix的转发功能即可</p>
 <div class="hljs"><pre><code class="hljs json">server <span class="hljs-punctuation">&#123;</span>
     listen       <span class="hljs-number">80</span>;
@@ -257,7 +257,7 @@
     <span class="hljs-punctuation">&#125;</span>
 <span class="hljs-punctuation">&#125;</span></code></pre></div>
 
-<h1 id="Nginx实现反向代理"><a href="#Nginx实现反向代理" class="headerlink" title="Nginx实现反向代理"></a>Nginx实现反向代理</h1><p>主要配置为<code>upstream</code>字段，其中配置了已经部署的服务器地址，默认的负载均衡规则是轮询，也可以配置为根据权重分配访问，还有IP_Hash规则。</p>
+<h2 id="Nginx实现反向代理"><a href="#Nginx实现反向代理" class="headerlink" title="Nginx实现反向代理"></a>Nginx实现反向代理</h2><p>主要配置为<code>upstream</code>字段，其中配置了已经部署的服务器地址，默认的负载均衡规则是轮询，也可以配置为根据权重分配访问，还有IP_Hash规则。</p>
 <div class="hljs"><pre><code class="hljs json">upstream myservice <span class="hljs-punctuation">&#123;</span>
     server <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-punctuation">:</span><span class="hljs-number">8081</span>;
     server <span class="hljs-number">127.0</span><span class="hljs-number">.0</span><span class="hljs-number">.1</span><span class="hljs-punctuation">:</span><span class="hljs-number">8083</span>;
@@ -272,6 +272,97 @@ server <span class="hljs-punctuation">&#123;</span>
     proxy_pass http<span class="hljs-punctuation">:</span><span class="hljs-comment">//myservice;</span>
 <span class="hljs-punctuation">&#125;</span></code></pre></div>
 
+<h1 id="限流算法–保证api每秒钟只能被访问10次"><a href="#限流算法–保证api每秒钟只能被访问10次" class="headerlink" title="限流算法–保证api每秒钟只能被访问10次"></a>限流算法–保证api每秒钟只能被访问10次</h1><p>可以使用令牌桶算法实现</p>
+<ul>
+<li>令牌的生成：系统以固定的速率向令牌桶中添加令牌</li>
+<li>令牌的消耗：每个传入的请求或操作需要从令牌桶中取出一个令牌才能继续执行。如果桶中没有令牌，则请求必须等待直到桶中有可用的令牌</li>
+<li>令牌的限制：令牌桶中的数量不能超过10个，保证任何时间传输的峰值速率不会超出预设的上限</li>
+</ul>
+<div class="hljs"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.concurrent.Semaphore;
+<span class="hljs-keyword">import</span> java.util.concurrent.TimeUnit;
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RateLimiter</span> &#123;
+    <span class="hljs-keyword">private</span> Semaphore semaphore;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> maxPermits;
+    <span class="hljs-keyword">private</span> TimeUnit timePeriod;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> rateLimitRefreshPeriod;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> lastRefreshTime;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RateLimiter</span><span class="hljs-params">(<span class="hljs-type">int</span> maxPermits, TimeUnit timePeriod)</span> &#123;
+        <span class="hljs-comment">// 信号量</span>
+        <span class="hljs-built_in">this</span>.semaphore = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(maxPermits);
+        <span class="hljs-comment">// 单位时间内的最大访问次数</span>
+        <span class="hljs-built_in">this</span>.maxPermits = maxPermits;
+        <span class="hljs-comment">// 时间单位</span>
+        <span class="hljs-built_in">this</span>.timePeriod = timePeriod;
+        <span class="hljs-comment">// 刷新的周期1s</span>
+        <span class="hljs-built_in">this</span>.rateLimitRefreshPeriod = timePeriod.toMillis(<span class="hljs-number">1</span>);
+        <span class="hljs-built_in">this</span>.lastRefreshTime = System.currentTimeMillis();
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryAcquire</span><span class="hljs-params">()</span> &#123;
+        refreshPermits();
+        <span class="hljs-keyword">return</span> semaphore.tryAcquire();
+    &#125;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">refreshPermits</span><span class="hljs-params">()</span> &#123;
+        <span class="hljs-type">long</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> System.currentTimeMillis();
+        <span class="hljs-comment">// 如果当前时间与最后更新时间间隔超过了刷新周期，则向令牌桶中添加令牌</span>
+        <span class="hljs-keyword">if</span> (now - lastRefreshTime &gt; rateLimitRefreshPeriod) &#123;
+            <span class="hljs-comment">// 向令牌桶中添加新的令牌</span>
+            semaphore.release(maxPermits - semaphore.availablePermits());
+            <span class="hljs-comment">// 更新最后的刷新时间</span>
+            lastRefreshTime = now;
+        &#125;
+    &#125;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> InterruptedException &#123;
+        <span class="hljs-type">RateLimiter</span> <span class="hljs-variable">rateLimiter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RateLimiter</span>(<span class="hljs-number">10</span>, TimeUnit.SECONDS);
+
+        <span class="hljs-comment">// 模拟请求</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++) &#123;
+            <span class="hljs-keyword">if</span> (rateLimiter.tryAcquire()) &#123;
+                System.out.println(<span class="hljs-string">&quot;Request &quot;</span> + i + <span class="hljs-string">&quot; is allowed at &quot;</span> + System.currentTimeMillis());
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                System.out.println(<span class="hljs-string">&quot;Request &quot;</span> + i + <span class="hljs-string">&quot; is denied at &quot;</span> + System.currentTimeMillis());
+            &#125;
+            Thread.sleep(<span class="hljs-number">50</span>); <span class="hljs-comment">// 模拟请求间隔时间</span>
+        &#125;
+    &#125;
+&#125;
+</code></pre></div>
+
+
+
+<div class="hljs"><pre><code class="hljs dns">第<span class="hljs-number">0</span>请求成功, 剩余令牌数量<span class="hljs-number">9</span> 当前时间：<span class="hljs-number">1713681644849</span>
+第<span class="hljs-number">1</span>请求成功, 剩余令牌数量<span class="hljs-number">8</span> 当前时间：<span class="hljs-number">1713681644904</span>
+第<span class="hljs-number">2</span>请求成功, 剩余令牌数量<span class="hljs-number">7</span> 当前时间：<span class="hljs-number">1713681644967</span>
+第<span class="hljs-number">3</span>请求成功, 剩余令牌数量<span class="hljs-number">6</span> 当前时间：<span class="hljs-number">1713681645030</span>
+第<span class="hljs-number">4</span>请求成功, 剩余令牌数量<span class="hljs-number">5</span> 当前时间：<span class="hljs-number">1713681645092</span>
+第<span class="hljs-number">5</span>请求成功, 剩余令牌数量<span class="hljs-number">4</span> 当前时间：<span class="hljs-number">1713681645154</span>
+第<span class="hljs-number">6</span>请求成功, 剩余令牌数量<span class="hljs-number">3</span> 当前时间：<span class="hljs-number">1713681645217</span>
+第<span class="hljs-number">7</span>请求成功, 剩余令牌数量<span class="hljs-number">2</span> 当前时间：<span class="hljs-number">1713681645279</span>
+第<span class="hljs-number">8</span>请求成功, 剩余令牌数量<span class="hljs-number">1</span> 当前时间：<span class="hljs-number">1713681645341</span>
+第<span class="hljs-number">9</span>请求成功, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645404</span>
+第<span class="hljs-number">10</span>请求失败, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645465</span>
+第<span class="hljs-number">11</span>请求失败, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645527</span>
+第<span class="hljs-number">12</span>请求失败, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645591</span>
+第<span class="hljs-number">13</span>请求失败, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645653</span>
+第<span class="hljs-number">14</span>请求失败, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645714</span>
+第<span class="hljs-number">15</span>请求失败, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645776</span>
+第<span class="hljs-number">16</span>请求失败, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681645837</span>
+第<span class="hljs-number">17</span>请求成功, 剩余令牌数量<span class="hljs-number">9</span> 当前时间：<span class="hljs-number">1713681645899</span>
+第<span class="hljs-number">18</span>请求成功, 剩余令牌数量<span class="hljs-number">8</span> 当前时间：<span class="hljs-number">1713681645962</span>
+第<span class="hljs-number">19</span>请求成功, 剩余令牌数量<span class="hljs-number">7</span> 当前时间：<span class="hljs-number">1713681646024</span>
+第<span class="hljs-number">20</span>请求成功, 剩余令牌数量<span class="hljs-number">6</span> 当前时间：<span class="hljs-number">1713681646086</span>
+第<span class="hljs-number">21</span>请求成功, 剩余令牌数量<span class="hljs-number">5</span> 当前时间：<span class="hljs-number">1713681646149</span>
+第<span class="hljs-number">22</span>请求成功, 剩余令牌数量<span class="hljs-number">4</span> 当前时间：<span class="hljs-number">1713681646211</span>
+第<span class="hljs-number">23</span>请求成功, 剩余令牌数量<span class="hljs-number">3</span> 当前时间：<span class="hljs-number">1713681646274</span>
+第<span class="hljs-number">24</span>请求成功, 剩余令牌数量<span class="hljs-number">2</span> 当前时间：<span class="hljs-number">1713681646336</span>
+第<span class="hljs-number">25</span>请求成功, 剩余令牌数量<span class="hljs-number">1</span> 当前时间：<span class="hljs-number">1713681646398</span>
+第<span class="hljs-number">26</span>请求成功, 剩余令牌数量<span class="hljs-number">0</span> 当前时间：<span class="hljs-number">1713681646461</span></code></pre></div>
+
+<p>从打印的日志可以看到，实现了每秒钟只能访问10次的限制</p>
 
             </div>
             <hr>
@@ -294,6 +385,12 @@ server <span class="hljs-punctuation">&#123;</span>
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/04/26/clion-remote-C/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">clion_remote_C++</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -503,7 +600,7 @@ server <span class="hljs-punctuation">&#123;</span>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "nginx_proxy&nbsp;",
+        "面试题目&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
